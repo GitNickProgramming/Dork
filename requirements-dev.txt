@@ -1,0 +1,9 @@
+-r requirements.txt
+coverage
+doc8
+flake8
+pylint
+pytest
+pytest-runner
+Sphinx
+sphinxcontrib-napoleon

@@ -1,0 +1,22 @@
+dist: trusty
+language: python
+python:
+  - "3.6"
+
+before_install:
+  - pip install -U pip
+
+install:
+  - pip install -r requirements-dev.txt codecov
+
+script:
+  - pylint dork tests
+  - flake8 dork tests
+  - doc8 --ignore-path docs/_build/ --ignore-path venv/ # <virtual_env path>
+  - coverage erase
+  - coverage run --branch --source=dork --omit=dork/__main__.py -m pytest
+  - coverage report -m
+  
+after_success:
+  - coverage xml -i
+  - codecov
