@@ -1,7 +1,13 @@
-dist: trusty
+dist: xenial
 language: python
 python:
-  - "3.6"
+  - "3.7"
+
+addons:
+  sonarcloud:
+    organization: "$ONAR_ORGANIZATION"
+    token:
+      secure: "$SONAR_TOKEN"
 
 before_install:
   - pip install -U pip
@@ -12,7 +18,6 @@ install:
 script:
   - pylint dork tests
   - flake8 dork tests
-  - doc8 --ignore-path docs/_build/ --ignore-path venv/ # <virtual_env path>
   - coverage erase
   - coverage run --branch --source=dork --omit=dork/__main__.py -m pytest
   - coverage report -m
@@ -20,3 +25,4 @@ script:
 after_success:
   - coverage xml -i
   - codecov
+  - sonar-scanner -Dsonar.projectKey=${SONAR_PROJECT_KEY} -Dsonar.organization=${SONAR_ORGANIZATION}
