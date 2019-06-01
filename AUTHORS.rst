@@ -10,3 +10,5 @@ Contributors
 ------------
 
 None yet. Why not be the first?
+
+* Zachory Anguiano <zanguian@msudenver.edu>
