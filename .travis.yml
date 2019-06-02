@@ -4,10 +4,10 @@ python:
   - "3.7"
 
 addons:
-  sonarcloud:
-    organization: "$SONAR_ORGANIZATION"
+  sonarcloud: "a2564872c2fcb089fa87873235f54727b001c37e"
+    organization: "7fe7e038f4db792b5cbe01748532d3830669ec20"
     token:
-      secure: "$SONAR_TOKEN"
+      secure: "01b6f590188f07bb201d2925c56eda8601a6005a"
 
 before_install:
   - pip install -U pip
