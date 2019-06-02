@@ -17,3 +17,6 @@ None yet. Why not be the first?
 * Larsen Close <lclose@msudenver.edu>
 * Devon DeJohn <ddejohn@msudenver.edu>
 * David Dews <ddews1@msudenver.edu>
+=======
+* Zachory Anguiano <zanguian@msudenver.edu>
+>>>>>>> 9d19aa7c55c646e97375f6b0c3af7eafc62b2e47
