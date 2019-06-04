@@ -4,7 +4,7 @@ Credits
 Development Lead
 ----------------
 
-* Peter Nielson <lsmith@zenoscave.com>
+* Peter Nielson <>
 
 Contributors
 ------------
