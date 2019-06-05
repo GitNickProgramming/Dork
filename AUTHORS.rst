@@ -3,14 +3,10 @@ Credits
 
 Development Lead
 ----------------
-
-* Peter Nielson <>
+* Peter Nielson <peter@boxoforanmore.com>
 
 Contributors
 ------------
-
-None yet. Why not be the first?
-
 * Nick Gagliardi <ngagliar@msudenver.edu>
 * Zachory Anguiano <zanguian@msudenver.edu>
 * Fernando Babonoyaba <fbabonoy@msudenver.edu>

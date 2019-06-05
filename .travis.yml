@@ -5,7 +5,7 @@ python:
 
 addons:
   sonarcloud:
-    organization: "$ONAR_ORGANIZATION"
+    organization: "$SONAR_ORGANIZATION"
     token:
       secure: "$SONAR_TOKEN"
 
