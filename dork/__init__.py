@@ -4,6 +4,7 @@
 
 __version__ = '0.1.0'
 __author__ = ", ".join([
-    "Nick Gagliard, ", "David Dews, ", "Nicole Beck, ", "Zachory Anguiano, ", "Larsen James Close, "
-
+    "Peter Nielson, ", "David Dews, ", "Larsen James Close, ",
+    "Nicole Beck, ", "Zachory Anguiano, ", "Devon DeJohn, ",
+    "Fernando Babonoyaba", "Nick Gagliardi"
 ])
