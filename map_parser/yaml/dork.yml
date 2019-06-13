@@ -12,7 +12,7 @@ Rooms:
     west: "Armory"
   Cave:
     north: "Boss"
-    east: null
+    east: "Teleporter"
     south: null
     west: "Entrance"
   Armory:
@@ -25,3 +25,8 @@ Rooms:
     east: null
     south: "Boss"
     west: null
+  Teleporter:
+    north: "Gold"
+    east: null
+    south: null
+    west: "Cave"
