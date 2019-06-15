@@ -28,7 +28,6 @@ class Player(Holder):
     def __init__(self):
         super(Player, self).__init__()
         self.room = Room()
-        self.prev_loc = None
 
 
 class Room(Holder):
