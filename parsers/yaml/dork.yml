@@ -1,0 +1,68 @@
+---
+Rooms:
+  Start:
+    entrances:
+      north: null
+      south: null
+      east: "Cave"
+      west: "Armory"
+    exits:
+      north: "Boss"
+      south: null
+      east: "Cave"
+      west: "Armory"
+  Armory:
+    entrances:
+      north: null
+      south: null
+      east: "Start"
+      west: null
+    exits:
+      north: "Boss"
+      south: null
+      east: "Start"
+      west: null
+  Cave:
+    entrances:
+      north: null
+      south: null
+      east: null
+      west: "Start"
+    exits:
+      north: "Boss"
+      south: null
+      east: "Teleporter"
+      west: "Start"
+  Teleporter:
+    entrances:
+      north: null
+      south: null
+      east: null
+      west: "Cave"
+    exits:
+      north: "Boss"
+      south: null
+      east: null
+      west: null
+  Boss:
+    entrances:
+      north: "Gold"
+      south: "Start"
+      east: "Cave"
+      west: "Armory"
+    exits:
+      north: "Gold"
+      south: null
+      east: null
+      west: null
+  Gold:
+    entrances:
+      north: null
+      south: "Boss"
+      east: "Teleporter"
+      west: null
+    exits:
+      north: null
+      south: "Boss"
+      east: null
+      west: null
