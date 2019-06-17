@@ -12,5 +12,5 @@ def load(file_name):
         data = yaml.safe_load(file.read())
     return data
 
-def save(file_name):
-    pass
+def save(data, file_name):
+    """Saves 'data' to 'file_name'"""

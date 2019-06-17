@@ -1,4 +1,4 @@
-
+"""REPL"""
 
 def read():
     """Reads input from user.
@@ -9,7 +9,7 @@ def read():
 def evaluate(command):
     """Evaluates a command
     """
-    return "", False
+    return f"{command}", False
 
 def repl():
     """Read eval print loop
