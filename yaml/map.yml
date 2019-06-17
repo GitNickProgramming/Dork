@@ -1,0 +1,27 @@
+---
+Rooms:
+  Start:
+    north: Boss
+    south: null
+    east: Cave
+    west: Armory
+  Armory:
+    north: Boss
+    south: null
+    east: Start
+    west: null
+  Cave:
+    north: Boss
+    south: null
+    east: null
+    west: Start
+  Boss:
+    north: Gold
+    south: Start
+    east: Cave
+    west: Armory
+  Gold:
+    north: null
+    south: Boss
+    east: null
+    west: null

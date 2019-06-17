@@ -8,19 +8,19 @@ DO NOT DO THIS in production code. You will be shamed.
 """
 
 from pprint import pprint  # more formatted data "pretty" printing.
-import yaml
+from dork import parser as dparse
+# import yaml
 
 CARDINALS = ["north", "east", "south", "west"]
 
+# def _load_data(file_name_and_path="./parsers/yaml/dork.yml"):  # lookup default args
+#     with open(file_name_and_path) as file:  # with keyword is a context manager
+#         data = yaml.safe_load(file.read())  # ./yaml/dork.yml is a valid file
 
-def _load_data(file_name_and_path="./map_parser/yaml/dork.yml"):  # lookup default args
-    with open(file_name_and_path) as file:  # with keyword is a context manager
-        data = yaml.safe_load(file.read())  # ./yaml/dork.yml is a valid file
+#     # data is now available in the current scope.
+#     # file is removed after the with (closed) for record keeping
 
-    # data is now available in the current scope.
-    # file is removed after the with (closed) for record keeping
-
-    return data
+#     return data
 
 
 def _check_path(rooms, name, direction):
@@ -28,23 +28,23 @@ def _check_path(rooms, name, direction):
     if direction not in room:
         print(f"{name} does not have {direction} as a key.")
     elif room[direction] is None:
-        print(f"There is nothing {direction} of {name}.")
+        print(f"There is no room {direction} of {name}.")
     elif room[direction] not in rooms:
         print(f"Going {direction} of {name} leads to an error!")
     else:
         other = room[direction]
-        print(f"{other} is {direction} of {name}")
+        print(f"{other} is {direction} of {name}.")
 
 
 def main():
     """Main point of entry.
     Loads data. Checks if it is valid. And Parses it.
     """
-    data = _load_data()
+    data = dparse.load("map")
     print("loaded this data: ")
     pprint(data)
 
-    print("checking that data contains a dictionary of rooms...")
+    print("\nChecking that 'data' contains a dictionary of rooms... \n")
     if "Rooms" not in data:
         print("No Rooms found.")
         return
@@ -57,6 +57,7 @@ def main():
     for name in rooms:  # this is a dictionary key iterator
         for direction in CARDINALS:
             _check_path(rooms, name, direction)
+        print("")
 
 
 if __name__ == "__main__":

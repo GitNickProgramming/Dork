@@ -1,0 +1,21 @@
+---
+cmds:
+  say:
+    hello: _hello
+    goodbye: _bye
+  help:
+    say: _help
+  q: _gtfo
+  n: partial(_move, "north")
+  s: partial(_move, "south")
+  e: partial(_move, "east")
+  w: partial(_move, "west")
+  north: partial(_move, "north")
+  south: partial(_move, "south")
+  east: partial(_move, "east")
+  west: partial(_move, "west")
+  go: _move
+  move: _move
+  walk: _move
+  travel: _move
+  run: _move
