@@ -8,6 +8,7 @@ DO NOT DO THIS in production code. You will be shamed.
 """
 
 from pprint import pprint  # more formatted data "pretty" printing.
+import dork
 from dork import parser as dparse
 # import yaml
 
