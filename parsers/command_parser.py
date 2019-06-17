@@ -6,10 +6,10 @@ def read():
     return input("> ")
 
 
-def _evaluate(command):
+def evaluate(command):
     """Evaluates a command
     """
-    pass
+    return "", False
 
 def repl():
     """Read eval print loop
