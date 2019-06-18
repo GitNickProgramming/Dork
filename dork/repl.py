@@ -1,5 +1,6 @@
 from functools import partial
-import dork_parser as dparse
+import yaml_to_dict as parse
+from dork import types
 
 
 def _hello():
@@ -37,20 +38,19 @@ def evaluate(cmd):
     else:
         verb, noun = cmd, None
 
-    action = cmds["cmds"][verb]
-    args = cmds["args"]
+    if verb in cmds["cmds"]:
+        action = cmds["cmds"][verb]
+        args = cmds["args"]
+    else:
+        return "unknown command", False
 
-    if noun is not None:
-        if isinstance(action, dict):
-            for word in noun:
-                if word in action:
-                    func_to_eval = eval(action[word])
-                    return func_to_eval()
-        else:
-            for word in noun:
-                if word in args:
-                    func_to_eval = eval(action)
-                    return func_to_eval(word)
+    if noun:
+        for word in noun:
+            if word in action:
+                func_to_eval = eval(action[word])
+            elif word in args:
+                func_to_eval = partial(eval(action), word)
+            return func_to_eval()
     else:
         func_to_eval = eval(action)
         return func_to_eval()
@@ -72,6 +72,6 @@ def repl():
 
 # https://stackoverflow.com/questions/419163/what-does-if-name-main-do
 if __name__ == "__main__":
-    world_map = dparse.load("map")
-    cmds = dparse.load("cmds")
+    world_map = parse.load("map")
+    cmds = parse.load("cmds")
     repl()

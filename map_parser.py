@@ -9,7 +9,7 @@ DO NOT DO THIS in production code. You will be shamed.
 
 
 from pprint import pprint  # more formatted data "pretty" printing.
-from dork import parser as dparse
+from dork import yaml_to_dict as parse
 
 
 CARDINALS = ["north", "east", "south", "west"]
@@ -32,7 +32,7 @@ def main():
     """Main point of entry.
     Loads data. Checks if it is valid. And Parses it.
     """
-    data = dparse.load("map")
+    data = parse.load("map")
     print("loaded this data: ")
     pprint(data)
 
