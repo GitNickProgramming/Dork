@@ -10,7 +10,7 @@ edges = []
 nodes = []
 
 
-def _load_data(file_name_and_path="./map/yaml/dork.yml"):
+def _load_data(file_name_and_path="./map_parser/yaml/dork.yml"):
     with open(file_name_and_path) as file:
         data = yaml.safe_load(file.read())
 
