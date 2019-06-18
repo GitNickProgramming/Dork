@@ -37,9 +37,9 @@ def evaluate(cmd):
     else:
         verb, noun = cmd, None
 
-    if verb in cmds["cmds"]:
-        action = cmds["cmds"][verb]
-        args = cmds["args"]
+    if verb in CMDS["cmds"]:
+        action = CMDS["cmds"][verb]
+        args = CMDS["args"]
     else:
         return "unknown command", False
 
@@ -71,6 +71,6 @@ def repl():
 
 # https://stackoverflow.com/questions/419163/what-does-if-name-main-do
 if __name__ == "__main__":
-    world_map = parse.load("map")
-    cmds = parse.load("cmds")
+    WORLD_MAP = parse.load("map")
+    CMDS = parse.load("cmds")
     repl()
