@@ -1,3 +1,4 @@
+import dork.types
 """
 Python Command parser using dictionaries and Function References
 https://www.w3schools.com/python/python_dictionaries.asp -- dictionaries info
@@ -10,7 +11,9 @@ private methods:
 if a function/method starts with a `_' it is considered private by python.
 There no need to document private methods as they tend to change frequently
 """
-
+def create_player():
+    player = dork.types.Player()
+    return player
 
 def _hello_world():
     # return tuple of two values. the second is the repl termination condition
@@ -35,6 +38,8 @@ def evaluate(command):
     """Evaluates a command
     """
     # https://docs.python.org/3/library/stdtypes.html#str.split
+    if not isinstance(command,str) :
+        return "Unknown Command", False
     words_in_command = command.split()
 
     main_menu = {  # look at dictionary notes at top for more info.
