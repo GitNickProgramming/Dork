@@ -1,5 +1,5 @@
 
-import map.map_generator as map
+import map_parser.map_generator as map
 import networkx as nx 
 import os
 
@@ -8,7 +8,7 @@ def test_map_generator_exists():
 
 def test_file_path():
     assert os.path.isfile('jabba') == False
-    assert os.path.isfile('./map/yaml/dork.yml') == True
+    assert os.path.isfile('./map_parser/yaml/dork.yml') == True
 
 def test_cardinals():
     assert type(map.CARDINALS) is list
