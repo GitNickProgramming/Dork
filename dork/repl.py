@@ -1,6 +1,5 @@
 from functools import partial
 import yaml_to_dict as parse
-from dork import types
 
 
 def _hello():
