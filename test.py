@@ -1,3 +1,4 @@
+from functools import partial
 from dork import parser as dparse
 
 
@@ -30,19 +31,26 @@ def evaluate(cmd):
 
     if " " in cmd:
         verb, noun = cmd.split(" ", 1)
+        noun = noun.split()
     else:
         verb, noun = cmd, None
 
-    if isinstance(cmds[verb], dict):
-        for word in cmds[verb]:
-            func_to_eval = eval(cmds[verb][word])
-            return func_to_eval()
-    elif noun is not None:
-        for word in cmds[verb]:
-            func_to_eval = eval(cmds[verb])
-            return func_to_eval(word)
+    action = cmds["cmds"][verb]
+    args = cmds["args"]
+
+    if noun is not None:
+        if isinstance(action, dict):
+            for word in noun:
+                if word in action:
+                    func_to_eval = eval(action[word])
+                    return func_to_eval()
+        else:
+            for word in noun:
+                if word in args:
+                    func_to_eval = eval(action)
+                    return func_to_eval(word)
     else:
-        func_to_eval = eval(cmds[cmd])
+        func_to_eval = eval(action)
         return func_to_eval()
 
 

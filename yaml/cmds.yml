@@ -19,3 +19,6 @@ cmds:
   walk: _move
   travel: _move
   run: _move
+
+args:
+  n, s, e, w, north, south, east, west
