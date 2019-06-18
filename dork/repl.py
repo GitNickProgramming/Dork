@@ -25,6 +25,7 @@ def _move(cardinal):
 
 
 def read():
+    """get input from CLI"""
     return input("> ")
 
 
