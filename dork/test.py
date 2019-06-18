@@ -1,5 +1,5 @@
 from functools import partial
-from dork import parser as dparse
+import dork_parser as dparse
 
 
 def _hello():
@@ -19,6 +19,8 @@ def _gtfo():
 
 
 def _move(cardinal):
+    if len(cardinal) == 1:
+        cardinal = {"n": "north", "s": "south", "e": "east", "w": "west"}[cardinal]
     return f"You moved to the {cardinal}", False
 
 
