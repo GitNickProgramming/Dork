@@ -10,6 +10,9 @@ import matplotlib.pyplot as plt
 
 CARDINALS = ["north", "east", "south", "west"]
 
+nodes = []
+edges = []
+
 
 def load_data(file_name_and_path = "./dork/dork.yml"):
     """Loads data from yaml file into data"""
