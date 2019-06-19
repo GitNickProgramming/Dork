@@ -2,6 +2,12 @@ import map_parser.command_parser as _mp
 import dork.types as _tp
 import tests.daves_mock
 
+
+# -*- coding: utf-8 -*-
+"""Test_Dork_Command_Parser I have to describe
+ that this tests parser for lint """
+
+
 def test_hello_world():
     """Testing the hello world function of parser """
     assert _mp.get_hello_world()[0] == "hello, world!", """Hello world
