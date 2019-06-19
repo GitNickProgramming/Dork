@@ -1,5 +1,4 @@
-
-
+# -*- coding: utf-8 -*-
 """Test_Dork_Command_Parser I have to describe
  that this tests parser for lint """
 
@@ -20,8 +19,8 @@ def test_hello_world():
 
 def test_goodbye_world():
     """Testing the goodbye function of parser """
-    assert _mp.get_goodbye_world()[0] == """goodbye,
-     world!""", "Goodbye world method failed"
+    assert _mp.get_goodbye_world()[0] == """goodbye, world!""", """Goodbye
+    world method failed"""
 
 
 def test_show_help():
