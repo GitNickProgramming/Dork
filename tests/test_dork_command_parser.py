@@ -5,7 +5,6 @@ import dork.types as _tp
 import tests.daves_mock
 
 
-
 def test_hello_world():
     """Testing the hello world function of parser """
     assert _mp.get_hello_world() == ("hello, world!", False),\
@@ -109,17 +108,18 @@ def test_eval_three_words():
     assert _mp.evaluate("say help help") == ("try typing 'say hello'", False),\
         "Failed to ignore 3rd word in input"
 
+
 def test_repl_running():
     """Testing repl running at all"""
     input_values = ["say goodbye"]
     output = []
-
 
     # method from Gabor Szabo of Code Maven
     def mock_input(print_scrn):
         """mock method for repl"""
         output.append(print_scrn)
         return input_values.pop(0)
+ 
     _mp.input = mock_input
     _mp.print = output.append
     _mp.repl()
