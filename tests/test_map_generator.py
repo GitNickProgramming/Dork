@@ -8,7 +8,6 @@ import dork.map_generator as map_graph
 from tests.utils import is_a
 
 
-
 def test_map_generator_exists():
     """Test if the map generator has a main"""
     assert "main" in vars(map_graph)
@@ -45,6 +44,7 @@ def test_functions_exist():
     assert "convert_dict_nodes" in vars(map_graph)
     assert "check_data" in vars(map_graph)
     assert "generate_map" in vars(map_graph)
+    assert "main" in vars(map_graph)
 
 
 def test_load_data():
@@ -115,3 +115,6 @@ def test_main_runnable(run):
         run(map_graph.main)
     except:  # noqa: E722
         raise AssertionError("cannot run 'dork' command")
+
+def test_name_main_conditional():
+    assert map_graph.__name__ != "__main__"
