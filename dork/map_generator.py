@@ -46,35 +46,18 @@ def generate_map():
     """Returns a map from the nodes and edges lists"""
     nodes = convert_dict_nodes()
     edges = convert_dict_edges()
-    if nodes and edges:
-        nx.empty_graph()
-        map_graph = nx.Graph()
-        map_graph.add_nodes_from(nodes)
-        map_graph.add_edges_from(edges)
-        # nx.draw(map_graph, with_labels=True)
-        plt.show()
-        return map_graph
-    return print("Error in map generation")
-
-
-# def _check_path():
-#     data = load_data()
-#     rooms = data["Rooms"]
-#     room = rooms[name]
-#     if direction not in room:
-#         print(f"{name} does not have {direction} as a key.")
-#     elif room[direction] is None:
-#         print(f"There is nothing {direction} of {name}.")
-#     elif room[direction] not in rooms:
-#         print(f"Going {direction} of {name} leads to an error!")
-#     else:
-#         other = room[direction]
-#         print(f"{other} is {direction} of {name}")
+    nx.empty_graph()
+    map_graph = nx.Graph()
+    map_graph.add_nodes_from(nodes)
+    map_graph.add_edges_from(edges)
+    # nx.draw(map_graph, with_labels=True)
+    plt.show()
+    return map_graph
 
 
 def check_data(data):
     """Tests yaml file to see if it is a correct format"""
-    print("\nChecking that 'data' contains a dictionary of rooms... \n")
+    # print("\nChecking that 'data' contains a dictionary of rooms... \n")
     if "Rooms" not in data:
         print("No Rooms found.")
         return False
@@ -83,7 +66,7 @@ def check_data(data):
         print("Rooms in data was not proper data.")
         return False
 
-    print("Rooms found with proper data.\n")
+    # print("Rooms found with proper data.\n")
     return True
 
 
@@ -91,13 +74,14 @@ def main():
     """Runnable main of map_generator, requires correctly formatted yaml file,
     returns"""
     data = load_data()
-    print("loaded this data: ")
-    pprint(data)
-    print(convert_dict_nodes())
+    # print("loaded this data: ")
+    # pprint(data)
+    # print(convert_dict_nodes())
 
     if check_data(load_data()):
-        generate_map()
-        # _check_path()
+        map_graph = generate_map()
+
+    return map_graph
 
 
 if __name__ == "__main__":

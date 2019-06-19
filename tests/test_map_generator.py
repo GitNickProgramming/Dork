@@ -76,6 +76,11 @@ def test_check_data():
     is_a(map_graph.check_data(map_graph.load_data()), bool)
 
 
-def testgenerate_map():
+def test_generate_map():
     """Test Generate Map"""
     is_a(map_graph.generate_map(), nx.classes.graph.Graph)
+
+
+def test_mains_return():
+    """Test Mains return"""
+    is_a(map_graph.main(), nx.classes.graph.Graph)
