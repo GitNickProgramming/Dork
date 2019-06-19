@@ -14,7 +14,7 @@ nodes = []
 edges = []
 
 
-def load_data(file_name_and_path = "./dork/dork.yml"):
+def load_data(file_name_and_path="./dork/dork.yml"):
     """Loads data from yaml file into data"""
     with open(file_name_and_path) as file:
         data = yaml.safe_load(file.read())
@@ -57,7 +57,7 @@ def generate_map():
         # nx.draw(map_graph, with_labels=True)
         plt.show()
         return map_graph
-    return
+    return print("Error in map generation")
 
 # def _check_path():
 #     data = load_data()
@@ -89,7 +89,7 @@ def check_data(data):
 
 
 def main():
-    """Runnable main of map_generator, requires correctly formatted yaml file, 
+    """Runnable main of map_generator, requires correctly formatted yaml file,
     returns"""
     data = load_data()
     print("loaded this data: ")
