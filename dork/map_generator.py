@@ -2,6 +2,7 @@
 """Generates map from yaml data
 """
 
+# from pprint import pprint
 import networkx as nx
 import yaml
 import matplotlib.pyplot as plt
@@ -56,7 +57,7 @@ def generate_map():
 
 def check_data(data):
     """Tests yaml file to see if it is a correct format"""
-    # print("\nChecking that 'data' contains a dictionary of rooms... \n")
+    print("\nChecking that 'data' contains a dictionary of rooms... \n")
     if "Rooms" not in data:
         print("No Rooms found.")
         return False
@@ -65,7 +66,7 @@ def check_data(data):
         print("Rooms in data was not proper data.")
         return False
 
-    # print("Rooms found with proper data.\n")
+    print("Rooms found with proper data.\n")
     return True
 
 
@@ -78,8 +79,9 @@ def main():
 
     if check_data(load_data()):
         map_graph = generate_map()
+        return map_graph
 
-    return map_graph
+    return "Error in graph generation"
 
 
 if __name__ == "__main__":

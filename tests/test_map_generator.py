@@ -88,15 +88,17 @@ def test_mains_return():
 
 def test_check_data_fails():
     """Test check_data method"""
-    data = {"Hallsways" : "NotRooms"}
+    data = {"Hallsways":"NotRooms"}
     assert map_graph.check_data(data) is False
-    data = {"Rooms" : 666}
+    data = {"Rooms":666}
     assert map_graph.check_data(data) is False
 
 
 def test_check_data_conditional_main():
     """Test check_data method"""
     assert map_graph.check_data(map_graph.load_data()) is True
+    assert map_graph.check_data("   ") is False
+
 
 def test_main_variable_declaration():
     """Test variable assignment in main"""
