@@ -65,9 +65,9 @@ def test_convert_dict_nodes():
     assert map_graph.convert_dict_nodes(map_graph.load_data()) is not None
     assert map_graph.convert_dict_nodes(map_graph.load_data()) != ""
     assert map_graph.convert_dict_nodes(map_graph.load_data()) == ['Entrance',
-                                                                   'Boss', 
-                                                                   'Cave', 
-                                                                   'Armory', 
+                                                                   'Boss',
+                                                                   'Cave',
+                                                                   'Armory',
                                                                    'Gold']
     is_a(map_graph.convert_dict_nodes(map_graph.load_data()), list)
 
