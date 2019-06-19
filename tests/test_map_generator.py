@@ -116,6 +116,7 @@ def test_main_runnable(run):
     except:  # noqa: E722
         raise AssertionError("cannot run 'dork' command")
 
+
 def test_name_main_conditional():
     """Testing conditional main thing"""
     assert map_graph.__name__ != "__main__"
