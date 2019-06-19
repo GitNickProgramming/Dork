@@ -6,8 +6,6 @@ class MockInput():
     """class for any string input """
     arg = ""
     prompt = ""
-
-
     def make_input(self, prompts):
         """injects input into builtin input methods"""
         self.prompt = prompts
