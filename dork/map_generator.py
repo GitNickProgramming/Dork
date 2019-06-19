@@ -59,6 +59,7 @@ def generate_map():
         return map_graph
     return print("Error in map generation")
 
+
 # def _check_path():
 #     data = load_data()
 #     rooms = data["Rooms"]
@@ -72,6 +73,7 @@ def generate_map():
 #     else:
 #         other = room[direction]
 #         print(f"{other} is {direction} of {name}")
+
 
 def check_data(data):
     """Tests yaml file to see if it is a correct format"""
