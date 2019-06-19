@@ -18,7 +18,7 @@ def test_player_instance(run):
 
 def test_evaluate(run):
     assert mp.evaluate("say hello")[0] == "hello, world!", "Hello world evalutation failed"
-    assert mp.evaluate("")[0] == "Unknown Command", "Input Type Handling Error, Unable to handle empty string"
+    assert mp.evaluate("")[0] == "Unknown Command", "Input Type Handling Error, empty string"
     assert mp.evaluate(None)[0] == "Unknown Command", "Input Mismatch, unable to handle"
     assert mp.evaluate("say goodbye")[0] == "goodbye, world!", "Goodbye world evaluation failed"
     assert mp.evaluate("help say")[0] == "try typing 'say hello'", "help say command failed"

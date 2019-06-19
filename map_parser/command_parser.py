@@ -38,7 +38,7 @@ def evaluate(command):
     """Evaluates a command
     """
     # https://docs.python.org/3/library/stdtypes.html#str.split
-    if not isinstance(command,str) :
+    if not isinstance(command, str):
         return "Unknown Command", False
     words_in_command = command.split()
 
