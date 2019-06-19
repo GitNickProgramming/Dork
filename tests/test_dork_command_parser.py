@@ -8,13 +8,13 @@ import tests.daves_mock
 def test_hello_world():
     """Testing the hello world function of parser """
     assert _mp.get_hello_world() == ("hello, world!", False),\
-         """Hello world method failed"""
+        """Hello world method failed"""
 
 
 def test_goodbye_world():
     """Testing the goodbye function of parser """
     assert _mp.get_goodbye_world() == ("""goodbye, world!""", True),\
-    """Goodbye world method failed"""
+        """Goodbye world method failed"""
 
 
 def test_show_help():
@@ -27,37 +27,37 @@ def test_player_instance():
     player = _mp.create_player()
     assert player is not None, "Typing error, Player is None"
     assert isinstance(player, _tp.Player), """Typing error,
-    player is not Player class"""
+        player is not Player class"""
 
 
 def test_evaluate_hello():
     """Testing the eval function of Repl """
     assert _mp.evaluate("say hello") == ("hello, world!", False),\
-    """Hello world evalutation failed"""
+        """Hello world evalutation failed"""
 
 
 def test_evaluate_empty():
     """Testing the eval function of Repl """
     assert _mp.evaluate("") == ("Unknown Command", False),\
-    """Input Type Handling Error, empty string"""
+        """Input Type Handling Error, empty string"""
 
 
 def test_evaluate_other_type():
     """Testing the eval function of Repl """
     assert _mp.evaluate(None) == ("Unknown Command", False),\
-    """Input Mismatch, unable to handle"""
+        """Input Mismatch, unable to handle"""
 
 
 def test_evaluate_goodbye():
     """Testing the eval function of Repl """
     assert _mp.evaluate("say goodbye") == ("goodbye, world!", True),\
-    """Goodbye world evaluation failed"""
+        """Goodbye world evaluation failed"""
 
 
 def test_evaluate_help():
     """Testing the eval function of Repl """
     assert _mp.evaluate("help say") == ("try typing 'say hello'", False),\
-    """help say command failed"""
+        """help say command failed"""
 
 
 def test_read_string():
@@ -94,7 +94,7 @@ def test_repl():
 def test_eval_verb_only():
     """Testing subject non-existant"""
     assert _mp.evaluate("say dog") == ("Unknown Command", False),\
-    "verb failed to process"
+        "verb failed to process"
 
 
 def test_eval_subject_only():
