@@ -1,5 +1,3 @@
-""" coding=utf-8"""
-
 import map_parser.command_parser as _mp
 import dork.types as _tp
 import tests.daves_mock
