@@ -3,7 +3,7 @@
 import dork.command_parser as _mp
 import dork.types as _tp
 import tests.daves_mock
-import pytest
+
 
 
 def test_hello_world():
@@ -113,7 +113,8 @@ def test_repl_running():
     """Testing repl running at all"""
     input_values = ["say goodbye"]
     output = []
-    
+
+
     # method from Gabor Szabo of Code Maven
     def mock_input(print_scrn):
         """mock method for repl"""
@@ -122,6 +123,5 @@ def test_repl_running():
     _mp.input = mock_input
     _mp.print = output.append
     _mp.repl()
-
-    assert output == ["starting repl...", "> ", "goodbye, world!",\
-        "ending repl..."], "repl failed"
+    assert output == ["starting repl...", "> ", "goodbye, world!",
+                      "ending repl..."], "repl failed"
