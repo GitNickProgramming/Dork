@@ -23,8 +23,9 @@ def load_data(file_name_and_path= "./dork/dork.yml"):
     return data
 
 
-def convert_dict_edges(data):
+def convert_dict_edges():
     """Convert Dictionary to edges"""
+    data = load_data()
     edges = []
     rooms = data["Rooms"]
     for name in rooms:
@@ -34,8 +35,9 @@ def convert_dict_edges(data):
                 edges.append((room[direction], name))
     return edges
 
-def convert_dict_nodes(data):
+def convert_dict_nodes():
     """Convert Dictionary to Nodes"""
+    data = load_data()
     nodes = []
     rooms = data["Rooms"]
     for name in rooms:
@@ -44,8 +46,10 @@ def convert_dict_nodes(data):
     return nodes
 
 
-def generate_map(nodes, edges):
+def generate_map():
     """Returns a map from the nodes and edges lists"""
+    nodes = convert_dict_nodes()
+    edges = convert_dict_edges()
     if nodes and edges:
         nx.empty_graph()
         map_graph = nx.Graph()
@@ -88,10 +92,10 @@ def main():
     data = load_data()
     print("loaded this data: ")
     pprint(data)
-    print(convert_dict_nodes(load_data()))
+    print(convert_dict_nodes())
 
     if check_data(load_data()):
-        generate_map(convert_dict_nodes(load_data()), convert_dict_edges(load_data()))
+        generate_map()
         # _check_path()
 
 

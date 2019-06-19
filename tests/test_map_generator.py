@@ -4,7 +4,7 @@
 
 import os
 import networkx as nx
-import map_parser.map_generator as map_graph
+import dork.map_generator as map_graph
 from tests.utils import is_a
 
 
@@ -55,21 +55,18 @@ def testload_data():
 
 def test_convert_dict_edges():
     """Test Convert Dictionary Edges"""
-    assert map_graph.convert_dict_edges(map_graph.load_data()) is not None
-    assert map_graph.convert_dict_edges(map_graph.load_data()) != ""
-    is_a(map_graph.convert_dict_edges(map_graph.load_data()), list)
+    assert map_graph.convert_dict_edges() is not None
+    assert map_graph.convert_dict_edges() != ""
+    is_a(map_graph.convert_dict_edges(), list)
 
 
 def test_convert_dict_nodes():
     """Test Convert Dictionary Nodes"""
-    assert map_graph.convert_dict_nodes(map_graph.load_data()) is not None
-    assert map_graph.convert_dict_nodes(map_graph.load_data()) != ""
-    assert map_graph.convert_dict_nodes(map_graph.load_data()) == ['Entrance',
-                                                                   'Boss',
-                                                                   'Cave',
-                                                                   'Armory',
-                                                                   'Gold']
-    is_a(map_graph.convert_dict_nodes(map_graph.load_data()), list)
+    assert map_graph.convert_dict_nodes() is not None
+    assert map_graph.convert_dict_nodes() != ""
+    assert map_graph.convert_dict_nodes() == ['Entrance', 'Boss', 'Cave',
+                                              'Armory', 'Gold']
+    is_a(map_graph.convert_dict_nodes(), list)
 
 
 def test_check_data():
@@ -81,7 +78,4 @@ def test_check_data():
 
 def testgenerate_map():
     """Test Generate Map"""
-    assert map_graph.generate_map("", "") is None
-    is_a(map_graph.generate_map(map_graph.convert_dict_nodes(
-        map_graph.load_data()), map_graph.convert_dict_edges(
-            map_graph.load_data())), nx.classes.graph.Graph)
+    is_a(map_graph.generate_map(), nx.classes.graph.Graph)
