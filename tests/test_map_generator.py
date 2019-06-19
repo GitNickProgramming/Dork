@@ -3,9 +3,11 @@
 """
 
 import os
+from types import FunctionType
 import networkx as nx
 import dork.map_generator as map_graph
 from tests.utils import is_a
+
 
 
 def test_map_generator_exists():
@@ -46,7 +48,7 @@ def test_functions_exist():
     assert "generate_map" in vars(map_graph)
 
 
-def testload_data():
+def test_load_data():
     """Test Load Data"""
     assert map_graph.load_data() is not None
     assert map_graph.load_data() != ""
@@ -88,9 +90,9 @@ def test_mains_return():
 
 def test_check_data_fails():
     """Test check_data method"""
-    data = {"Hallsways":"NotRooms"}
+    data = {"Hallsways": "NotRooms"}
     assert map_graph.check_data(data) is False
-    data = {"Rooms":666}
+    data = {"Rooms": 666}
     assert map_graph.check_data(data) is False
 
 
@@ -106,3 +108,10 @@ def test_main_variable_declaration():
     assert map_graph_test is not None
     assert map_graph_test != ""
     is_a(map_graph_test, nx.classes.graph.Graph)
+
+def test_main_runnable(run):
+    """Testing running main"""
+    try:
+        run(map_graph.main)
+    except:  # noqa: E722
+        raise AssertionError("cannot run 'dork' command")

@@ -80,8 +80,7 @@ def main():
     if check_data(load_data()):
         map_graph = generate_map()
         return map_graph
-
-    return "Error in graph generation"
+    return map_graph
 
 
 if __name__ == "__main__":
