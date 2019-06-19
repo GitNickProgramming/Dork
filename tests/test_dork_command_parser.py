@@ -1,6 +1,6 @@
 """Test_Dork_Command_Parser I have to describe
  that this tests parser for lint """
-import map_parser.command_parser as _mp
+import dork.command_parser as _mp
 import dork.types as _tp
 import tests.daves_mock
 
