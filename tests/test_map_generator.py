@@ -2,10 +2,11 @@
 """Basic tests for the dork map generator
 """
 
-import networkx as nx
 import os
+import networkx as nx
 import map_parser.map_generator as map_graph
 from tests.utils import is_a
+
 
 def test_map_generator_exists():
     """Test if the map generator has a main"""
@@ -16,6 +17,7 @@ def test_file_path():
     """Test File Path"""
     assert os.path.isfile('jabba') is False
     assert os.path.isfile('./map_parser/yaml/dork.yml') is True
+
 
 def test_cardinals():
     """ Test Cardinals"""
@@ -53,7 +55,7 @@ def testload_data():
 
 def test_convert_dict_edges():
     """Test Convert Dictionary Edges"""
-    assert map_graph.convert_dict_edges(map_graph.load_data()) != None
+    assert map_graph.convert_dict_edges(map_graph.load_data()) is not None
     assert map_graph.convert_dict_edges(map_graph.load_data()) != ""
     is_a(map_graph.convert_dict_edges(map_graph.load_data()), list)
 
@@ -63,15 +65,15 @@ def test_convert_dict_nodes():
     assert map_graph.convert_dict_nodes(map_graph.load_data()) is not None
     assert map_graph.convert_dict_nodes(map_graph.load_data()) != ""
     assert map_graph.convert_dict_nodes(map_graph.load_data()) == ['Entrance', 'Boss',
-                                                        'Cave', 'Armory',
-                                                        'Gold']
+                                                                   'Cave', 'Armory',
+                                                                   'Gold']
     is_a(map_graph.convert_dict_nodes(map_graph.load_data()), list)
 
 
 def test_check_data():
     """Test Check Data"""
-    assert map_graph.check_data(map_graph.load_data()) == True
-    assert map_graph.check_data("string") == False
+    assert map_graph.check_data(map_graph.load_data()) is True
+    assert map_graph.check_data("string") is False
     is_a(map_graph.check_data(map_graph.load_data()), bool)
 
 
@@ -79,5 +81,5 @@ def testgenerate_map():
     """Test Generate Map"""
     assert map_graph.generate_map("", "") is None
     is_a(map_graph.generate_map(map_graph.convert_dict_nodes(map_graph.load_data()),
-                           map_graph.convert_dict_edges(map_graph.load_data())), 
-                           nx.classes.graph.Graph)
+                                map_graph.convert_dict_edges(map_graph.load_data())),
+         nx.classes.graph.Graph)
