@@ -2,7 +2,6 @@
 """Generates map from yaml data
 """
 
-from pprint import pprint
 import networkx as nx
 import yaml
 import matplotlib.pyplot as plt
@@ -73,7 +72,6 @@ def check_data(data):
 def main():
     """Runnable main of map_generator, requires correctly formatted yaml file,
     returns"""
-    data = load_data()
     # print("loaded this data: ")
     # pprint(data)
     # print(convert_dict_nodes())
