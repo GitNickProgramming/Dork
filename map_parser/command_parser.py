@@ -1,17 +1,31 @@
-import dork.types
-"""
+""" Requires types for Player instance, thanks lint
 Python Command parser using dictionaries and Function References
 https://www.w3schools.com/python/python_dictionaries.asp -- dictionaries info
 https://www.python-course.eu/passing_arguments.php -- info on method reference
-https://www.w3schools.com/python/ref_keyword_in.asp -- info on keyword `in'
-This code will be heavily commented for descriptive learning purposes.
-DO NOT DO THIS in production code. You will be shamed.
+https://www.w3schools.com/python/ref_keyword_in.aspThis code will be heavily
+commented for descriptive learning purposes.DO NOT DO THIS in production code.
+You will be shamed."""
+import dork.types
 
-private methods:
-if a function/method starts with a `_' it is considered private by python.
-There no need to document private methods as they tend to change frequently
-"""
+
+def get_hello_world():
+    """Made because of lint liking getters/setters """
+    return _hello_world()
+
+
+def get_goodbye_world():
+    """Made because of lint liking getters/setters """
+    return _goodbye_world()
+
+
+
+def get_show_help():
+    """Made because of lint liking getters/setters """
+    return _show_help()
+
+
 def create_player():
+    """Really lint? it's what is says on the tin! """
     player = dork.types.Player()
     return player
 
@@ -51,12 +65,12 @@ def evaluate(command):
         "help": {"say": _show_help},
     }
 
-    for word in words_in_command:
-        if word in main_menu:
-            sub_menu = main_menu[word]
-            for word in words_in_command:
-                if word in sub_menu:
-                    function = sub_menu[word]
+    for verb in words_in_command:
+        if verb in main_menu:
+            sub_menu = main_menu[verb]
+            for subject in words_in_command:
+                if subject in sub_menu:
+                    function = sub_menu[subject]
                     return function()
 
     return "Unknown Command", False
