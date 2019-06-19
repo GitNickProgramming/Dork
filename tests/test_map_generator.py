@@ -16,7 +16,7 @@ def test_map_generator_exists():
 def test_file_path():
     """Test File Path"""
     assert os.path.isfile('jabba') is False
-    assert os.path.isfile('./map_parser/yaml/dork.yml') is True
+    assert os.path.isfile("./dork/dork.yml") is True
 
 
 def test_cardinals():
