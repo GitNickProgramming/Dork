@@ -83,5 +83,5 @@ def main():
     return generate_map()
 
 
-if __name__ == "__main__": # 83, 87, 80->83, 86->87
+if __name__ == "__main__":
     main()
