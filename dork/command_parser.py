@@ -18,7 +18,6 @@ def get_goodbye_world():
     return _goodbye_world()
 
 
-
 def get_show_help():
     """Made because of lint liking getters/setters """
     return _show_help()
@@ -28,6 +27,7 @@ def create_player():
     """Really lint? it's what is says on the tin! """
     player = dork.types.Player()
     return player
+
 
 def _hello_world():
     # return tuple of two values. the second is the repl termination condition
