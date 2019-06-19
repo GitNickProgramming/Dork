@@ -1,15 +1,11 @@
-
-
 # -*- coding: utf-8 -*-
 """Test_Dork_Command_Parser I have to describe
+
  that this tests parser for lint """
 
 
 import map_parser.command_parser as _mp
-
-
 import dork.types as _tp
-
 import tests.daves_mock
 
 
@@ -42,6 +38,7 @@ def test_evaluate_hello():
     """Testing the eval function of Repl """
     assert _mp.evaluate("say hello")[0] == "hello, world!", """Hello world"
     evalutation failed"""
+
 
 def test_evaluate_empty():
     """Testing the eval function of Repl """
