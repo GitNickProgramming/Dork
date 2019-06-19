@@ -84,3 +84,23 @@ def test_generate_map():
 def test_mains_return():
     """Test Mains return"""
     is_a(map_graph.main(), nx.classes.graph.Graph)
+
+
+def test_check_data_fails():
+    """Test check_data method"""
+    data = {"Hallsways" : "NotRooms"}
+    assert map_graph.check_data(data) is False
+    data = {"Rooms" : 666}
+    assert map_graph.check_data(data) is False
+
+
+def test_check_data_conditional_main():
+    """Test check_data method"""
+    assert map_graph.check_data(map_graph.load_data()) is True
+
+def test_main_variable_declaration():
+    """Test variable assignment in main"""
+    map_graph_test = map_graph.main()
+    assert map_graph_test is not None
+    assert map_graph_test != ""
+    is_a(map_graph_test, nx.classes.graph.Graph)
