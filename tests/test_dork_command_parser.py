@@ -119,7 +119,7 @@ def test_repl_running():
         """mock method for repl"""
         output.append(print_scrn)
         return input_values.pop(0)
- 
+
     _mp.input = mock_input
     _mp.print = output.append
     _mp.repl()
