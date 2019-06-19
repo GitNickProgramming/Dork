@@ -3,7 +3,6 @@
 """
 
 import os
-from types import FunctionType
 import networkx as nx
 import dork.map_generator as map_graph
 from tests.utils import is_a
@@ -108,6 +107,7 @@ def test_main_variable_declaration():
     assert map_graph_test is not None
     assert map_graph_test != ""
     is_a(map_graph_test, nx.classes.graph.Graph)
+
 
 def test_main_runnable(run):
     """Testing running main"""
