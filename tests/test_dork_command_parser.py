@@ -14,7 +14,7 @@ def test_hello_world():
 def test_goodbye_world():
     """Testing the goodbye function of parser """
     assert _mp.get_goodbye_world() == ("""goodbye, world!""", True),\
-         """Goodbye world method failed"""
+    """Goodbye world method failed"""
 
 
 def test_show_help():
@@ -33,19 +33,19 @@ def test_player_instance():
 def test_evaluate_hello():
     """Testing the eval function of Repl """
     assert _mp.evaluate("say hello") == ("hello, world!", False),\
-         """Hello world evalutation failed"""
+    """Hello world evalutation failed"""
 
 
 def test_evaluate_empty():
     """Testing the eval function of Repl """
     assert _mp.evaluate("") == ("Unknown Command", False),\
-         """Input Type Handling Error, empty string"""
+    """Input Type Handling Error, empty string"""
 
 
 def test_evaluate_other_type():
     """Testing the eval function of Repl """
     assert _mp.evaluate(None) == ("Unknown Command", False),\
-         """Input Mismatch, unable to handle"""
+    """Input Mismatch, unable to handle"""
 
 
 def test_evaluate_goodbye():
@@ -90,10 +90,11 @@ def test_repl():
     """Testing repl's existance """
     assert isinstance(_mp.repl, object), "Repl doesn't exist"
 
+
 def test_eval_verb_only():
     """Testing subject non-existant"""
     assert _mp.evaluate("say dog") == ("Unknown Command", False),\
-     "verb failed to process"
+    "verb failed to process"
 
 
 def test_eval_subject_only():
