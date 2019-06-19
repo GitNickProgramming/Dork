@@ -13,7 +13,7 @@ import yaml
 CARDINALS = ["north", "east", "south", "west"]
 
 
-def _load_data(file_name_and_path="./map_parser/yaml/dork.yml"):  # lookup default args
+def load_data(file_name_and_path="./map_parser/yaml/dork.yml"):  # lookup default args
     with open(file_name_and_path) as file:  # with keyword is a context manager
         data = yaml.safe_load(file.read())  # ./yaml/dork.yml is a valid file
 
@@ -40,7 +40,7 @@ def main():
     """Main point of entry.
     Loads data. Checks if it is valid. And Parses it.
     """
-    data = _load_data()
+    data = load_data()
     print("loaded this data: ")
     pprint(data)
 

@@ -15,7 +15,8 @@ edges = []
 nodes = []
 
 
-def _load_data(file_name_and_path="./map_parser/yaml/dork.yml"):
+def load_data(file_name_and_path="./map_parser/yaml/dork.yml"):
+    """Loads data from yaml file into data"""
     with open(file_name_and_path) as file:
         data = yaml.safe_load(file.read())
 
@@ -43,7 +44,8 @@ def convert_dict_nodes(data):
     return nodes
 
 
-def _generate_map(nodes, edges):
+def generate_map(nodes, edges):
+    """Returns a map from the nodes and edges lists"""
     if nodes and edges:
         nx.empty_graph()
         map_graph = nx.Graph()
@@ -54,7 +56,7 @@ def _generate_map(nodes, edges):
         return map_graph
 
 # def _check_path():
-#     data = _load_data()
+#     data = load_data()
 #     rooms = data["Rooms"]
 #     room = rooms[name]
 #     if direction not in room:
@@ -67,7 +69,8 @@ def _generate_map(nodes, edges):
 #         other = room[direction]
 #         print(f"{other} is {direction} of {name}")
 
-def _check_data(data):
+def check_data(data):
+    """Tests yaml file to see if it is a correct format"""
     print("\nChecking that 'data' contains a dictionary of rooms... \n")
     if "Rooms" not in data:
         print("No Rooms found.")
@@ -82,13 +85,13 @@ def _check_data(data):
 
 def main():
     """Runnable main of map_generator, requires correctly formatted yaml file, returns"""
-    data = _load_data()
+    data = load_data()
     print("loaded this data: ")
     pprint(data)
-    print(convert_dict_nodes(_load_data()))
+    print(convert_dict_nodes(load_data()))
 
-    if _check_data(_load_data()):
-        _generate_map(convert_dict_nodes(_load_data()), convert_dict_edges(_load_data()))
+    if check_data(load_data()):
+        generate_map(convert_dict_nodes(load_data()), convert_dict_edges(load_data()))
         # _check_path()
 
 

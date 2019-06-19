@@ -37,47 +37,47 @@ def test_edges():
 
 def test_functions_exist():
     """Test Functions exist"""
-    assert "_load_data" in vars(map_graph)
+    assert "load_data" in vars(map_graph)
     assert "convert_dict_edges" in vars(map_graph)
     assert "convert_dict_nodes" in vars(map_graph)
-    assert "_check_data" in vars(map_graph)
-    assert "_generate_map" in vars(map_graph)
+    assert "check_data" in vars(map_graph)
+    assert "generate_map" in vars(map_graph)
 
 
-def test_load_data():
+def testload_data():
     """Test Load Data"""
-    assert map_graph._load_data() is not None
-    assert map_graph._load_data() != ""
-    is_a(map_graph._load_data(), dict)
+    assert map_graph.load_data() is not None
+    assert map_graph.load_data() != ""
+    is_a(map_graph.load_data(), dict)
 
 
 def test_convert_dict_edges():
     """Test Convert Dictionary Edges"""
-    assert map_graph.convert_dict_edges(map_graph._load_data()) != None
-    assert map_graph.convert_dict_edges(map_graph._load_data()) != ""
-    is_a(map_graph.convert_dict_edges(map_graph._load_data()), list)
+    assert map_graph.convert_dict_edges(map_graph.load_data()) != None
+    assert map_graph.convert_dict_edges(map_graph.load_data()) != ""
+    is_a(map_graph.convert_dict_edges(map_graph.load_data()), list)
 
 
 def test_convert_dict_nodes():
     """Test Convert Dictionary Nodes"""
-    assert map_graph.convert_dict_nodes(map_graph._load_data()) is not None
-    assert map_graph.convert_dict_nodes(map_graph._load_data()) != ""
-    assert map_graph.convert_dict_nodes(map_graph._load_data()) == ['Entrance', 'Boss',
+    assert map_graph.convert_dict_nodes(map_graph.load_data()) is not None
+    assert map_graph.convert_dict_nodes(map_graph.load_data()) != ""
+    assert map_graph.convert_dict_nodes(map_graph.load_data()) == ['Entrance', 'Boss',
                                                         'Cave', 'Armory',
                                                         'Gold']
-    is_a(map_graph.convert_dict_nodes(map_graph._load_data()), list)
+    is_a(map_graph.convert_dict_nodes(map_graph.load_data()), list)
 
 
-def test__check_data():
+def test_check_data():
     """Test Check Data"""
-    assert map_graph._check_data(map_graph._load_data()) == True
-    assert map_graph._check_data("string") == False
-    is_a(map_graph._check_data(map_graph._load_data()), bool)
+    assert map_graph.check_data(map_graph.load_data()) == True
+    assert map_graph.check_data("string") == False
+    is_a(map_graph.check_data(map_graph.load_data()), bool)
 
 
-def test_generate_map():
+def testgenerate_map():
     """Test Generate Map"""
-    assert map_graph._generate_map("", "") is None
-    is_a(map_graph._generate_map(map_graph.convert_dict_nodes(map_graph._load_data()),
-                           map_graph.convert_dict_edges(map_graph._load_data())), 
+    assert map_graph.generate_map("", "") is None
+    is_a(map_graph.generate_map(map_graph.convert_dict_nodes(map_graph.load_data()),
+                           map_graph.convert_dict_edges(map_graph.load_data())), 
                            nx.classes.graph.Graph)
