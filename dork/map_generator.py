@@ -77,11 +77,11 @@ def main():
     # pprint(data)
     # print(convert_dict_nodes())
 
-    if check_data(load_data()):
-        map_graph = generate_map()
-        return map_graph
-    return map_graph
+    # if check_data(load_data()):
+    #     map_graph = generate_map()
+    #     return map_graph
+    return generate_map()
 
 
-if __name__ == "__main__":
+if __name__ == "__main__": # 83, 87, 80->83, 86->87
     main()
