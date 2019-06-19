@@ -49,9 +49,9 @@ def evaluate(command):
     for word in words_in_command:
         if word in main_menu:
             sub_menu = main_menu[word]
-            for word in words_in_command:
-                if word in sub_menu:
-                    function = sub_menu[word]
+            for wwoorrdd in words_in_command:
+                if wwoorrdd in sub_menu:
+                    function = sub_menu[wwoorrdd]
                     return function()
 
     return "Unknown Command", False

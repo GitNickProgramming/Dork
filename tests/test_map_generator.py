@@ -27,14 +27,14 @@ def test_cardinals():
 
 def test_nodes():
     """Test Nodes"""
-    assert map_graph.nodes is not None
-    is_a(map_graph.nodes, list)
+    assert map_graph.convert_dict_nodes() is not None
+    is_a(map_graph.convert_dict_nodes(), list)
 
 
 def test_edges():
     """Test Edges"""
-    assert map_graph.edges is not None
-    is_a(map_graph.edges, list)
+    assert map_graph.convert_dict_edges() is not None
+    is_a(map_graph.convert_dict_edges(), list)
 
 
 def test_functions_exist():
