@@ -64,9 +64,8 @@ def test_convert_dict_nodes():
     """Test Convert Dictionary Nodes"""
     assert map_graph.convert_dict_nodes(map_graph.load_data()) is not None
     assert map_graph.convert_dict_nodes(map_graph.load_data()) != ""
-    assert map_graph.convert_dict_nodes(map_graph.load_data()) == ['Entrance', 'Boss',
-                                                                   'Cave', 'Armory',
-                                                                   'Gold']
+    assert map_graph.convert_dict_nodes(map_graph.load_data()) == ['Entrance',
+                                                                   'Boss', 'Cave', 'Armory', 'Gold']
     is_a(map_graph.convert_dict_nodes(map_graph.load_data()), list)
 
 
@@ -80,6 +79,6 @@ def test_check_data():
 def testgenerate_map():
     """Test Generate Map"""
     assert map_graph.generate_map("", "") is None
-    is_a(map_graph.generate_map(map_graph.convert_dict_nodes(map_graph.load_data()),
-                                map_graph.convert_dict_edges(map_graph.load_data())),
-         nx.classes.graph.Graph)
+    is_a(map_graph.generate_map(map_graph.convert_dict_nodes(
+        map_graph.load_data()), map_graph.convert_dict_edges(
+            map_graph.load_data())), nx.classes.graph.Graph)
