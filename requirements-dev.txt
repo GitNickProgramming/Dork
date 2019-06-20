@@ -7,3 +7,6 @@ pytest
 pytest-runner
 Sphinx
 sphinxcontrib-napoleon
+pyyaml
+matplotlib
+networkx
