@@ -1,5 +1,9 @@
 from functools import partial
-import yaml_to_dict as parse
+import dork.yaml_to_dict as parse
+
+
+WORLD_MAP = parse.load("map")
+CMDS = parse.load("cmds")
 
 
 def _hello():
@@ -68,10 +72,3 @@ def repl():
         if should_exit:
             break
     print("ending repl...")
-
-
-# https://stackoverflow.com/questions/419163/what-does-if-name-main-do
-if __name__ == "__main__":
-    WORLD_MAP = parse.load("map")
-    CMDS = parse.load("cmds")
-    repl()

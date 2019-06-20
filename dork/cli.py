@@ -2,6 +2,8 @@
 """Basic CLI Dork.
 """
 
+import dork.repl as repl
+
 __all__ = ["main"]
 
 
@@ -13,3 +15,4 @@ def main(*args):
         print("usage:", script_name, "[-h]")
     else:
         print(*args)
+        repl.repl()
