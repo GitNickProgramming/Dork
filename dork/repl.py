@@ -1,31 +1,10 @@
 from functools import partial
-import dork.dork_utils.yaml_to_dict as parse
+# import dork.dork_utils.yaml_to_dict as parse
+import dork.dork_utils.repl_data as repl_data
 
 
-WORLD_MAP = parse.load("map")
-CMDS = parse.load("cmds")
-
-
-def _hello():
-    return "hello, world!", False
-
-
-def _bye():
-    return "goodbye, world!", True
-
-
-def _help():
-    return "try typing 'say hello'", False
-
-
-def _gtfo():
-    return "rude!", True
-
-
-def _move(cardinal):
-    if len(cardinal) == 1:
-        cardinal = {"n": "north", "s": "south", "e": "east", "w": "west"}[cardinal]
-    return f"You moved to the {cardinal}", False
+CMDS = repl_data.CMDS
+ARGS = repl_data.ARGS
 
 
 def read():
@@ -33,31 +12,26 @@ def read():
     return input("> ")
 
 
-def evaluate(cmd):
+def evaluate(command):
     """parse a command and run it"""
 
-    if " " in cmd:
-        verb, noun = cmd.split(" ", 1)
-        noun = noun.split()
+    if " " in command:
+        verb, noun = command.split(" ", 1)
+        
+        for word in noun.split():
+            if word in ARGS:
+                noun = word
+                break
+                
     else:
-        verb, noun = cmd, None
+        verb, noun = command, None
 
-    if verb in CMDS["cmds"]:
-        action = CMDS["cmds"][verb]
-        args = CMDS["args"]
+    if verb in CMDS:
+        action = CMDS[verb]
     else:
         return "unknown command", False
 
-    if noun:
-        for word in noun:
-            if word in action:
-                func_to_eval = eval(action[word])
-            elif word in args:
-                func_to_eval = partial(eval(action), word)
-            return func_to_eval()
-    else:
-        func_to_eval = eval(action)
-        return func_to_eval()
+    
 
 
 def repl():
