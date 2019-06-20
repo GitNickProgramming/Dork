@@ -1,5 +1,5 @@
 from functools import partial
-import dork.yaml_to_dict as parse
+import dork.dork_utils.yaml_to_dict as parse
 
 
 WORLD_MAP = parse.load("map")
