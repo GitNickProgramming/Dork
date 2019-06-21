@@ -1,3 +1,4 @@
+"""Data and commands for REPL"""
 from functools import partial
 # from dork.map_utils import map_generator
 # from dork import types
