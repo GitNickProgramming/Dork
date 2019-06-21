@@ -1,5 +1,5 @@
 """This is the REPL which runs the commands, and this is a lame docstring"""
-# import dork.dork_utils.yaml_to_dict as parse
+# import dork.yaml_parser as parse
 import dork.repl_utils.repl_data as repl_data
 
 
@@ -50,6 +50,7 @@ def repl():
     while True:
         command = read()
         output, should_exit = evaluate(command)
+        # INSTEAD OF PRINTING OUTPUT, THIS IS WHERE WE'LL ACTUALLY DO STUFF TO GAME OBJECTS
         print(output)
         if should_exit:
             break
