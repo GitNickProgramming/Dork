@@ -39,13 +39,6 @@ def _save_game():
 
 
 def _move(cardinal):
-    if len(cardinal) == 1:
-        cardinal = {
-            "n": "north",
-            "s": "south",
-            "e": "east",
-            "w": "west"
-        }[cardinal]
     return f"You moved to the {cardinal}", False
 
 
@@ -63,7 +56,7 @@ MOVES = {
 
 CMDS = {
     "load": {
-        "map": _load_game,
+        "map": _load_map,
         "game": _load_game
     },
     "save": _save_game,

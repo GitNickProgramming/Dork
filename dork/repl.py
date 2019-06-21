@@ -17,12 +17,11 @@ def evaluate(command):
     """parse a command and run it"""
 
     if " " in command:
-        verb, noun = command.split(" ", 1)
-        if isinstance(noun, list):
+        command = command.split(" ", 1)
+        noun, verb = command.pop().split(), command.pop()
+        if isinstance(noun, list) and len(noun) > 1:
             noun = set(noun) & (set(ARGS) | set(MOVES))
-            if len(noun) > 1:
-                return "Unknown command", False
-            noun = noun.pop()
+        noun = noun.pop()
         if noun not in (ARGS or MOVES):
             return "Unknown command", False
 
@@ -50,7 +49,6 @@ def repl():
     print("starting repl...")
     while True:
         command = read()
-        print(command)
         output, should_exit = evaluate(command)
         print(output)
         if should_exit:
