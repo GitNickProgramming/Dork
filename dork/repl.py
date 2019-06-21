@@ -50,7 +50,6 @@ def repl():
     while True:
         command = read()
         output, should_exit = evaluate(command)
-        # INSTEAD OF PRINTING OUTPUT, THIS IS WHERE WE'LL ACTUALLY DO STUFF TO GAME OBJECTS
         print(output)
         if should_exit:
             break

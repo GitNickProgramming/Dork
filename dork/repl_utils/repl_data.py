@@ -21,14 +21,14 @@ def _new_game():
 
 def _load_map():
     # Prompt user for file name
-        # We could get REALLY advanced with this later
+    # We could get REALLY advanced with this later
     # create an instance of Map using the data found in provided file
     return "Oops, you found a stub!", False
 
 
 def _load_game():
     # Warn player about unsaved data!
-        # if want to save, call _save_game from here
+    # if want to save, call _save_game from here
     # Prompt user for file name
     # Clear game state
     # Restart CLI
