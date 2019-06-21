@@ -67,6 +67,9 @@ CMDS = {
     "walk": MOVES,
     "travel": MOVES,
     "run": MOVES,
+    "cartwheel": MOVES,
+    "crabwalk": MOVES,
+    "crawl": MOVES
 }
 
 
