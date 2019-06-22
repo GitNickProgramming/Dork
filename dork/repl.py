@@ -4,7 +4,6 @@ import dork.repl_utils.repl_data as repl_data
 
 
 CMDS = repl_data.CMDS
-ARGS = repl_data.ARGS
 MOVES = repl_data.MOVES
 
 
@@ -15,30 +14,24 @@ def read():
 
 def evaluate(command):
     """parse a command and run it"""
-
-    if " " in command:
-        command = command.split(" ", 1)
-        noun, verb = command.pop().split(), command.pop()
-        if isinstance(noun, list) and len(noun) > 1:
-            noun = set(noun) & (set(ARGS) | set(MOVES))
-        noun = noun.pop()
-        if noun not in (ARGS or MOVES):
-            return "Unknown command", False
-
+    command = command.split()
+    if command:
+        if len(command) > 1:
+            noun, verb = command.pop(), command.pop()
+        else:
+            verb, noun = command.pop(), None
     else:
-        verb, noun = command, None
-
+        return "Huh? Can you speak up?", False
     if verb in CMDS:
         action = CMDS[verb]
     elif verb in MOVES:
         return MOVES[verb]()
     else:
         return "Unknown command", False
-
     if isinstance(action, dict):
-        if noun is not None:
+        if noun is not None and noun in action:
             return action[noun]()
-        return "I think you forgot something", False
+        return "Unknown command", False
     return action()
 
 

@@ -4,7 +4,7 @@ from functools import partial
 # import dork.types as dork_types
 
 
-__all__ = ["CMDS", "ARGS", "MOVES"]
+__all__ = ["CMDS", "MOVES"]
 
 
 # for testing purposes only, DO NOT SHIP WITH GAME
@@ -62,15 +62,11 @@ CMDS = {
     },
     "save": _save_game,
     "q": _gtfo,
+    "quit": _gtfo,
+    "exit": _gtfo,
     "go": MOVES,
     "move": MOVES,
     "walk": MOVES,
     "travel": MOVES,
     "run": MOVES
 }
-
-
-# this could get hairy
-ARGS = [
-    "n", "s", "e", "w", "north", "south", "east", "west", "game", "map"
-]
