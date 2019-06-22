@@ -1,11 +1,18 @@
 """This is the REPL which runs the commands, and this is a lame docstring"""
 # import dork.yaml_parser as parse
+# from functools import partial
 import dork.repl_utils.repl_data as repl_data
-from functools import partial
+import dork.types as dork_types
+
+
+__all__ = ["PLAYER", "WORLDMAP", "GAME"]
 
 
 CMDS = repl_data.CMDS
 MOVES = repl_data.MOVES
+PLAYER = dork_types.Player()
+WORLDMAP = dork_types.Map()
+GAME = (PLAYER, WORLDMAP)
 
 
 def read():

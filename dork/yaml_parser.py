@@ -1,11 +1,11 @@
 """Returns yaml data as a dict"""
-
 import yaml
+
 
 __all__ = ["load"]
 
 
-def load(file_name):
+def load(file_name="map"):
     """Loads yaml data from the given file_name"""
 
     file_path = f"./dork/yaml/{file_name}.yml"

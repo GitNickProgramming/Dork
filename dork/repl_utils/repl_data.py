@@ -2,6 +2,7 @@
 from functools import partial
 # from dork.map_utils import map_generator
 # import dork.types as dork_types
+import dork.repl as dork_
 
 
 __all__ = ["CMDS", "MOVES"]
@@ -40,7 +41,17 @@ def _save_game():
 
 
 def _move(cardinal):
-    return f"You moved to the {cardinal}", False
+    player = dork_.PLAYER
+    game_map = dork_.WORLDMAP
+    adjacent_room = player.current_room.adjacent[cardinal]
+    move_allowed = adjacent_room[1]
+    if move_allowed:
+        player.previous_room = player.current_room
+        player.current_room = game_map.rooms[adjacent_room[0]]
+        out = (player.current_room["description"], False)
+    else:
+        out = ("You cannot go that way", False)
+    return out
 
 
 MOVES = {

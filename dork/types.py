@@ -18,7 +18,7 @@ class Holder:
     """
 
     def __init__(self):
-        self.items = list()
+        self.items = dict()
 
 
 class Player(Holder):
@@ -27,21 +27,18 @@ class Player(Holder):
 
     def __init__(self):
         super(Player, self).__init__()
-        self.room = Room()
+        self.current_room = Room()
+        self.previous_room = None
 
 
 class Room(Holder):
     """A room on the map
-
-    Note: can only be entered through entraces
-        or exited through exits.
     """
 
     def __init__(self):
         super(Room, self).__init__()
         self.map = Map()
-        self.entrances = list()
-        self.exits = list()
+        self.adjacent = list()
         self.players = list()
 
 
@@ -60,4 +57,4 @@ class Map:
     """
 
     def __init__(self):
-        self.rooms = list()
+        self.rooms = dict()
