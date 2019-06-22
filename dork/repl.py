@@ -1,6 +1,7 @@
 """This is the REPL which runs the commands, and this is a lame docstring"""
 # import dork.yaml_parser as parse
 import dork.repl_utils.repl_data as repl_data
+from functools import partial
 
 
 CMDS = repl_data.CMDS
@@ -19,20 +20,28 @@ def evaluate(command):
         if len(command) > 1:
             noun, verb = command.pop(), command.pop()
         else:
-            verb, noun = command.pop(), None
+            noun, verb = None, command.pop()
     else:
-        return "Huh? Can you speak up?", False
+        return repl_error("?")
     if verb in CMDS:
         action = CMDS[verb]
     elif verb in MOVES:
-        return MOVES[verb]()
+        action = MOVES[verb]
     else:
-        return "Unknown command", False
+        return repl_error("u")
     if isinstance(action, dict):
         if noun is not None and noun in action:
             return action[noun]()
-        return "Unknown command", False
+        return repl_error("u")
     return action()
+
+
+def repl_error(arg):
+    """return various errors"""
+    return {
+        "u": ("Unknown command", False),
+        "?": ("Huh? Can you speak up?", False)
+    }[arg]
 
 
 def repl():
