@@ -1,6 +1,5 @@
 """Testing program for integration between command_parser and map_generator"""
 import networkx
-import dork.map_generator as _mp
 import dork.command_parser as _cp
 
 

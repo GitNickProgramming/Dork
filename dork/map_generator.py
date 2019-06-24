@@ -47,7 +47,7 @@ def generate_map():
     nodes = convert_dict_nodes()
     edges = convert_dict_edges()
     nx.empty_graph()
-    map_graph = nx.Graph()
+    map_graph = nx.DiGraph()
     map_graph.add_nodes_from(nodes)
     map_graph.add_edges_from(edges)
     nx.draw(map_graph, with_labels=True)
