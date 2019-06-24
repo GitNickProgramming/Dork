@@ -50,7 +50,7 @@ def generate_map():
     map_graph = nx.Graph()
     map_graph.add_nodes_from(nodes)
     map_graph.add_edges_from(edges)
-    # nx.draw(map_graph, with_labels=True)
+    nx.draw(map_graph, with_labels=True)
     plt.show()
     return map_graph
 

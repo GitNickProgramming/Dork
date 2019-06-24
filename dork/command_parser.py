@@ -6,7 +6,7 @@ https://www.w3schools.com/python/ref_keyword_in.aspThis code will be heavily
 commented for descriptive learning purposes.DO NOT DO THIS in production code.
 You will be shamed."""
 import dork.types
-
+import dork.map_generator
 
 def get_hello_world():
     """Made because of lint liking getters/setters """
@@ -46,7 +46,16 @@ def read():
     """Reads input from user.
     """
     return input("> ")
+def verify_map(dict):
+    """verifies if map is legal"""
+    return dork.map_generator.check_data(dict)
+def create_map():
+    """Makes graph of loaded map"""
+    return dork.map_generator.generate_map()
 
+def load_map():
+    """Loads map from specified yaml"""
+    return dork.map_generator.load_data()
 
 def evaluate(command):
     """Evaluates a command

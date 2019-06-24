@@ -3,6 +3,7 @@
 import dork.command_parser as _mp
 import dork.types as _tp
 import tests.daves_mock
+import unittest.mock
 
 
 def test_hello_world():
