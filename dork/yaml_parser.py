@@ -5,7 +5,7 @@ import yaml
 __all__ = ["load"]
 
 
-def load(file_name="map"):
+def load(file_name):
     """Loads yaml data from the given file_name"""
 
     file_path = f"./dork/yaml/{file_name}.yml"
