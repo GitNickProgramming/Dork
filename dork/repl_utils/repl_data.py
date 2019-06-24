@@ -1,8 +1,8 @@
 """Data and commands for REPL"""
 from functools import partial
-# from dork.map_utils import map_generator
 # import dork.types as dork_types
 import dork.repl as dork_
+import dork.map_utils.map_generator as map_gen
 
 
 __all__ = ["CMDS", "MOVES"]
@@ -22,6 +22,8 @@ def _new_game():
 
 def _load_map():
     # Prompt user for file name
+    file_name = str.casefold(input("Please input file name: "))
+    game_map = map_gen.generate_map(file_name)
     # We could get REALLY advanced with this later
     # create an instance of Map using the data found in provided file
     return "Oops, you found a stub!", False

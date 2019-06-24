@@ -12,9 +12,9 @@ __all__ = ["generate_map"]
 CARDINALS = ["north", "east", "south", "west"]
 
 
-def generate_map():
+def generate_map(file_name):
     """Returns a map from the nodes and edges lists"""
-    data = yml_parse.load("map")
+    data = yml_parse.load(file_name)
     nodes = _convert_dict_nodes(data)
     edges = _convert_dict_edges(data)
     nx.empty_graph()
