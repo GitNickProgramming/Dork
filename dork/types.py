@@ -2,7 +2,7 @@
 """Basic entity classes and methods for Dork.
 """
 
-__all__ = ["Item", "Holder", "Player", "Room", "Path", "Map"]
+__all__ = ["Item", "Holder", "Player", "Room", "Map"]
 
 
 class Item:
@@ -40,15 +40,6 @@ class Room(Holder):
         self.map = Map()
         self.adjacent = list()
         self.players = list()
-
-
-class Path:
-    """A path between two rooms (i.e. a door or hallway)
-    """
-
-    def __init__(self):
-        self.entrance = Room()
-        self.exit = Room()
 
 
 class Map:

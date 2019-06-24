@@ -4,12 +4,13 @@ from types import FunctionType
 import dork.cli
 
 
-def test_cli_exists(run):
-    """Dork.cli.main should always exist and run"""
+def test_cli_exists():
+    """Dork.cli.main should always exist and runs
+    """
     assert "main" in vars(dork.cli), "Dork.cli should define a main method"
     assert isinstance(dork.cli.main, FunctionType)
     try:
-        run(dork.cli.main)
+        run(dork.cli.main, input_side_effect=["help", "exit"])
     except:  # noqa: E722
         raise AssertionError("cannot run 'dork' command")
 
