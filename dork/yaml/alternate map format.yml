@@ -1,0 +1,45 @@
+Boss:
+    adjacent:
+        north: ["Gold", True]
+        south: ["Entrance", False]
+        east: ["Cave", False]
+        west: ["Armory", False]
+    description:
+    items:
+    clues:
+Entrance:
+    adjacent:
+        north: ["Boss", True]
+        south: [null, False]
+        east: ["Cave", True]
+        west: ["Armory", True]
+    description:
+    items:
+    clues:
+Armory:
+    adjacent:
+        north: ["Boss", True]
+        south: [null, False]
+        east: ["Entrance", True]
+        west: [null, False]
+    description:
+    items:
+    clues:
+Cave:
+    adjacent:
+        north: ["Boss", True]
+        south: [null, False]
+        east: [null, False]
+        west: ["Entrance", True]
+    description:
+    items:
+    clues:
+Gold:
+    adjacent:
+        north: [null, False]
+        south: ["Boss", True]
+        east: [null, False]
+        west: [null, False]
+    description:
+    items:
+    clues:
