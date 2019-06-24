@@ -8,6 +8,9 @@ import dork.map_utils.map_generator as map_gen
 __all__ = ["CMDS", "MOVES"]
 
 
+PLAYER, WORLDMAP = dork_.GAME
+
+
 # for testing purposes only, DO NOT SHIP WITH GAME
 def _gtfo():
     return "rude!", True
@@ -43,14 +46,12 @@ def _save_game():
 
 
 def _move(cardinal):
-    player = dork_.PLAYER
-    game_map = dork_.WORLDMAP
-    adjacent_room = player.current_room.adjacent[cardinal]
+    adjacent_room = PLAYER.current_room.adjacent[cardinal]
     move_allowed = adjacent_room[1]
     if move_allowed:
-        player.previous_room = player.current_room
-        player.current_room = game_map.rooms[adjacent_room[0]]
-        out = (player.current_room["description"], False)
+        PLAYER.previous_room = PLAYER.current_room
+        PLAYER.current_room = WORLDMAP.rooms[adjacent_room[0]]
+        out = (PLAYER.current_room["description"], False)
     else:
         out = ("You cannot go that way", False)
     return out

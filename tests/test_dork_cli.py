@@ -12,6 +12,6 @@ def test_cli_exists():
     assert isinstance(dork.cli.main, FunctionType)
 
 
-def test_cli_help(run):
-    """CLI's help command should return helpful information"""
-    whatever = run(dork.cli.main, input_side_effect=["-h"])
+# def test_cli_help(run):
+#     """CLI's help command should return helpful information"""
+#     whatever = run(dork.cli.main, input_side_effect=["-h"])

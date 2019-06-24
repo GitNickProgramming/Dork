@@ -5,7 +5,7 @@ import dork.repl_utils.repl_data as repl_data
 import dork.types as dork_types
 
 
-__all__ = ["PLAYER", "WORLDMAP", "GAME"]
+__all__ = ["GAME"]
 
 
 CMDS = repl_data.CMDS
