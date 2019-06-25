@@ -85,7 +85,7 @@ def _move(cardinal):
     # adjacent_room = player.current_room.adjacent[cardinal]
     # move_allowed = adjacent_room[1]
     # if move_allowed:
-    #     player.previous_room = player.current_room
+    #     previous_room = player.current_room
     #     player.current_room = worldmap.rooms[adjacent_room[0]]
     #     out = (player.current_room["description"], False)
     # else:

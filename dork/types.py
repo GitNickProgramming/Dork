@@ -39,10 +39,11 @@ class Player(Holder):
     """A player or NPC in the game
     """
 
-    def __init__(self):
+    def __init__(self, **kwargs):
         super(Player, self).__init__()
-        self.current_room = Room()
-        self.previous_room = None
+        self.current_room = kwargs["start"]
+        self.inventory = Holder()
+        self.equiped = None
 
 
 class Room(Holder):
