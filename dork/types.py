@@ -23,8 +23,9 @@ class Item:
     """A obtainable/holdable item
     """
 
-    def __init__(self):
+    def __init__(self, capacity=0):
         self.holder = Holder()
+        self.capacity = capacity
 
 
 class Holder:
@@ -43,19 +44,20 @@ class Player(Holder):
         super(Player, self).__init__()
         self.current_room = kwargs["start"]
         self.inventory = Holder()
-        self.equiped = None
+        self.equipped = None
 
 
 class Room(Holder):
     """A room on the map
     """
 
-    def __init__(self):
+    def __init__(self, **kwargs):
         super(Room, self).__init__()
-        self.map = Map()
-        self.adjacent = dict()
-        self.players = dict()
-        self.items = dict()
+        self.adjacent = kwargs["adjacent"]
+        self.players = kwargs["players"]
+        self.description = kwargs["description"]
+        self.items = kwargs["items"]
+        self.clues = kwargs["clues"]
 
 
 class Map:
