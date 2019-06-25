@@ -10,3 +10,4 @@ networkx
 Sphinx
 sphinxcontrib-napoleon
 pyyaml
+matplotlib
