@@ -11,5 +11,5 @@ def main(*args):
     if "-h" in args or '--help' in args:
         print("usage:", script_name, "[-h]")
     else:
-        print(*args)
+        # Print title screen
         repl.repl()

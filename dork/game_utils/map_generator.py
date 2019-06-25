@@ -3,7 +3,7 @@
 """
 import networkx as nx
 import matplotlib.pyplot as plt
-import dork.yaml_parser as yml_parse
+import dork.game_utils.yaml_parser as yml_parse
 
 
 __all__ = ["generate_map"]

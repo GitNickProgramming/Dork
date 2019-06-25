@@ -1,18 +1,11 @@
 """This is the REPL which runs the commands, and this is a lame docstring"""
-# import dork.yaml_parser as parse
-# from functools import partial
-import dork.repl_utils.repl_data as repl_data
-import dork.types as dork_types
+import dork.game_utils.game_data as game_data
 
 
-__all__ = ["GAME"]
-
-
-CMDS = repl_data.CMDS
-MOVES = repl_data.MOVES
-PLAYER = dork_types.Player()
-WORLDMAP = dork_types.Map()
-GAME = (PLAYER, WORLDMAP)
+CMDS = game_data.CMDS
+MOVES = game_data.MOVES
+ERRS = game_data.ERRS
+META = game_data.META
 
 
 def read():
@@ -29,26 +22,21 @@ def evaluate(command):
         else:
             noun, verb = None, command.pop()
     else:
-        return repl_error("?")
+        action = ERRS["?"]
+
+    # TODO: fix this nonsense
     if verb in CMDS:
         action = CMDS[verb]
     elif verb in MOVES:
         action = MOVES[verb]
     else:
-        return repl_error("u")
+        action = ERRS["u"]
+
     if isinstance(action, dict):
         if noun is not None and noun in action:
             return action[noun]()
-        return repl_error("u")
+        action = ERRS["u"]
     return action()
-
-
-def repl_error(arg):
-    """return various errors"""
-    return {
-        "u": ("Unknown command", False),
-        "?": ("Huh? Can you speak up?", False)
-    }[arg]
 
 
 def repl():
@@ -56,6 +44,9 @@ def repl():
     A common idea in terminal command programs
     """
     print("starting repl...")
+
+    # call game_data.META["init"]()
+
     while True:
         command = read()
         output, should_exit = evaluate(command)
