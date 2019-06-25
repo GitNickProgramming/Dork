@@ -5,6 +5,18 @@
 __all__ = ["Item", "Holder", "Player", "Room", "Map"]
 
 
+class Game:
+    """A container for holding a game state"""
+
+    def __init__(self, **kwargs):
+        if not kwargs:
+            self.player = Player()
+            self.worldmap = Map()
+        else:
+            self.player = kwargs["player"]
+            self.worldmap = kwargs["map"]
+
+
 class Item:
     """A obtainable/holdable item
     """

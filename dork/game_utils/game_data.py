@@ -10,18 +10,6 @@ __all__ = ["CMDS", "MOVES", "ERRS", "META"]
 GAME_STATE = None
 
 
-class Game:
-    """A container for holding a game state"""
-
-    def __init__(self, **kwargs):
-        if not kwargs:
-            self.player = dork_types.Player()
-            self.worldmap = dork_types.Map()
-        else:
-            self.player = kwargs["player"]
-            self.worldmap = kwargs["map"]
-
-
 def __initialize():
     # Check if save file is present in .\saves
     # If no save game present, game_instance = __new_game()
