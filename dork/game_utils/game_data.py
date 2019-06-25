@@ -121,12 +121,6 @@ CMDS = {
 }
 
 
-ERRS = {
-    "u": partial(__repl_error, "Sorry, I don't know that one."),
-    "?": partial(__repl_error, "Huh? Can you speak up?")
-}
-
-
 META = {
     ".init": __initialize,
     ".load": __load_game,
@@ -135,4 +129,10 @@ META = {
     ".save": __save_game,
     ".rq": __gtfo,
     ".z": __zork
+}
+
+
+ERRS = {
+    "u": partial(__repl_error, "Sorry, I don't know that one."),
+    "?": partial(__repl_error, "Huh? Can you speak up?")
 }

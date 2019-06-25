@@ -24,13 +24,7 @@ def evaluate(command):
     else:
         action = ERRS["?"]
 
-    # TODO: fix this nonsense
-    if verb in CMDS:
-        action = CMDS[verb]
-    elif verb in MOVES:
-        action = MOVES[verb]
-    else:
-        action = ERRS["u"]
+    action = CMDS.get(verb, MOVES.get(verb, META.get(verb, ERRS["u"])))
 
     if isinstance(action, dict):
         if noun is not None and noun in action:
