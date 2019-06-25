@@ -10,11 +10,13 @@ class Game:
 
     def __init__(self, **kwargs):
         if not kwargs:
-            self.player = Player()
-            self.worldmap = Map()
+            self.state = {
+                "player": Player(), "worldmap": Map()
+            }
         else:
-            self.player = kwargs["player"]
-            self.worldmap = kwargs["map"]
+            self.state = {
+                "player": kwargs["player"], "worldmap": kwargs["map"]
+            }
 
 
 class Item:
@@ -50,8 +52,9 @@ class Room(Holder):
     def __init__(self):
         super(Room, self).__init__()
         self.map = Map()
-        self.adjacent = list()
-        self.players = list()
+        self.adjacent = dict()
+        self.players = dict()
+        self.items = dict()
 
 
 class Map:
