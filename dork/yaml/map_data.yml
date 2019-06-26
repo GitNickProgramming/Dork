@@ -5,9 +5,15 @@ Boss:
         east: "Cave"
         west: "Armory"
     description: >
-        
-
-    items:
+        "You are in a dungeon surrounded by a thick fog. As the fog settles, you see a figure standing in the center of the room. 
+         They turn to face you, and a bright light shines down to reveal a horrifying beast.  It stands on its two hind legs and knashes its teeth. 
+         It's chained to a post in the center of the room, there is a door behind him.  
+         
+         You turn to go back from where you came from but the door locked behind you. 
+         
+         You must get to the door on the far side of the room, but the beast is sure to attack."
+         
+    items: #health #armor #weapons
     clues:
     npcs:
 Entrance:
@@ -48,11 +54,14 @@ Armory:
     description: >
         "You turn the knob, and are surprised when it opens with ease. The room is dimly lit by a fireplace on the far side, 
         revealing shelves and shelves of old books. Torn pages, covered with dust, are scattered about the room. 
-        The walls appear to have unidentifiable inscriptions on them.  As you get closer, you realize these inscriptions are written in blood.  
-        The light of the fire, also reveals something even more unsual; On the wall above the fireplace is a single dagger.  
+        The walls appear to have unidentifiable inscriptions on them.  
+        
+        As you get closer, you realize these inscriptions are written in blood.  
+        The light of the fire reveals something even more unsual; On the wall above the fireplace is a single dagger.  
         As you inspect the dagger, you find that the blade is etched with the words, 'Scrum Lord'. 
         
-        There is no way out besides the way you came in. Perhaps you can find something useful in this room."
+        Perhaps you can find something useful in this room. 
+        There is a simple door on the north side of the room, partially hidden by stacks of books."
     items: #dagger #book 
     clues:
     npcs:
@@ -84,6 +93,9 @@ Gold:
         east: null
         west: null
     description: >
-        "Feeling tired and depleted   "
-    items:
+        "Feeling tired and depleted you enter a small room filled with piles and piles of treasure, covered in a layer of dust. 
+         A scroll sits on top of a podium.  There is a large skylight, and the ambient light of the moon shines upon the gold and silver 
+         pieces.  It's quiet and restfull, and you see a latter leading to the surface. You are safe at last! You somehow managed to get out from
+         the horrifying underground world you strangely found yourself in. Maybe you are indeed the ultimate 'Scrum Lord'."
+    items: #gold #scroll #medals #health
     clues:
