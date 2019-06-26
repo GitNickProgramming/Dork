@@ -37,7 +37,7 @@ class REPL:
                 "y": True,
                 "n": False
             }.get(conf, None)
-            if not conf:
+            if conf is None:
                 print("That is not a valid response!")
             else:
                 break
