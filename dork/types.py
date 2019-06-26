@@ -2,21 +2,15 @@
 """Basic entity classes and methods for Dork.
 """
 
-__all__ = ["Item", "Holder", "Player", "Room", "Map"]
+__all__ = ["Item", "Holder", "Player", "Room", "WorldMap"]
 
 
 class Game:
     """A container for holding a game state"""
 
     def __init__(self, **kwargs):
-        if not kwargs:
-            self.state = {
-                "player": Player(), "worldmap": Map()
-            }
-        else:
-            self.state = {
-                "player": kwargs["player"], "worldmap": kwargs["map"]
-            }
+        self.player = kwargs.get("player", Player())
+        self.worldmap = kwargs.get("worldmap", WorldMap())
 
 
 class Item:
@@ -42,6 +36,7 @@ class Player(Holder):
 
     def __init__(self, **kwargs):
         super(Player, self).__init__()
+        self.name = kwargs["name"]
         self.current_room = kwargs["start"]
         self.inventory = Holder()
         self.equipped = None
@@ -54,13 +49,13 @@ class Room(Holder):
     def __init__(self, **kwargs):
         super(Room, self).__init__()
         self.adjacent = kwargs["adjacent"]
-        self.players = kwargs["players"]
         self.description = kwargs["description"]
+        self.npcs = kwargs["npcs"]
         self.items = kwargs["items"]
         self.clues = kwargs["clues"]
 
 
-class Map:
+class WorldMap:
     """A map relating the rooms connectivity
         as well as the players/items within
     """
