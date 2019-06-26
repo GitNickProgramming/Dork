@@ -4,7 +4,8 @@ Boss:
         south: "Entrance"
         east: "Cave"
         west: "Armory"
-    description: 
+    description: >
+        
     items:
     clues:
     npcs:
@@ -15,26 +16,25 @@ Entrance:
         east: "Cave"
         west: "Armory"
     description: >
-    "Darkness surrounds you.  Your head is throbbing. You hear a faint voice shouting, calling out for help, 
-     but you can't make out where it is coming from. 
-     Where are you?! What happened?! You struggle to get to your feet and crack one eye open to look around. 
+        "Darkness surrounds you.  Your head is throbbing. You hear a faint voice shouting, calling out for help, 
+        but you can't make out where it is coming from. 
+        Where are you?! What happened?! You struggle to get to your feet and crack one eye open to look around. 
      
-     The room you're in is spacious, bare with moss covered stone walls, dripping with crystal clear water. 
-     How did you get here?!  
-     You turn around to find a single door locked tightly behind you. 
-     Did someone lock you in here?! 
-     You'll need to find a way out. 
+        The room you're in is spacious, bare with moss covered stone walls, dripping with crystal clear water. 
+        How did you get here?!  
+        You turn around to find a single door locked tightly behind you. 
+        Did someone lock you in here?! 
+        You'll need to find a way out. 
 
-     There appears to be an access chamber, heading to a sewer to the east.  
-     To the west, a dim light seeps through the cracks of a large ornate door. 
+        There appears to be an access chamber, heading to a sewer to the east.  
+        To the west, a dim light seeps through the cracks of a large ornate door. 
 
-     To the north, there is a giant steel vault door... locked. 
+        To the north, there is a giant steel vault door... locked. 
 
-     Suddenly, you hear that same voice scream, followed by the sound of manic laughter. 
-     Then absolute silence. 
+        Suddenly, you hear that same voice scream, followed by the sound of manic laughter. 
+        Then absolute silence. 
      
-     Whatever that was, it was coming from behind the vault."     
-
+        Whatever that was, it was coming from behind the vault."     
     items:
     clues:
     npcs: 
@@ -71,8 +71,7 @@ Cave:
          You quickly find that you're trapped and gushing water starts to fill the cave. 
 
          As you struggle to find a way out, you realize the rock walls to the north, crumble with the faintest touch. 
-         You can break through the cave wall to the north, or you can fight the current and go west back to the ladder that leads to the first room. 
-
+         You can break through the cave wall to the north, or you can fight the current and go west back to the ladder that leads to the first room."
 
     items:
     clues:
@@ -83,6 +82,7 @@ Gold:
         south: "Boss"
         east: null
         west: null
-    description:
+    description: >
+        "Feeling tired and depleted  "
     items:
     clues:
