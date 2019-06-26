@@ -1,0 +1,61 @@
+rooms:
+  boss:
+		adjacent:
+			north: "gold"
+			south: "entrance"
+			east: "cave"
+			west: "armory"
+		description:
+    items:
+      sword: "+10 blade of slicing"
+		clues:
+		npcs:
+	entrance:
+		adjacent:
+			north: "boss"
+			south: null
+			east: "cave"
+			west: "armory"
+		description:
+		items:
+		clues:
+		npcs:
+	armory:
+		adjacent:
+			north: "boss"
+			south: null
+			east: "entrance"
+			west: null
+		description:
+		items:
+		clues:
+		npcs:
+	cave:
+		adjacent:
+			north: "boss"
+			south: null
+			east: null
+			west: "entrance"
+		description:
+		npcs:
+		items:
+		clues:
+	gold:
+		adjacent:
+			north: null
+			south: "boss"
+			east: null
+			west: null
+		description:
+		items:
+		clues:
+		npcs:
+		
+player:
+	name: null
+	location: start
+	inventory:
+		items:
+		holders:
+		equipped:
+	
