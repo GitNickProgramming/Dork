@@ -2,7 +2,7 @@
 """Generates map from yaml data
 """
 import networkx as nx
-import matplotlib.pyplot as plt
+# import matplotlib.pyplot as plt
 import dork.game_utils.yaml_parser as yml_parse
 
 
@@ -13,7 +13,7 @@ CARDINALS = ["north", "east", "south", "west"]
 
 
 def generate_map(file_name):
-    """Returns a map from the nodes and edges lists"""
+    """Returns a GRAPH from the nodes and edges lists"""
     data = yml_parse.load(file_name)
     nodes = _convert_dict_nodes(data)
     edges = _convert_dict_edges(data)
@@ -22,7 +22,7 @@ def generate_map(file_name):
     map_graph.add_nodes_from(nodes)
     map_graph.add_edges_from(edges)
     # nx.draw(map_graph, with_labels=True)
-    plt.show()
+    # plt.show()
     return map_graph
 
 
@@ -47,16 +47,20 @@ def _convert_dict_nodes(data):
     return nodes
 
 
-def _check_data(data):
-    """Tests yaml file to see if it is a correct format"""
-    print("\nChecking that 'data' contains a dictionary of rooms... \n")
-    if "Rooms" not in data:
-        print("No Rooms found.")
-        return False
+def _create_nodes(data):
+    pass
 
-    if not isinstance(data["Rooms"], dict):
-        print("Rooms in data was not proper data.")
-        return False
 
-    print("Rooms found with proper data.\n")
-    return True
+# def _check_data(data):
+#     """Tests yaml file to see if it is a correct format"""
+#     print("\nChecking that 'data' contains a dictionary of rooms... \n")
+#     if "Rooms" not in data:
+#         print("No Rooms found.")
+#         return False
+
+#     if not isinstance(data["Rooms"], dict):
+#         print("Rooms in data was not proper data.")
+#         return False
+
+#     print("Rooms found with proper data.\n")
+#     return True
