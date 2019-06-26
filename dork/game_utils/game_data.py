@@ -43,7 +43,7 @@ class REPL:
     def _new_game(self):
         if self._confirm():
             self._reset()
-        return "Starting a new game.", False
+        return "", False
 
     def _load_game(self):
         if self._confirm():
@@ -117,6 +117,6 @@ class REPL:
     }
 
     ERRS = {
-        "u": partial(_repl_error, "Sorry, I don't know that one."),
-        "?": partial(_repl_error, "Huh? Can you speak up?")
+        "u": partial(_repl_error, arg="Sorry, I don't know that one."),
+        "?": partial(_repl_error, arg="Huh? Can you speak up?")
     }
