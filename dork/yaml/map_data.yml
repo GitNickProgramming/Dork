@@ -6,6 +6,7 @@ Boss:
         west: "Armory"
     description: >
         
+
     items:
     clues:
     npcs:
@@ -46,7 +47,7 @@ Armory:
         west: null
     description: >
         "You turn the knob, and are surprised when it opens with ease. The room is dimly lit by a fireplace on the far side, 
-        revealing shelves and shelves of old books. Torn pages, covered with dust are scattered about the room. 
+        revealing shelves and shelves of old books. Torn pages, covered with dust, are scattered about the room. 
         The walls appear to have unidentifiable inscriptions on them.  As you get closer, you realize these inscriptions are written in blood.  
         The light of the fire, also reveals something even more unsual; On the wall above the fireplace is a single dagger.  
         As you inspect the dagger, you find that the blade is etched with the words, 'Scrum Lord'. 
@@ -83,6 +84,6 @@ Gold:
         east: null
         west: null
     description: >
-        "Feeling tired and depleted  "
+        "Feeling tired and depleted   "
     items:
     clues:
