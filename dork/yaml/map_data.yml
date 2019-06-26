@@ -15,22 +15,44 @@ Entrance:
         east: "Cave"
         west: "Armory"
     description: >
-    "Darkness surrounds you.  
-     Your head is throbbing and you feel like you have just survived a terrible fall.
-     What happened?!... 
-     You hear footsteps.  
-     Faint at first, then louder. Something taps you on the shoulder. "
+    "Darkness surrounds you.  Your head is throbbing. You hear a faint voice shouting, calling out for help, 
+     but you can't make out where it is coming from. 
+     Where are you?! What happened?! You struggle to get to your feet and crack one eye open to look around. 
+     
+     The room you're in is spacious, bare with moss covered stone walls, dripping with crystal clear water. 
+     How did you get here?!  
+     You turn around to find a single door locked tightly behind you. 
+     Did someone lock you in here?! 
+     You'll need to find a way out. 
+
+     There appears to be an access chamber, heading to a sewer to the east.  
+     To the west, a dim light seeps through the cracks of a large ornate door. 
+
+     To the north, there is a giant steel vault door... locked. 
+
+     Suddenly, you hear that same voice scream, followed by the sound of manic laughter. 
+     Then absolute silence. 
+     
+     Whatever that was, it was coming from behind the vault."     
+
     items:
     clues:
-    npcs:
+    npcs: 
 Armory:
     adjacent:
         north: "Boss"
         south: null
         east: "Entrance"
         west: null
-    description:
-    items:
+    description: >
+        "You turn the knob, and are surprised when it opens with ease. The room is dimly lit by a fireplace on the far side, 
+        revealing shelves and shelves of old books. Torn pages, covered with dust are scattered about the room. 
+        The walls appear to have unidentifiable inscriptions on them.  As you get closer, you realize these inscriptions are written in blood.  
+        The light of the fire, also reveals something even more unsual; On the wall above the fireplace is a single dagger.  
+        As you inspect the dagger, you find that the blade is etched with the word 'Scrum Lord'. 
+        
+        There is no way out besides the way you came in. Perhaps you can find something useful in this room."
+    items: #dagger #book 
     clues:
     npcs:
 Cave:
@@ -39,7 +61,13 @@ Cave:
         south: null
         east: null
         west: "Entrance"
-    description:
+    description: >
+        "You slide the heavy circular grate cover over just enough to get your body through the chamber.  
+         You make your way down a ladder until you step on the rough ground below. You are in a cave, with rock walls surrounding you. 
+         You hear running water, possibly coming from up above. The cave you find yourself in continues to get smaller and smaller until 
+        you have to crawl to avoid hitting your head. You continue to feel your way through a small passageway.
+        
+        The sound of running water thickens  "
     items:
     clues:
     npcs:
