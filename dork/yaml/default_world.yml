@@ -6,10 +6,10 @@ rooms:
             east:
             west:
         description: you da boss!
+        players:
         items:
             sword: +10 blade of slicing
         clues:
-        players:
     entrance:
         adjacent:
             north: boss
@@ -17,10 +17,10 @@ rooms:
             east: cave
             west: armory
         description: how'd you get in here?
+        players:
         items:
           waffle: -15 waffle of sogginess
         clues:
-        players:
     armory:
         adjacent:
             north: boss
@@ -28,9 +28,9 @@ rooms:
             east: entrance
             west: 
         description: weapons all around!
+        players:
         items:
         clues:
-        players:
     cave:
         adjacent:
             north: boss
@@ -48,16 +48,33 @@ rooms:
             east: 
             west: 
         description: I love gooooooold
+        players:
         items:
           gold: 1000
         clues:
-        players:
     
-player character:
-    name:
-    location: entrance
-    inventory:
-        items:
-        holders:
-        equipped:
-    
+players:
+    hero:
+        name:
+        location: entrance
+        inventory:
+            items:
+            holders:
+            equipped:
+    troll:
+        name: grorg
+        location: boss
+        inventory:
+            items:
+                weapon: mammoth bone hammer
+                gold: 356
+            holders:
+                knap sack:
+            equipped: mammoth bone hammer
+    ghost:
+        location: gold
+        inventory:
+            items:
+            holders:
+            equipped:
+

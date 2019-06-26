@@ -6,9 +6,7 @@ pylint
 pytest
 pytest-runner
 pytest-mock
-networkx
 Sphinx
 sphinxcontrib-napoleon
 pyyaml
-matplotlib
 autopep8
