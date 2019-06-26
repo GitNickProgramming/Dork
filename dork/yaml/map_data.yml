@@ -1,0 +1,54 @@
+Boss:
+    adjacent:
+        north: "Gold"
+        south: "Entrance"
+        east: "Cave"
+        west: "Armory"
+    description: 
+    items:
+    clues:
+    npcs:
+Entrance:
+    adjacent:
+        north: "Boss"
+        south: null
+        east: "Cave"
+        west: "Armory"
+    description: >
+    "Darkness surrounds you.  
+     Your head is throbbing and you feel like you have just survived a terrible fall.
+     What happened?!... 
+     You hear footsteps.  
+     Faint at first, then louder. Something taps you on the shoulder. "
+    items:
+    clues:
+    npcs:
+Armory:
+    adjacent:
+        north: "Boss"
+        south: null
+        east: "Entrance"
+        west: null
+    description:
+    items:
+    clues:
+    npcs:
+Cave:
+    adjacent:
+        north: "Boss"
+        south: null
+        east: null
+        west: "Entrance"
+    description:
+    items:
+    clues:
+    npcs:
+Gold:
+    adjacent:
+        north: null
+        south: "Boss"
+        east: null
+        west: null
+    description:
+    items:
+    clues:
