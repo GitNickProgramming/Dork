@@ -4,10 +4,11 @@ import dork.game_utils.game_data as game_data
 
 
 REPL_INSTANCE = game_data.REPL()
-CMDS = REPL_INSTANCE.CMDS
-MOVES = REPL_INSTANCE.MOVES
-ERRS = REPL_INSTANCE.ERRS
-META = REPL_INSTANCE.META
+TITLE = game_data.TITLE
+CMDS = game_data.CMDS
+MOVES = game_data.MOVES
+ERRS = game_data.ERRS
+META = game_data.META
 
 
 def read():
@@ -20,19 +21,24 @@ def evaluate(cmd):
     cmd = cmd.split()
     if cmd:
         noun, verb = cmd.pop() if len(cmd) > 1 else None, cmd.pop()
-        action = CMDS.get(verb, MOVES.get(verb, META.get(verb, ERRS["u"])))
+        instruction = CMDS.get(verb, MOVES.get(verb, META.get(verb, ERRS["u"])))
+        if isinstance(instruction, dict):
+            instruction = instruction.get(noun, ERRS["u"])
     else:
-        action = ERRS["?"]
+        instruction = ERRS["?"]
 
-    if isinstance(action, dict):
-        return action.get(noun, ERRS["u"])()
-    return action() if not noun else action(noun)
+    method = instruction[0]
+    arg = instruction[1] if len(instruction) > 1 else None
+
+    if not arg:
+        return getattr(REPL_INSTANCE, method)()
+    return getattr(REPL_INSTANCE, method)(arg)
 
 
 def repl():
     """Read eval print loop
     """
-    print("starting repl...")
+    print(f"\n\nGreetings, {REPL_INSTANCE.name}! " + TITLE + "\n\n")
     while True:
         output, should_exit = evaluate(read())
         print(output)

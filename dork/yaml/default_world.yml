@@ -5,7 +5,7 @@ rooms:
             south: entrance
             east: cave
             west: armory
-        description:
+        description: you da boss!
         items:
             sword: +10 blade of slicing
         clues:
@@ -16,7 +16,7 @@ rooms:
             south: 
             east: cave
             west: armory
-        description:
+        description: how'd you get in here?
         items:
           waffle: -15 waffle of sogginess
         clues:
@@ -27,7 +27,7 @@ rooms:
             south: 
             east: entrance
             west: 
-        description:
+        description: weapons all around!
         items:
         clues:
         npcs:
@@ -37,7 +37,7 @@ rooms:
             south: 
             east: 
             west: entrance
-        description:
+        description: this place dank af, yo
         npcs:
         items:
         clues:
@@ -47,7 +47,7 @@ rooms:
             south: boss
             east: 
             west: 
-        description:
+        description: I love gooooooold
         items:
           gold: 1000
         clues:

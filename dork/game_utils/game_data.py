@@ -1,7 +1,9 @@
 """Data and commands for REPL"""
-from functools import partial
 import dork.game_utils.world_loader as world_loader
 # import dork.game_utils.world_writer as world_writer
+
+
+__all__ = ["CMDS", "MOVES", "ERRS", "META", "TITLE"]
 
 
 class REPL:
@@ -11,6 +13,7 @@ class REPL:
         self._reset()
     def _reset(self, new_game=True):
         self._game = world_loader.main(new_game)
+        self.name = self._game.player.name
 
     @staticmethod
     def _gtfo():
@@ -50,6 +53,36 @@ class REPL:
             self._reset(new_game=False)
         return "", False
 
+    def _move(self, cardinal):
+        worldmap = self._game.worldmap
+        player = self._game.player
+        current_room = player.current_room
+        adjacent_room = current_room.adjacent.get(cardinal, None)
+        if not adjacent_room:
+            out = f"You cannot go {cardinal} from here."
+        else:
+            player.current_room = worldmap.rooms[adjacent_room]
+            print(f"You have entered {player.current_room.name}")
+            print(player.current_room.description)
+            out = f""
+        return out, False
+
+
+TITLE = r"""Welcome to...
+
+__/\\\\\\\\\\\\__________/\\\\\_________/\\\\\\\\\______/\\\________/\\\_
+ _\/\\\////////\\\______/\\\///\\\_____/\\\///////\\\___\/\\\_____/\\\//__
+  _\/\\\______\//\\\___/\\\/__\///\\\__\/\\\_____\/\\\___\/\\\__/\\\//_____
+   _\/\\\_______\/\\\__/\\\______\//\\\_\/\\\\\\\\\\\/____\/\\\\\\//\\\_____
+    _\/\\\_______\/\\\_\/\\\_______\/\\\_\/\\\//////\\\____\/\\\//_\//\\\____
+     _\/\\\_______\/\\\_\//\\\______/\\\__\/\\\____\//\\\___\/\\\____\//\\\___
+      _\/\\\_______/\\\___\///\\\__/\\\____\/\\\_____\//\\\__\/\\\_____\//\\\__
+       _\/\\\\\\\\\\\\/______\///\\\\\/_____\/\\\______\//\\\_\/\\\______\//\\\_
+        _\////////////__________\/////_______\///________\///__\///________\///__
+
+...A game of mystery and intrigue, but most importantly, memes!
+"""
+
     # def _save_game(self):
     #     world_writer(self.game)
     #     return "Save successful!", False
@@ -67,56 +100,47 @@ class REPL:
     # def _use_item(self, item):
     #     return "You used the thing! It's super effective!", False
 
-    def _move(self, cardinal):
-        worldmap = self._game.worldmap.rooms
-        player = self._game.player
-        current_room = player.current_room
-        adjacent_room = current_room.adjacent
-        if not adjacent_room:
-            out = f"You cannot go {cardinal} from here."
-        else:
-            player.current_room = worldmap[current_room.adjacent[cardinal]]
-            print(player.current_room.description)
-            out = f"You moved to the {cardinal}! Good job!"
-        return out, False
 
-    MOVES = {
-        "n": partial(_move, cardinal="north"),
-        "s": partial(_move, cardinal="south"),
-        "e": partial(_move, cardinal="east"),
-        "w": partial(_move, cardinal="west"),
-        "north": partial(_move, cardinal="north"),
-        "south": partial(_move, cardinal="south"),
-        "east": partial(_move, cardinal="east"),
-        "west": partial(_move, cardinal="west")
-    }
+MOVES = {
+    "n": ["_move", "north"],
+    "s": ["_move", "south"],
+    "e": ["_move", "east"],
+    "w": ["_move", "west"],
+    "north": ["_move", "north"],
+    "south": ["_move", "south"],
+    "east": ["_move", "east"],
+    "west": ["_move", "west"]
+}
 
-    CMDS = {
-        "go": MOVES,
-        "move": MOVES,
-        "walk": MOVES,
-        "travel": MOVES,
-        "run": MOVES,
-        # "i": _inventory,
-        # "inv": _inventory,
-        # "inventory": _inventory,
-        # "grab": _take,
-        # "take": _take,
-        # "add": _take,
-        # "use": _use_item,
-        # "activate": _use_item,
-        # "drop": _drop_item
-    }
 
-    META = {
-        ".new": _new_game,
-        ".load": _load_game,
-        # ".save": _save_game,
-        ".rq": _gtfo,
-        ".z": _zork
-    }
+CMDS = {
+    "go": MOVES,
+    "move": MOVES,
+    "walk": MOVES,
+    "travel": MOVES,
+    "run": MOVES,
+    # "i": _inventory,
+    # "inv": _inventory,
+    # "inventory": _inventory,
+    # "grab": _take,
+    # "take": _take,
+    # "add": _take,
+    # "use": _use_item,
+    # "activate": _use_item,
+    # "drop": _drop_item
+}
 
-    ERRS = {
-        "u": partial(_repl_error, arg="Sorry, I don't know that one."),
-        "?": partial(_repl_error, arg="Huh? Can you speak up?")
-    }
+
+META = {
+    ".new": ["_new_game"],
+    ".load": ["_load_game"],
+    # ".save":[" _save_game"],
+    ".rq": ["_gtfo"],
+    ".z": ["_zork"]
+}
+
+
+ERRS = {
+    "u": ["_repl_error", "Sorry, I don't know that one."],
+    "?": ["_repl_error", "Huh? Can you speak up?"]
+}

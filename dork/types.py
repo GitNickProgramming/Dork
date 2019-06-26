@@ -48,6 +48,7 @@ class Room(Holder):
 
     def __init__(self, **kwargs):
         super(Room, self).__init__()
+        self.name = kwargs["name"]
         self.adjacent = kwargs["adjacent"]
         self.description = kwargs["description"]
         self.npcs = kwargs["npcs"]
