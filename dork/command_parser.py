@@ -49,9 +49,9 @@ def read():
     return input("> ")
 
 
-def verify_map(dict):
+def verify_map(dic):
     """verifies if map is legal"""
-    return dork.map_generator.check_data(dict)
+    return dork.map_generator.check_data(dic)
 
 
 def create_map():

@@ -82,7 +82,7 @@ def test_read_escape_char():
         inp.side_effect = '\n'
         result = _mp.read()
         assert '\n' in result, "Unable to read special characters"
-    
+
 
 def test_repl():
     """Testing repl's existance """

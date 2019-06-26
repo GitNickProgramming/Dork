@@ -8,6 +8,7 @@ def test_map_gen_returns_graph():
     assert isinstance(_cp.create_map(), networkx.Graph), \
         "Command Parser failed to create Graph type"
 
+
 def test_load_map_returns_dict():
     """load map should create dict of yaml"""
     assert isinstance(_cp.load_map(), dict),\
