@@ -1,0 +1,4 @@
+save_game_data:
+  Message: "Saving game data"
+  player_location: "current location"
+  player_name: "name"
