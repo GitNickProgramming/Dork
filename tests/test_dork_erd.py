@@ -67,4 +67,4 @@ def test_room_has_many_players():
 def test_map_has_many_rooms():
     """A Map should have many Rooms
     """
-    has_many(dork.types.Map, "map", dork.types.Room, "rooms")
+    has_many(dork.types.Worldmap, "Worldmap", dork.types.Room, "rooms")

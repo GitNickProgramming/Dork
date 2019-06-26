@@ -34,10 +34,10 @@ class Player(Holder):
     """A player or NPC in the game
     """
 
-    def __init__(self, **kwargs):
+    def __init__(self, name, start):
         super(Player, self).__init__()
-        self.name = kwargs["name"]
-        self.current_room = kwargs["start"]
+        self.name = name
+        self.current_room = start
         self.inventory = Holder()
         self.equipped = None
 
