@@ -2,14 +2,14 @@ rooms:
     boss:
         adjacent:
             north: gold
-            south: entrance
-            east: cave
-            west: armory
+            south:
+            east:
+            west:
         description: you da boss!
         items:
             sword: +10 blade of slicing
         clues:
-        npcs:
+        players:
     entrance:
         adjacent:
             north: boss
@@ -20,7 +20,7 @@ rooms:
         items:
           waffle: -15 waffle of sogginess
         clues:
-        npcs:
+        players:
     armory:
         adjacent:
             north: boss
@@ -30,7 +30,7 @@ rooms:
         description: weapons all around!
         items:
         clues:
-        npcs:
+        players:
     cave:
         adjacent:
             north: boss
@@ -38,7 +38,7 @@ rooms:
             east: 
             west: entrance
         description: this place dank af, yo
-        npcs:
+        players:
         items:
         clues:
     gold:
@@ -51,14 +51,12 @@ rooms:
         items:
           gold: 1000
         clues:
-        npcs:
+        players:
     
-player:
-    name:
+player character:
+    name: bingo bob
     location: entrance
     inventory:
         items:
-          gold: 243
-          sword: +10 dagger of dagging
         holders:
         equipped:

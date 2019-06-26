@@ -63,8 +63,7 @@ class REPL:
         else:
             player.current_room = worldmap.rooms[adjacent_room]
             print(f"You have entered {player.current_room.name}")
-            print(player.current_room.description)
-            out = f""
+            out = player.current_room.description
         return out, False
 
     # def _save_game(self):
@@ -97,8 +96,7 @@ __/\\\\\\\\\\\\__________/\\\\\_________/\\\\\\\\\______/\\\________/\\\_
        _\/\\\\\\\\\\\\/______\///\\\\\/_____\/\\\______\//\\\_\/\\\______\//\\\_
         _\////////////__________\/////_______\///________\///__\///________\///__
 
-...A game of mystery and intrigue, but most importantly, memes!
-"""
+...A game of mystery and intrigue, but most importantly, memes!"""
 
 
 MOVES = {

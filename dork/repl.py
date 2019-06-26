@@ -43,7 +43,7 @@ def repl():
         output, should_exit = evaluate(
             cmd=read(), repl_instance=repl_instance, repl_data=repl_data
         )
-        print(output)
+        print(output + "\n")
         if should_exit:
             break
     print("ending repl...")

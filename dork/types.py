@@ -46,14 +46,14 @@ class Room(Holder):
     """A room on the map
     """
 
-    def __init__(self, **kwargs):
+    def __init__(self, room):
         super(Room, self).__init__()
-        self.name = kwargs["name"]
-        self.adjacent = kwargs["adjacent"]
-        self.description = kwargs["description"]
-        self.npcs = kwargs["npcs"]
-        self.items = kwargs["items"]
-        self.clues = kwargs["clues"]
+        self.name = room.get("name", None)
+        self.adjacent = room.get("adjacent", None)
+        self.description = room.get("description", None)
+        self.players = room.get("players", None)
+        self.items = room.get("items", None)
+        self.clues = room.get("clues", None)
 
 
 class Worldmap:
