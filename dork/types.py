@@ -8,9 +8,9 @@ __all__ = ["Item", "Holder", "Player", "Room", "WorldMap"]
 class Game:
     """A container for holding a game state"""
 
-    def __init__(self, **kwargs):
-        self.player = kwargs.get("player", None)
-        self.worldmap = kwargs.get("worldmap", None)
+    def __init__(self, player, worldmap):
+        self.player = player
+        self.worldmap = worldmap
 
 
 class Item:
