@@ -59,7 +59,7 @@ def _get_file(save_files):
     print("Which save game would you like to load?")
     for save in save_files:
         print(save)
-    game_to_load = input("> ")
+    game_to_load = input("> ") + ".yml"
     if game_to_load in save_files:
         file_to_load = "./dork/saves/" + game_to_load
         out = file_to_load, True
