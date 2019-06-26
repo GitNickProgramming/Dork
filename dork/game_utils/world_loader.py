@@ -61,7 +61,7 @@ def _get_file(save_files):
         print(save)
     game_to_load = input("> ")
     if game_to_load + ".yml" in save_files:
-        file_to_load = "/saves/" + game_to_load
+        file_to_load = "saves/" + game_to_load
         out = file_to_load, True
     else:
         out = "", False
