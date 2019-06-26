@@ -11,9 +11,9 @@ __all__ = ["main"]
 
 def _create_game(file_name="yaml/default_world"):
     data = yml_parse.load(file_name)
-    game = dork_types.Game()
-    game.worldmap = _create_worldmap(data["rooms"])
-    game.player = _create_player(data)
+    new_worldmap = _create_worldmap(data["rooms"])
+    new_player = _create_player(data)
+    game = dork_types.Game(player=new_player, worldmap=new_worldmap)
     if not game.player.name:
         game.player.name = input("What's your name, stranger?\n")
     return game
@@ -22,12 +22,13 @@ def _create_game(file_name="yaml/default_world"):
 def _create_worldmap(data):
     worldmap = {}
     for room in data:
+        this_room = data[room]
         new_room = dork_types.Room(
-            adjacent=room["adjacent"],
-            description=room["description"],
-            npcs=room["npcs"],
-            items=room["items"],
-            clues=room["clues"]
+            adjacent=this_room["adjacent"],
+            description=this_room["description"],
+            npcs=this_room["npcs"],
+            items=this_room["items"],
+            clues=this_room["clues"]
         )
         worldmap[room] = new_room
     return worldmap
@@ -40,7 +41,7 @@ def _create_player(data):
         name=player["name"],
         start=rooms[player["location"]]
     )
-    inventory = data["inventory"]
+    inventory = player["inventory"]
     for item in inventory:
         new_player.inventory.items[item] = inventory[item]
     new_player.equipped = new_player.inventory.items["equipped"]
@@ -49,7 +50,7 @@ def _create_player(data):
 
 def _get_saves():
     save_files = []
-    with os.scandir('../../../saves') as saves:
+    with os.scandir('./dork/saves') as saves:
         for entry in saves:
             save_files.append(entry.name)
     return save_files
@@ -61,18 +62,20 @@ def _get_file(save_files):
         print(save)
     game_to_load = input("> ")
     if game_to_load in save_files:
-        file_to_load = "../../../saves/" + game_to_load
+        file_to_load = "./dork/saves/" + game_to_load
         out = file_to_load, True
     else:
         out = "", False
     return out
 
 
-def main():
+def main(new_game=True):
     """Returns an instance of a game
     """
-    save_files = _get_saves()
-    if save_files:
+    if new_game:
+        game = _create_game()
+    else:
+        save_files = _get_saves()
         while True:
             file_to_load, should_exit = _get_file(save_files)
             if should_exit:
@@ -80,6 +83,4 @@ def main():
             else:
                 print("That file doesn't exist, please try again.")
         game = _create_game(file_to_load)
-    else:
-        game = _create_game()
     return game

@@ -13,7 +13,7 @@ def load(file_name):
         {dict} -- [Returns a dictionary object holding YAML data]
     """
 
-    file_path = f"./{file_name}.yml"
+    file_path = f"./dork/{file_name}.yml"
     with open(file_path) as file:
         data = yaml.safe_load(file.read())
     return data

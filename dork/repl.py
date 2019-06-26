@@ -1,5 +1,7 @@
 """This is the REPL which runs the commands, and this is a lame docstring"""
+# from functools import partial
 import dork.game_utils.game_data as game_data
+import dork.game_utils.world_loader as world_loader
 
 
 CMDS = game_data.CMDS
@@ -13,7 +15,7 @@ def read():
     return str.casefold(input("> "))
 
 
-def evaluate(cmd):
+def evaluate(cmd, game):
     """parse a cmd and run it"""
     cmd = cmd.split()
     if cmd:
@@ -24,21 +26,21 @@ def evaluate(cmd):
 
     if isinstance(action, dict):
         return action.get(noun, ERRS["u"])()
-    return action()
+    return action() if not noun else action(noun)
 
 
 def repl():
     """Read eval print loop
-    A common idea in terminal cmd programs
     """
+    print("loading...")
+    game = world_loader.main()
     print("starting repl...")
-
-    # call game_data.META["init"]()
-
     while True:
-        cmd = read()
-        output, should_exit = evaluate(cmd)
-        print(output)
+        action, modifies_game, should_exit = evaluate(cmd=read(), game=game)
+        if modifies_game:
+            game = action(game=game)
+        else:
+            action()
         if should_exit:
             break
     print("ending repl...")

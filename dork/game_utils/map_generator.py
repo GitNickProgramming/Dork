@@ -47,8 +47,8 @@ def _convert_dict_nodes(data):
     return nodes
 
 
-def _create_nodes(data):
-    pass
+# def _create_nodes(data):
+#     pass
 
 
 # def _check_data(data):

@@ -9,8 +9,8 @@ class Game:
     """A container for holding a game state"""
 
     def __init__(self, **kwargs):
-        self.player = kwargs.get("player", Player())
-        self.worldmap = kwargs.get("worldmap", WorldMap())
+        self.player = kwargs.get("player", None)
+        self.worldmap = kwargs.get("worldmap", None)
 
 
 class Item:

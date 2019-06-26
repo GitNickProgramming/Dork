@@ -1,0 +1,63 @@
+rooms:
+    boss:
+        adjacent:
+            north: gold
+            south: entrance
+            east: cave
+            west: armory
+        description:
+        items:
+            sword: +10 blade of slicing
+        clues:
+        npcs:
+    entrance:
+        adjacent:
+            north: boss
+            south: 
+            east: cave
+            west: armory
+        description:
+        items:
+          waffle: -15 waffle of sogginess
+        clues:
+        npcs:
+    armory:
+        adjacent:
+            north: boss
+            south: 
+            east: entrance
+            west: 
+        description:
+        items:
+        clues:
+        npcs:
+    cave:
+        adjacent:
+            north: boss
+            south: 
+            east: 
+            west: entrance
+        description:
+        npcs:
+        items:
+        clues:
+    gold:
+        adjacent:
+            north: 
+            south: boss
+            east: 
+            west: 
+        description:
+        items:
+          gold: 1000
+        clues:
+        npcs:
+    
+player:
+    name:
+    location: entrance
+    inventory:
+        items:
+        holders:
+        equipped:
+    
