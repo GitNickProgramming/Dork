@@ -2,8 +2,8 @@
  that this tests parser for lint """
 import dork.command_parser as _mp
 import dork.types as _tp
-import tests.daves_mock
-import unittest.mock
+from unittest import mock
+
 
 
 def test_hello_world():
@@ -63,29 +63,28 @@ def test_evaluate_help():
 
 def test_read_string():
     """Testing the read function of Repl """
-    inp = tests.daves_mock.MockInput()
-
-    inp.change_input("a string")
-    _mp.input = inp.make_input
-    assert _mp.read() == "a string", "Failed to read"
+    
+    with mock.patch('builtins.input') as inp:
+        inp.side_effect = ["a string"]
+        result = _mp.read()
+        assert result == "a string", "Failed to read"
 
 
 def test_read_empty():
     """Testing the read function of Repl """
-    inp = tests.daves_mock.MockInput()
-    inp.change_input("")
-    _mp.input = inp.make_input
-    assert _mp.read() == "", "Unable to read empty strings"
+    with mock.patch('builtins.input') as inp:
+        inp.side_effect = [""]
+        result = _mp.read()
+        assert result == "", "Unable to read empty strings"
 
 
 def test_read_escape_char():
     """Testing the read function of Repl """
-    inp = tests.daves_mock.MockInput()
-    inp.change_input("\n")
-    _mp.input = inp.make_input
-    assert _mp.read() == "\n", "Unable to read special characters"
-    _mp.input = input
-
+    with mock.patch('builtins.input') as inp:
+        inp.side_effect = '\n'
+        result = _mp.read()
+        assert '\n' in result, "Unable to read special characters"
+    
 
 def test_repl():
     """Testing repl's existance """
@@ -110,19 +109,7 @@ def test_eval_three_words():
         "Failed to ignore 3rd word in input"
 
 
-def test_repl_running():
+def test_repl_running(run):
     """Testing repl running at all"""
-    input_values = ["say goodbye"]
-    output = []
-
-    # method from Gabor Szabo of Code Maven
-    def mock_input(print_scrn):
-        """mock method for repl"""
-        output.append(print_scrn)
-        return input_values.pop(0)
-
-    _mp.input = mock_input
-    _mp.print = output.append
-    _mp.repl()
-    assert output == ["starting repl...", "> ", "goodbye, world!",
-                      "ending repl..."], "repl failed"
+    result = run(_mp.repl, input_side_effect=["say goodbye"])
+    assert "starting repl..." in result[0], "repl failed to run"

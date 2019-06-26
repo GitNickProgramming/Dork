@@ -5,6 +5,7 @@ flake8
 pylint
 pytest
 pytest-runner
+pytest-mock
 Sphinx
 sphinxcontrib-napoleon
 pyyaml
