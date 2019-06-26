@@ -1,61 +1,64 @@
 rooms:
-  boss:
-		adjacent:
-			north: gold
-			south: entrance
-			east: cave
-			west: armory
-		description:
-    items:
-      sword: +10 blade of slicing
-		clues:
-		npcs:
-	entrance:
-		adjacent:
-			north: boss
-			south: null
-			east: cave
-			west: armory
-		description:
-		items:
-		clues:
-		npcs:
-	armory:
-		adjacent:
-			north: boss
-			south: null
-			east: entrance
-			west: null
-		description:
-		items:
-		clues:
-		npcs:
-	cave:
-		adjacent:
-			north: boss
-			south: null
-			east: null
-			west: entrance
-		description:
-		npcs:
-		items:
-		clues:
-	gold:
-		adjacent:
-			north: null
-			south: boss
-			east: null
-			west: null
-		description:
-		items:
-		clues:
-		npcs:
-		
+    boss:
+        adjacent:
+            north: gold
+            south: entrance
+            east: cave
+            west: armory
+        description: you da boss!
+        items:
+            sword: +10 blade of slicing
+        clues:
+        npcs:
+    entrance:
+        adjacent:
+            north: boss
+            south: 
+            east: cave
+            west: armory
+        description: how'd you get in here?
+        items:
+          waffle: -15 waffle of sogginess
+        clues:
+        npcs:
+    armory:
+        adjacent:
+            north: boss
+            south: 
+            east: entrance
+            west: 
+        description: weapons all around!
+        items:
+        clues:
+        npcs:
+    cave:
+        adjacent:
+            north: boss
+            south: 
+            east: 
+            west: entrance
+        description: this place dank af, yo
+        npcs:
+        items:
+        clues:
+    gold:
+        adjacent:
+            north: 
+            south: boss
+            east: 
+            west: 
+        description: I love gooooooold
+        items:
+          gold: 1000
+        clues:
+        npcs:
+    
 player:
-	name: null
-	location: entrance
-	inventory:
-		items:
-		holders:
-		equipped:
-	
+    name:
+    location: entrance
+    inventory:
+        items:
+          gold: 243
+          sword: +10 dagger of dagging
+        holders:
+        equipped:
