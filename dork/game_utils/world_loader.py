@@ -15,7 +15,7 @@ def _create_game(file_name="yaml/default_world"):
     new_player = _create_player(player=data["player"], worldmap=new_worldmap)
     game = dork_types.Game(player=new_player, worldmap=new_worldmap)
     if not game.player.name:
-        game.player.name = input("\nWhat's your name, stranger? ")
+        game.player.name = input("What's your name, stranger? ")
     return game
 
 
