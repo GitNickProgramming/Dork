@@ -1,9 +1,8 @@
 """Test_Dork_Command_Parser I have to describe
  that this tests parser for lint """
+from unittest import mock
 import dork.command_parser as _mp
 import dork.types as _tp
-from unittest import mock
-
 
 
 def test_hello_world():
@@ -63,7 +62,6 @@ def test_evaluate_help():
 
 def test_read_string():
     """Testing the read function of Repl """
-    
     with mock.patch('builtins.input') as inp:
         inp.side_effect = ["a string"]
         result = _mp.read()

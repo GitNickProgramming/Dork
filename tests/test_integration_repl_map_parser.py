@@ -3,7 +3,6 @@ import networkx
 import dork.command_parser as _cp
 
 
-
 def test_map_gen_returns_graph():
     """create map should make a graph"""
     assert isinstance(_cp.create_map(), networkx.Graph), \
@@ -12,7 +11,7 @@ def test_map_gen_returns_graph():
 def test_load_map_returns_dict():
     """load map should create dict of yaml"""
     assert isinstance(_cp.load_map(), dict),\
-         "load_map call doesn't return yaml dictionary as it should"
+        "load_map call doesn't return yaml dictionary as it should"
 
 
 def test_verify_map():

@@ -21,7 +21,6 @@ def room():
     return dork.types.Room()
 
 
-
 @pytest.fixture
 def run(capsys, mocker):
     """CLI run method fixture
