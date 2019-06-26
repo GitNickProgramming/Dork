@@ -41,7 +41,8 @@ Entrance:
         Suddenly, you hear that same voice scream, followed by the sound of manic laughter. 
         Then absolute silence. 
      
-        Whatever that was, it was coming from behind the vault."     
+        Whatever that was, it was coming from behind the vault." 
+            
     items:
     clues:
     npcs: 
@@ -62,6 +63,7 @@ Armory:
         
         Perhaps you can find something useful in this room. 
         There is a simple door on the north side of the room, partially hidden by stacks of books."
+
     items: #dagger #book 
     clues:
     npcs:
@@ -97,5 +99,6 @@ Gold:
          A scroll sits on top of a podium.  There is a large skylight, and the ambient light of the moon shines upon the gold and silver 
          pieces.  It's quiet and restfull, and you see a latter leading to the surface. You are safe at last! You somehow managed to get out from
          the horrifying underground world you strangely found yourself in. Maybe you are indeed the ultimate 'Scrum Lord'."
+
     items: #gold #scroll #medals #health
     clues:
