@@ -2,7 +2,7 @@
 """Basic entity classes and methods for Dork.
 """
 
-__all__ = ["Item", "Holder", "Player", "Room", "WorldMap"]
+__all__ = ["Item", "Holder", "Player", "Room", "Worldmap"]
 
 
 class Game:
@@ -56,7 +56,7 @@ class Room(Holder):
         self.clues = kwargs["clues"]
 
 
-class WorldMap:
+class Worldmap:
     """A map relating the rooms connectivity
         as well as the players/items within
     """

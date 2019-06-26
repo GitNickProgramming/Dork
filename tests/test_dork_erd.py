@@ -34,10 +34,10 @@ def test_rooms_exist():
 
 
 def test_map_exists():
-    """the dork module should define an Map
+    """the dork module should define a Worldmap
     """
-    assert "Map" in vars(dork.types)
-    is_a(dork.types.Map, type)
+    assert "Worldmap" in vars(dork.types)
+    is_a(dork.types.Worldmap, type)
 
 
 def test_holder_has_many_items():

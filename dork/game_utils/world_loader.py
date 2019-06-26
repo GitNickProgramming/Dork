@@ -20,7 +20,7 @@ def _create_game(file_name="yaml/default_world"):
 
 
 def _create_worldmap(data):
-    worldmap = dork_types.WorldMap()
+    worldmap = dork_types.Worldmap()
     for room in data:
         this_room = data[room]
         new_room = dork_types.Room(
