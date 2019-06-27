@@ -1,5 +1,6 @@
 """Data and commands for REPL"""
 import dork.game_utils.world_loader as world_loader
+import dork.game_utils.world_writer as w_writer
 # import dork.game_utils.world_writer as world_writer
 
 
@@ -66,9 +67,9 @@ class REPL:
             out = player.current_room.description
         return out, False
 
-    # def _save_game(self):
-    #     world_writer.main(self.game)
-    #     return "Save successful!", False
+    def _save_game(self):
+        w_writer.main(self.game)
+        return "Save successful!", False
 
     # def _inventory(self):
     #     return self.game.player.inventory, False
@@ -135,7 +136,7 @@ CMDS = {
 META = {
     ".new": ["_new_game"],
     ".load": ["_load_game"],
-    # ".save":[" _save_game"],
+    ".save":["_save_game"],
     ".rq": ["_gtfo"],
     ".z": ["_zork"]
 }
