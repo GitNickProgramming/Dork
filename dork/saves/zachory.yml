@@ -19,7 +19,7 @@ player: !!python/object:dork.types.Player
       holders: null
       items: null
   items: {}
-  name: zach
+  name: zachory
 worldmap: !!python/object:dork.types.Worldmap
   rooms:
     armory: !!python/object:dork.types.Room

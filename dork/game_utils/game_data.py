@@ -12,6 +12,7 @@ class REPL:
 
     def __init__(self):
         self._reset()
+        
     def _reset(self, new_game=True):
         self.game = world_loader.main(new_game)
         self.name = self.game.player.name

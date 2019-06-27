@@ -1,11 +1,12 @@
-"""Save game data/state into repl && update default location"""
+"""Save game data/state into repl && update start location"""
 import yaml
 
 __all__ = ["main"]
 
 def main(game):
-    gamee = game
-    namee = gamee.player.name
-    with open('myNewestGame.yml', 'w') as yaml_file:
-        yaml.dump(gamee, yaml_file, default_flow_style=False)
-    print ("The game data has been saved in a file called "+namee+".yaml")
+    #gamee = game
+    #namee = game.player.name
+    with open('./dork/saves/'+game.player.name+'.yml', 'w') as my_yaml_file:
+        yaml.dump(game, my_yaml_file, default_flow_style=False)
+
+    print("The game data has been saved in a file called "+game.player.name+".yml")
