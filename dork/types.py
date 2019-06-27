@@ -17,7 +17,8 @@ class Item:
     """A obtainable/holdable item
     """
 
-    def __init__(self, capacity=0):
+    def __init__(self, name, capacity=0):
+        self.name = name
         self.holder = Holder()
         self.capacity = capacity
 

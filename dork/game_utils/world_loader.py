@@ -77,3 +77,7 @@ def main(new_game=True):
                 print("That file doesn't exist, please try again.")
         game = _create_game(file_to_load)
     return game
+
+    
+def _making_items(Name):
+    return dork_types.Item(Name)
