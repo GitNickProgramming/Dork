@@ -46,9 +46,9 @@ class Room(Holder):
     """A room on the map
     """
 
-    def __init__(self, room):
+    def __init__(self, room, name):
         super(Room, self).__init__()
-        self.name = room.get("name", None)
+        self.name = name
         self.adjacent = room.get("adjacent", None)
         self.description = room.get("description", None)
         self.players = room.get("players", None)

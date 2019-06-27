@@ -12,8 +12,8 @@ class REPL:
     def __init__(self):
         self._reset()
     def _reset(self, new_game=True):
-        self._game = world_loader.main(new_game)
-        self.name = self._game.player.name
+        self.game = world_loader.main(new_game)
+        self.name = self.game.player.name
 
     @staticmethod
     def _gtfo():
@@ -54,8 +54,8 @@ class REPL:
         return "", False
 
     def _move(self, cardinal):
-        worldmap = self._game.worldmap
-        player = self._game.player
+        worldmap = self.game.worldmap
+        player = self.game.player
         current_room = player.current_room
         adjacent_room = current_room.adjacent.get(cardinal, None)
         if not adjacent_room:
@@ -117,6 +117,7 @@ CMDS = {
     "walk": MOVES,
     "travel": MOVES,
     "run": MOVES,
+    "head": MOVES
     # "i": _inventory,
     # "inv": _inventory,
     # "inventory": _inventory,
