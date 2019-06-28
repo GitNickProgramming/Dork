@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 """Basic tests for state and entity relationships in dork
 """
-# import dork.game_utils.game_data as game_data
 
 import dork.game_utils.game_data as game_data
 import dork
@@ -43,10 +42,25 @@ def test_repl_evaluate():
         "walk south", repl_instance, repl_data)
 
 
+def test_repl_evaluate_various_functions():
+    """Dork.repl.evaluate has various functions
+    """
+    repl_instance = dork.game_utils.game_data.REPL
+    repl_data = (
+        game_data.CMDS,
+        game_data.MOVES,
+        game_data.META,
+        game_data.ERRS
+    )
+    assert dork.repl.evaluate(".rq", repl_instance, repl_data) == (
+        'rude!', True)
+    assert dork.repl.evaluate(".z", repl_instance, repl_data) == (
+        "Oh shit, you found an easter egg!", False)
+
+
 def test_repl_method_repl(run, mocker):
     """Dork.repl.repl should do things
     """
-
     evaluate_values = [("FooBar", False), ("Bufarr", True)]
     mocked_evaluate = mocker.patch("dork.repl.evaluate")
     mocked_evaluate.side_effect = evaluate_values

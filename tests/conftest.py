@@ -27,7 +27,7 @@ def room():
 
 
 @pytest.fixture
-def game(player, worldmap):
+def game():
     """A basic dork room fixture"""
     game = dork.types.Game(player, worldmap)
     return game
@@ -43,6 +43,13 @@ def worldmap():
 def holder():
     """A basic dork room fixture"""
     return dork.types.Holder()
+
+
+@pytest.fixture
+def repl():
+    """A basic dork player fixture"""
+    repl = dork.game_utils.game_data.REPL
+    return repl
 
 
 
