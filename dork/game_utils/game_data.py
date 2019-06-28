@@ -46,6 +46,11 @@ class Hero:
                 break
         return conf
 
+    def _printgame(self):
+        print(self.game.worldmap.rooms)
+        print(self.game.players)
+        return "", False
+
     def _make_game(self):
         if self._confirm():
             self._reset()
@@ -132,9 +137,10 @@ CMDS = {
 META = {
     ".new": ["_make_game"],
     ".load": ["_make_game"],
-    # ".save":[" _save_game"],
+    # ".save":["_save_game"],
     ".rq": ["_gtfo"],
-    ".z": ["_zork"]
+    ".z": ["_zork"],
+    ".p": ["_printgame"]
 }
 
 
