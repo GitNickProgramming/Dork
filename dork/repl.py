@@ -33,14 +33,14 @@ def evaluate(cmd, repl_instance, repl_data):
 def repl():
     """Read eval print loop
     """
-    repl_instance = game_data.REPL()
+    repl_instance = game_data.Hero()
     repl_data = (
         game_data.CMDS,
         game_data.MOVES,
         game_data.META,
         game_data.ERRS
     )
-    print(f"\n\nGreetings, {repl_instance.name}! " + game_data.TITLE + "\n\n")
+    print(f"\nGreetings, {repl_instance.name}! " + game_data.TITLE + "\n")
     while True:
         output, should_exit = evaluate(
             cmd=read(), repl_instance=repl_instance, repl_data=repl_data
@@ -48,4 +48,4 @@ def repl():
         print(output + "\n")
         if should_exit:
             break
-    print("ending repl...")
+    print("Until next time!")

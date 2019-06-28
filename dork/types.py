@@ -1,17 +1,9 @@
 # -*- coding: utf-8 -*-
-"""Basic entity classes and methods for Dork. I am a small
-change so that I can push this code back onto remote.
+"""Basic entity classes and methods for Dork.
 """
 
+
 __all__ = ["Item", "Holder", "Player", "Room", "Worldmap"]
-
-
-class Game:
-    """A container for holding a game state"""
-
-    def __init__(self, player, worldmap):
-        self.player = player
-        self.worldmap = worldmap
 
 
 class Item:
@@ -31,24 +23,22 @@ class Holder:
         self.items = dict()
 
 
-class Player(Holder):
+class Player:
     """A player or NPC in the game
     """
 
-    def __init__(self, name, start):
-        super(Player, self).__init__()
+    def __init__(self, name, location):
         self.name = name
-        self.current_room = start
-        self.inventory = Holder()
+        self.location = location
+        self.inventory = dict()
         self.equipped = None
 
 
-class Room(Holder):
+class Room:
     """A room on the map
     """
 
     def __init__(self, room, name):
-        super(Room, self).__init__()
         self.name = name
         self.adjacent = room.get("adjacent", None)
         self.description = room.get("description", None)
@@ -62,5 +52,27 @@ class Worldmap:
         as well as the players/items within
     """
 
-    def __init__(self):
+    def __init__(self, rooms=None):
         self.rooms = dict()
+        for room in rooms:
+            self.rooms[room] = Room(room=rooms[room], name=room)
+
+
+class Game:
+    """A container for holding a game state"""
+
+    def __init__(self, data, player_name):
+        rooms = data["rooms"]
+        players = data["players"]
+        self.players = dict()
+        self.worldmap = Worldmap(rooms)
+        for player in players:
+            new_player_name = players[player]["name"]
+            new_player_location = players[player]["location"]
+            self.players[player] = Player(
+                name=new_player_name,
+                location=self.worldmap.rooms[new_player_location],
+            )
+        self.hero = self.players["hero"]
+        if self.hero.name is None:
+            self.hero.name = player_name

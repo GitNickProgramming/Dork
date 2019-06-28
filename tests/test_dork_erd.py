@@ -73,10 +73,10 @@ def test_map_exists():
 #     is_a(dork.types.WorldMap, type)
 
 
-# def test_player_is_a_holder():
-#     """A Player should be a Holder
-#     """
-#     is_a(dork.types.Player, dork.types.Holder)
+def test_room_has_many_players():
+    """A Room should have many players
+    """
+    has_many(dork.types.Room, "location", dork.types.Player, "players")
 
 
 def test_map_has_many_rooms(worldmap):
