@@ -5,6 +5,20 @@ import dork.types
 from tests.utils import has_many, is_a
 
 
+def test_game_exist():
+    """the dork module should define a Game
+    """
+    assert "Game" in vars(dork.types)
+    is_a(dork.types.Game, type)
+
+
+# def test_game_attributes():
+#     """the Game needs attributes
+#     """
+#     player = dork.types.Player
+#     assert dork.types.Game.player == player
+
+
 def test_items_exist():
     """the dork module should define an Item
     """
@@ -40,22 +54,23 @@ def test_map_exists():
     is_a(dork.types.Worldmap, type)
 
 
-def test_holder_has_many_items():
-    """A Holder should have many Items
-    """
-    has_many(dork.types.Holder, "holder", dork.types.Item, "items")
+# def test_holder_has_many_items():
+#     """A Holder should have many Items
+#     """
+#     has_many(dork.types.Holder, "holder", dork.types.Item, "items")
 
 
-def test_player_is_a_holder(player):
-    """A Player should be a Holder
-    """
-    is_a(player, dork.types.Holder)
+# def test_game_elements(player):
+#     """A Holder should have many Items
+#     """
+#     has_many(dork.types.Player, "inventory", dork.types.Holder, "holder")
 
 
-def test_room_is_a_holder(room):
-    """A Room should be a Holder
-    """
-    is_a(room, dork.types.Holder)
+# def test_map_exists():
+#     """the dork module should define an Map
+#     """
+#     assert "WorldMap" in vars(dork.types)
+#     is_a(dork.types.WorldMap, type)
 
 
 def test_room_has_many_players():
@@ -64,7 +79,7 @@ def test_room_has_many_players():
     has_many(dork.types.Room, "location", dork.types.Player, "players")
 
 
-def test_map_has_many_rooms():
+def test_map_has_many_rooms(worldmap):
     """A Map should have many Rooms
     """
-    has_many(dork.types.Worldmap, "Worldmap", dork.types.Room, "rooms")
+    has_many(worldmap, "Worldmap", "rooms")

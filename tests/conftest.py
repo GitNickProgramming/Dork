@@ -10,13 +10,60 @@ pytest_plugins = ["pytester"]  # pylint: disable=invalid-name
 @pytest.fixture
 def player():
     """A basic dork player fixture"""
-    return dork.types.Player()
+    player = dork.types.Player("player name", "player room")
+    return player
+
+
+@pytest.fixture
+def item():
+    """A basic dork item fixture"""
+    return dork.types.Item()
 
 
 @pytest.fixture
 def room():
     """A basic dork room fixture"""
-    return dork.types.Room()
+    return dork.types.Room({}, "test room name")
+
+
+@pytest.fixture
+def game():
+    """A basic dork game fixture"""
+    game = dork.types.Game(player, worldmap)
+    return game
+
+
+@pytest.fixture
+def worldmap():
+    """A basic dork worldmap fixture"""
+    return dork.types.Worldmap()
+
+
+@pytest.fixture
+def holder():
+    """A basic dork holder fixture"""
+    return dork.types.Holder()
+
+
+@pytest.fixture
+def repl():
+    """A repl instance fixture"""
+    repl_instance_fixture = dork.game_utils.game_data.REPL
+    return repl_instance_fixture
+
+
+@pytest.fixture
+def repl_data():
+    """A repl data fixture"""
+    repl_data_fixture = (
+        dork.game_utils.game_data.CMDS,
+        dork.game_utils.game_data.MOVES,
+        dork.game_utils.game_data.META,
+        dork.game_utils.game_data.ERRS
+    )
+    return repl_data_fixture
+
+
 
 
 @pytest.fixture

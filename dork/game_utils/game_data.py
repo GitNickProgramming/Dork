@@ -12,6 +12,7 @@ class Hero:
 
     def __init__(self):
         self._reset()
+
     def _reset(self):
         player_name = input("What's your name, stranger? ")
         data = world_loader.main(player_name)
