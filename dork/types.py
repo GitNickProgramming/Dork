@@ -40,10 +40,7 @@ class Room:
     """
 
     def __init__(self, room, name):
-        if name is None:
-            self.name = input("What's your name, stranger? ")
-        else:
-            self.name = name
+        self.name = name
         self.adjacent = room.get("adjacent", None)
         self.description = room.get("description", None)
         self.players = room.get("players", None)
