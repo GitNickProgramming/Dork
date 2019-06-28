@@ -13,9 +13,9 @@ class Hero:
     def __init__(self):
         self._reset()
     def _reset(self):
-        player_name = input("\nWhat's your name, stranger? ")
-        file_name = world_loader.main(player_name)
-        self.game = dork_types.Game(arg=(file_name, player_name))
+        player_name = input("What's your name, stranger? ")
+        data = world_loader.main(player_name)
+        self.game = dork_types.Game(data=data, player_name=player_name)
         self.name = self.game.hero.name
 
     @staticmethod

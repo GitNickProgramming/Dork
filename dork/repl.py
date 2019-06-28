@@ -37,7 +37,7 @@ def repl():
         game_data.META,
         game_data.ERRS
     )
-    print(f"\nGreetings, {repl_instance.name}! " + game_data.TITLE + "\n\n")
+    print(f"\nGreetings, {repl_instance.name}! " + game_data.TITLE + "\n")
     while True:
         output, should_exit = evaluate(
             cmd=read(), repl_instance=repl_instance, repl_data=repl_data

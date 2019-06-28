@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 """Basic entity classes and methods for Dork.
 """
-import dork.game_utils.yaml_parser as yml_parse
 
 
 __all__ = ["Item", "Holder", "Player", "Room", "Worldmap"]
@@ -31,7 +30,7 @@ class Player:
     def __init__(self, name, location):
         self.name = name
         self.location = location
-        self.inventory = Holder()
+        self.inventory = dict()
         self.equipped = None
 
 
@@ -62,12 +61,9 @@ class Worldmap:
 class Game:
     """A container for holding a game state"""
 
-    def __init__(self, arg):
-        file_name, player_name = arg
-        data = yml_parse.load(file_name)
+    def __init__(self, data, player_name):
         rooms = data["rooms"]
         players = data["players"]
-        self.worldmap = dict()
         self.players = dict()
         self.worldmap = Worldmap(rooms)
         for player in players:
