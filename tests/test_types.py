@@ -14,7 +14,6 @@ def test_game_attributes(game):
 def test_room_attributes(room):
     """the room should have attributes
     """
-
     has_a(room, "name")
     has_a(room, "adjacent")
     has_a(room, "description")
@@ -26,7 +25,6 @@ def test_room_attributes(room):
 def test_player_attributes(player):
     """the player should have attributes
     """
-
     has_a(player, "name")
     has_a(player, "location")
     has_a(player, "inventory")
@@ -36,7 +34,6 @@ def test_player_attributes(player):
 def test_item_attributes(item):
     """item should have holder and capacity
     """
-
     has_a(item, "holder")
     has_a(item, "capacity")
 
@@ -44,12 +41,10 @@ def test_item_attributes(item):
 def test_holder_attributes(holder):
     """holder should have items
     """
-
     has_a(holder, "items")
 
 
 def test_worldmap_attributes(worldmap):
     """the worldmap should have a dict of rooms
     """
-
     has_a(worldmap, "rooms")

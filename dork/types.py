@@ -61,7 +61,7 @@ class Worldmap:
 class Game:
     """A container for holding a game state"""
 
-    def __init__(self, data=None, player_name=None):
+    def __init__(self, data, player_name):
         rooms = data.get("rooms", None)
         players = data.get("players", None)
         self.players = dict()
