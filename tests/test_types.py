@@ -9,7 +9,7 @@ def test_game_attributes(game):
     """
     has_a(game, "players")
     has_a(game, "worldmap")
-
+    has_a(game, "hero")
 
 def test_room_attributes(room):
     """the room should have attributes

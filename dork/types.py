@@ -61,9 +61,9 @@ class Worldmap:
 class Game:
     """A container for holding a game state"""
 
-    def __init__(self, data, player_name):
-        rooms = data["rooms"]
-        players = data["players"]
+    def __init__(self, data=None, player_name=None):
+        rooms = data.get("rooms", None)
+        players = data.get("players", None)
         self.players = dict()
         self.worldmap = Worldmap(rooms)
         for player in players:
@@ -73,6 +73,6 @@ class Game:
                 name=new_player_name,
                 location=self.worldmap.rooms[new_player_location],
             )
-        self.hero = self.players["hero"]
+        self.hero = self.players.get("hero", None)
         if self.hero.name is None:
             self.hero.name = player_name
