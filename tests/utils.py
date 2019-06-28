@@ -54,11 +54,10 @@ def has_many(clz_instance, clz_key, obj_key):
     if obj_key not in vars(clz_instance):
         pytest.fail("{object} has no {key}".format(object=clazz, key=obj_key))
 
-
     contained = getattr(clz_instance, obj_key, None)
     if contained is None or "__getitem__" not in vars(type(contained)):
         pytest.fail(
-            "{clazz}'s {key} should be a list-like object".format(
+            "{clazz}'s {clz_key} should be a list-like object".format(
                 clazz=clazz, key=obj_key
             )
         )

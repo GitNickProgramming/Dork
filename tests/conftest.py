@@ -16,13 +16,14 @@ def player():
 @pytest.fixture
 def room():
     """A basic dork room fixture"""
-    return dork.types.Room({},"test room name")
+    return dork.types.Room({}, "test room name")
 
 
 @pytest.fixture
 def game(player, worldmap):
     """A basic dork room fixture"""
     return dork.types.Game(player, worldmap)
+
 
 @pytest.fixture
 def worldmap():
