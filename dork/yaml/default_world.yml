@@ -6,9 +6,9 @@ rooms:
             east:
             west:
         description: OH MY GOD THERE'S AN ANGRY TROLL IN HERE
-        clues: 
         players:
         items: sword, rusty chains, 3 gold
+        clues: 
     entrance:
         adjacent:
             north: boss
@@ -27,8 +27,7 @@ rooms:
             west: 
         description: weapons all around!
         players:
-        items:
-            weapons:
+        items: rusty dagger, wobbly sword, stringless bow
         clues:
     cave:
         adjacent:
@@ -48,8 +47,7 @@ rooms:
             west: 
         description: I love gooooooold
         players:
-        items:
-          gold: 1000
+        items: 1000 gold, 10 diamonds, 5 emeralds
         clues:
     
 players:
