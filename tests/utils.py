@@ -4,6 +4,11 @@
 import pytest
 
 
+def has_a(obj, attr):
+    """has an attribute"""
+    assert attr in vars(obj), f"{obj} has no {attr}"
+
+
 def is_a(obj, clazz):
     """Determines if an object is an instance of clazz.
 
@@ -14,7 +19,8 @@ def is_a(obj, clazz):
         clazz (type): The type of which obj is an instance.
 
     """
-    if not isinstance(obj, (clazz,)):
+
+    if not isinstance(obj, (clazz)):
         pytest.fail(
             "{object} should be an instance of {clazz}".format(
                 object=obj, clazz=clazz
@@ -22,7 +28,7 @@ def is_a(obj, clazz):
         )
 
 
-def has_many(clazz, clz_key, obj, obj_key):
+def has_many(clz_instance, clz_key, obj_key):
     """Determines if an obj responds to a `has_many' relationship.
 
         [obj] 0..N ==> 1 [clazz]
@@ -43,21 +49,11 @@ def has_many(clazz, clz_key, obj, obj_key):
         obj_key (str): The key to which object should respond.
 
     """
-    obj_instance = obj()
-    clz_instance = clazz()
-    if clz_key not in vars(obj_instance):
-        pytest.fail("{object} has no {key}".format(object=obj, key=clz_key))
+    clazz = clz_instance.__class__
 
     if obj_key not in vars(clz_instance):
         pytest.fail("{object} has no {key}".format(object=clazz, key=obj_key))
 
-    container = getattr(obj_instance, clz_key, None)
-    if not isinstance(container, clazz):
-        pytest.fail(
-            "A(n) {object}'s {key} should referer to a {clazz}".format(
-                object=obj, key=clz_key, clazz=clazz
-            )
-        )
 
     contained = getattr(clz_instance, obj_key, None)
     if contained is None or "__getitem__" not in vars(type(contained)):
