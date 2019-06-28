@@ -5,11 +5,10 @@ rooms:
             south:
             east:
             west:
-        description: you da boss!
+        description: OH MY GOD THERE'S AN ANGRY TROLL IN HERE
         players:
-        items:
-            sword: +10 blade of slicing
-        clues:
+        items: sword, rusty chains, 3 gold
+        clues: 
     entrance:
         adjacent:
             north: boss
@@ -18,8 +17,7 @@ rooms:
             west: armory
         description: how'd you get in here?
         players:
-        items:
-          waffle: -15 waffle of sogginess
+        items: soggy waffle, torn parchment, broken quill
         clues:
     armory:
         adjacent:
@@ -29,7 +27,7 @@ rooms:
             west: 
         description: weapons all around!
         players:
-        items:
+        items: rusty dagger, wobbly sword, stringless bow
         clues:
     cave:
         adjacent:
@@ -49,25 +47,25 @@ rooms:
             west: 
         description: I love gooooooold
         players:
-        items:
-          gold: 1000
+        items: 1000 gold, 10 diamonds, 5 emeralds
         clues:
     
-player character:
-    name: bingo bob
-    location: entrance
-    inventory:
-        items:
-        holders:
-        equipped:
-
-nonplayer characters:
-    troll:
-        location: boss
+players:
+    hero:
+        name: Bingo Bob
+        location: entrance
         inventory:
-            items:
-                weapon: mammoth bone hammer
-                gold: 356
-            holders:
-                knap sack:
-            equipped: mammoth bone hammer
+        equipped:
+        dialog:
+    troll:
+        name: grorg
+        location: boss
+        inventory: 227 gold, bloody handkercheif
+        equipped: mammoth bone hammer
+        dialog:
+    ghost:
+        name: casper
+        location: gold
+        inventory:
+        equipped:
+        dialog:

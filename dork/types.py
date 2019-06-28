@@ -74,4 +74,5 @@ class Game:
                 location=self.worldmap.rooms[new_player_location],
             )
         self.hero = self.players["hero"]
-        self.hero.name = player_name
+        if self.hero.name is None:
+            self.hero.name = player_name

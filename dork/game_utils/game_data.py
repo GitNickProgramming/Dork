@@ -18,6 +18,32 @@ class Hero:
         self.game = dork_types.Game(data=data, player_name=player_name)
         self.name = self.game.hero.name
 
+    def _printgame(self):
+        print(self.game.worldmap.rooms)
+        print(self.game.players)
+        return "", False
+
+    def _printname(self):
+        print(self.name)
+        return "", False
+
+    def _make_game(self):
+        if self._confirm():
+            self._reset()
+        return "", False
+
+    def _move(self, cardinal):
+        hero = self.game.hero
+        location = hero.location
+        adjacent_room = location.adjacent.get(cardinal, None)
+        if not adjacent_room:
+            out = f"You cannot go {cardinal} from here."
+        else:
+            hero.location = self.game.worldmap.rooms[adjacent_room]
+            print(f"You have entered {hero.location.name}")
+            out = hero.location.description
+        return out, False
+
     @staticmethod
     def _gtfo():
         return "rude!", True
@@ -45,28 +71,6 @@ class Hero:
             else:
                 break
         return conf
-
-    def _printgame(self):
-        print(self.game.worldmap.rooms)
-        print(self.game.players)
-        return "", False
-
-    def _make_game(self):
-        if self._confirm():
-            self._reset()
-        return "", False
-
-    def _move(self, cardinal):
-        hero = self.game.hero
-        location = hero.location
-        adjacent_room = location.adjacent.get(cardinal, None)
-        if not adjacent_room:
-            out = f"You cannot go {cardinal} from here."
-        else:
-            hero.location = self.game.worldmap.rooms[adjacent_room]
-            print(f"You have entered {hero.location.name}")
-            out = hero.location.description
-        return out, False
 
     # def _save_game(self):
     #     world_writer.main(self.game)
@@ -140,7 +144,8 @@ META = {
     # ".save":["_save_game"],
     ".rq": ["_gtfo"],
     ".z": ["_zork"],
-    ".p": ["_printgame"]
+    # ".p": ["_printgame"],
+    # ".n": ["_printname"]
 }
 
 
