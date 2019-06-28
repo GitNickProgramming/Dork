@@ -18,43 +18,30 @@ def test_repl_method_read(mocker):
     assert mocked_input.call_count == 4
 
 
-def test_repl_evaluate():
+def test_repl_evaluate(repl, repl_data):
     """Dork.repl.evaluate should deal with all input types
     """
-    repl_instance = dork.game_utils.game_data.REPL
-    repl_data = (
-        game_data.CMDS,
-        game_data.MOVES,
-        game_data.META,
-        game_data.ERRS
-    )
-    assert dork.repl.evaluate("", repl_instance, repl_data) == (
+
+    assert dork.repl.evaluate("", repl, repl_data) == (
         'Huh? Can you speak up?', False)
-    assert dork.repl.evaluate("     ", repl_instance, repl_data) == (
+    assert dork.repl.evaluate("     ", repl, repl_data) == (
         'Huh? Can you speak up?', False)
-    assert dork.repl.evaluate("Go", repl_instance, repl_data) == (
+    assert dork.repl.evaluate("Go", repl, repl_data) == (
         "Sorry, I don't know that one.", False)
-    assert dork.repl.evaluate("walk map", repl_instance, repl_data) == (
+    assert dork.repl.evaluate("walk map", repl, repl_data) == (
         "Sorry, I don't know that one.", False)
     assert "You have entered" or "You cannot go" in dork.repl.evaluate(
-        "N", repl_instance, repl_data)
+        "N", repl, repl_data)
     assert "You have entered" or "You cannot go" in dork.repl.evaluate(
-        "walk south", repl_instance, repl_data)
+        "walk south", repl, repl_data)
 
 
-def test_repl_evaluate_various_functions():
+def test_repl_evaluate_various_functions(repl, repl_data):
     """Dork.repl.evaluate has various functions
     """
-    repl_instance = dork.game_utils.game_data.REPL
-    repl_data = (
-        game_data.CMDS,
-        game_data.MOVES,
-        game_data.META,
-        game_data.ERRS
-    )
-    assert dork.repl.evaluate(".rq", repl_instance, repl_data) == (
+    assert dork.repl.evaluate(".rq", repl, repl_data) == (
         'rude!', True)
-    assert dork.repl.evaluate(".z", repl_instance, repl_data) == (
+    assert dork.repl.evaluate(".z", repl, repl_data) == (
         "Oh shit, you found an easter egg!", False)
 
 
