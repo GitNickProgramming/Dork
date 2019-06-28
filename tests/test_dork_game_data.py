@@ -9,8 +9,8 @@ import dork
 def test_game_data_repl_exists():
     """the dork module should define a Game
     """
-    assert "REPL" in vars(game_data)
-    is_a(game_data.REPL, type)
+    assert "Hero" in vars(game_data)
+    is_a(game_data.Hero, type)
 
 
 def test_game_data_main_dictionaries_exist():
@@ -27,13 +27,16 @@ def test_game_data_main_dictionaries_exist():
     assert "TITLE" in vars(game_data)
     is_a(game_data.CMDS, dict)
 
-def test_game_data_repl_methods(repl):
+def test_game_data_repl_methods(hero):
     """the dork module should define a Game
     """
-    has_a(repl, "_gtfo")
-    has_a(repl, "_zork")
-    has_a(repl, "_repl_error")
-    has_a(repl, "_confirm")
-    has_a(repl, "_new_game")
-    has_a(repl, "_move")
+    has_a(hero, "_reset")
+    has_a(hero, "_printgame")
+    has_a(hero, "_printname")
+    has_a(hero, "_make_game")
+    has_a(hero, "_move")
+    has_a(hero, "_gtfo")
+    has_a(hero, "_zork")
+    has_a(hero, "_repl_error")
+    has_a(hero, "_confirm")
 

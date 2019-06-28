@@ -7,7 +7,7 @@ from tests.utils import has_a, is_a
 def test_game_attributes(game):
     """the game should have attributes
     """
-    has_a(game, "player")
+    has_a(game, "players")
     has_a(game, "worldmap")
 
 
@@ -28,7 +28,7 @@ def test_player_attributes(player):
     """
 
     has_a(player, "name")
-    has_a(player, "current_room")
+    has_a(player, "location")
     has_a(player, "inventory")
     has_a(player, "equipped")
 
