@@ -43,7 +43,6 @@ def test_repl_evaluate():
         "walk south", repl_instance, repl_data)
 
 
-
 def test_repl_method_repl(run, mocker):
     """Dork.repl.repl should do things
     """
