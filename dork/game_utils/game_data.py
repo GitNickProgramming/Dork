@@ -1,4 +1,5 @@
 """Data and commands for REPL"""
+import dork.types as dork_types
 import dork.game_utils.world_loader as world_loader
 # import dork.game_utils.world_writer as world_writer
 
@@ -6,14 +7,16 @@ import dork.game_utils.world_loader as world_loader
 __all__ = ["CMDS", "MOVES", "ERRS", "META", "TITLE"]
 
 
-class REPL:
-    """REPL object to hold and modify an instance of Game"""
+class Hero:
+    """Holds an instance of Game and modifies its state"""
 
     def __init__(self):
         self._reset()
-    def _reset(self, new_game=True):
-        self.game = world_loader.main(new_game)
-        self.name = self.game.player.name
+    def _reset(self):
+        player_name = input("\nWhat's your name, stranger? ")
+        file_name = world_loader.main(player_name)
+        self.game = dork_types.Game(arg=(file_name, player_name))
+        self.name = self.game.hero.name
 
     @staticmethod
     def _gtfo():
@@ -29,7 +32,7 @@ class REPL:
 
     @staticmethod
     def _confirm():
-        print("WARNING: you will lose any unsaved data!")
+        print("\n!!!WARNING!!! You will lose unsaved data!\n")
         conf = False
         while True:
             conf = str.casefold(input("Would you like to proceed? Y/N: "))
@@ -43,27 +46,21 @@ class REPL:
                 break
         return conf
 
-    def _new_game(self):
+    def _make_game(self):
         if self._confirm():
             self._reset()
         return "", False
 
-    def _load_game(self):
-        if self._confirm():
-            self._reset(new_game=False)
-        return "", False
-
     def _move(self, cardinal):
-        worldmap = self.game.worldmap
-        player = self.game.player
-        current_room = player.current_room
-        adjacent_room = current_room.adjacent.get(cardinal, None)
+        hero = self.game.hero
+        location = hero.location
+        adjacent_room = location.adjacent.get(cardinal, None)
         if not adjacent_room:
             out = f"You cannot go {cardinal} from here."
         else:
-            player.current_room = worldmap.rooms[adjacent_room]
-            print(f"You have entered {player.current_room.name}")
-            out = player.current_room.description
+            hero.location = self.game.worldmap.rooms[adjacent_room]
+            print(f"You have entered {hero.location.name}")
+            out = hero.location.description
         return out, False
 
     # def _save_game(self):
@@ -71,7 +68,7 @@ class REPL:
     #     return "Save successful!", False
 
     # def _inventory(self):
-    #     return self.game.player.inventory, False
+    #     return self.game.hero.inventory, False
 
     # def _take(self, item="all"):
     #     # Item defaults to "all", and adds all items in room to inventory
@@ -133,8 +130,8 @@ CMDS = {
 
 
 META = {
-    ".new": ["_new_game"],
-    ".load": ["_load_game"],
+    ".new": ["_make_game"],
+    ".load": ["_make_game"],
     # ".save":[" _save_game"],
     ".rq": ["_gtfo"],
     ".z": ["_zork"]

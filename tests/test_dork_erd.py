@@ -61,7 +61,7 @@ def test_room_is_a_holder(room):
 def test_room_has_many_players():
     """A Room should have many players
     """
-    has_many(dork.types.Room, "current_room", dork.types.Player, "players")
+    has_many(dork.types.Room, "location", dork.types.Player, "players")
 
 
 def test_map_has_many_rooms():
