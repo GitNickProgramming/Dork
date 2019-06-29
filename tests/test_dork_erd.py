@@ -53,7 +53,49 @@ def test_room_has_many_players(room):
     has_many(clazz=room, obj_key="players")
 
 
+def test_player_has_many_items(player):
+    """A Player should have many items
+    """
+    has_many(clazz=player, obj_key="items")
+
+
+def test_room_has_many_items(room):
+    """A Room should have many items
+    """
+    has_many(clazz=room, obj_key="items")
+
+
 def test_worldmap_has_many_rooms(worldmap):
-    """A Map should have many Rooms
+    """A Worldmap should have many Rooms
     """
     has_many(clazz=worldmap, obj_key="rooms")
+
+
+def test_room_has_many_adjacent(room):
+    """A Room should have many adjacent rooms
+    """
+    has_many(clazz=room, obj_key="adjacent")
+
+
+def test_room_has_many_clues(room):
+    """A Room should have many clues
+    """
+    has_many(clazz=room, obj_key="clues")
+
+
+def test_player_is_in_room(player):
+    """A Player should contain a Room
+    """
+    assert isinstance(player.location, dork.types.Room)
+
+
+def test_item_has_many_stats(item):
+    """An item should have many stats
+    """
+    has_many(clazz=item, obj_key="stats")
+
+
+def test_holder_has_many_items(holder):
+    """A Holder should have many items
+    """
+    has_many(clazz=holder, obj_key="items")
