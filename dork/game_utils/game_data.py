@@ -1,77 +1,6 @@
 """Data and commands for REPL"""
-import dork.types as dork_types
-import dork.game_utils.world_loader as world_loader
-# import dork.game_utils.world_writer as world_writer
-
 
 __all__ = ["CMDS", "MOVES", "ERRS", "META", "TITLE"]
-
-
-class Hero:
-    """Holds an instance of Game and modifies its state"""
-
-    def __init__(self):
-        self._reset()
-
-    def _reset(self):
-        player_name = input("What's your name, stranger? ")
-        data = world_loader.main(player_name)
-        self.game = dork_types.Game(data=data, player_name=player_name)
-        self.name = self.game.hero.name
-
-    def _printgame(self):
-        print(self.game.worldmap.rooms)
-        print(self.game.players)
-        return "", False
-
-    def _printname(self):
-        print(self.name)
-        return "", False
-
-    def _make_game(self):
-        if self._confirm():
-            self._reset()
-        return "", False
-
-    def _move(self, cardinal):
-        hero = self.game.hero
-        location = hero.location
-        adjacent_room = location.adjacent.get(cardinal, None)
-        if not adjacent_room:
-            out = f"You cannot go {cardinal} from here."
-        else:
-            hero.location = self.game.worldmap.rooms[adjacent_room]
-            print(f"You have entered {hero.location.name}")
-            out = hero.location.description
-        return out, False
-
-    @staticmethod
-    def _gtfo():
-        return "rude!", True
-
-    @staticmethod
-    def _zork():
-        return "Oh shit, you found an easter egg!", False
-
-    @staticmethod
-    def _repl_error(arg):
-        return f"{arg}", False
-
-    @staticmethod
-    def _confirm():
-        print("\n!!!WARNING!!! You will lose unsaved data!\n")
-        conf = False
-        while True:
-            conf = str.casefold(input("Would you like to proceed? Y/N: "))
-            conf = {
-                "y": True,
-                "n": False
-            }.get(conf, None)
-            if conf is None:
-                print("That is not a valid response!")
-            else:
-                break
-        return conf
 
     # def _save_game(self):
     #     world_writer.main(self.game)
@@ -125,10 +54,10 @@ CMDS = {
     "travel": MOVES,
     "run": MOVES,
     "head": MOVES,
-    # "look": _look,
-    # "i": _inventory,
-    # "inv": _inventory,
-    # "inventory": _inventory,
+    "look": ["_look"],
+    "i": ["_inventory"],
+    "inv": ["_inventory"],
+    "inventory": ["_inventory"],
     # "grab": _take,
     # "take": _take,
     # "add": _take,
@@ -140,17 +69,15 @@ CMDS = {
 
 
 META = {
-    ".new": ["_make_game"],
-    ".load": ["_make_game"],
+    ".new": ["_start_over"],
+    ".load": ["_start_over"],
     # ".save":["_save_game"],
     ".rq": ["_gtfo"],
     ".z": ["_zork"],
-    # ".p": ["_printgame"],
-    # ".n": ["_printname"]
 }
 
 
 ERRS = {
     "u": ["_repl_error", "Sorry, I don't know that one."],
-    "?": ["_repl_error", "Huh? Can you speak up?"]
+    "?": ["_repl_error", "Huh? Can you speak up?"],
 }

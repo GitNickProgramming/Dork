@@ -7,7 +7,7 @@ rooms:
             east:
             west:
         description: OH MY GOD THERE'S AN ANGRY TROLL IN HERE
-        players: troll
+        players: [troll]
         items:
             1:
                 name: only friend
@@ -30,8 +30,8 @@ rooms:
             east: cave
             west: armory
         description: how'd you get in here?
-        players:
-        items:
+        players: []
+        items: 
             1:
                 name: soggy waffle
                 description: it's just a soggy waffle
@@ -53,7 +53,7 @@ rooms:
             east: entrance
             west: 
         description: weapons all around!
-        players:
+        players: []
         items:
             1:
                 name: iron bane
@@ -76,7 +76,7 @@ rooms:
             east: 
             west: entrance
         description: this place dank af, yo
-        players:
+        players: [bobby b]
         items:
             1:
                 name: dragon eye mushrooms
@@ -91,7 +91,7 @@ rooms:
             east: 
             west: 
         description: I love gooooooold
-        players: ghost
+        players: [ghost]
         items:
             1:
                 name: gold
@@ -112,6 +112,10 @@ players:
         name: bobby b
         location: cave
         inventory:
+            1:
+                name:
+                description:
+                stats:
         equipped:
         dialog:
     troll:
@@ -136,5 +140,9 @@ players:
         name: casper
         location: gold
         inventory:
+            1:
+                name:
+                description:
+                stats:
         equipped:
         dialog: "woOoOoOoo!"

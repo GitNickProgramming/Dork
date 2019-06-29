@@ -35,19 +35,27 @@ class Player(Holder):
     def __init__(self):
         super().__init__()
         self.name = None
-        self.location = None
+        self.location = Room()
         self.equipped = None
-
-    def make(self, player, location):
+    def make(self, player):
         """Make a player
         """
         self.name = player["name"]
         self.equipped = player["equipped"]
+        inventory = player["inventory"]
+        for item in inventory:
+            if not item:
+                new_item = Item()
+                new_item.make(inventory[item])
+                self.items[new_item.name] = new_item
+    def set_location(self, location):
+        """Set player's location
+        """
         self.location = location
-        for item in player["inventory"]:
-            new_item = Item()
-            new_item.make(item)
-            self.items[new_item.name] = new_item
+    def get_location(self):
+        """Get Player's location
+        """
+        return self.location
 
 
 class Room(Holder):
@@ -60,21 +68,22 @@ class Room(Holder):
         self.adjacent = dict()
         self.players = list()
         self.clues = dict()
-    def make(self, room):
+    def make(self, room, players):
         """Make a room
         """
         self.name = room["name"]
         self.description = room["description"]
         self.adjacent = room["adjacent"]
         self.clues = room["clues"]
-        for item in room["items"]:
+        items = room["items"]
+        for item in items:
             new_item = Item()
-            new_item.make(item)
+            new_item.make(items[item])
             self.items[new_item.name] = new_item
-        for player in room["players"]:
-            new_player = Player()
-            new_player.make(player, self)
-            self.players[new_player.name] = new_player
+        for player in players:
+            if players[player].name in room["players"]:
+                self.players.append(players[player])
+                players[player].location = self
 
 
 class Worldmap:
@@ -91,10 +100,72 @@ class Game:
     """
     def __init__(self):
         self.worldmap = Worldmap()
+        self.players = dict()
         self.hero = Player()
+        self.__build_game()
+    
+    def __build_game(self):
+        """Make a new game
+        """
+        player_name = input("What's your name, stranger? ")
+        data = world_loader.main(player_name)
+        self.__build_players(players=data["players"])
+        self.__build_world(rooms=data["rooms"])
+        self.__build_hero(hero=player_name)
+    
+    def __build_players(self, players):
+        for player in players:
+            new_player = Player()
+            new_player.make(players[player])
+            self.players[new_player.name] = new_player
+    
+    def __build_world(self, rooms):
+        self.worldmap.players = self.players
+        for room in rooms:
+            new_room = Room()
+            new_room.make(rooms[room], self.players)
+            self.worldmap.rooms[new_room.name] = new_room
+    
+    def __build_hero(self, hero):
+        self.hero = self.players.get(
+            hero, self.players.get("new_player")
+        )
+        self.hero.name = hero
 
-    def _reset(self):
-        self.__init__()
+    def _gtfo(self):
+        return f"Thanks for playing DORK, {self.hero.name}!", True
+
+    def _move(self, cardinal):
+        location = self.hero.get_location()
+        adjacent_room = location.adjacent.get(cardinal, None)
+        if not adjacent_room:
+            out = f"You cannot go {cardinal} from here."
+        else:
+            self.hero.set_location(self.worldmap.rooms[adjacent_room])
+            print(f"You have entered {self.hero.location.name}")
+            out = self.hero.location.description
+        return out, False
+
+    def _inventory(self):
+        print("\nInventory:\n")
+        items = self.hero.items
+        if items:
+            for item in items:
+                print("\t" + items[item].name)
+        else:
+            print("\tyou ain't got shit, son!")
+        return "", False
+    
+    def _look(self):
+        return self.hero.location.description, False
+
+    def _start_over(self):
+        if self._confirm():
+            self.__build_game()
+            out = ""
+        else:
+            out = "Guess you changed your mind!"
+        return out, False
 
     @staticmethod
     def _confirm():
@@ -114,16 +185,10 @@ class Game:
                 break
         return conf
 
-    def _build_game(self):
-        player_name = input("What's your name, stranger? ")
-        data = world_loader.main(player_name)
-        self._build_world(rooms=data["rooms"], hero=player_name)
+    @staticmethod
+    def _zork():
+        return "Oh shit, you found an easter egg!", False
 
-    def _build_world(self, rooms, hero):
-        for room in rooms:
-            new_room = Room()
-            new_room.make(room)
-            self.worldmap.rooms[new_room.name] = new_room
-            self.hero = self.worldmap.players["hero"]
-            if self.hero.name is None:
-                self.hero.name = hero
+    @staticmethod
+    def _repl_error(arg):
+        return f"{arg}", False
