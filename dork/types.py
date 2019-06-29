@@ -41,6 +41,9 @@ class Player(Holder):
         self.inventory = Holder()
         self.equipped = None
 
+    def _get_current_location(self):
+        return self.current_room
+
 
 class Room(Holder):
     """A room on the map

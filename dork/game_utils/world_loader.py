@@ -4,10 +4,13 @@
 import os
 import dork.types as dork_types
 import dork.game_utils.yaml_parser as yml_parse
+import yaml
 
 
 __all__ = ["main"]
 
+
+dataa = dict()
 
 def _create_game(file_name="yaml/default_world"):
     data = yml_parse.load(file_name)
@@ -18,7 +21,17 @@ def _create_game(file_name="yaml/default_world"):
     game = dork_types.Game(player=new_player, worldmap=new_worldmap)
     if not game.player.name:
         game.player.name = input("What's your name, stranger? ")
+    current_game(data)
     return game
+
+def current_game(data):
+    #gamee = game
+    #namee = game.player.name
+
+    with open('./dork/current_game/'+"currentgame"+'.yml', 'w') as my_yaml_file:
+        yaml.dump(data, my_yaml_file, default_flow_style=False)
+    print("worked")
+    return ""
 
 
 def _create_worldmap(data):

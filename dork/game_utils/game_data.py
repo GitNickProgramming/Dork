@@ -12,7 +12,7 @@ class REPL:
 
     def __init__(self):
         self._reset()
-        
+
     def _reset(self, new_game=True):
         self.game = world_loader.main(new_game)
         self.name = self.game.player.name
@@ -69,7 +69,7 @@ class REPL:
         return out, False
 
     def _save_game(self):
-        w_writer.main(self.game)
+        w_writer.mainn(self.game)
         return "Save successful!", False
 
     # def _inventory(self):
