@@ -59,11 +59,7 @@ rooms:
                 name: iron bane
                 description: the dagger is rusty, but sharp
                 stats: [+7, attack]
-            2:
-                name: wobblelobbledobdob
-                description: the sword is drunk
-                stats: [-3, attack]
-            3:  
+            2:  
                 name: bow of purposelessness
                 description: the bow has no cord, but it looks nice
                 stats:
@@ -113,9 +109,9 @@ players:
         location: cave
         inventory:
             1:
-                name:
-                description:
-                stats:
+                name: wobblelobbledobdob
+                description: the sword is drunk
+                stats: [-3, attack]
         equipped:
         dialog:
     troll:

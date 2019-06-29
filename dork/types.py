@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 """Basic entity classes and methods for Dork.
 """
+# from pprint import pprint
 import dork.game_utils.world_loader as world_loader
 
 
@@ -44,7 +45,7 @@ class Player(Holder):
         self.equipped = player["equipped"]
         inventory = player["inventory"]
         for item in inventory:
-            if not item:
+            if item is not None:
                 new_item = Item()
                 new_item.make(inventory[item])
                 self.items[new_item.name] = new_item
@@ -147,14 +148,16 @@ class Game:
         return out, False
 
     def _inventory(self):
-        print("\nInventory:\n")
         items = self.hero.items
-        if items:
-            for item in items:
-                print("\t" + items[item].name)
-        else:
-            print("\tyou ain't got shit, son!")
-        return "", False
+        item_count = 0
+        out = "Inventory:\n"
+        for item in items:
+            if item is not None:
+                out += "\n" + " "*4 + items[item].name
+                item_count += 1
+        if item_count == 0.:
+            out = " "*4 + "You ain't got shit, son!"
+        return out, False
     
     def _look(self):
         return self.hero.location.description, False
@@ -173,10 +176,10 @@ class Game:
     # def _use_item(self, item):
     #     return "You used the thing! It's super effective!", False
 
-    def _start_over(self):
+    def _start_over(self, load_or_save):
         if self._confirm():
             self.__build_game()
-            out = ""
+            out = load_or_save
         else:
             out = "Guess you changed your mind!"
         return out, False
