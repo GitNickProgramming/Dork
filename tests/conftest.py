@@ -10,8 +10,7 @@ pytest_plugins = ["pytester"]  # pylint: disable=invalid-name
 @pytest.fixture
 def player():
     """A basic dork player fixture"""
-    player = dork.types.Player("player name", "player room")
-    return player
+    return dork.types.Player("player name", "player room")
 
 
 @pytest.fixture
@@ -29,8 +28,7 @@ def room():
 @pytest.fixture
 def game():
     """A basic dork game fixture"""
-    game = dork.types.Game()
-    return game
+    return dork.types.Game()
 
 
 @pytest.fixture
@@ -48,8 +46,7 @@ def holder():
 @pytest.fixture
 def hero():
     """A repl instance fixture"""
-    repl_instance_fixture = dork.game_utils.game_data.Hero
-    return repl_instance_fixture
+    return dork.game_utils.game_data.Hero
 
 
 @pytest.fixture
@@ -62,8 +59,6 @@ def repl_data():
         dork.game_utils.game_data.ERRS
     )
     return repl_data_fixture
-
-
 
 
 @pytest.fixture
