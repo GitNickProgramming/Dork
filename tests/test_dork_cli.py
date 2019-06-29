@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 """Basic tests for the dork cli"""
 from types import FunctionType
-# from unittest import mock
+from unittest import mock
 import dork.cli
-
+import tests.conftest
 
 def test_cli_exists():
     """Dork.cli.main should always exist and runs
@@ -19,3 +19,7 @@ def test_cli_help(run):
     assert "usage:" in out
     assert err == ""
     assert mocked_input.call_count == 0
+
+def test_cli_unknown(run):
+    result = run(dork.cli.main, '-?', input_side_effect=['tester','.rq'])
+    assert 'Greetings' in result[0], "failed to ignore unknown args"

@@ -3,7 +3,7 @@
 """
 
 import dork.game_utils.game_data as game_data
-import dork
+import dork.repl
 
 
 def test_repl_method_read(mocker):
@@ -18,10 +18,9 @@ def test_repl_method_read(mocker):
     assert mocked_input.call_count == 4
 
 
-def test_repl_evaluate(repl, repl_data):
+def test_repl_evaluate(repl ,repl_data):
     """Dork.repl.evaluate should deal with all input types
     """
-
     assert dork.repl.evaluate("", repl, repl_data) == (
         'Huh? Can you speak up?', False)
     assert dork.repl.evaluate("     ", repl, repl_data) == (
