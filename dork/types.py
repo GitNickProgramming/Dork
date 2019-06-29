@@ -5,7 +5,14 @@
 import dork.game_utils.world_loader as world_loader
 
 
-__all__ = ["Item", "Holder", "Player", "Room", "Worldmap"]
+__all__ = ["Game"]
+
+
+class Holder:
+    """A holder/container of items
+    """
+    def __init__(self):
+        self.items = dict()
 
 
 class Item:
@@ -21,13 +28,6 @@ class Item:
         self.name = item["name"]
         self.description = item["description"]
         self.stats = item["stats"]
-
-
-class Holder:
-    """A holder/container of items
-    """
-    def __init__(self):
-        self.items = dict()
 
 
 class Player(Holder):
