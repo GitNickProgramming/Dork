@@ -159,6 +159,20 @@ class Game:
     def _look(self):
         return self.hero.location.description, False
 
+    # def _save_game(self):
+    #     world_writer.main(self)
+    #     return "Save successful!", False
+
+    # def _take(self, item="all"):
+    #     # Item defaults to "all", and adds all items in room to inventory
+    #     return "You took the thing. You took it well.", False
+
+    # def _drop_item(self, item):
+    #     return "Oops, you dropped something!", False
+
+    # def _use_item(self, item):
+    #     return "You used the thing! It's super effective!", False
+
     def _start_over(self):
         if self._confirm():
             self.__build_game()

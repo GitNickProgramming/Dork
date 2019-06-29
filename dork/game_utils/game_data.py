@@ -2,23 +2,6 @@
 
 __all__ = ["CMDS", "MOVES", "ERRS", "META", "TITLE"]
 
-    # def _save_game(self):
-    #     world_writer.main(self.game)
-    #     return "Save successful!", False
-
-    # def _inventory(self):
-    #     return self.game.hero.inventory, False
-
-    # def _take(self, item="all"):
-    #     # Item defaults to "all", and adds all items in room to inventory
-    #     return "You took the thing. You took it well.", False
-
-    # def _drop_item(self, item):
-    #     return "Oops, you dropped something!", False
-
-    # def _use_item(self, item):
-    #     return "You used the thing! It's super effective!", False
-
 
 TITLE = r"""Welcome to...
 
