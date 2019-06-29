@@ -1,8 +1,6 @@
 # -*- coding: utf-8 -*-
 """Basic tests for state and entity relationships in dork
 """
-
-import dork.game_utils.game_data as game_data
 from tests.utils import has_method
 import dork
 
@@ -11,12 +9,14 @@ def test_repl_method_read(mocker):
     """Dork.repl.read should always exist and runs
     """
     mocked_input = mocker.patch('builtins.input')
-    mocked_input.side_effect = ["lEeTteXt", "UPPER", "   ", ""]
+    mocked_input.side_effect = ["lEeTteXt", "UPPER", "   ", "", " SPACEUPPER", "UPPERSPACE "]
     assert dork.repl.read() == "leettext"
     assert dork.repl.read() == "upper"
     assert dork.repl.read() == "   "
     assert dork.repl.read() == ""
-    assert mocked_input.call_count == 4
+    assert dork.repl.read() == " spaceupper"
+    assert dork.repl.read() == "upperspace "
+    assert mocked_input.call_count == 6
 
 
 def test_repl_evaluate(game, repl_data):
@@ -39,10 +39,12 @@ def test_repl_evaluate(game, repl_data):
 def test_repl_evaluate_various_functions(game, repl_data):
     """Dork.repl.evaluate has various functions
     """
-    # assert repl.evaluate(".rq", repl, game, repl_data) == (
-    #     'rude!', True)
-    assert dork.repl.evaluate(".z", game, repl_data) == (
-        "Oh shit, you found an easter egg!", False)
+    assert "Thanks for playing DORK", True in dork.repl.evaluate(
+        ".rq", game, repl_data
+    )
+    assert dork.repl.evaluate(
+        ".z", game, repl_data
+    ) == ("Oh shit, you found an easter egg!", False)
 
 
 def test_game_methods_exist(game):
@@ -75,45 +77,3 @@ def test_repl_method_repl(run, mocker):
     assert "Bufarr" in out
     assert err == ""
     assert mocked_input.call_count == len(evaluate_values) + 1
-
-    # game_data.REPL()
-    # captured = capsys.readouterr()
-    # assert captured.out == "What's your name, stranger? "
-
-    # def test_say_the_truth():
-    # with mock.patch('builtins.input') as mocked_input:
-    #     mocked_input.side_effect = ["", "the streets"]
-    #     test_say_the_truth()
-    # assert say_the_truth() == "the truth"
-    # assert say_the_truth() == "the truth about the streets"
-    # assert mocked_input.call_count == 2
-
-    # arguments_sent = ["lEeTeXt", "UPPER", "lower"]
-    # out, err, mocked_input = run(dork.repl.read, arguments_sent, input_side_effect=['first', 'second', 'last'])
-
-    # assert out is None
-
-    # # assert isinstance(dork.cli.main, FunctionType)
-
-
-# def test_repl_read():
-#     with mock.patch('builtins.input') as mocked_input:
-#         mocked_input.side_effect = ["", "UPPER", "lower", "098", "    ", "lEEtTeXt"]
-
-#     assert dork.repl.read() == ""
-#     assert dork.repl.read() == "upper"
-#     assert dork.repl.read() == "lower"
-#     assert dork.repl.read() == "098"
-#     assert dork.repl.read() == "    "
-#     assert dork.repl.read() == "leettext"
-#     assert mocked_input.call_count == 6
-
-
-# def test_repl_eval():
-#     assert dork.repl.repl() == "What's your name, stranger?"
-#     with mock.patch('builtins.input') as mocked_input:
-#         mocked_input.side_effect = ["", "Name"]
-
-#     assert dork.repl.repl() == dork.game_utils.game_data.TITLE
-#     assert dork.repl.repl() == ""
-#     assert mocked_input.call_count == 2
