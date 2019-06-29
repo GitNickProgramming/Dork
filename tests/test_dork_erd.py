@@ -50,10 +50,10 @@ def test_map_exists():
 def test_room_has_many_players(room):
     """A Room should have many players
     """
-    has_many(room, "Room", "players")
+    has_many(clazz=room, obj_key="players")
 
 
-def test_map_has_many_rooms(worldmap):
+def test_worldmap_has_many_rooms(worldmap):
     """A Map should have many Rooms
     """
-    has_many(worldmap, "Worldmap", "rooms")
+    has_many(clazz=worldmap, obj_key="rooms")
