@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """Basic tests for state and entity relationships in dork
 """
-from tests.utils import has_a, is_a
+from tests.utils import has_a, is_a, has_method
 
 
 # NEEDS TO BE MOCKED

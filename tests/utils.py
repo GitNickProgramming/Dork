@@ -9,6 +9,11 @@ def has_a(obj, attr):
     assert attr in vars(obj), f"{obj} has no {attr}"
 
 
+def has_method(obj, method):
+    """has a method"""
+    assert hasattr(obj, method), f"{obj} has no {method}"
+
+
 def is_a(obj, clazz):
     """Determines if an object is an instance of clazz.
 

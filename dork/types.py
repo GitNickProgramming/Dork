@@ -103,31 +103,30 @@ class Game:
         self.worldmap = Worldmap()
         self.players = dict()
         self.hero = Player()
-        self.__build_game()
     
-    def __build_game(self):
+    def build(self):
         """Make a new game
         """
         player_name = input("What's your name, stranger? ")
         data = world_loader.main(player_name)
-        self.__build_players(players=data["players"])
-        self.__build_world(rooms=data["rooms"])
-        self.__build_hero(hero=player_name)
+        self._build_players(players=data["players"])
+        self._build_world(rooms=data["rooms"])
+        self._build_hero(hero=player_name)
     
-    def __build_players(self, players):
+    def _build_players(self, players):
         for player in players:
             new_player = Player()
             new_player.make(players[player])
             self.players[new_player.name] = new_player
     
-    def __build_world(self, rooms):
+    def _build_world(self, rooms):
         self.worldmap.players = self.players
         for room in rooms:
             new_room = Room()
             new_room.make(rooms[room], self.players)
             self.worldmap.rooms[new_room.name] = new_room
     
-    def __build_hero(self, hero):
+    def _build_hero(self, hero):
         self.hero = self.players.get(
             hero, self.players.get("new_player")
         )
@@ -178,7 +177,7 @@ class Game:
 
     def _start_over(self, load_or_save):
         if self._confirm():
-            self.__build_game()
+            self.build()
             out = load_or_save
         else:
             out = "Guess you changed your mind!"
