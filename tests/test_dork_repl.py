@@ -39,8 +39,21 @@ def test_repl_evaluate(game, repl_data):
 def test_repl_evaluate_various_functions(game, repl_data):
     """Dork.repl.evaluate has various functions
     """
-    # assert repl.evaluate(".rq", repl, game, repl_data) == (
-    #     'rude!', True)
+    assert dork.repl.evaluate(".rq", game, repl_data) == (
+        'Thanks for playing DORK, None!', True)
+    assert dork.repl.evaluate(".z", game, repl_data) == (
+        "Oh shit, you found an easter egg!", False)
+    assert dork.repl.evaluate("look", game, repl_data) == (
+        None, False)
+    assert dork.repl.evaluate("i", game, repl_data) == (
+        "    You ain't got shit, son!", False)
+
+
+def test_repl_evaluate_move(game, repl_data):
+    """Dork.repl.evaluate has various functions
+    """
+    assert dork.repl.evaluate(".rq", game, repl_data) == (
+        'Thanks for playing DORK, None!', True)
     assert dork.repl.evaluate(".z", game, repl_data) == (
         "Oh shit, you found an easter egg!", False)
 
@@ -75,6 +88,25 @@ def test_repl_method_repl(run, mocker):
     assert "Bufarr" in out
     assert err == ""
     assert mocked_input.call_count == len(evaluate_values) + 1
+
+
+# def test_mocked_evals(run, mocker, game, repl_data):
+#     """Dork.repl.read should always exist and runs
+#     """
+#     new = dork.repl.evaluate(".new", game, repl_data)
+#     after_new = dork.repl.evaluate("n", game, repl_data)
+#     after_cancel = dork.repl.evaluate(".rq", game, repl_data)
+
+# def test_repl_call_to_build(run, mocker):
+#     """Dork.repl.read should always exist and runs
+#     """
+
+
+#     out, err, mocked_input = run(
+#         dork.types.Game.build, input_side_effect="player name")
+#     assert "What's your name, stranger? " in out
+#     assert err == ""
+#     assert mocked_input.call_count == 1
 
     # game_data.REPL()
     # captured = capsys.readouterr()

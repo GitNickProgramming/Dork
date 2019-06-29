@@ -1,16 +1,24 @@
 # -*- coding: utf-8 -*-
 """Basic tests for state and entity relationships in dork
 """
-from tests.utils import has_a, is_a, has_method
+from tests.utils import has_a, has_method
 
 
-# NEEDS TO BE MOCKED
-# def test_game_attributes(game):
-#     """the game should have attributes
-#     """
-#     has_a(game, "players")
-#     has_a(game, "worldmap")
-#     has_a(game, "hero")
+def test_game_attributes(game):
+    """the game should have attributes
+    """
+    has_a(game, "players")
+    has_a(game, "worldmap")
+    has_a(game, "hero")
+    has_method(game, "build")
+    has_method(game, "_build_players")
+    has_method(game, "_build_world")
+    has_method(game, "_build_hero")
+    has_method(game, "_gtfo")
+    has_method(game, "_move")
+    has_method(game, "_inventory")
+    has_method(game, "_look")
+
 
 def test_room_attributes(room):
     """the room should have attributes
