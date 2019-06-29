@@ -21,7 +21,6 @@ def test_repl_method_read(mocker):
 def test_repl_evaluate(repl, repl_data):
     """Dork.repl.evaluate should deal with all input types
     """
-
     assert dork.repl.evaluate("", repl, repl_data) == (
         'Huh? Can you speak up?', False)
     assert dork.repl.evaluate("     ", repl, repl_data) == (
@@ -43,6 +42,23 @@ def test_repl_evaluate_various_functions(repl, repl_data):
         'rude!', True)
     assert dork.repl.evaluate(".z", repl, repl_data) == (
         "Oh shit, you found an easter egg!", False)
+
+
+def test_game_methods_exist(game):
+    """the dork module should define a Game
+    """
+    has_a(game, "__build_game")
+    has_a(game, "__build_players")
+    has_a(game, "__build_world")
+    has_a(game, "__build_hero")
+    has_a(game, "_gtfo")
+    has_a(game, "_move")
+    has_a(game, "_inventory")
+    has_a(game, "_look")
+    has_a(game, "_start_over")
+    has_a(game, "_confirm")
+    has_a(game, "_zork")
+    has_a(game, "_repl_error")
 
 
 def test_repl_method_repl(run, mocker):

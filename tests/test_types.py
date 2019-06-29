@@ -4,12 +4,13 @@
 from tests.utils import has_a, is_a
 
 
-def test_game_attributes(game):
-    """the game should have attributes
-    """
-    has_a(game, "players")
-    has_a(game, "worldmap")
-    has_a(game, "hero")
+# NEEDS TO BE MOCKED
+# def test_game_attributes(game):
+#     """the game should have attributes
+#     """
+#     has_a(game, "players")
+#     has_a(game, "worldmap")
+#     has_a(game, "hero")
 
 def test_room_attributes(room):
     """the room should have attributes
@@ -27,15 +28,16 @@ def test_player_attributes(player):
     """
     has_a(player, "name")
     has_a(player, "location")
-    has_a(player, "inventory")
+    has_a(player, "items")
     has_a(player, "equipped")
 
 
 def test_item_attributes(item):
     """item should have holder and capacity
     """
-    has_a(item, "holder")
-    has_a(item, "capacity")
+    has_a(item, "name")
+    has_a(item, "description")
+    has_a(item, "stats")
 
 
 def test_holder_attributes(holder):
