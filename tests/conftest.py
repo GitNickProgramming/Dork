@@ -10,7 +10,7 @@ pytest_plugins = ["pytester"]  # pylint: disable=invalid-name
 @pytest.fixture
 def player():
     """A basic dork player fixture"""
-    return dork.types.Player("player name", "player room")
+    return dork.types.Player()
 
 
 @pytest.fixture
@@ -23,7 +23,7 @@ def item():
 @pytest.fixture
 def room():
     """A basic dork room fixture"""
-    return dork.types.Room({}, "test room name")
+    return dork.types.Room()
 
 
 @pytest.fixture

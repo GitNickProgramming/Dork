@@ -38,6 +38,7 @@ class Player(Holder):
         self.name = None
         self.location = Room()
         self.equipped = None
+        self.inventory = None
     def make(self, player):
         """Make a player
         """
@@ -99,6 +100,10 @@ class Worldmap:
 class Game:
     """A container for holding a game state
     """
+    players = {}
+    hero = None
+    worldmap = None
+
     def __init__(self):
         self.worldmap = Worldmap()
         self.players = dict()
