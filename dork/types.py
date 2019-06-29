@@ -11,6 +11,7 @@ __all__ = ["Game"]
 class Holder:
     """A holder/container of items
     """
+
     def __init__(self):
         self.items = dict()
 
@@ -18,6 +19,7 @@ class Holder:
 class Item:
     """A obtainable/holdable item
     """
+
     def __init__(self):
         self.name = None
         self.description = None
@@ -34,6 +36,7 @@ class Item:
 class Player(Holder):
     """A player or NPC in the game
     """
+
     def __init__(self):
         super().__init__()
         self.name = None
@@ -66,6 +69,7 @@ class Player(Holder):
 class Room(Holder):
     """A room on the map
     """
+
     def __init__(self):
         super().__init__()
         self.name = None
@@ -96,6 +100,7 @@ class Worldmap:
     """A map relating the rooms connectivity
         as well as the players/items within
     """
+
     def __init__(self):
         self.rooms = dict()
         self.players = dict()
@@ -104,6 +109,7 @@ class Worldmap:
 class Game:
     """A container for holding a game state
     """
+
     def __init__(self):
         self.worldmap = Worldmap()
         self.players = dict()
