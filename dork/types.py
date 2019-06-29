@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 """Basic entity classes and methods for Dork.
 """
+import dork.game_utils.world_loader as world_loader
 
 
 __all__ = ["Item", "Holder", "Player", "Room", "Worldmap"]
@@ -9,70 +10,122 @@ __all__ = ["Item", "Holder", "Player", "Room", "Worldmap"]
 class Item:
     """A obtainable/holdable item
     """
-
-    def __init__(self, capacity=0):
-        self.holder = Holder()
-        self.capacity = capacity
+    def __init__(self):
+        self.name = None
+        self.description = None
+        self.stats = dict()
+    
+    def make(self, item):
+        """Make an item
+        """
+        self.name = item["name"]
+        self.description = item["description"]
+        self.stats = item["stats"]
 
 
 class Holder:
     """A holder/container of items
     """
-
     def __init__(self):
         self.items = dict()
 
 
-class Player:
+class Player(Holder):
     """A player or NPC in the game
     """
-
-    def __init__(self, name, location):
-        self.name = name
-        self.location = location
-        self.inventory = dict()
+    def __init__(self):
+        super().__init__()
+        self.name = None
+        self.location = None
         self.equipped = None
 
+    def make(self, player, location):
+        """Make a player
+        """
+        self.name = player["name"]
+        self.equipped = player["equipped"]
+        self.location = location
+        for item in player["inventory"]:
+            new_item = Item()
+            new_item.make(item)
+            self.items[new_item.name] = new_item
 
-class Room:
+
+class Room(Holder):
     """A room on the map
     """
-
-    def __init__(self, room, name):
-        self.name = name
-        self.adjacent = room.get("adjacent", None)
-        self.description = room.get("description", None)
-        self.players = room.get("players", None)
-        self.items = room.get("items", None)
-        self.clues = room.get("clues", None)
+    def __init__(self):
+        super().__init__()
+        self.name = None
+        self.description = None
+        self.adjacent = dict()
+        self.players = list()
+        self.clues = dict()
+    
+    def make(self, room):
+        """Make a room
+        """
+        self.name = room["name"]
+        self.description = room["description"]
+        self.adjacent = room["adjacent"]
+        self.clues = room["clues"]
+        for item in room["items"]:
+            new_item = Item()
+            new_item.make(item)
+            self.items[new_item.name] = new_item
+        for player in room["players"]:
+            new_player = Player()
+            new_player.make(player, self)
+            self.players[new_player.name] = new_player
 
 
 class Worldmap:
     """A map relating the rooms connectivity
         as well as the players/items within
     """
-
-    def __init__(self, rooms=None):
+    def __init__(self):
         self.rooms = dict()
-        for room in rooms:
-            self.rooms[room] = Room(room=rooms[room], name=room)
+        self.players = dict()
 
 
 class Game:
-    """A container for holding a game state"""
+    """A container for holding a game state
+    """
+    def __init__(self):
+        self.worldmap = Worldmap()
+        self.hero = Player()
 
-    def __init__(self, data, player_name):
-        rooms = data.get("rooms", None)
-        players = data.get("players", None)
-        self.players = dict()
-        self.worldmap = Worldmap(rooms)
-        for player in players:
-            new_player_name = players[player]["name"]
-            new_player_location = players[player]["location"]
-            self.players[player] = Player(
-                name=new_player_name,
-                location=self.worldmap.rooms[new_player_location],
+    def _reset(self):
+        self.__init__()
+
+    @staticmethod
+    def _confirm():
+        print("\n!!!WARNING!!! You will lose unsaved data!\n")
+        conf = False
+        while True:
+            conf = str.casefold(
+                input("Would you like to proceed? Y/N: ")
             )
-        self.hero = self.players.get("hero", None)
-        if self.hero.name is None:
-            self.hero.name = player_name
+            conf = {
+                "y": True,
+                "n": False
+            }.get(conf, None)
+            if conf is None:
+                print("That is not a valid response!")
+            else:
+                break
+        return conf
+
+    def _build_game(self):
+        player_name = input("What's your name, stranger? ")
+        data = world_loader.main(player_name)
+        self._build_world(rooms=data["rooms"], hero=player_name)
+
+    def _build_world(self, rooms, hero):
+        for room in rooms:
+            new_room = Room()
+            new_room.make(room)
+            self.worldmap.rooms[new_room.name] = new_room
+            self.hero = self.worldmap.players["hero"]
+            if self.hero.name is None:
+                self.hero.name = hero
