@@ -14,7 +14,6 @@ class Item:
         self.name = None
         self.description = None
         self.stats = dict()
-    
     def make(self, item):
         """Make an item
         """
@@ -61,7 +60,6 @@ class Room(Holder):
         self.adjacent = dict()
         self.players = list()
         self.clues = dict()
-    
     def make(self, room):
         """Make a room
         """
