@@ -33,12 +33,16 @@ class Item:
 class Player(Holder):
     """A player or NPC in the game
     """
+    inventory = dict()
+    items = dict()
+    
     def __init__(self):
         super().__init__()
         self.name = None
         self.location = Room()
         self.equipped = None
-        self.inventory = None
+        self.inventory = dict()
+        self.items = self.inventory
     def make(self, player):
         """Make a player
         """
@@ -59,6 +63,10 @@ class Player(Holder):
         """
         return self.location
 
+
+    def add_item(self, item):
+        """adding an item for test purposes"""
+        self.inventory[item] = item.name
 
 class Room(Holder):
     """A room on the map
