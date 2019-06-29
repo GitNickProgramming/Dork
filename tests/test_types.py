@@ -4,13 +4,13 @@
 from tests.utils import has_a, is_a, has_method
 
 
-# NEEDS TO BE MOCKED
-# def test_game_attributes(game):
-#     """the game should have attributes
-#     """
-#     has_a(game, "players")
-#     has_a(game, "worldmap")
-#     has_a(game, "hero")
+def test_game_attributes(game):
+    """the game object should have attributes
+    """
+    has_a(game, "worldmap")
+    has_a(game, "players")
+    has_a(game, "hero")
+
 
 def test_room_attributes(room):
     """the room should have attributes

@@ -9,7 +9,9 @@ def test_repl_method_read(mocker):
     """Dork.repl.read should always exist and runs
     """
     mocked_input = mocker.patch('builtins.input')
-    mocked_input.side_effect = ["lEeTteXt", "UPPER", "   ", "", " SPACEUPPER", "UPPERSPACE "]
+    mocked_input.side_effect = [
+        "lEeTteXt", "UPPER", "   ", "", " SPACEUPPER", "UPPERSPACE "
+    ]
     assert dork.repl.read() == "leettext"
     assert dork.repl.read() == "upper"
     assert dork.repl.read() == "   "

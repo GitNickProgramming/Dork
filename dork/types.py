@@ -22,6 +22,7 @@ class Item:
         self.name = None
         self.description = None
         self.stats = dict()
+    
     def make(self, item):
         """Make an item
         """
@@ -38,6 +39,7 @@ class Player(Holder):
         self.name = None
         self.location = Room()
         self.equipped = None
+    
     def make(self, player):
         """Make a player
         """
@@ -49,10 +51,12 @@ class Player(Holder):
                 new_item = Item()
                 new_item.make(inventory[item])
                 self.items[new_item.name] = new_item
+    
     def set_location(self, location):
         """Set player's location
         """
         self.location = location
+    
     def get_location(self):
         """Get Player's location
         """
@@ -69,6 +73,7 @@ class Room(Holder):
         self.adjacent = dict()
         self.players = list()
         self.clues = dict()
+    
     def make(self, room, players):
         """Make a room
         """
@@ -103,6 +108,7 @@ class Game:
         self.worldmap = Worldmap()
         self.players = dict()
         self.hero = Player()
+    
     def build(self):
         """Make a new game
         """
@@ -111,24 +117,29 @@ class Game:
         self._build_players(players=data["players"])
         self._build_world(rooms=data["rooms"])
         self._build_hero(hero=player_name)
+    
     def _build_players(self, players):
         for player in players:
             new_player = Player()
             new_player.make(players[player])
             self.players[new_player.name] = new_player
+    
     def _build_world(self, rooms):
         self.worldmap.players = self.players
         for room in rooms:
             new_room = Room()
             new_room.make(rooms[room], self.players)
             self.worldmap.rooms[new_room.name] = new_room
+    
     def _build_hero(self, hero):
         self.hero = self.players.get(
             hero, self.players.get("new_player")
         )
         self.hero.name = hero
+    
     def _gtfo(self):
         return f"Thanks for playing DORK, {self.hero.name}!", True
+    
     def _move(self, cardinal):
         location = self.hero.get_location()
         adjacent_room = location.adjacent.get(cardinal, None)
@@ -139,6 +150,7 @@ class Game:
             print(f"You have entered {self.hero.location.name}")
             out = self.hero.location.description
         return out, False
+    
     def _inventory(self):
         items = self.hero.items
         item_count = 0
@@ -150,6 +162,7 @@ class Game:
         if item_count == 0.:
             out = " "*4 + "You ain't got shit, son!"
         return out, False
+    
     def _look(self):
         return self.hero.location.description, False
 
