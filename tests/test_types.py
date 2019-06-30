@@ -130,3 +130,15 @@ def test_player_location(player):
     is_a(player.location, types.Room)
     types.Player.set_location(player, "Arcterus")
     assert types.Player.get_location(player) == "Arcterus"
+
+# def test_move_method(game, mocker, capsys, room):
+#     """testing the get and set of player location
+#     """
+#     mocked_input = mocker.patch('builtins.input')
+#     mocked_input.side_effect = ["new player name"]
+#     types.Game.build(game)
+#     captured = capsys.readouterr()
+#     assert game.hero.name == "new player name"
+#     assert game.hero.location == None
+  
+
