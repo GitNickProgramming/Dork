@@ -28,7 +28,8 @@ def room():
 @pytest.fixture
 def game():
     """A basic dork game fixture"""
-    return dork.types.Game()
+    game = dork.types.Game()
+    return game
 
 
 @pytest.fixture
@@ -43,13 +44,6 @@ def holder():
     return dork.types.Holder()
 
 
-# @pytest.fixture
-# def start_over(game):
-#     """A start over method"""
-#     start_over = game._start_over("load or save string")
-#     return start_over
-
-
 @pytest.fixture
 def repl_data():
     """A repl data fixture"""
@@ -60,6 +54,13 @@ def repl_data():
         dork.game_utils.game_data.ERRS
     )
     return repl_data_fixture
+
+
+# @pytest.fixture
+# def repl():
+#     """A repl"""
+#     repl = dork.repl.repl()
+#     return repl
 
 
 @pytest.fixture
