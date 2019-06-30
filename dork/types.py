@@ -165,7 +165,7 @@ class Game:
             if item is not None:
                 out += "\n" + " "*4 + items[item].name
                 item_count += 1
-        if item_count == 0.:
+        if item_count == 0:
             out = " "*4 + "You ain't got shit, son!"
         return out, False
 

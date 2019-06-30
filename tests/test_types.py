@@ -115,7 +115,6 @@ def test_start_over_no(capsys, mocker, game):
 def test_start_over_yes(capsys, mocker, game):
     """confirm should do things
     """
-
     # the call count here as 2 is a magic number need to document that
     mocked_input = mocker.patch('builtins.input')
     mocked_input.side_effect = ["y", "new player name", ".rq"]
@@ -151,10 +150,19 @@ def test_move_method(game, mocker, cardinals):
                 f"You cannot go {direction} from here.", False) == move_return
 
 
-def test_inventory_method(game, mocker):
+def test_inventory_empty(game, mocker):
     """testing the inventory function
     """
     mocked_input = mocker.patch('builtins.input')
     mocked_input.side_effect = ["new player name"]
     types.Game.build(game)
     assert game._inventory() == ("    You ain't got shit, son!", False)
+
+
+def test_inventory_has_item(game, mocker):
+    """testing the inventory function
+    """
+    mocked_input = mocker.patch('builtins.input')
+    mocked_input.side_effect = ["bobby b"]
+    types.Game.build(game)
+    assert game._inventory() == ("Inventory:\n\n    wobblelobbledobdob", False)
