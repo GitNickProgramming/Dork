@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 """Basic tests for the dork cli"""
 from types import FunctionType
-# from unittest import mock
 import dork.cli
 
 
@@ -23,7 +22,8 @@ def test_cli_help(run):
 
 def test_cli_unknown(run):
     """Tests CLI's ability to handle unknown args"""
-    out, err, mocked_input = run(dork.cli.main, '-?', input_side_effect=['tester', '.rq'])
+    out, err, mocked_input = run(
+        dork.cli.main, '-?', input_side_effect=['tester', '.rq'])
     assert 'Greetings' in out
     assert err == ""
     assert mocked_input.call_count == 2
