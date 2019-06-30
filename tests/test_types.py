@@ -5,6 +5,8 @@ from tests.utils import has_a, has_method
 import dork.types as types
 
 # pylint: disable=protected-access
+
+
 def test_game_attributes(game):
     """the game should have attributes
     """
