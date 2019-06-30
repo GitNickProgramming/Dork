@@ -28,8 +28,7 @@ def room():
 @pytest.fixture
 def game():
     """A basic dork game fixture"""
-    game = dork.types.Game()
-    return game
+    return dork.types.Game()
 
 
 @pytest.fixture
@@ -54,13 +53,6 @@ def repl_data():
         dork.game_utils.game_data.ERRS
     )
     return repl_data_fixture
-
-
-# @pytest.fixture
-# def repl():
-#     """A repl"""
-#     repl = dork.repl.repl()
-#     return repl
 
 
 @pytest.fixture

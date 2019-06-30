@@ -54,6 +54,6 @@ def test_room_has_many_players(room):
 
 
 def test_map_has_many_rooms(worldmap):
-    """A Map should have many Rooms
+    """A Map should have Rooms
     """
     has_many(worldmap, "Worldmap", "rooms")

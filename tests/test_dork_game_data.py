@@ -1,12 +1,12 @@
 # -*- coding: utf-8 -*-
 """Basic tests for state and entity relationships in dork
 """
-from tests.utils import is_a, has_a
+from tests.utils import is_a
 import dork.game_utils.game_data as game_data
 
 
 def test_game_data_vars_exist():
-    """the dork module should define a Game
+    """the game should have this data
     """
     assert "CMDS" in vars(game_data)
     assert "MOVES" in vars(game_data)

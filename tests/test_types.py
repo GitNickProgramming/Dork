@@ -61,7 +61,7 @@ def test_worldmap_attributes(worldmap):
     has_a(worldmap, "rooms")
 
 
-def test_confirm_method_yes(capsys, mocker):
+def test_confirm_method_yes(capsys, mocker):  # pylint: disable=protected-access
     """confirm should do things
     """
     mocked_input = mocker.patch('builtins.input')
@@ -72,7 +72,7 @@ def test_confirm_method_yes(capsys, mocker):
     assert mocked_input.call_count == 1
 
 
-def test_confirm_method_no(capsys, mocker):
+def test_confirm_method_no(capsys, mocker):  # pylint: disable=protected-access
     """confirm should do things
     """
     mocked_input = mocker.patch('builtins.input')
@@ -83,7 +83,7 @@ def test_confirm_method_no(capsys, mocker):
     assert mocked_input.call_count == 1
 
 
-def test_confirm_method_blank(capsys, mocker):
+def test_confirm_method_blank(capsys, mocker):  # pylint: disable=protected-access
     """confirm should do things
     """
     mocked_input = mocker.patch('builtins.input')
@@ -95,7 +95,7 @@ def test_confirm_method_blank(capsys, mocker):
     assert mocked_input.call_count == 3
 
 
-def test_start_over_no(capsys, mocker, game):
+def test_start_over_no(capsys, mocker, game):  # pylint: disable=protected-access
     """confirm should do things
     """
     mocked_input = mocker.patch('builtins.input')
@@ -107,7 +107,7 @@ def test_start_over_no(capsys, mocker, game):
     assert mocked_input.call_count == 1
 
 
-def test_start_over_yes(capsys, mocker, game):
+def test_start_over_yes(capsys, mocker, game):  # pylint: disable=protected-access
     """confirm should do things
     """
 
