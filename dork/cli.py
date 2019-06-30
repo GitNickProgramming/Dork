@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""Basic CLI Dork. Test edit."""
+"""Basic CLI Dork."""
 import dork.repl as repl
 
 

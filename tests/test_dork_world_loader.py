@@ -11,11 +11,13 @@ def test_world_loader():
     is_a(world_loader.main("player_name"), dict)
 
 
-def test_main_with_same_name():
-    """Tests loading with player name"""
-    assert isinstance(world_loader.main('bobby b'), dict)
+def test_main_with_existing_save():
+    """Tests loading an existing save file
+    """
+    assert isinstance(world_loader.main("bobby b"), dict)
 
 
 def test_main_without_same_name():
-    """Tests loading with unknown name"""
-    assert isinstance(world_loader.main('nobody'), dict)
+    """Tests loading a non-existing save file
+    """
+    assert isinstance(world_loader.main("nobody"), dict)
