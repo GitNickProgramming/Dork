@@ -75,4 +75,4 @@ def test_map_exists():
 def test_map_has_many_rooms(worldmap):
     """A Map should have many Rooms
     """
-    has_many(worldmap, "Worldmap", "rooms")
+    has_many(worldmap, "rooms")
