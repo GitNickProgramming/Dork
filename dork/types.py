@@ -204,10 +204,10 @@ class Game:
     def _look(self):
         return self.hero.location.description, False
 
-    def _start_over(self, new_or_load):
+    def _start_over(self):
         if self._confirm():
             self.build()
-            out = new_or_load
+            out = ""
         else:
             out = "Guess you changed your mind!"
 

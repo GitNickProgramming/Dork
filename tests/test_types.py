@@ -110,7 +110,7 @@ def test_start_over_no(capsys, mocker, game):
     """
     mocked_input = mocker.patch('builtins.input')
     mocked_input.side_effect = ["n"]
-    assert game._start_over("the notification string") == (
+    assert game._start_over() == (
         "Guess you changed your mind!", False)
     captured = capsys.readouterr()
     assert "\n!!!WARNING!!! You will lose unsaved data!\n" in captured.out
@@ -123,7 +123,7 @@ def test_start_over_yes(capsys, mocker, game):
     # the call count here as 2 is a magic number need to document that
     mocked_input = mocker.patch('builtins.input')
     mocked_input.side_effect = ["y", "new player name", ".rq"]
-    game._start_over("the notification string")
+    game._start_over()
     captured = capsys.readouterr()
     assert "\n!!!WARNING!!! You will lose unsaved data!\n" in captured.out
     assert mocked_input.call_count == 2
@@ -168,7 +168,9 @@ def test_inventory_empty(game, mocker):
 def test_inventory_has_item(game, mocker):
     """testing the inventory function
     """
+    bobby_b_inventory = \
+        "Inventory:\n\n    wobblelobbledobdob\n    bow of purposelessness"
     mocked_input = mocker.patch('builtins.input')
     mocked_input.side_effect = ["bobby b"]
     types.Game.build(game)
-    assert game._inventory() == ("Inventory:\n\n    wobblelobbledobdob", False)
+    assert game._inventory() == (bobby_b_inventory, False)

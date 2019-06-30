@@ -4,27 +4,27 @@ import dork.types as dork_types
 
 
 def read():
-    """get input from CLI"""
+    """Get input from CLI
+    """
     return str.casefold(input("> "))
 
 
 def evaluate(cmd, game_instance, repl_data):
-    """parse a cmd and run it"""
+    """Parse a cmd and run it
+    """
     cmds, moves, meta, errs = repl_data
     cmd = cmd.split()
     if cmd:
         noun, verb = cmd.pop() if len(cmd) > 1 else None, cmd.pop()
-        instruction = cmds.get(
-            verb, moves.get(
-                verb, meta.get(
-                    verb, errs["u"])))
-        if isinstance(instruction, dict):
-            instruction = instruction.get(noun, errs["u"])
-    else:
-        instruction = errs["?"]
+        call = cmds.get(verb, moves.get(verb, meta.get(verb, errs["u"])))
 
-    method = instruction[0]
-    arg = instruction[1] if len(instruction) > 1 else None
+        if isinstance(call, dict):
+            call = call.get(noun, errs["u"])
+    else:
+        call = errs["?"]
+
+    method = call[0]
+    arg = call[1] if len(call) > 1 else None
 
     if not arg:
         return getattr(game_instance, method)()
@@ -47,7 +47,7 @@ def repl():
         output, should_exit = evaluate(
             cmd=read(), game_instance=game_instance, repl_data=repl_data
         )
-        print("\n" + output + "\n")
+        print("\n" + " "*4 + output + "\n")
         if should_exit:
             break
     print("shutting down...")
