@@ -60,4 +60,3 @@ def test_repl_method_repl(run, mocker):
     assert "Bufarr" in out
     assert err == ""
     assert mocked_input.call_count == len(evaluate_values) + 1
-

@@ -98,7 +98,7 @@ def test_confirm_no():
 
 def test_confirm_unknown(run):
     """Test confirm when invalid input given"""
-    out = run(types.Game._confirm,input_side_effect=['my dudes', 'y'])
+    out = run(types.Game._confirm, input_side_effect=['my dudes', 'y'])
     assert 'not a valid response!' in out[0], 'failed on unknown progam'
 
 

@@ -7,6 +7,7 @@ import dork.cli
 
 pytest_plugins = ["pytester"]  # pylint: disable=invalid-name
 
+
 @pytest.fixture
 def player():
     """A basic dork player fixture"""
@@ -17,7 +18,6 @@ def player():
 def item():
     """A basic dork item fixture"""
     return dork.types.Item()
-
 
 
 @pytest.fixture
