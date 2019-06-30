@@ -45,15 +45,3 @@ def test_map_exists():
     """
     assert "Worldmap" in vars(dork.types)
     is_a(dork.types.Worldmap, type)
-
-
-def test_room_has_many_players(room):
-    """A Room should have many players
-    """
-    has_many(room, "Room", "players")
-
-
-def test_map_has_many_rooms(worldmap):
-    """A Map should have Rooms
-    """
-    has_many(worldmap, "Worldmap", "rooms")

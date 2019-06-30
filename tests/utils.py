@@ -33,7 +33,7 @@ def is_a(obj, clazz):
         )
 
 
-def has_many(clz_instance, clz_key, obj_key):
+def has_many(clz_instance, obj_key):
     """Determines if an obj responds to a `has_many' relationship.
 
         [obj] 0..N ==> 1 [clazz]
@@ -62,7 +62,7 @@ def has_many(clz_instance, clz_key, obj_key):
     contained = getattr(clz_instance, obj_key, None)
     if contained is None or "__getitem__" not in vars(type(contained)):
         pytest.fail(
-            "{clazz}'s {clz_key} should be a list-like object".format(
+            "{clazz}'s {obj_key} should be a list-like object".format(
                 clazz=clazz, key=obj_key
             )
         )
