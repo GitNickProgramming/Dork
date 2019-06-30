@@ -25,7 +25,7 @@ def is_a(obj, clazz):
 
     """
 
-    if not isinstance(obj, (clazz)):
+    if not isinstance(obj, clazz):
         pytest.fail(
             "{object} should be an instance of {clazz}".format(
                 object=obj, clazz=clazz
@@ -33,8 +33,9 @@ def is_a(obj, clazz):
         )
 
 
-def has_many(clazz, obj_key):
-    """Determines if a class responds to a `has_many' relationship.
+def has_many(clz_instance, obj_key):
+    """Determines if an obj responds to a `has_many' relationship.
+
 
         [obj] 0..N ==> 1 [clazz]
 
@@ -47,10 +48,12 @@ def has_many(clazz, obj_key):
 
     """
 
-    if obj_key not in vars(clazz):
+    clazz = clz_instance.__class__
+
+    if obj_key not in vars(clz_instance):
         pytest.fail("{object} has no {key}".format(object=clazz, key=obj_key))
 
-    contained = getattr(clazz, obj_key, None)
+    contained = getattr(clz_instance, obj_key, None)
     if contained is None or "__getitem__" not in vars(type(contained)):
         pytest.fail(
             "{clazz}'s {key} should be a list-like object".format(
