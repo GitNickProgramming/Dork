@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 """Basic tests for state and entity relationships in dork
 """
+
 from tests.utils import has_method
 import dork
 
@@ -41,21 +42,38 @@ def test_repl_evaluate(game, repl_data):
 def test_repl_evaluate_various_functions(game, repl_data):
     """Dork.repl.evaluate has various functions
     """
-    assert "Thanks for playing DORK", True in dork.repl.evaluate(
-        ".rq", game, repl_data
-    )
-    assert dork.repl.evaluate(
-        ".z", game, repl_data
-    ) == ("Oh shit, you found an easter egg!", False)
+
+    assert dork.repl.evaluate(".rq", game, repl_data) == (
+        'Thanks for playing DORK, None!', True)
+    assert dork.repl.evaluate(".z", game, repl_data) == (
+        "Oh shit, you found an easter egg!", False)
+    assert dork.repl.evaluate("look", game, repl_data) == (
+        None, False)
+    assert dork.repl.evaluate("i", game, repl_data) == (
+        "    You ain't got shit, son!", False)
 
 
-def test_game_methods_exist(game):
-    """the dork module should define a Game
+def test_repl_evaluate_move(game, repl_data):
+    """Testing simple repl functions
+    """
+    assert dork.repl.evaluate(".rq", game, repl_data) == (
+        'Thanks for playing DORK, None!', True)
+    assert dork.repl.evaluate(".z", game, repl_data) == (
+        "Oh shit, you found an easter egg!", False)
+
+
+def test_game_build_methods_exist(game):
+    """the game should have build methods
     """
     has_method(game, "build")
     has_method(game, "_build_players")
     has_method(game, "_build_world")
     has_method(game, "_build_hero")
+
+
+def test_game_methods_exist(game):
+    """the game should have control methods
+    """
     has_method(game, "_gtfo")
     has_method(game, "_move")
     has_method(game, "_inventory")
@@ -67,7 +85,7 @@ def test_game_methods_exist(game):
 
 
 def test_repl_method_repl(run, mocker):
-    """Dork.repl.repl should do things
+    """Dork.repl.repl should output like this then end in these conditions
     """
     evaluate_values = [("FooBar", False), ("Bufarr", True)]
     mocked_evaluate = mocker.patch("dork.repl.evaluate")
