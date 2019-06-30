@@ -91,3 +91,29 @@ def test_confirm_no(run):
 def test_confirm_unknown(run):
     out = run(types.Game._confirm,input_side_effect=['my dudes','y'])
     assert 'not a valid response!' in out[0], 'failed on unknown progam'
+
+
+def test_add_item_runs():
+    test_player = types.Player()
+    test_item = types.Item()
+    test_item.name = 'gloves of fire detection'
+    test_player.add_item(test_item)
+    assert len(test_player.inventory) > 0 , "add_item fails to exist for testing"
+
+def test_look():
+    with mock.patch('builtins.input') as inp:
+        inp.side_effect = ['steamed hams','.rq']
+        our_game = types.Game()
+        assert 'you get in here?' in our_game._look()[0], "failed to look in empty map"
+
+def test_start_over():
+    with mock.patch('builtins.input') as inp:
+        inp.side_effect = ['steamed hams','y','.rq']
+        our_game = types.Game()
+        assert our_game._start_over('my man')[0] == 'my man', 'failed redo'
+
+def test_start_over_nope():
+    with mock.patch('builtins.input') as inp:
+        inp.side_effect = ['steamed hams','n','.rq']
+        our_game = types.Game()
+        assert  our_game._start_over('my man')[0] == 'Guess you changed your mind!', "failed undo reload"
