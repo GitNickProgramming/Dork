@@ -42,24 +42,14 @@ def test_repl_evaluate(game, repl_data):
 def test_repl_evaluate_various_functions(game, repl_data):
     """Dork.repl.evaluate has various functions
     """
-
-    assert dork.repl.evaluate(".rq", game, repl_data) == (
-        'Thanks for playing DORK, None!', True)
+    assert "Thanks for playing DORK", True in dork.repl.evaluate(
+        ".rq", game, repl_data
+    )
     assert dork.repl.evaluate(".z", game, repl_data) == (
         "Oh shit, you found an easter egg!", False)
-    assert dork.repl.evaluate("look", game, repl_data) == (
-        None, False)
+    assert isinstance(dork.repl.evaluate("look", game, repl_data)[0], str)
     assert dork.repl.evaluate("i", game, repl_data) == (
         "    You ain't got shit, son!", False)
-
-
-def test_repl_evaluate_move(game, repl_data):
-    """Testing simple repl functions
-    """
-    assert dork.repl.evaluate(".rq", game, repl_data) == (
-        'Thanks for playing DORK, None!', True)
-    assert dork.repl.evaluate(".z", game, repl_data) == (
-        "Oh shit, you found an easter egg!", False)
 
 
 def test_game_build_methods_exist(game):
