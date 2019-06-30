@@ -1,9 +1,8 @@
 # -*- coding: utf-8 -*-
 """Basic tests for state and entity relationships in dork
 """
-from tests.utils import is_a, has_a
+from tests.utils import is_a
 import dork.game_utils.game_data as game_data
-import dork
 
 
 def test_game_data_main_dictionaries_exist():

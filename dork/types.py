@@ -22,6 +22,7 @@ class Item:
         self.name = None
         self.description = None
         self.stats = dict()
+
     def make(self, item):
         """Make an item
         """
@@ -35,7 +36,7 @@ class Player(Holder):
     """
     inventory = dict()
     items = dict()
-    
+
     def __init__(self):
         super().__init__()
         self.name = None
@@ -43,6 +44,7 @@ class Player(Holder):
         self.equipped = None
         self.inventory = dict()
         self.items = self.inventory
+
     def make(self, player):
         """Make a player
         """
@@ -54,19 +56,21 @@ class Player(Holder):
                 new_item = Item()
                 new_item.make(inventory[item])
                 self.items[new_item.name] = new_item
+
     def set_location(self, location):
         """Set player's location
         """
         self.location = location
+
     def get_location(self):
         """Get Player's location
         """
         return self.location
 
-
     def add_item(self, item):
         """adding an item for test purposes"""
         self.inventory[item] = item.name
+
 
 class Room(Holder):
     """A room on the map
@@ -78,6 +82,7 @@ class Room(Holder):
         self.adjacent = dict()
         self.players = list()
         self.clues = dict()
+
     def make(self, room, players):
         """Make a room
         """
@@ -117,7 +122,7 @@ class Game:
         self.players = dict()
         self.hero = Player()
         self.__build_game()
-    
+
     def __build_game(self):
         """Make a new game
         """
@@ -126,20 +131,20 @@ class Game:
         self.__build_players(players=data["players"])
         self.__build_world(rooms=data["rooms"])
         self.__build_hero(hero=player_name)
-    
+
     def __build_players(self, players):
         for player in players:
             new_player = Player()
             new_player.make(players[player])
             self.players[new_player.name] = new_player
-    
+
     def __build_world(self, rooms):
         self.worldmap.players = self.players
         for room in rooms:
             new_room = Room()
             new_room.make(rooms[room], self.players)
             self.worldmap.rooms[new_room.name] = new_room
-    
+
     def __build_hero(self, hero):
         self.hero = self.players.get(
             hero, self.players.get("new_player")
@@ -171,7 +176,7 @@ class Game:
         if item_count == 0.:
             out = " "*4 + "You ain't got shit, son!"
         return out, False
-    
+
     def _look(self):
         return self.hero.location.description, False
 
