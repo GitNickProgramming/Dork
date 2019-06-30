@@ -1,6 +1,7 @@
 """This file tests the loading of the world loader"""
 import dork.game_utils.world_loader
 
+
 def test_main_with_same_name():
     """Tests loading with player name"""
     assert isinstance(dork.game_utils.

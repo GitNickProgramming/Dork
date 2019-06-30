@@ -177,8 +177,16 @@ class Game:
             out = " "*4 + "You ain't got shit, son!"
         return out, False
 
+    def get_inventory(self):
+        """public method call for inventory"""
+        return self._inventory()
+
     def _look(self):
         return self.hero.location.description, False
+
+    def get_look(self):
+        """public method call for look"""
+        return self._look()
 
     # def _save_game(self):
     #     world_writer.main(self)
@@ -202,6 +210,10 @@ class Game:
             out = "Guess you changed your mind!"
         return out, False
 
+    def get_start_over(self, load_or_save):
+        """public method call for start over"""
+        return self._start_over(load_or_save)
+
     @staticmethod
     def _confirm():
         print("\n!!!WARNING!!! You will lose unsaved data!\n")
@@ -219,6 +231,10 @@ class Game:
             else:
                 break
         return conf
+
+    def get_confirm(self):
+        """public method call for confirm"""
+        return self._confirm()
 
     @staticmethod
     def _zork():
