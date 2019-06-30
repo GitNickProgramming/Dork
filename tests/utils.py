@@ -25,7 +25,7 @@ def is_a(obj, clazz):
 
     """
 
-    if not isinstance(obj, (clazz)):
+    if not isinstance(obj, clazz):
         pytest.fail(
             "{object} should be an instance of {clazz}".format(
                 object=obj, clazz=clazz

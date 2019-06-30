@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """Basic tests for state and entity relationships in dork
 """
-from tests.utils import has_a, has_method
+from tests.utils import has_a, has_method, is_a
 import dork.types as types
 
 # pylint: disable=protected-access
@@ -120,3 +120,11 @@ def test_start_over_yes(capsys, mocker, game):
     captured = capsys.readouterr()
     assert "\n!!!WARNING!!! You will lose unsaved data!\n" in captured.out
     assert mocked_input.call_count == 2
+
+
+def test_player_location(player):
+    is_a(player.location, types.Room)
+    types.Player.set_location(player, "Arcterus")
+    assert types.Player.get_location(player) == "Arcterus"
+
+
