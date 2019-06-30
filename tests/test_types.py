@@ -74,35 +74,32 @@ def test_worldmap_attributes(worldmap):
     has_a(worldmap, "players")
 
 
-def test_confirm_method_yes(capsys, mocker):
+def test_confirm_method(capsys, mocker):
     """confirm should do things
     """
     mocked_input = mocker.patch('builtins.input')
-    mocked_input.side_effect = ["y"]
+    mocked_input.side_effect = ["y", "n"]
+
     assert types.Game._confirm()
     captured = capsys.readouterr()
     assert "\n!!!WARNING!!! You will lose unsaved data!\n" in captured.out
-    assert mocked_input.call_count == 1
 
-
-def test_confirm_method_no(capsys, mocker):
-    """confirm should do things
-    """
-    mocked_input = mocker.patch('builtins.input')
-    mocked_input.side_effect = ["n"]
-    assert types.Game._confirm() is False
+    assert not types.Game._confirm()
     captured = capsys.readouterr()
     assert "\n!!!WARNING!!! You will lose unsaved data!\n" in captured.out
-    assert mocked_input.call_count == 1
+
+    assert mocked_input.call_count == 2
 
 
 def test_confirm_method_blank(capsys, mocker):
     """confirm should do things
     """
     mocked_input = mocker.patch('builtins.input')
-    mocked_input.side_effect = ["afk", "    ", "y"]
+    mocked_input.side_effect = ["2543", "    ", "y"]
+    
     types.Game._confirm()
     captured = capsys.readouterr()
+    
     assert "\n!!!WARNING!!! You will lose unsaved data!\n" in captured.out
     assert "That is not a valid response!" in captured.out
     assert mocked_input.call_count == 3
@@ -146,6 +143,7 @@ def test_move_method(game, mocker, cardinals):
     mocked_input = mocker.patch('builtins.input')
     mocked_input.side_effect = ["new player name"]
     types.Game.build(game)
+    is_a(game.hero.location, types.Room)
     assert game.hero.location.name == "entrance"
 
     for direction in cardinals:
