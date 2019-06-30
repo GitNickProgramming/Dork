@@ -13,11 +13,11 @@ def load_game(player_name):
         for entry in saves:
             save_files.append(entry.name)
     if player_name + ".yml" in save_files:
-        file_path = player_name + ".yml"
+        file_name = player_name + ".yml"
     else:
-        file_path = "default_world.yml"
+        file_name = "default_world.yml"
 
-    with open(file_path) as file:
+    with open(f"./dork/saves/{file_name}") as file:
         data = yaml.safe_load(file.read())
 
     return data

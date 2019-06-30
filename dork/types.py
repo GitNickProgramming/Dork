@@ -2,7 +2,7 @@
 """Basic entity classes and methods for Dork.
 """
 # from pprint import pprint
-import dork.game_utils.world_loader as world_loader
+import dork.game_utils.world_maker as world_maker
 
 
 __all__ = ["Game"]
@@ -119,7 +119,7 @@ class Game:
         """Make a new game
         """
         player_name = input("What's your name, stranger? ")
-        data = world_loader.load_game(player_name)
+        data = world_maker.load_game(player_name)
         self._build_players(players=data["players"])
         self._build_world(rooms=data["rooms"])
         self._build_hero(hero=player_name)
@@ -195,7 +195,7 @@ class Game:
         return out, False
 
     def _save_game(self):
-        return world_loader.save_game(self), False
+        return world_maker.save_game(self), False
 
     @staticmethod
     def _confirm():
