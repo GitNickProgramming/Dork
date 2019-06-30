@@ -12,6 +12,7 @@ __all__ = ["main"]
 
 dataa = dict()
 
+
 def _create_game(file_name="yaml/default_world"):
     data = yml_parse.load(file_name)
     new_worldmap = _create_worldmap(data["rooms"])
@@ -23,6 +24,7 @@ def _create_game(file_name="yaml/default_world"):
         game.player.name = input("What's your name, stranger? ")
     current_game(data)
     return game
+
 
 def current_game(data):
     #gamee = game

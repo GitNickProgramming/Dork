@@ -13,7 +13,8 @@ def evaluate(cmd, repl_instance, repl_data):
     cmd = cmd.split()
     if cmd:
         noun, verb = cmd.pop() if len(cmd) > 1 else None, cmd.pop()
-        instruction = cmds.get(verb, moves.get(verb, meta.get(verb, errs["u"])))
+        instruction = cmds.get(verb, moves.get(
+            verb, meta.get(verb, errs["u"])))
         if isinstance(instruction, dict):
             instruction = instruction.get(noun, errs["u"])
     else:

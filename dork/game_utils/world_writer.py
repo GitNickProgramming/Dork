@@ -2,11 +2,12 @@
 HAVENT DECIDED BETWEEN WHICH MAIN TO USE. TO CHANGE, GO TO game_data.py 
 and change which main it calls within _save_game function"""
 import yaml
-#import dork.game_utils.world_loader as w_loader 
+#import dork.game_utils.world_loader as w_loader
 import dork.game_utils.yaml_parser as yaml_parse
 import dork.current_game as c_game
 
 __all__ = ["main"]
+
 
 def main(game):
     #gamee = game
@@ -21,7 +22,7 @@ def main(game):
 def mainn(game):
 
     data = yaml_parse.load("/current_game/currentgame")
-    #print(data)
+    # print(data)
 
     current_room = game.player.current_room
 

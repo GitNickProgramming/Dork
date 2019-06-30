@@ -137,7 +137,7 @@ CMDS = {
 META = {
     ".new": ["_new_game"],
     ".load": ["_load_game"],
-    ".save":["_save_game"],
+    ".save": ["_save_game"],
     ".rq": ["_gtfo"],
     ".z": ["_zork"]
 }
