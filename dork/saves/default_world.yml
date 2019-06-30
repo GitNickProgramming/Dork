@@ -111,8 +111,8 @@ rooms:
         adjacent:
             north:
             south:
-            east: cave
-            west:
+            east:
+            west: cave
         description: you can see russia from here!
         players:
         items:

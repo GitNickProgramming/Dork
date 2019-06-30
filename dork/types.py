@@ -59,7 +59,9 @@ class Player(Holder):
     def set_location(self, location):
         """Set player's location
         """
+        self.location.players.remove(self.name)
         self.location = location
+        self.location.players.append(self.name)
 
     def get_location(self):
         """Get Player's location
@@ -136,6 +138,7 @@ class Game:
         self._build_players(players=data["players"])
         self._build_world(rooms=data["rooms"])
         self._build_hero(hero=player_name)
+        print(self.players)
 
     def _build_players(self, players):
         for player in players:
@@ -154,20 +157,24 @@ class Game:
         self.hero = self.players.get(
             hero, self.players.get("new_player")
         )
+        if "new_player" in self.players.keys():
+            self.players[hero] = self.players.pop("new_player")
+            self.hero.location.players.remove("new_player")
+            self.hero.location.players.append(hero)
         self.hero.name = hero
 
     def _gtfo(self):
         return f"Thanks for playing DORK, {self.hero.name}!", True
 
     def _move(self, cardinal):
-        location = self.hero.get_location()
+        hero = self.hero
+        location = hero.get_location()
         adjacent_room = location.adjacent.get(cardinal, None)
 
         if not adjacent_room:
             out = f"You cannot go {cardinal} from here."
         else:
-            self.hero.set_location(self.worldmap.rooms[adjacent_room])
-            print(f"You have entered {self.hero.location.name}")
+            hero.set_location(self.worldmap.rooms[adjacent_room])
             out = self.hero.location.description
 
         return out, False
