@@ -165,4 +165,6 @@ def test_inventory_has_item(game, mocker):
     mocked_input = mocker.patch('builtins.input')
     mocked_input.side_effect = ["bobby b"]
     types.Game.build(game)
-    assert game._inventory() == ("Inventory:\n\n    wobblelobbledobdob", False)
+    assert game._inventory() == (
+        "Inventory:\n\n    wobblelobbledobdob", False
+    )
