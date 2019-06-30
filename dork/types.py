@@ -138,7 +138,6 @@ class Game:
         self._build_players(players=data["players"])
         self._build_world(rooms=data["rooms"])
         self._build_hero(hero=player_name)
-        print(self.players)
 
     def _build_players(self, players):
         for player in players:
