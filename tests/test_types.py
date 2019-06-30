@@ -131,14 +131,20 @@ def test_player_location(player):
     types.Player.set_location(player, "Arcterus")
     assert types.Player.get_location(player) == "Arcterus"
 
-# def test_move_method(game, mocker, capsys, room):
-#     """testing the get and set of player location
-#     """
-#     mocked_input = mocker.patch('builtins.input')
-#     mocked_input.side_effect = ["new player name"]
-#     types.Game.build(game)
-#     captured = capsys.readouterr()
-#     assert game.hero.name == "new player name"
-#     assert game.hero.location == None
-  
 
+def test_move_method(game, mocker, cardinals):
+    """testing the move function for any map
+    """
+    mocked_input = mocker.patch('builtins.input')
+    mocked_input.side_effect = ["new player name"]
+    types.Game.build(game)
+    assert game.hero.location.name == "entrance"
+
+    for direction in cardinals:
+        if game.hero.location.adjacent[direction] is not None:
+            move_return = game._move(direction)
+            assert (game.hero.location.description, False) == move_return
+        if game.hero.location.adjacent[direction] is None:
+            move_return = game._move(direction)
+            assert (
+                f"You cannot go {direction} from here.", False) == move_return
