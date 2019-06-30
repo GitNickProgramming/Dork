@@ -50,3 +50,4 @@ def test_worldmap_attributes(worldmap):
     """the worldmap should have a dict of rooms
     """
     has_a(worldmap, "rooms")
+    has_a(worldmap, "players")
