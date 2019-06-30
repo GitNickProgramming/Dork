@@ -26,7 +26,7 @@ def room():
 
 
 @pytest.fixture
-def game(): 
+def game():
     """A basic dork game fixture"""
     return dork.types.Game()
 
