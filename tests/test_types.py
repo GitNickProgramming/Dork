@@ -69,7 +69,7 @@ def test_game_inventory():
         inp.side_effect = ['steamed hams', '.rq']
         our_game = types.Game()
         assert 'got shit, son' in our_game._inventory()[0],\
-                "game object failed to make inventory"
+            "game object failed to make inventory"
         our_game.hero = types.Player
         our_game.hero.items = dict()
         new_item = types.Item()
@@ -79,21 +79,21 @@ def test_game_inventory():
         assert 'ye flask' in our_game._inventory()[0],\
             "game object inventory failed to store an item"
 
-def test_confirm_yes(run):
+
+def test_confirm_yes():
     """Test confirm y functionality"""
     with mock.patch('builtins.input') as inp:
-        inp.side_effect = ['gentlemen...','y']
+        inp.side_effect = ['gentlemen...', 'y']
         our_game = types.Game()
         assert our_game._confirm(), "failed to confirm"
 
 
-def test_confirm_no(run):
+def test_confirm_no():
     """Test confirm n functionality"""
     with mock.patch('builtins.input') as inp:
         inp.side_effect = ['gentlemen...', 'n']
         our_game = types.Game()
         assert not our_game._confirm(), "failed to confirm"
-
 
 
 def test_confirm_unknown(run):
@@ -112,6 +112,7 @@ def test_add_item_runs():
     assert items_count > 0,\
         "add_item fails to exist for testing"
 
+
 def test_look():
     """test looking in empty map"""
     with mock.patch('builtins.input') as inp:
@@ -120,6 +121,7 @@ def test_look():
         assert 'you get in here?' in our_game._look()[0],\
             "failed to look in empty map"
 
+
 def test_start_over():
     """test starting new game"""
     with mock.patch('builtins.input') as inp:
@@ -127,10 +129,11 @@ def test_start_over():
         our_game = types.Game()
         assert our_game._start_over('my man')[0] == 'my man', 'failed redo'
 
+
 def test_start_over_nope():
     """test undoing new game"""
     with mock.patch('builtins.input') as inp:
         inp.side_effect = ['steamed hams', 'n', '.rq']
         our_game = types.Game()
         assert 'Guess you changed your mind!' in\
-             our_game._start_over('my man')[0], "failed undo reload"
+            our_game._start_over('my man')[0], "failed undo reload"

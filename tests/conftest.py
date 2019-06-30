@@ -47,7 +47,7 @@ def holder():
 @pytest.fixture
 def hero():
     """A repl instance fixture"""
-    return dork.game_utils.game_data.Hero
+    return dork.types.Player
 
 
 @pytest.fixture
