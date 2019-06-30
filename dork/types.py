@@ -43,10 +43,6 @@ class Player(Holder):
         self.location = Room()
         self.equipped = None
 
-<<<<<<< HEAD
-    def _get_current_location(self):
-        return self.current_room
-=======
     def make(self, player):
         """Make a player
         """
@@ -68,7 +64,6 @@ class Player(Holder):
         """Get Player's location
         """
         return self.location
->>>>>>> 611451d9783fd45d7d397675dffd023fcb048680
 
 
 class Room(Holder):
@@ -124,7 +119,7 @@ class Game:
         """Make a new game
         """
         player_name = input("What's your name, stranger? ")
-        data = world_loader.main(player_name)
+        data = world_loader.load_game(player_name)
         self._build_players(players=data["players"])
         self._build_world(rooms=data["rooms"])
         self._build_hero(hero=player_name)
@@ -191,13 +186,16 @@ class Game:
     # def _use_item(self, item):
     #     return "You used the thing! It's super effective!", False
 
-    def _start_over(self, load_or_save):
+    def _start_over(self, new_or_load):
         if self._confirm():
             self.build()
-            out = load_or_save
+            out = new_or_load
         else:
             out = "Guess you changed your mind!"
         return out, False
+
+    def _save_game(self):
+        return world_loader.save_game(self), False
 
     @staticmethod
     def _confirm():

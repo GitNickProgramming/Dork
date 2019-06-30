@@ -14,15 +14,10 @@ def evaluate(cmd, game_instance, repl_data):
     cmd = cmd.split()
     if cmd:
         noun, verb = cmd.pop() if len(cmd) > 1 else None, cmd.pop()
-<<<<<<< HEAD
-        instruction = cmds.get(verb, moves.get(
-            verb, meta.get(verb, errs["u"])))
-=======
         instruction = cmds.get(
             verb, moves.get(
                 verb, meta.get(
                     verb, errs["u"])))
->>>>>>> 611451d9783fd45d7d397675dffd023fcb048680
         if isinstance(instruction, dict):
             instruction = instruction.get(noun, errs["u"])
     else:
