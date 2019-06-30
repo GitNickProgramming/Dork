@@ -61,60 +61,60 @@ def test_worldmap_attributes(worldmap):
     has_a(worldmap, "rooms")
 
 
-def test_confirm_method_yes(capsys, mocker):  # pylint: disable=protected-access
+def test_confirm_method_yes(capsys, mocker):
     """confirm should do things
     """
     mocked_input = mocker.patch('builtins.input')
     mocked_input.side_effect = ["y"]
-    assert types.Game._confirm() == True
+    assert types.Game._confirm()  # pylint: disable=protected-access
     captured = capsys.readouterr()
     assert "\n!!!WARNING!!! You will lose unsaved data!\n" in captured.out
     assert mocked_input.call_count == 1
 
 
-def test_confirm_method_no(capsys, mocker):  # pylint: disable=protected-access
+def test_confirm_method_no(capsys, mocker):
     """confirm should do things
     """
     mocked_input = mocker.patch('builtins.input')
     mocked_input.side_effect = ["n"]
-    assert types.Game._confirm() == False
+    assert types.Game._confirm() is False  # pylint: disable=protected-access
     captured = capsys.readouterr()
     assert "\n!!!WARNING!!! You will lose unsaved data!\n" in captured.out
     assert mocked_input.call_count == 1
 
 
-def test_confirm_method_blank(capsys, mocker):  # pylint: disable=protected-access
+def test_confirm_method_blank(capsys, mocker):
     """confirm should do things
     """
     mocked_input = mocker.patch('builtins.input')
     mocked_input.side_effect = ["afk", "    ", "y"]
-    types.Game._confirm()
+    types.Game._confirm()  # pylint: disable=protected-access
     captured = capsys.readouterr()
     assert "\n!!!WARNING!!! You will lose unsaved data!\n" in captured.out
     assert "That is not a valid response!" in captured.out
     assert mocked_input.call_count == 3
 
 
-def test_start_over_no(capsys, mocker, game):  # pylint: disable=protected-access
+def test_start_over_no(capsys, mocker, game):
     """confirm should do things
     """
     mocked_input = mocker.patch('builtins.input')
     mocked_input.side_effect = ["n"]
-    game._start_over("the notification string") == (
+    assert game._start_over("the notification string") == (  # pylint: disable=protected-access
         "Guess you changed your mind!", False)
     captured = capsys.readouterr()
     assert "\n!!!WARNING!!! You will lose unsaved data!\n" in captured.out
     assert mocked_input.call_count == 1
 
 
-def test_start_over_yes(capsys, mocker, game):  # pylint: disable=protected-access
+def test_start_over_yes(capsys, mocker, game):
     """confirm should do things
     """
 
     # the call count here as 2 is a magic number need to document that
     mocked_input = mocker.patch('builtins.input')
     mocked_input.side_effect = ["y", "new player name", ".rq"]
-    game._start_over("the notification string") == (
+    game._start_over("the notification string") == (  # pylint: disable=protected-access
         "Guess you changed your mind!", False)
     captured = capsys.readouterr()
     assert "\n!!!WARNING!!! You will lose unsaved data!\n" in captured.out
