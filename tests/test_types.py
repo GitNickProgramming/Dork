@@ -123,8 +123,8 @@ def test_start_over_yes(capsys, mocker, game):
 
 
 def test_player_location(player):
+    """testing the get and set of player location
+    """
     is_a(player.location, types.Room)
     types.Player.set_location(player, "Arcterus")
     assert types.Player.get_location(player) == "Arcterus"
-
-
