@@ -10,12 +10,16 @@ def test_repl_method_read(mocker):
     """Dork.repl.read should always exist and runs
     """
     mocked_input = mocker.patch('builtins.input')
-    mocked_input.side_effect = ["lEeTteXt", "UPPER", "   ", ""]
+    mocked_input.side_effect = [
+        "lEeTteXt", "UPPER", "   ", "", " SPACEUPPER", "UPPERSPACE "
+    ]
     assert dork.repl.read() == "leettext"
     assert dork.repl.read() == "upper"
     assert dork.repl.read() == "   "
     assert dork.repl.read() == ""
-    assert mocked_input.call_count == 4
+    assert dork.repl.read() == " spaceupper"
+    assert dork.repl.read() == "upperspace "
+    assert mocked_input.call_count == 6
 
 
 def test_repl_evaluate(game, repl_data):
@@ -38,6 +42,7 @@ def test_repl_evaluate(game, repl_data):
 def test_repl_evaluate_various_functions(game, repl_data):
     """Dork.repl.evaluate has various functions
     """
+
     assert dork.repl.evaluate(".rq", game, repl_data) == (
         'Thanks for playing DORK, None!', True)
     assert dork.repl.evaluate(".z", game, repl_data) == (
