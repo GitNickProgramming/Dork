@@ -21,17 +21,17 @@ rooms:
                 name: gold
                 description: you picked up some gold.
                 stats: [+3, gold]
-        clues: 
+        clues:
     2:
         name: entrance
         adjacent:
             north: boss
-            south: 
+            south:
             east: cave
             west: armory
         description: how'd you get in here?
         players: [new_player]
-        items: 
+        items:
             1:
                 name: soggy waffle
                 description: it's just a soggy waffle
@@ -40,7 +40,7 @@ rooms:
                 name: torn parchment
                 description: the parchment is torn, there is nothing written on it.
                 stats:
-            3:  
+            3:
                 name: broken quill
                 description: you cannot tell what kind of feather it is made from.
                 stats:
@@ -49,9 +49,9 @@ rooms:
         name: armory
         adjacent:
             north: boss
-            south: 
+            south:
             east: entrance
-            west: 
+            west:
         description: weapons all around!
         players:
         items:
@@ -63,7 +63,7 @@ rooms:
                 name: wobblelobbledobdob
                 description: the sword is drunk
                 stats: [-3, attack]
-            3:  
+            3:
                 name: bow of purposelessness
                 description: the bow has no cord, but it looks nice
                 stats:
@@ -72,7 +72,7 @@ rooms:
         name: cave
         adjacent:
             north: boss
-            south: 
+            south:
             east: rock ledge
             west: entrance
         description: this place dank af, yo
@@ -86,10 +86,10 @@ rooms:
     5:
         name: gold
         adjacent:
-            north: 
+            north:
             south: boss
-            east: 
-            west: 
+            east:
+            west:
         description: I love gooooooold
         players: [ghost]
         items:
@@ -100,8 +100,8 @@ rooms:
             2:
                 name: diamonds
                 description: these diamonds are uncut, but you prefer them that way.
-                stats: [+6, diamonds] 
-            3:  
+                stats: [+6, diamonds]
+            3:
                 name: emeralds
                 description: these emeralds are way too green
                 stats: [+5, emeralds]
