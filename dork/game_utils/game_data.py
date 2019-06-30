@@ -1,12 +1,16 @@
 """Data and commands for REPL"""
+<<<<<<< HEAD
 import dork.game_utils.world_loader as world_loader
 import dork.game_utils.world_writer as w_writer
 # import dork.game_utils.world_writer as world_writer
 
+=======
+>>>>>>> 611451d9783fd45d7d397675dffd023fcb048680
 
 __all__ = ["CMDS", "MOVES", "ERRS", "META", "TITLE"]
 
 
+<<<<<<< HEAD
 class REPL:
     """REPL object to hold and modify an instance of Game"""
 
@@ -86,6 +90,8 @@ class REPL:
     #     return "You used the thing! It's super effective!", False
 
 
+=======
+>>>>>>> 611451d9783fd45d7d397675dffd023fcb048680
 TITLE = r"""Welcome to...
 
 __/\\\\\\\\\\\\__________/\\\\\_________/\\\\\\\\\______/\\\________/\\\_
@@ -120,10 +126,10 @@ CMDS = {
     "travel": MOVES,
     "run": MOVES,
     "head": MOVES,
-    # "look": _look,
-    # "i": _inventory,
-    # "inv": _inventory,
-    # "inventory": _inventory,
+    "look": ["_look"],
+    "i": ["_inventory"],
+    "inv": ["_inventory"],
+    "inventory": ["_inventory"],
     # "grab": _take,
     # "take": _take,
     # "add": _take,
@@ -135,15 +141,21 @@ CMDS = {
 
 
 META = {
+<<<<<<< HEAD
     ".new": ["_new_game"],
     ".load": ["_load_game"],
     ".save": ["_save_game"],
+=======
+    ".new": ["_start_over", "new game created!"],
+    ".load": ["_start_over", "game loaded successfully!"],
+    # ".save":["_save_game"],
+>>>>>>> 611451d9783fd45d7d397675dffd023fcb048680
     ".rq": ["_gtfo"],
-    ".z": ["_zork"]
+    ".z": ["_zork"],
 }
 
 
 ERRS = {
     "u": ["_repl_error", "Sorry, I don't know that one."],
-    "?": ["_repl_error", "Huh? Can you speak up?"]
+    "?": ["_repl_error", "Huh? Can you speak up?"],
 }

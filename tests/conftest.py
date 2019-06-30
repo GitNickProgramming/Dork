@@ -14,9 +14,51 @@ def player():
 
 
 @pytest.fixture
+def item():
+    """A basic dork item fixture"""
+    return dork.types.Item()
+
+
+@pytest.fixture
 def room():
     """A basic dork room fixture"""
     return dork.types.Room()
+
+
+@pytest.fixture
+def game():
+    """A basic dork game fixture"""
+    return dork.types.Game()
+
+
+@pytest.fixture
+def cardinals():
+    """A fixture of the cardinal directions"""
+    return ["north", "east", "south", "west"]
+
+
+@pytest.fixture
+def worldmap():
+    """A basic dork worldmap fixture"""
+    return dork.types.Worldmap()
+
+
+@pytest.fixture
+def holder():
+    """A basic dork holder fixture"""
+    return dork.types.Holder()
+
+
+@pytest.fixture
+def repl_data():
+    """A repl data fixture"""
+    repl_data_fixture = (
+        dork.game_utils.game_data.CMDS,
+        dork.game_utils.game_data.MOVES,
+        dork.game_utils.game_data.META,
+        dork.game_utils.game_data.ERRS
+    )
+    return repl_data_fixture
 
 
 @pytest.fixture
