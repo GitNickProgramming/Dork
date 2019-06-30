@@ -148,3 +148,12 @@ def test_move_method(game, mocker, cardinals):
             move_return = game._move(direction)
             assert (
                 f"You cannot go {direction} from here.", False) == move_return
+
+
+def test_inventory_method(game, mocker):
+    """testing the inventory function
+    """
+    mocked_input = mocker.patch('builtins.input')
+    mocked_input.side_effect = ["new player name"]
+    types.Game.build(game)
+    assert game._inventory() == ("    You ain't got shit, son!", False)

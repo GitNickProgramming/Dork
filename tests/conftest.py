@@ -30,6 +30,7 @@ def game():
     """A basic dork game fixture"""
     return dork.types.Game()
 
+
 @pytest.fixture
 def cardinals():
     """A fixture of the cardinal directions"""
