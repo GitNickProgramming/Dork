@@ -9,3 +9,13 @@ def test_world_loader():
     """the game should have attributes
     """
     is_a(world_loader.main("player_name"), dict)
+
+
+def test_main_with_same_name():
+    """Tests loading with player name"""
+    assert isinstance(world_loader.main('bobby b'), dict)
+
+
+def test_main_without_same_name():
+    """Tests loading with unknown name"""
+    assert isinstance(world_loader.main('nobody'), dict)

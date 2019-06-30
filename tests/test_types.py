@@ -131,3 +131,30 @@ def test_player_location(player):
     is_a(player.location, types.Room)
     types.Player.set_location(player, "Arcterus")
     assert types.Player.get_location(player) == "Arcterus"
+
+
+def test_move_method(game, mocker, cardinals):
+    """testing the move function for any map
+    """
+    mocked_input = mocker.patch('builtins.input')
+    mocked_input.side_effect = ["new player name"]
+    types.Game.build(game)
+    assert game.hero.location.name == "entrance"
+
+    for direction in cardinals:
+        if game.hero.location.adjacent[direction] is not None:
+            move_return = game._move(direction)
+            assert (game.hero.location.description, False) == move_return
+        if game.hero.location.adjacent[direction] is None:
+            move_return = game._move(direction)
+            assert (
+                f"You cannot go {direction} from here.", False) == move_return
+
+
+def test_inventory_method(game, mocker):
+    """testing the inventory function
+    """
+    mocked_input = mocker.patch('builtins.input')
+    mocked_input.side_effect = ["new player name"]
+    types.Game.build(game)
+    assert game._inventory() == ("    You ain't got shit, son!", False)
