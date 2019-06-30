@@ -41,7 +41,7 @@ def test_load_existing_file():
     """
     bobby_b = world_maker.load_game("bobby b")
     is_a(bobby_b, dict)
-    
+
     keys = ["rooms", "players"]
     for key in keys:
         assert key in bobby_b.keys()
