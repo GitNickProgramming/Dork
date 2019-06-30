@@ -73,7 +73,7 @@ rooms:
         adjacent:
             north: boss
             south: 
-            east: 
+            east: rock ledge
             west: entrance
         description: this place dank af, yo
         players: []
@@ -106,16 +106,22 @@ rooms:
                 description: these emeralds are way too green
                 stats: [+5, emeralds]
         clues:
-    
+    6:
+        name: rock ledge
+        adjacent:
+            north:
+            south:
+            east: cave
+            west:
+        description: you can see russia from here!
+        players:
+        items:
+        clues:
 players:
     hero:
         name: new_player
         location: entrance
         inventory:
-            1:
-                name:
-                description:
-                stats:
         equipped:
         dialog:
     troll:
@@ -140,9 +146,5 @@ players:
         name: casper
         location: gold
         inventory:
-            1:
-                name:
-                description:
-                stats:
         equipped:
         dialog: "woOoOoOoo!"

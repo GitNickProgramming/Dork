@@ -21,8 +21,8 @@ class Item:
     """
 
     def __init__(self):
-        self.name = None
-        self.description = None
+        self.name = str()
+        self.description = str()
         self.stats = dict()
 
     def make(self, item):
@@ -39,18 +39,19 @@ class Player(Holder):
 
     def __init__(self):
         super().__init__()
-        self.name = None
+        self.name = str()
         self.location = Room()
-        self.equipped = None
+        self.equipped = list()
 
     def make(self, player):
         """Make a player
         """
         self.name = player["name"]
-        self.equipped = player["equipped"]
-        inventory = player["inventory"]
-        for item in inventory:
-            if item is not None:
+        self.equipped.append(player["equipped"])
+
+        if player["inventory"] is not None:
+            inventory = player["inventory"]
+            for item in inventory:
                 new_item = Item()
                 new_item.make(inventory[item])
                 self.items[new_item.name] = new_item
@@ -72,8 +73,8 @@ class Room(Holder):
 
     def __init__(self):
         super().__init__()
-        self.name = None
-        self.description = None
+        self.name = str()
+        self.description = str()
         self.adjacent = dict()
         self.players = list()
         self.clues = dict()
@@ -84,16 +85,28 @@ class Room(Holder):
         self.name = room["name"]
         self.description = room["description"]
         self.adjacent = room["adjacent"]
-        self.clues = room["clues"]
-        items = room["items"]
-        for item in items:
-            new_item = Item()
-            new_item.make(items[item])
-            self.items[new_item.name] = new_item
-        for player in players:
-            if players[player].name in room["players"]:
-                self.players.append(players[player])
-                players[player].location = self
+
+        if room["clues"] is not None:
+            clues = room["clues"]
+            for clue in clues:
+                trigger = clues[clue]["trigger"]
+                event = clues[clue]["event"]
+                self.clues[trigger] = event
+
+        if room["players"] is not None:
+            for player in room["players"]:
+                self.players.append(player)
+
+            for player in players:
+                if players[player].name in self.players:
+                    players[player].location = self
+
+        if room["items"] is not None:
+            items = room["items"]
+            for item in items:
+                new_item = Item()
+                new_item.make(items[item])
+                self.items[new_item.name] = new_item
 
 
 class Worldmap:
@@ -149,32 +162,33 @@ class Game:
     def _move(self, cardinal):
         location = self.hero.get_location()
         adjacent_room = location.adjacent.get(cardinal, None)
+
         if not adjacent_room:
             out = f"You cannot go {cardinal} from here."
         else:
             self.hero.set_location(self.worldmap.rooms[adjacent_room])
             print(f"You have entered {self.hero.location.name}")
             out = self.hero.location.description
+
         return out, False
 
     def _inventory(self):
         items = self.hero.items
         item_count = 0
         out = "Inventory:\n"
+
         for item in items:
             if item is not None:
                 out += "\n" + " "*4 + items[item].name
                 item_count += 1
+
         if item_count == 0:
             out = " "*4 + "You ain't got shit, son!"
+
         return out, False
 
     def _look(self):
         return self.hero.location.description, False
-
-    # def _save_game(self):
-    #     world_writer.main(self)
-    #     return "Save successful!", False
 
     # def _take(self, item="all"):
     #     # Item defaults to "all", and adds all items in room to inventory
@@ -192,6 +206,7 @@ class Game:
             out = new_or_load
         else:
             out = "Guess you changed your mind!"
+
         return out, False
 
     def _save_game(self):
@@ -201,18 +216,22 @@ class Game:
     def _confirm():
         print("\n!!!WARNING!!! You will lose unsaved data!\n")
         conf = False
+
         while True:
             conf = str.casefold(
                 input("Would you like to proceed? Y/N: ")
             )
+
             conf = {
                 "y": True,
                 "n": False
             }.get(conf, None)
+
             if conf is None:
                 print("That is not a valid response!")
             else:
                 break
+
         return conf
 
     @staticmethod
