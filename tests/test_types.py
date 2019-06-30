@@ -58,6 +58,7 @@ def test_worldmap_attributes(worldmap):
 
 
 def test_player_set_location(player):
+    """Tests set location for actual update"""
     player.set_location('running in the 90s')
     assert player.get_location() == 'running in the 90s'
 
@@ -79,6 +80,7 @@ def test_game_inventory():
             "game object inventory failed to store an item"
 
 def test_confirm_yes(run):
+    """Test confirm y functionality"""
     with mock.patch('builtins.input') as inp:
         inp.side_effect = ['gentlemen...','y']
         our_game = types.Game()
@@ -86,42 +88,49 @@ def test_confirm_yes(run):
 
 
 def test_confirm_no(run):
+    """Test confirm n functionality"""
     with mock.patch('builtins.input') as inp:
-        inp.side_effect = ['gentlemen...','n']
+        inp.side_effect = ['gentlemen...', 'n']
         our_game = types.Game()
         assert not our_game._confirm(), "failed to confirm"
 
 
 
 def test_confirm_unknown(run):
+    """Test confirm when invalid input given"""
     out = run(types.Game._confirm,input_side_effect=['my dudes', 'y'])
     assert 'not a valid response!' in out[0], 'failed on unknown progam'
 
 
 def test_add_item_runs():
+    """test adding items to player"""
     test_player = types.Player()
     test_item = types.Item()
     test_item.name = 'gloves of fire detection'
     test_player.add_item(test_item)
-    assert len(test_player.inventory) > 0,\
+    items_count = len(test_player.inventory)
+    assert items_count > 0,\
         "add_item fails to exist for testing"
 
 def test_look():
+    """test looking in empty map"""
     with mock.patch('builtins.input') as inp:
-        inp.side_effect = ['steamed hams','.rq']
+        inp.side_effect = ['steamed hams', '.rq']
         our_game = types.Game()
         assert 'you get in here?' in our_game._look()[0],\
             "failed to look in empty map"
 
 def test_start_over():
+    """test starting new game"""
     with mock.patch('builtins.input') as inp:
-        inp.side_effect = ['steamed hams','y','.rq']
+        inp.side_effect = ['steamed hams', 'y', '.rq']
         our_game = types.Game()
         assert our_game._start_over('my man')[0] == 'my man', 'failed redo'
 
 def test_start_over_nope():
+    """test undoing new game"""
     with mock.patch('builtins.input') as inp:
-        inp.side_effect = ['steamed hams','n','.rq']
+        inp.side_effect = ['steamed hams', 'n', '.rq']
         our_game = types.Game()
-        assert  our_game._start_over('my man')[0] == 'Guess you changed\
-            your mind!', "failed undo reload"
+        assert 'Guess you changed your mind!' in\
+             our_game._start_over('my man')[0], "failed undo reload"
