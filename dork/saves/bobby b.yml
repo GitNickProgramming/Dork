@@ -30,7 +30,7 @@ rooms:
             east: cave
             west: armory
         description: how'd you get in here?
-        players: []
+        players:
         items: 
             1:
                 name: soggy waffle
@@ -53,16 +53,12 @@ rooms:
             east: entrance
             west: 
         description: weapons all around!
-        players: []
+        players:
         items:
             1:
                 name: iron bane
                 description: the dagger is rusty, but sharp
                 stats: [+7, attack]
-            2:  
-                name: bow of purposelessness
-                description: the bow has no cord, but it looks nice
-                stats:
         clues:
     4:
         name: cave
@@ -112,6 +108,10 @@ players:
                 name: wobblelobbledobdob
                 description: the sword is drunk
                 stats: [-3, attack]
+            2:  
+                name: bow of purposelessness
+                description: the bow has no cord, but it looks nice
+                stats:
         equipped:
         dialog:
     troll:
@@ -136,9 +136,5 @@ players:
         name: casper
         location: gold
         inventory:
-            1:
-                name:
-                description:
-                stats:
         equipped:
         dialog: "woOoOoOoo!"

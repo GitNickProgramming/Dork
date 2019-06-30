@@ -53,7 +53,7 @@ rooms:
             east: entrance
             west: 
         description: weapons all around!
-        players: []
+        players:
         items:
             1:
                 name: iron bane
@@ -76,7 +76,7 @@ rooms:
             east: rock ledge
             west: entrance
         description: this place dank af, yo
-        players: []
+        players:
         items:
             1:
                 name: dragon eye mushrooms

@@ -59,9 +59,7 @@ class Player(Holder):
     def set_location(self, location):
         """Set player's location
         """
-        self.location.players.remove(self.name)
         self.location = location
-        self.location.players.append(self.name)
 
     def get_location(self):
         """Get Player's location
@@ -109,6 +107,14 @@ class Room(Holder):
                 new_item = Item()
                 new_item.make(items[item])
                 self.items[new_item.name] = new_item
+
+    def update_players(self, player):
+        """If present, remove player from self.players, else append
+        """
+        if player in self.players:
+            self.players.remove(player)
+        else:
+            self.players.append(player)
 
 
 class Worldmap:
@@ -170,10 +176,12 @@ class Game:
         location = hero.get_location()
         adjacent_room = location.adjacent.get(cardinal, None)
 
-        if not adjacent_room:
+        if adjacent_room is None:
             out = f"You cannot go {cardinal} from here."
         else:
+            hero.location.update_players(hero.name)
             hero.set_location(self.worldmap.rooms[adjacent_room])
+            hero.location.update_players(hero.name)
             out = self.hero.location.description
 
         return out, False
