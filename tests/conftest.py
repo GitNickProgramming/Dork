@@ -43,6 +43,13 @@ def holder():
     return dork.types.Holder()
 
 
+# @pytest.fixture
+# def start_over(game):
+#     """A start over method"""
+#     start_over = game._start_over("load or save string")
+#     return start_over
+
+
 @pytest.fixture
 def repl_data():
     """A repl data fixture"""
