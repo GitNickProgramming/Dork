@@ -2,7 +2,7 @@
 """Basic tests for state and entity relationships in dork
 """
 import dork.types
-from tests.utils import is_a
+from tests.utils import is_a, has_many
 
 
 def test_game_exist():
@@ -50,37 +50,37 @@ def test_map_exists():
 def test_room_has_many_players(room):
     """A Room should have many players
     """
-    has_many(clazz=room, obj_key="players")
+    has_many(room, "players")
 
 
 def test_player_has_many_items(player):
     """A Player should have many items
     """
-    has_many(clazz=player, obj_key="items")
+    has_many(player, "items")
 
 
 def test_room_has_many_items(room):
     """A Room should have many items
     """
-    has_many(clazz=room, obj_key="items")
+    has_many(room, "items")
 
 
 def test_worldmap_has_many_rooms(worldmap):
     """A Worldmap should have many Rooms
     """
-    has_many(clazz=worldmap, obj_key="rooms")
+    has_many(worldmap, "rooms")
 
 
 def test_room_has_many_adjacent(room):
     """A Room should have many adjacent rooms
     """
-    has_many(clazz=room, obj_key="adjacent")
+    has_many(room, "adjacent")
 
 
 def test_room_has_many_clues(room):
     """A Room should have many clues
     """
-    has_many(clazz=room, obj_key="clues")
+    has_many(room, "clues")
 
 
 def test_player_is_in_room(player):
@@ -92,10 +92,10 @@ def test_player_is_in_room(player):
 def test_item_has_many_stats(item):
     """An item should have many stats
     """
-    has_many(clazz=item, obj_key="stats")
+    has_many(item, "stats")
 
 
 def test_holder_has_many_items(holder):
     """A Holder should have many items
     """
-    has_many(clazz=holder, obj_key="items")
+    has_many(holder, "items")
