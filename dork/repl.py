@@ -36,13 +36,16 @@ def repl():
     """
     game_instance = dork_types.Game()
     game_instance.build()
+
     repl_data = (
         game_data.CMDS,
         game_data.MOVES,
         game_data.META,
         game_data.ERRS
     )
+
     print(f"\nGreetings, {game_instance.hero.name}! " + game_data.TITLE + "\n")
+
     while True:
         output, should_exit = evaluate(
             cmd=read(), game_instance=game_instance, repl_data=repl_data
@@ -50,4 +53,5 @@ def repl():
         print("\n" + " "*4 + output + "\n")
         if should_exit:
             break
+
     print("shutting down...")

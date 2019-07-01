@@ -218,13 +218,16 @@ class Game:
 
     @staticmethod
     def _confirm():
-        print("\n!!!WARNING!!! You will lose unsaved data!\n")
+        print(
+            "\n***WARNING*** You will lose unsaved data! ***WARNING***\n"
+        )
         conf = False
 
         while True:
             conf = str.casefold(
                 input("Would you like to proceed? Y/N: ")
             )
+            print("")
 
             conf = {
                 "y": True,

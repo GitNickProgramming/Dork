@@ -79,14 +79,15 @@ def test_confirm_method(capsys, mocker):
     """
     mocked_input = mocker.patch('builtins.input')
     mocked_input.side_effect = ["y", "n"]
+    warning = "\n***WARNING*** You will lose unsaved data! ***WARNING***\n"
 
     assert types.Game._confirm()
     captured = capsys.readouterr()
-    assert "\n!!!WARNING!!! You will lose unsaved data!\n" in captured.out
+    assert warning in captured.out
 
     assert not types.Game._confirm()
     captured = capsys.readouterr()
-    assert "\n!!!WARNING!!! You will lose unsaved data!\n" in captured.out
+    assert warning in captured.out
 
     assert mocked_input.call_count == 2
 
@@ -96,11 +97,12 @@ def test_confirm_method_blank(capsys, mocker):
     """
     mocked_input = mocker.patch('builtins.input')
     mocked_input.side_effect = ["2543", "    ", "y"]
+    warning = "\n***WARNING*** You will lose unsaved data! ***WARNING***\n"
     
     types.Game._confirm()
     captured = capsys.readouterr()
     
-    assert "\n!!!WARNING!!! You will lose unsaved data!\n" in captured.out
+    assert warning in captured.out
     assert "That is not a valid response!" in captured.out
     assert mocked_input.call_count == 3
 
@@ -110,10 +112,12 @@ def test_start_over_no(capsys, mocker, game):
     """
     mocked_input = mocker.patch('builtins.input')
     mocked_input.side_effect = ["n"]
+    warning = "\n***WARNING*** You will lose unsaved data! ***WARNING***\n"
+
     assert game._start_over() == (
         "Guess you changed your mind!", False)
     captured = capsys.readouterr()
-    assert "\n!!!WARNING!!! You will lose unsaved data!\n" in captured.out
+    assert warning in captured.out
     assert mocked_input.call_count == 1
 
 
@@ -123,9 +127,11 @@ def test_start_over_yes(capsys, mocker, game):
     # the call count here as 2 is a magic number need to document that
     mocked_input = mocker.patch('builtins.input')
     mocked_input.side_effect = ["y", "new player name", ".rq"]
+    warning = "\n***WARNING*** You will lose unsaved data! ***WARNING***\n"
+
     game._start_over()
     captured = capsys.readouterr()
-    assert "\n!!!WARNING!!! You will lose unsaved data!\n" in captured.out
+    assert warning in captured.out
     assert mocked_input.call_count == 2
 
 
