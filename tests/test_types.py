@@ -98,10 +98,10 @@ def test_confirm_method_blank(capsys, mocker):
     mocked_input = mocker.patch('builtins.input')
     mocked_input.side_effect = ["2543", "    ", "y"]
     warning = "\n***WARNING*** You will lose unsaved data! ***WARNING***\n"
-    
+
     types.Game._confirm()
     captured = capsys.readouterr()
-    
+
     assert warning in captured.out
     assert "That is not a valid response!" in captured.out
     assert mocked_input.call_count == 3
