@@ -70,6 +70,7 @@ def test_game_methods_exist(game):
     has_method(game, "_look")
     has_method(game, "_start_over")
     has_method(game, "_confirm")
+    has_method(game, "_save_game")
     has_method(game, "_zork")
     has_method(game, "_repl_error")
 
