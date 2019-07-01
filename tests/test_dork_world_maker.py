@@ -64,3 +64,9 @@ def test_load_existing_file():
     ]
     for player in bobby_b["players"]:
         assert player in players
+
+
+def test_save_file(game):
+    """Save the default world to new_player.yml
+    """
+    world_maker.save_game(game)
