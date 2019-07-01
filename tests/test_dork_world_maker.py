@@ -66,7 +66,9 @@ def test_load_existing_file():
         assert player in players
 
 
+# Need to delete file after running test.
+# Maybe also check that file now exists?
 def test_save_file(game):
-    """Save the default world to new_player.yml
+    """Save the default world to ''.yml
     """
     world_maker.save_game(game)
