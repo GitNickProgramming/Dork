@@ -22,5 +22,10 @@ def test_cli_help(run):
 
 def test_cli_unknown(run):
     """Tests CLI's ability to handle unknown args"""
-    result = run(dork.cli.main, '-?', input_side_effect=['tester', '.rq'])
-    assert 'Greetings' in result[0], "failed to ignore unknown args"
+
+    out, err, mocked_input = run(
+        dork.cli.main, '-?', input_side_effect=['tester', '.rq'])
+    assert 'Greetings' in out
+    assert err == ""
+    assert mocked_input.call_count == 2
+

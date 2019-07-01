@@ -35,6 +35,7 @@ def repl():
     """Read eval print loop
     """
     game_instance = dork_types.Game()
+    game_instance.build()
     repl_data = (
         game_data.CMDS,
         game_data.MOVES,

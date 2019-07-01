@@ -15,7 +15,7 @@ def _load(file_name):
         {dict} -- [Returns a dictionary object holding YAML data]
     """
 
-    file_path = f"./dork/{file_name}"
+    file_path = f"./dork/saves/{file_name}"
     with open(file_path) as file:
         data = yaml.safe_load(file.read())
     return data
@@ -29,7 +29,7 @@ def main(player_name):
         for entry in saves:
             save_files.append(entry.name)
     if player_name + ".yml" in save_files:
-        file_to_load = "saves/" + player_name
+        file_to_load = player_name
     else:
-        file_to_load = "yaml/default_world"
+        file_to_load = "default_world"
     return _load(file_to_load + ".yml")

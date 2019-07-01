@@ -2,7 +2,7 @@
 """Basic tests for state and entity relationships in dork
 """
 import dork.types
-from tests.utils import has_many, is_a
+from tests.utils import is_a, has_many
 
 
 def test_game_exist():
@@ -10,13 +10,6 @@ def test_game_exist():
     """
     assert "Game" in vars(dork.types)
     is_a(dork.types.Game, type)
-
-
-# def test_game_attributes():
-#     """the Game needs attributes
-#     """
-#     player = dork.types.Player
-#     assert dork.types.Game.player == player
 
 
 def test_items_exist():
@@ -54,25 +47,56 @@ def test_map_exists():
     is_a(dork.types.Worldmap, type)
 
 
-# def test_holder_has_many_items():
-#     """A Holder should have many Items
-#     """
-#     has_many(dork.types.Holder, "holder", dork.types.Item, "items")
+def test_room_has_many_players(room):
+    """A Room should have many players
+    """
+    has_many(room, "players")
 
 
-# def test_game_elements(player):
-#     """A Holder should have many Items
-#     """
-#     has_many(dork.types.Player, "inventory", dork.types.Holder, "holder")
+def test_player_has_many_items(player):
+    """A Player should have many items
+    """
+    has_many(player, "items")
 
 
-# def test_map_exists():
-#     """the dork module should define an Map
-#     """
-#     assert "WorldMap" in vars(dork.types)
-#     is_a(dork.types.WorldMap, type)
+def test_room_has_many_items(room):
+    """A Room should have many items
+    """
+    has_many(room, "items")
 
-def test_map_has_many_rooms(worldmap):
-    """A Map should have many Rooms
+
+def test_worldmap_has_many_rooms(worldmap):
+    """A Worldmap should have many Rooms
     """
     has_many(worldmap, "rooms")
+
+
+def test_room_has_many_adjacent(room):
+    """A Room should have many adjacent rooms
+    """
+    has_many(room, "adjacent")
+
+
+def test_room_has_many_clues(room):
+    """A Room should have many clues
+    """
+    has_many(room, "clues")
+
+
+def test_player_is_in_room(player):
+    """A Player should contain a Room
+    """
+    assert isinstance(player.location, dork.types.Room)
+
+
+def test_item_has_many_stats(item):
+    """An item should have many stats
+    """
+    has_many(item, "stats")
+
+
+def test_holder_has_many_items(holder):
+    """A Holder should have many items
+    """
+    has_many(holder, "items")
+

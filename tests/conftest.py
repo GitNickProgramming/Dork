@@ -33,6 +33,12 @@ def game():
 
 
 @pytest.fixture
+def cardinals():
+    """A fixture of the cardinal directions"""
+    return ["north", "east", "south", "west"]
+
+
+@pytest.fixture
 def worldmap():
     """A basic dork worldmap fixture"""
     return dork.types.Worldmap()

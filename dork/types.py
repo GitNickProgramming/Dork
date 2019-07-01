@@ -11,6 +11,7 @@ __all__ = ["Game"]
 class Holder:
     """A holder/container of items
     """
+
     def __init__(self):
         self.items = dict()
 
@@ -18,6 +19,7 @@ class Holder:
 class Item:
     """A obtainable/holdable item
     """
+
     def __init__(self):
         self.name = None
         self.description = None
@@ -37,11 +39,13 @@ class Player(Holder):
     inventory = dict()
     items = dict()
 
+
     def __init__(self):
         super().__init__()
         self.name = None
         self.location = Room()
         self.equipped = None
+
         self.inventory = dict()
         self.items = self.inventory
 
@@ -75,6 +79,7 @@ class Player(Holder):
 class Room(Holder):
     """A room on the map
     """
+
     def __init__(self):
         super().__init__()
         self.name = None
@@ -105,6 +110,7 @@ class Worldmap:
     """A map relating the rooms connectivity
         as well as the players/items within
     """
+
     def __init__(self):
         self.rooms = dict()
         self.players = dict()
@@ -113,39 +119,42 @@ class Worldmap:
 class Game:
     """A container for holding a game state
     """
+
     players = {}
-    hero = None
     worldmap = None
+    hero = None
 
     def __init__(self):
         self.worldmap = Worldmap()
         self.players = dict()
         self.hero = Player()
-        self.__build_game()
 
-    def __build_game(self):
+    def build(self):
+
         """Make a new game
         """
         player_name = input("What's your name, stranger? ")
         data = world_loader.main(player_name)
-        self.__build_players(players=data["players"])
-        self.__build_world(rooms=data["rooms"])
-        self.__build_hero(hero=player_name)
+        self._build_players(players=data["players"])
+        self._build_world(rooms=data["rooms"])
+        self._build_hero(hero=player_name)
 
-    def __build_players(self, players):
+    def _build_players(self, players):
         for player in players:
             new_player = Player()
             new_player.make(players[player])
             self.players[new_player.name] = new_player
 
-    def __build_world(self, rooms):
+
+    def _build_world(self, rooms):
         self.worldmap.players = self.players
         for room in rooms:
             new_room = Room()
             new_room.make(rooms[room], self.players)
             self.worldmap.rooms[new_room.name] = new_room
 
-    def __build_hero(self, hero):
+
+    def _build_hero(self, hero):
         self.hero = self.players.get(
             hero, self.players.get("new_player")
         )
@@ -173,9 +182,10 @@ class Game:
             if item is not None:
                 out += "\n" + " "*4 + items[item].name
                 item_count += 1
-        if item_count == 0.:
+        if item_count == 0:
             out = " "*4 + "You ain't got shit, son!"
         return out, False
+
 
     def get_inventory(self):
         """public method call for inventory"""
@@ -204,7 +214,7 @@ class Game:
 
     def _start_over(self, load_or_save):
         if self._confirm():
-            self.__build_game()
+            self.build()
             out = load_or_save
         else:
             out = "Guess you changed your mind!"
