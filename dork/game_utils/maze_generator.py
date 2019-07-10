@@ -11,9 +11,6 @@ def main(debug=False):
 
     Keyword Arguments:
 
-            dims {tuple, default: (x=10, y=10)} (where x + y % 2 == 0):
-                unit dimensions of maze
-            
             debug {bool}: toggles whether the maze is drawn or not
 
     Returns:
