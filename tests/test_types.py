@@ -172,9 +172,9 @@ def test_inventory_has_item(game, mocker):
 
 def test_player_has_none(player):
     """Tests race case where player contains None"""
-    test_dict = {"name":"leather belt",
-                 "equipped":"leather belt", "inventory":[None, None]}
+    test_dict = {"name": "leather belt",
+                 "equipped": "leather belt", "inventory": [None, None]}
     test_player = player
     test_player.make(test_dict)
     assert test_player.items == dict(),\
-         "Player copied None object as item"
+        "Player copied None object as item"
