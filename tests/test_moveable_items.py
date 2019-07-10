@@ -13,7 +13,7 @@ def test_items_are_swappable():
     test_item.name = "squeaky hammer of valor"
     test_room.items[test_item.name] = test_item
     assert test_room.items["squeaky hammer of valor"],\
-    "failed to make room items"
+        "failed to make room items"
     transfer = test_room.items.pop("squeaky hammer of valor")
     test_player.items[transfer.name] = transfer
     assert isinstance(test_player.items["squeaky hammer of valor"],
