@@ -32,7 +32,7 @@ def test_repl_evaluate(game, repl_data):
     assert dork.repl.evaluate("Go", game, repl_data) == (
         "Sorry, I don't know that one.", False)
     assert dork.repl.evaluate("walk map", game, repl_data) == (
-        "Sorry, I don't know that one.", False)
+        "You can't go that way", False)
     assert "You have entered" or "You cannot go" in dork.repl.evaluate(
         "N", game, repl_data)
     assert "You have entered" or "You cannot go" in dork.repl.evaluate(
