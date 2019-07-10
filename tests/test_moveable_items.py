@@ -16,17 +16,17 @@ def test_items_are_swappable_runtime():
         item_a.name = "Bepis"
         test_game.worldmap.rooms["entrance"].items[item_a.name] = item_a
         assert test_game.worldmap.rooms["entrance"].items != dict(),\
-        "Room cannot contain items"
+            "Room cannot contain items"
         yanked_item = test_game.worldmap.rooms[
             "entrance"].items.pop("Bepis")
         test_game.hero.items[yanked_item.name] = yanked_item
         assert test_game.hero.items != dict(),\
-        "Player failed to add item"
+            "Player failed to add item"
         assert test_game.hero.items[yanked_item.name] == yanked_item,\
-        "Player failed to move item"
+            "Player failed to move item"
         test_room = test_game.worldmap.rooms["entrance"]
         assert "Bepis" not in test_room.items.keys(),\
-        "Room failed to pop item"
+            "Room failed to pop item"
 
 
 def test_items_are_swappable():
