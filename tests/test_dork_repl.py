@@ -1,8 +1,6 @@
 # -*- coding: utf-8 -*-
 """Basic tests for state and entity relationships in dork
 """
-
-from tests.utils import has_method
 import dork
 
 

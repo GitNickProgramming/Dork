@@ -2,7 +2,7 @@
 """Basic tests for state and entity relationships in dork
 """
 # pylint: disable=protected-access
-from tests.utils import has_a, has_method, is_a
+from tests.utils import is_a
 import dork.types as types
 
 
