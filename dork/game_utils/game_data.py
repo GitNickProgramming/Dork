@@ -48,7 +48,7 @@ CMDS = {
     "use": ["_use_item"],
     # "activate": _use_item,
     # "drop": _drop_item
-}x
+}
 
 
 META = {
