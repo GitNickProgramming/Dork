@@ -195,7 +195,6 @@ class Game:
         if item == "all":
             for item_n in room_items2:
                 player[item_n] = room_items.pop(item_n)
-                print(room_items)
             return f"You took {item} item. You took them well.", False
 
         player[item] = room_items.pop(item)
