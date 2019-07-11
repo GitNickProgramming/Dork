@@ -25,6 +25,7 @@ def test_game_data_dictionaries_exist():
     is_a(game_data.META, dict)
     is_a(game_data.TITLE, str)
 
+
 def test_maze_generator():
     """run the maze generator
     """
