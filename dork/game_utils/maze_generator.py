@@ -95,4 +95,4 @@ def _draw_maze(m):
     plt.xticks([])
     plt.yticks([])
     plt.pcolormesh(m, cmap=plt.cm.get_cmap("tab20b"))
-    plt.show()
+    # plt.show()

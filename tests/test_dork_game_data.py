@@ -3,6 +3,7 @@
 """
 from tests.utils import is_a
 import dork.game_utils.game_data as game_data
+import dork.game_utils.maze_generator as maze_gen
 
 
 def test_game_data_vars_exist():
@@ -23,3 +24,9 @@ def test_game_data_dictionaries_exist():
     is_a(game_data.ERRS, dict)
     is_a(game_data.META, dict)
     is_a(game_data.TITLE, str)
+
+def test_maze_generator():
+    """run the maze generator
+    """
+    maze_gen.main()
+    maze_gen.main(debug=True)
