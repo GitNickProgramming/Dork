@@ -172,22 +172,45 @@ class Game:
             out = " "*4 + "You ain't got shit, son!"
         return out, False
 
-    def _look(self):
+    def _look(self, x="n"):
+        if x == "around":
+            items = self.hero.location.items
+            print("\nItems:")
+            for item in items:
+                print(item)
+            print()
         return self.hero.location.description, False
 
     # def _save_game(self):
     #     world_writer.main(self)
     #     return "Save successful!", False
 
-    # def _take(self, item="all"):
-    #     # Item defaults to "all", and adds all items in room to inventory
-    #     return "You took the thing. You took it well.", False
+
+    def _take(self, item="all"):
+    # Item defaults to "all", and adds all items in room to inventory
+        room_items = self.hero.location.items
+        room_items2 = room_items.copy()
+        player = self.hero.items
+
+        if item == "all":
+            for item_n in room_items2:
+                player[item_n] = room_items.pop(item_n)
+                print(room_items)
+            return f"You took {item} item. You took them well.", False
+
+        player[item] = room_items.pop(item)
+        return f"You took the {item}. You took it well.", False
 
     # def _drop_item(self, item):
     #     return "Oops, you dropped something!", False
 
-    # def _use_item(self, item):
-    #     return "You used the thing! It's super effective!", False
+    def _use_item(self, item):
+        item_to_use =  input("on: ")
+        use_item = self.hero.items[item]
+        
+        print(use_item.stats)
+
+        return "You used the thing! It's super effective!", False
 
     def _start_over(self, load_or_save):
         if self._confirm():
