@@ -1,8 +1,11 @@
 # -*- coding: utf-8 -*-
 """Basic entity classes and methods for Dork.
 """
-# from pprint import pprint
-import dork.game_utils.world_loader as world_loader
+from random import shuffle
+from random import choice
+from operator import add
+import matplotlib.pyplot as plt
+# import dork.game_utils.world_loader as world_loader
 
 
 __all__ = ["Game"]
@@ -40,7 +43,7 @@ class Player(Holder):
     def __init__(self):
         super().__init__()
         self.name = None
-        self.location = Room()
+        self.location = Room("")
         self.equipped = None
 
     def make(self, player):
@@ -67,52 +70,60 @@ class Player(Holder):
 
 
 class Room(Holder):
-    """A room on the map
+    """A room on the worldmap
     """
 
-    def __init__(self):
+    def __init__(self, desc):
         super().__init__()
-        self.name = None
-        self.description = None
-        self.adjacent = dict()
+        self.description = desc
         self.players = list()
+        self.adjacent = dict()
         self.clues = dict()
-
-    def make(self, room, players):
-        """Make a room
-        """
-        self.name = room["name"]
-        self.description = room["description"]
-        self.adjacent = room["adjacent"]
-        self.clues = room["clues"]
-        items = room["items"]
-        for item in items:
-            new_item = Item()
-            new_item.make(items[item])
-            self.items[new_item.name] = new_item
-        for player in players:
-            if players[player].name in room["players"]:
-                self.players.append(players[player])
-                players[player].location = self
 
 
 class Worldmap:
-    """A map relating the rooms connectivity
-        as well as the players/items within
+    """A worldmap containing rooms, and the underlying maze
     """
 
     def __init__(self):
-        self.rooms = dict()
-        self.players = dict()
+        self.worldmap = dict()
+        self.maze = Maze()
+        self._make_rooms()
+        self._get_adj()
+
+    def _make_rooms(self):
+        i = 0
+        rooms = self.maze.rooms
+        for room in rooms:
+            self.worldmap[room] = Room(f"dummy description {i}")
+            i += 1
+
+    def _get_adj(self):
+        moves = {
+            "north": (0, 1), "south": (0, -1), "east": (1, 0), "west": (-1, 0)
+        }
+
+        rooms = self.maze.rooms
+        for room in rooms:
+            this_room = self.worldmap[room]
+            for direction in moves:
+                position = room
+                while True:
+                    position = tuple(map(add, position, moves[direction]))
+                    if self.maze(position) == 0:
+                        this_room.adjacent[direction] = None
+                        break
+                    elif self.maze(position) == 2:
+                        this_room.adjacent[direction] = self.worldmap[position]
+                        break
 
 
-class Game:
+class Game(Worldmap):
     """A container for holding a game state
     """
 
     def __init__(self):
-        self.worldmap = Worldmap()
-        self.players = dict()
+        super().__init__()
         self.hero = Player()
 
     def __call__(self, cmd, arg):
@@ -122,29 +133,7 @@ class Game:
         """Make a new game
         """
         player_name = input("What's your name, stranger? ")
-        data = world_loader.main(player_name)
-        self._build_players(players=data["players"])
-        self._build_world(rooms=data["rooms"])
-        self._build_hero(hero=player_name)
-
-    def _build_players(self, players):
-        for player in players:
-            new_player = Player()
-            new_player.make(players[player])
-            self.players[new_player.name] = new_player
-
-    def _build_world(self, rooms):
-        self.worldmap.players = self.players
-        for room in rooms:
-            new_room = Room()
-            new_room.make(rooms[room], self.players)
-            self.worldmap.rooms[new_room.name] = new_room
-
-    def _build_hero(self, hero):
-        self.hero = self.players.get(
-            hero, self.players.get("new_player")
-        )
-        self.hero.name = hero
+        self.hero.name = player_name
 
     def _gtfo(self):
         return f"Thanks for playing DORK, {self.hero.name}!", True
@@ -155,7 +144,7 @@ class Game:
         if not adjacent_room:
             out = f"You cannot go {cardinal} from here."
         else:
-            self.hero.set_location(self.worldmap.rooms[adjacent_room])
+            self.hero.set_location(self.worldmap[adjacent_room])
             print(f"You have entered {self.hero.location.name}")
             out = self.hero.location.description
         return out, False
@@ -174,20 +163,6 @@ class Game:
 
     def _look(self):
         return self.hero.location.description, False
-
-    # def _save_game(self):
-    #     world_writer.main(self)
-    #     return "Save successful!", False
-
-    # def _take(self, item="all"):
-    #     # Item defaults to "all", and adds all items in room to inventory
-    #     return "You took the thing. You took it well.", False
-
-    # def _drop_item(self, item):
-    #     return "Oops, you dropped something!", False
-
-    # def _use_item(self, item):
-    #     return "You used the thing! It's super effective!", False
 
     def _start_over(self, load_or_save):
         if self._confirm():
@@ -222,3 +197,108 @@ class Game:
     @staticmethod
     def _repl_error(arg):
         return f"{arg}", False
+
+
+class Maze:
+    """Generate a maze with 'rooms' on intersections, corners, and dead-ends.
+    """
+
+    moves = [
+        [(0, 2), (0, 1)], [(0, -2), (0, -1)],
+        [(-2, 0), (-1, 0)], [(2, 0), (1, 0)]
+    ]
+
+    rules = [
+        [0, 0, 0, 1], [0, 0, 1, 0], [0, 1, 0, 0], [1, 0, 0, 0],
+        [1, 1, 1, 0], [1, 1, 0, 1], [1, 0, 1, 1], [0, 1, 1, 1],
+        [1, 1, 1, 1], [1, 0, 1, 0], [1, 0, 0, 1], [0, 1, 1, 0],
+        [0, 1, 0, 1]
+    ]
+
+    def __init__(self):
+        self.rebuild()
+
+    def __call__(self, *args):
+        x, y, *val = args
+        if val:
+            self._maze[x][y] = val.pop()
+        return self._maze[x][y]
+
+    def rebuild(self):
+        """Generate a new maze
+        """
+        x = choice([10, 12, 14, 18])
+        y = 148//x
+        rng_x = range(1, x+1, 2)
+        rng_y = range(1, y+1, 2)
+
+        self.rooms = []
+        self._maze = [[0 for j in range(y+1)] for i in range(x+1)]
+        self._grid = [(i, j) for i in rng_x for j in rng_y]
+        self._path = [choice(self._grid)]
+        self._generate()
+
+    def reroom(self, obj):
+        """Reassign maze rooms as obj
+        """
+        for room in self.rooms:
+            self(*room, obj)
+
+    def draw(self):
+        """Show an image of the generated maze
+        """
+        _, axes = plt.subplots(figsize=(10, 10))
+        axes.set_aspect(1.0)
+        plt.xticks([])
+        plt.yticks([])
+        plt.pcolormesh(self._maze, cmap=plt.cm.get_cmap("tab20b"))
+        plt.show()
+
+    def _generate(self):
+        k = self._path[0]
+        self._grid.remove(k)
+        while self._grid:
+            n = len(self._path)
+            nsew = self._prb_lnk(k)
+            shuffle(nsew)
+            for prb_lnk in nsew:
+                probe, _ = prb_lnk
+                if probe in self._grid:
+                    self._walk(prb_lnk)
+                    self._grid.remove(probe)
+                    self._path.extend(prb_lnk)
+                    break
+            if n == len(self._path):
+                k = self._path[max(self._path.index(k)-1, 1)]
+            else:
+                k = self._path[-1]
+        self._get_rooms()
+
+    def _get_rooms(self):
+        for coord in self._path:
+            if self._neighbors(coord) in self.rules:
+                self.rooms.append(coord)
+                self(*coord, 2)
+        self(*self._path[0], 2)
+        self(*self._path[-2], 2)
+
+    # def _set_rooms(self, obj):
+    #     for room in self.rooms:
+    #         self(*room, obj)
+
+    def _prb_lnk(self, coord):
+        nsew = []
+        for move in self.moves:
+            prb = tuple(map(add, move[0], coord))
+            lnk = tuple(map(add, move[1], coord))
+            nsew.append([prb, lnk])
+        return nsew
+
+    def _neighbors(self, coord):
+        i, j = coord
+        return [self(i-1, j), self(i+1, j), self(i, j-1), self(i, j+1)]
+
+    def _walk(self, coords):
+        prb, lnk = coords
+        self(*prb, 1)
+        self(*lnk, 1)
