@@ -60,7 +60,7 @@ class Item:
 
 class Usable(ABC):
     """Abstract class of use behavior in items use method"""
-    
+
     @staticmethod
     @abstractmethod
     def use():
@@ -70,7 +70,7 @@ class Usable(ABC):
 
 class Attackable(Usable):
     """Any object that can be swung will say it was swung"""
-    
+
     @staticmethod
     def use():
         """Swing use method"""
