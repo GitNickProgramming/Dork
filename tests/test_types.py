@@ -233,3 +233,25 @@ def test_gold_can_pay(run):
     out = run(test_key.use)
     assert out[0] == "You use the gold to pay\n",\
                      "use method failed for gold items"
+
+
+def test_none_item(run):
+    """Checks that an object with none is unusable"""
+    test_key = types.Item()
+    test_key.make({"name": "empty thing",
+                   "description": "nothin",
+                   "stats": None})
+    out = run(test_key.use)
+    assert out[0] == "You find no use of this item\n",\
+                     "use method failed for gold items"
+
+
+def test_only_stat(run):
+    """Checks that an object with only a stat is unusable"""
+    test_key = types.Item()
+    test_key.make({"name": "empty thing",
+                   "description": "nothin",
+                   "stats": [+1]})
+    out = run(test_key.use)
+    assert out[0] == "You find no use of this item\n",\
+                     "use method failed for gold items"
