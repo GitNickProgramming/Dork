@@ -41,17 +41,17 @@ class Item:
         else:
             self.usable = NotUsable
 
-
     def set_usable(self, new_use):
         """This method changes the use behavior,
         provide usable class as argument"""
         uses = {"attack": Attackable, "key": Openable,
-                "gold": Payable, "emerald" or "diamond": Puzzleable, "speed": Statable}
+                "gold": Payable,
+                "emerald" or "diamond": Puzzleable,
+                "speed" or "strength": Statable}
         if new_use is None or new_use not in uses:
             self.usable = NotUsable
         else:
             self.usable = uses[new_use]
-
 
     def use(self):
         """Strategy pattern call"""
