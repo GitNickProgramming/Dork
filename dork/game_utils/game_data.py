@@ -57,6 +57,7 @@ META = {
     # ".save":["_save_game"],
     ".rq": ["_gtfo"],
     ".z": ["_zork"],
+    ".m": ["_draw_maze"],
 }
 
 

@@ -43,7 +43,7 @@ class Player(Holder):
     def __init__(self):
         super().__init__()
         self.name = None
-        self.location = Room("")
+        self.location = None
         self.equipped = None
 
     def make(self, player):
@@ -73,8 +73,9 @@ class Room(Holder):
     """A room on the worldmap
     """
 
-    def __init__(self, desc):
+    def __init__(self, coord, desc):
         super().__init__()
+        self.coord = coord
         self.description = desc
         self.players = list()
         self.adjacent = dict()
@@ -95,7 +96,7 @@ class Worldmap:
         i = 0
         rooms = self.maze.rooms
         for room in rooms:
-            self.worldmap[room] = Room(f"dummy description {i}")
+            self.worldmap[room] = Room(room, f"dummy description {i}")
             i += 1
 
     def _get_adj(self):
@@ -110,10 +111,10 @@ class Worldmap:
                 position = room
                 while True:
                     position = tuple(map(add, position, moves[direction]))
-                    if self.maze(position) == 0:
+                    if self.maze(*position) == 0:
                         this_room.adjacent[direction] = None
                         break
-                    elif self.maze(position) == 2:
+                    elif self.maze(*position) == 2:
                         this_room.adjacent[direction] = self.worldmap[position]
                         break
 
@@ -125,6 +126,12 @@ class Game(Worldmap):
     def __init__(self):
         super().__init__()
         self.hero = Player()
+        self.hero.set_location(
+            self.worldmap[
+                choice(list(self.worldmap.keys()))
+            ]
+        )
+        self.maze(*self.hero.location.coord, 5)
 
     def __call__(self, cmd, arg):
         return getattr(self, cmd)(arg) if arg else getattr(self, cmd)()
@@ -138,14 +145,24 @@ class Game(Worldmap):
     def _gtfo(self):
         return f"Thanks for playing DORK, {self.hero.name}!", True
 
+    def _draw_maze(self):
+        self.maze.draw()
+        return "To continue, close the map.", False
+
+    # def _print_maze(self):
+    #     out = ""
+    #     for row in self.maze:
+    #         out += f"\n "
+
     def _move(self, cardinal):
         location = self.hero.get_location()
-        adjacent_room = location.adjacent.get(cardinal, None)
+        adjacent_room = location.adjacent[cardinal]
         if not adjacent_room:
             out = f"You cannot go {cardinal} from here."
         else:
-            self.hero.set_location(self.worldmap[adjacent_room])
-            print(f"You have entered {self.hero.location.name}")
+            self.maze(*location.coord, 2)
+            self.hero.set_location(adjacent_room)
+            self.maze(*adjacent_room.coord, 5)
             out = self.hero.location.description
         return out, False
 
@@ -233,16 +250,16 @@ class Maze:
         rng_y = range(1, y+1, 2)
 
         self.rooms = []
-        self._maze = [[0 for j in range(y+1)] for i in range(x+1)]
+        self._maze = [[0 for i in range(x+1)] for j in range(y+1)]
         self._grid = [(i, j) for i in rng_x for j in rng_y]
         self._path = [choice(self._grid)]
         self._generate()
 
-    def reroom(self, obj):
-        """Reassign maze rooms as obj
-        """
-        for room in self.rooms:
-            self(*room, obj)
+    # def reroom(self, obj):
+    #     """Reassign maze rooms as obj
+    #     """
+    #     for room in self.rooms:
+    #         self(*room, obj)
 
     def draw(self):
         """Show an image of the generated maze
