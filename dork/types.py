@@ -12,15 +12,14 @@ __all__ = ["Game"]
 
 
 class Holder:
-    """A holder/container of items
-    """
+    """A holder/container of items"""
 
     def __init__(self):
         self.items = dict()
 
     def get_items(self, verbose):
-        """Print all inventory items
-        """
+        """Print all inventory items"""
+
         out = "Inventory:" if self.items else "There's nothing in here."
         for item in self.items:
             this = self.items[item]
@@ -33,8 +32,7 @@ class Holder:
 
 
 class Item:
-    """A obtainable/holdable item
-    """
+    """A obtainable/holdable item"""
 
     def __init__(self):
         self.name = str()
@@ -44,8 +42,8 @@ class Item:
         self.equipped = bool
 
     def _make(self, item, name):
-        """Make an item
-        """
+        """Make an item"""
+
         self.name = name
         self.description = item.pop("description")
         for stat in item:
@@ -55,8 +53,7 @@ class Item:
 
 
 class Player(Holder):
-    """A player or NPC in the game
-    """
+    """A player or NPC in the game"""
 
     def __init__(self):
         super().__init__()
@@ -65,19 +62,18 @@ class Player(Holder):
         self.equipped = None
 
     def set_location(self, location):
-        """Set player's location
-        """
+        """Set player's location"""
+
         self.location = location
 
     def get_location(self):
-        """Get Player's location
-        """
+        """Get Player's location"""
+
         return self.location
 
 
 class Room(Holder):
-    """A room on the worldmap
-    """
+    """A room on the worldmap"""
 
     def __init__(self, coord, desc):
         super().__init__()
@@ -89,8 +85,7 @@ class Room(Holder):
 
 
 class Maze:
-    """Generate a maze with 'rooms' on intersections, corners, and dead-ends.
-    """
+    """Generate a maze with rooms on intersections, corners, and dead-ends"""
 
     moves = [
         [(0, 2), (0, 1)], [(0, -2), (0, -1)],
@@ -128,14 +123,14 @@ class Maze:
         self._generate()
 
     def reroom(self, obj):
-        """Reassign maze rooms as obj
-        """
+        """Reassign maze rooms as obj"""
+
         for room in self.rooms:
             self(*room, obj)
 
     def draw(self):
-        """Show an image of the generated maze
-        """
+        """Show an image of the generated maze"""
+
         _, axes = plt.subplots(figsize=(len(self.maze[0]), len(self.maze)))
         axes.set_aspect(1.0)
         plt.xticks([])
@@ -146,8 +141,8 @@ class Maze:
         plt.show()
 
     def update(self):
-        """Update the map display
-        """
+        """Update the map display"""
+
         plt.pcolormesh(self.maze, cmap=plt.cm.get_cmap("tab20b"))
         plt.axis('off')
         plt.draw()
@@ -203,8 +198,7 @@ class Maze:
 
 
 class Worldmap:
-    """A worldmap containing rooms, and the underlying maze
-    """
+    """A worldmap containing rooms, and the underlying maze"""
 
     def __init__(self):
         self.worldmap = dict()
@@ -241,10 +235,10 @@ class Worldmap:
 
 
 class Game(Worldmap):
-    """A container for holding a game state
-    """
+    """A container for holding a game state"""
 
     player_draw_color = -6
+    verbose = False
 
     def __init__(self):
         super().__init__()
@@ -259,9 +253,17 @@ class Game(Worldmap):
     def __call__(self, cmd, arg):
         return getattr(self, cmd)(arg) if arg else getattr(self, cmd)()
 
+    def _toggle_verbose(self) -> (str, bool):
+        self.verbose = not self.verbose
+        out = {
+            True: "verbose inventory: ON",
+            False: "verbose inventory: OFF"
+        }[self.verbose]
+        return out, False
+
     def build(self):
-        """Make a new game
-        """
+        """Make a new game"""
+
         player_name = input("What's your name, stranger? ")
         self.hero.name = player_name
 
@@ -272,11 +274,11 @@ class Game(Worldmap):
         self.maze.draw()
         return "", False
 
-    def _print_maze(self):
-        out = ""
-        for row in self.maze.maze:
-            out += f"\n {row}"
-        return out, False
+    # def _print_maze(self):
+    #     out = ""
+    #     for row in self.maze.maze:
+    #         out += f"\n {row}"
+    #     return out, False
 
     def _move(self, cardinal):
         location = self.hero.get_location()
