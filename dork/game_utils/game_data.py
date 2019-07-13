@@ -58,6 +58,7 @@ META = {
     ".rq": ["_gtfo"],
     ".z": ["_zork"],
     ".m": ["_draw_maze"],
+    ".p": ["_print_maze"],
 }
 
 

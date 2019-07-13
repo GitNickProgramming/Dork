@@ -108,20 +108,23 @@ class Worldmap:
         for room in rooms:
             this_room = self.worldmap[room]
             for direction in moves:
+                searching = True
                 position = room
-                while True:
+                while searching:
                     position = tuple(map(add, position, moves[direction]))
                     if self.maze(*position) == 0:
                         this_room.adjacent[direction] = None
-                        break
+                        searching = False
                     elif self.maze(*position) == 2:
                         this_room.adjacent[direction] = self.worldmap[position]
-                        break
+                        searching = False
 
 
 class Game(Worldmap):
     """A container for holding a game state
     """
+
+    player_draw_color = -6
 
     def __init__(self):
         super().__init__()
@@ -131,7 +134,7 @@ class Game(Worldmap):
                 choice(list(self.worldmap.keys()))
             ]
         )
-        self.maze(*self.hero.location.coord, 5)
+        self.maze(*self.hero.location.coord, self.player_draw_color)
 
     def __call__(self, cmd, arg):
         return getattr(self, cmd)(arg) if arg else getattr(self, cmd)()
@@ -147,12 +150,13 @@ class Game(Worldmap):
 
     def _draw_maze(self):
         self.maze.draw()
-        return "To continue, close the map.", False
+        return "", False
 
-    # def _print_maze(self):
-    #     out = ""
-    #     for row in self.maze:
-    #         out += f"\n "
+    def _print_maze(self):
+        out = ""
+        for row in self.maze.maze:
+            out += f"\n {row}"
+        return out, False
 
     def _move(self, cardinal):
         location = self.hero.get_location()
@@ -162,7 +166,7 @@ class Game(Worldmap):
         else:
             self.maze(*location.coord, 2)
             self.hero.set_location(adjacent_room)
-            self.maze(*adjacent_room.coord, 5)
+            self.maze(*adjacent_room.coord, self.player_draw_color)
             out = self.hero.location.description
         return out, False
 
@@ -238,8 +242,8 @@ class Maze:
     def __call__(self, *args):
         x, y, *val = args
         if val:
-            self._maze[x][y] = val.pop()
-        return self._maze[x][y]
+            self.maze[y][x] = val.pop()
+        return self.maze[y][x]
 
     def rebuild(self):
         """Generate a new maze
@@ -249,17 +253,17 @@ class Maze:
         rng_x = range(1, x+1, 2)
         rng_y = range(1, y+1, 2)
 
+        self.maze = [[0 for i in range(x+1)] for j in range(y+1)]
+        self.grid = [(i, j) for i in rng_x for j in rng_y]
+        self.path = [choice(self.grid)]
         self.rooms = []
-        self._maze = [[0 for i in range(x+1)] for j in range(y+1)]
-        self._grid = [(i, j) for i in rng_x for j in rng_y]
-        self._path = [choice(self._grid)]
         self._generate()
 
-    # def reroom(self, obj):
-    #     """Reassign maze rooms as obj
-    #     """
-    #     for room in self.rooms:
-    #         self(*room, obj)
+    def reroom(self, obj):
+        """Reassign maze rooms as obj
+        """
+        for room in self.rooms:
+            self(*room, obj)
 
     def draw(self):
         """Show an image of the generated maze
@@ -268,36 +272,38 @@ class Maze:
         axes.set_aspect(1.0)
         plt.xticks([])
         plt.yticks([])
-        plt.pcolormesh(self._maze, cmap=plt.cm.get_cmap("tab20b"))
+        plt.pcolormesh(self.maze, cmap=plt.cm.get_cmap("tab20b"))
+        plt.axis('off')
+        plt.ion()
         plt.show()
 
     def _generate(self):
-        k = self._path[0]
-        self._grid.remove(k)
-        while self._grid:
-            n = len(self._path)
+        k = self.path[0]
+        self.grid.remove(k)
+        while self.grid:
+            n = len(self.path)
             nsew = self._prb_lnk(k)
             shuffle(nsew)
             for prb_lnk in nsew:
                 probe, _ = prb_lnk
-                if probe in self._grid:
+                if probe in self.grid:
                     self._walk(prb_lnk)
-                    self._grid.remove(probe)
-                    self._path.extend(prb_lnk)
+                    self.grid.remove(probe)
+                    self.path.extend(prb_lnk)
                     break
-            if n == len(self._path):
-                k = self._path[max(self._path.index(k)-1, 1)]
+            if n == len(self.path):
+                k = self.path[max(self.path.index(k)-1, 1)]
             else:
-                k = self._path[-1]
+                k = self.path[-1]
         self._get_rooms()
 
     def _get_rooms(self):
-        for coord in self._path:
+        for coord in self.path:
             if self._neighbors(coord) in self.rules:
                 self.rooms.append(coord)
                 self(*coord, 2)
-        self(*self._path[0], 2)
-        self(*self._path[-2], 2)
+        self(*self.path[0], 2)
+        self(*self.path[-2], 2)
 
     # def _set_rooms(self, obj):
     #     for room in self.rooms:
