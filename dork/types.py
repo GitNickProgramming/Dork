@@ -183,6 +183,7 @@ class Game(Worldmap):
             self.maze(*location.coord, 2)
             self.hero.set_location(adjacent_room)
             self.maze(*adjacent_room.coord, self.player_draw_color)
+            self.maze.update()
             out = self.hero.location.description
         return out, False
 
@@ -284,7 +285,7 @@ class Maze:
     def draw(self):
         """Show an image of the generated maze
         """
-        _, axes = plt.subplots(figsize=(10, 10))
+        _, axes = plt.subplots(figsize=(len(self.maze[0]), len(self.maze)))
         axes.set_aspect(1.0)
         plt.xticks([])
         plt.yticks([])
@@ -292,6 +293,12 @@ class Maze:
         plt.axis('off')
         plt.ion()
         plt.show()
+
+    def update(self):
+        """w af"""
+        plt.pcolormesh(self.maze, cmap=plt.cm.get_cmap("tab20b"))
+        plt.axis('off')
+        plt.draw()
 
     def _generate(self):
         k = self.path[0]
