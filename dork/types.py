@@ -18,22 +18,38 @@ class Holder:
     def __init__(self):
         self.items = dict()
 
+    def _get_items(self, verbose):
+        out = "Inventory:" if self.items else "There's nothing in here."
+        for item in self.items:
+            this = self.items[item]
+            desc = f":\n    {this.description}" if verbose else ""
+            eqpd = " (equipped)" if this.equipped else ""
+            amt = this.stats.get("amount", None)
+            amt = f" ({amt})" if amt else ""
+            out += f"\n  {item}{eqpd}{amt}{desc}"
+        return out
+
 
 class Item:
     """A obtainable/holdable item
     """
 
     def __init__(self):
-        self.name = None
-        self.description = None
+        self.name = str()
+        self.description = str()
         self.stats = dict()
+        self.equipable = bool
+        self.equipped = bool
 
-    def make(self, item):
+    def _make(self, item, name):
         """Make an item
         """
-        self.name = item["name"]
-        self.description = item["description"]
-        self.stats = item["stats"]
+        self.name = name
+        self.description = item.pop("description")
+        for stat in item:
+            self.stats[stat] = item[stat]
+        self.equipable = self.stats.get("equipable", False)
+        self.equipped = self.stats.get("equipped", False)
 
 
 class Player(Holder):
@@ -46,17 +62,17 @@ class Player(Holder):
         self.location = None
         self.equipped = None
 
-    def make(self, player):
-        """Make a player
-        """
-        self.name = player["name"]
-        self.equipped = player["equipped"]
-        inventory = player["inventory"]
-        for item in inventory:
-            if item is not None:
-                new_item = Item()
-                new_item.make(inventory[item])
-                self.items[new_item.name] = new_item
+    # def make(self, player):
+    #     """Make a player
+    #     """
+    #     self.name = player["name"]
+    #     self.equipped = player["equipped"]
+    #     inventory = player["inventory"]
+    #     for item in inventory:
+    #         if item is not None:
+    #             new_item = Item()
+    #             new_item.make(inventory[item])
+    #             self.items[new_item.name] = new_item
 
     def set_location(self, location):
         """Set player's location
