@@ -3,6 +3,7 @@
 """
 # from pprint import pprint
 import dork.game_utils.world_loader as world_loader
+import dork.game_utils.world_writer as w_writer
 
 
 __all__ = ["Game"]
@@ -109,6 +110,7 @@ class Worldmap:
 class Game:
     """A container for holding a game state
     """
+    dataaa = {}
 
     def __init__(self):
         self.worldmap = Worldmap()
@@ -122,7 +124,7 @@ class Game:
         """Make a new game
         """
         player_name = input("What's your name, stranger? ")
-        data = world_loader.main(player_name)
+        data, self.dataaa = world_loader.main(player_name)
         self._build_players(players=data["players"])
         self._build_world(rooms=data["rooms"])
         self._build_hero(hero=player_name)
@@ -130,6 +132,7 @@ class Game:
     def _build_players(self, players):
         for player in players:
             new_player = Player()
+            # new_player.location = players[player]["location"]
             new_player.make(players[player])
             self.players[new_player.name] = new_player
 
@@ -175,9 +178,8 @@ class Game:
     def _look(self):
         return self.hero.location.description, False
 
-    # def _save_game(self):
-    #     world_writer.main(self)
-    #     return "Save successful!", False
+    def _save_game(self):
+        return w_writer.save_gamee(self), False
 
     # def _take(self, item="all"):
     #     # Item defaults to "all", and adds all items in room to inventory
