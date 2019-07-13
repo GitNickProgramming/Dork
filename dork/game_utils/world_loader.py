@@ -9,10 +9,14 @@ __all__ = ["main"]
 
 def _load(file_name):
     """Loads yaml data from the given file_name.
-    \nArguments:
-        file_name {String} -- [format: file_name (no extension)]
-    \nReturns:
-        {dict} -- [Returns a dictionary object holding YAML data]
+
+        Arguments:
+
+            file_name {String}: file name to open (no extension)
+
+        Returns:
+
+            {dict}: containing all YAML data
     """
 
     file_path = f"./dork/saves/{file_name}"
