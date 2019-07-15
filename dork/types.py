@@ -204,7 +204,6 @@ class Game:
         room_items[item] = player.pop(item)
         return "Oops, you dropped something!", False
 
-
     def _start_over(self, load_or_save):
         if self._confirm():
             self.build()
