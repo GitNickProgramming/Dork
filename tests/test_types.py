@@ -2,9 +2,11 @@
 """Basic tests for state and entity relationships in dork
 """
 # pylint: disable=protected-access
+import unittest.mock as mock
 from tests.utils import is_a
 import dork.types as types
 import dork.repl
+
 
 
 def test_confirm_method_yes(capsys, mocker):
@@ -128,3 +130,10 @@ def test_look(run):
            "item are not found on entrance room"
     test_game = types.Game()
     assert test_game._look() == (None, False)
+
+
+def test_take(run):
+    """testing _take the method takes all and specific item"""
+    out = run(dork.repl.repl, input_side_effect=["name", "take", ".rq"])
+    assert "You took all item. You took them well." in out[0],\
+           "item are not found on entrance room"
