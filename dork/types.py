@@ -119,7 +119,7 @@ class Statable(Usable):
     @staticmethod
     def use(target, name):
         """Stat change use method"""
-        print("The " +  name + " takes effect on " + target)
+        print("The " + name + " takes effect on " + target)
 
 
 class Player(Holder):
