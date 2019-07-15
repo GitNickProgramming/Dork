@@ -2,6 +2,7 @@
 """Basic entity classes and methods for Dork.
 """
 # from pprint import pprint
+from abc import ABC, abstractmethod
 import dork.game_utils.world_loader as world_loader
 
 
@@ -24,6 +25,7 @@ class Item:
         self.name = None
         self.description = None
         self.stats = dict()
+        self.usable = NotUsable
 
     def make(self, item):
         """Make an item
@@ -31,6 +33,96 @@ class Item:
         self.name = item["name"]
         self.description = item["description"]
         self.stats = item["stats"]
+        if self.stats is None:
+            self.usable = NotUsable
+
+        elif len(self.stats) > 1:
+            self.set_usable(self.stats[1])
+        else:
+            self.usable = NotUsable
+
+    def set_usable(self, new_use):
+        """This method changes the use behavior,
+        provide usable class as argument"""
+        uses = {"attack": Attackable,
+                "key": Openable,
+                "gold": Payable,
+                "emerald": Puzzleable,
+                "diamond": Puzzleable,
+                "speed": Statable,
+                "strength": Statable}
+        if new_use is None or new_use not in uses:
+            self.usable = NotUsable
+        else:
+            self.usable = uses[new_use]
+
+    def use(self, target, name):
+        """Strategy pattern call"""
+        self.usable.use(target, name)
+
+
+class Usable(ABC):
+    """Abstract class of use behavior in items use method"""
+
+    @staticmethod
+    @abstractmethod
+    def use(target, name):
+        """Strategy pattern inspired by refactoring.guru
+        use method defaults to doing nothing"""
+
+
+class Attackable(Usable):
+    """Any object that can be swung will say it was swung"""
+
+    @staticmethod
+    def use(target, name):
+        """Swing use method"""
+        print("You swing the " + name + " at " + target)
+
+
+class NotUsable(Usable):
+    """Any object that cannot be used"""
+
+    @staticmethod
+    def use(target, name):
+        """Useless use method"""
+        print("You find no use of this item")
+
+
+class Openable(Usable):
+    """Object opening behavior class"""
+
+    @staticmethod
+    def use(target, name):
+        """Opens object targeted if possible"""
+        print("You insert the " + name + " into " + target)
+
+
+class Payable(Usable):
+    """Any object that can be used as gold"""
+
+    @staticmethod
+    def use(target, name):
+        """Gold use method"""
+        print("You use the " + name + " to pay " + target)
+
+
+class Puzzleable(Usable):
+    """Any object that can be used in a puzzle"""
+
+    @staticmethod
+    def use(target, name):
+        """Puzzle use method"""
+        print("You try to fit the " + name + " into the " + target)
+
+
+class Statable(Usable):
+    """Any object that can change stats"""
+
+    @staticmethod
+    def use(target, name):
+        """Stat change use method"""
+        print("The " + name + " takes effect on " + target)
 
 
 class Player(Holder):
@@ -186,8 +278,12 @@ class Game:
     # def _drop_item(self, item):
     #     return "Oops, you dropped something!", False
 
-    # def _use_item(self, item):
-    #     return "You used the thing! It's super effective!", False
+    def _use_item(self, item="Nothing"):
+        if item in self.hero.items.keys():
+            target = input("What do you want to use it on? ")
+            self.hero.items[item].use(target, item)
+            return "You used the thing! It's super effective!", False
+        return "You don't have that item...", False
 
     def _start_over(self, load_or_save):
         if self._confirm():
