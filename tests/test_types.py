@@ -264,3 +264,13 @@ def test_runtime_items(run):
                                                  "use sword", ".rq"])
     assert "You don't have that item...\n" in out[0],\
            "Failed to decline use on non-existant item"
+    test_item = dork.types.Item()
+    test_item.make({"name": "sword",
+                    "description": "its made of foam",
+                    "stats": [+0, "attack"]})
+    test_game = dork.types.Game()
+    test_game.hero.items["sword"] = test_item
+    out = run(test_game._use_item, "sword")
+    assert "You swing the item" in out[0],\
+           "Failed to use item in runtime"
+    
