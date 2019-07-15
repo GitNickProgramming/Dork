@@ -135,13 +135,16 @@ def test_take(run):
     out = run(dork.repl.repl, input_side_effect=["name", "take", ".rq"])
     assert "You took all item. You took them well." in out[0],\
            "item are not found on entrance room"
-    out = run(dork.repl.repl, input_side_effect=["name", "take soggy waffle", ".rq"])
+    out = run(dork.repl.repl, input_side_effect=["name",
+                                                 "take soggy waffle",
+                                                 ".rq"])
     assert "You took the soggy waffle. You took it well." in out[0],\
            "item are not found on entrance room"
 
+
 def test_drop_item(run):
     """testing _drop_item the method takes all and specific item"""
-    out = run(dork.repl.repl, input_side_effect=["name", "take soggy waffle",\
+    out = run(dork.repl.repl, input_side_effect=["name", "take soggy waffle",
                                                  "drop soggy waffle", ".rq"])
     assert "Oops, you dropped something!" in out[0],\
            "item are not found on entrance room"
