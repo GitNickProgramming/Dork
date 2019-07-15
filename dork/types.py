@@ -11,79 +11,6 @@ import matplotlib.pyplot as plt
 __all__ = ["Game"]
 
 
-class Holder:
-    """A holder/container of items"""
-
-    def __init__(self):
-        self.items = dict()
-
-    def get_items(self, verbose):
-        """Print all inventory items"""
-
-        out = "Inventory:" if self.items else "There's nothing in here."
-        for item in self.items:
-            this = self.items[item]
-            desc = f":\n    {this.description}" if verbose else ""
-            eqpd = " (equipped)" if this.equipped else ""
-            amt = this.stats.get("amount", None)
-            amt = f" ({amt})" if amt else ""
-            out += f"\n  {item}{eqpd}{amt}{desc}"
-        return out
-
-
-class Item:
-    """A obtainable/holdable item"""
-
-    def __init__(self):
-        self.name = str()
-        self.description = str()
-        self.stats = dict()
-        self.equipable = bool
-        self.equipped = bool
-
-    def _make(self, item, name):
-        """Make an item"""
-
-        self.name = name
-        self.description = item.pop("description")
-        for stat in item:
-            self.stats[stat] = item[stat]
-        self.equipable = self.stats.get("equipable", False)
-        self.equipped = self.stats.get("equipped", False)
-
-
-class Player(Holder):
-    """A player or NPC in the game"""
-
-    def __init__(self):
-        super().__init__()
-        self.name = None
-        self.location = None
-        self.equipped = None
-
-    def set_location(self, location):
-        """Set player's location"""
-
-        self.location = location
-
-    def get_location(self):
-        """Get Player's location"""
-
-        return self.location
-
-
-class Room(Holder):
-    """A room on the worldmap"""
-
-    def __init__(self, coord, desc):
-        super().__init__()
-        self.coord = coord
-        self.description = desc
-        self.players = list()
-        self.adjacent = dict()
-        self.clues = dict()
-
-
 class Maze:
     """Generate a maze with rooms on intersections, corners, and dead-ends"""
 
@@ -99,8 +26,11 @@ class Maze:
         [0, 1, 0, 1]
     ]
 
-    def __init__(self):
-        self.rebuild()
+    def __init__(self, save_file=None):
+        if save_file:
+            self.build(save_file)
+        else:
+            self.rebuild()
 
     def __call__(self, *args):
         x, y, *val = args
@@ -108,9 +38,14 @@ class Maze:
             self.maze[y][x] = val.pop()
         return self.maze[y][x]
 
+    def build(self, save_file):
+        """Generate an existing maze"""
+        self.maze = save_file["maze"]
+        self.rooms = save_file["rooms"]
+
     def rebuild(self):
-        """Generate a new maze
-        """
+        """Generate a new maze"""
+
         x = choice([10, 12, 14, 18])
         y = 148//x
         rng_x = range(1, x+1, 2)
@@ -121,12 +56,6 @@ class Maze:
         self.path = [choice(self.grid)]
         self.rooms = []
         self._generate()
-
-    def reroom(self, obj):
-        """Reassign maze rooms as obj"""
-
-        for room in self.rooms:
-            self(*room, obj)
 
     def draw(self):
         """Show an image of the generated maze"""
@@ -294,7 +223,7 @@ class Game(Worldmap):
         return out, False
 
     def _inventory(self):
-        return self.hero.items.get_items(), False
+        return self.hero.get_items(self.verbose), False
 
     def _look(self):
         return self.hero.location.description, False
@@ -332,3 +261,76 @@ class Game(Worldmap):
     @staticmethod
     def _repl_error(arg):
         return f"{arg}", False
+
+
+class Holder:
+    """A holder/container of items"""
+
+    def __init__(self):
+        self.items = dict()
+
+    def get_items(self, verbose):
+        """Print all inventory items"""
+
+        out = "Inventory:" if self.items else "There's nothing in here."
+        for item in self.items:
+            this = self.items[item]
+            desc = f":\n    {this.description}" if verbose else ""
+            eqpd = " (equipped)" if this.equipped else ""
+            amt = this.stats.get("amount", None)
+            amt = f" ({amt})" if amt else ""
+            out += f"\n  {item}{eqpd}{amt}{desc}"
+        return out
+
+
+class Room(Holder):
+    """A room on the worldmap"""
+
+    def __init__(self, coord, desc):
+        super().__init__()
+        self.coord = coord
+        self.description = desc
+        self.players = list()
+        self.adjacent = dict()
+        self.clues = dict()
+
+
+class Player(Holder):
+    """A player or NPC in the game"""
+
+    def __init__(self):
+        super().__init__()
+        self.name = None
+        self.location = None
+        self.equipped = None
+
+    def set_location(self, location):
+        """Set player's location"""
+
+        self.location = location
+
+    def get_location(self):
+        """Get Player's location"""
+
+        return self.location
+
+
+class Item:
+    """A obtainable/holdable item"""
+
+    def __init__(self):
+        self.name = str()
+        self.description = str()
+        self.stats = dict()
+        self.equipable = bool
+        self.equipped = bool
+
+    def _make(self, item, name):
+        """Make an item"""
+
+        self.name = name
+        self.description = item.pop("description")
+        for stat in item:
+            self.stats[stat] = item[stat]
+        self.equipable = self.stats.get("equipable", False)
+        self.equipped = self.stats.get("equipped", False)
