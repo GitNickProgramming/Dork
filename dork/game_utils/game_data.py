@@ -28,11 +28,6 @@ MOVES = {
     "east": ["_move", "east"],
     "west": ["_move", "west"]
 }
-NOUNS = {"sword": ["_use_item", "sword"],
-         "handkercheif": ["_use_item", "handkercheif"],
-         "gold": ["_use_item", "gold"],
-         "emerald": ["_use_item", "emerald"],
-         "diamond": ["_use_item", "diamond"]}
 
 CMDS = {
     "go": MOVES,
@@ -45,7 +40,7 @@ CMDS = {
     "i": ["_inventory"],
     "inv": ["_inventory"],
     "inventory": ["_inventory"],
-    "use": NOUNS,
+    "use": ["_use_item"],
     # "grab": _take,
     # "take": _take,
     # "add": _take,
