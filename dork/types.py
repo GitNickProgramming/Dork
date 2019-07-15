@@ -204,6 +204,9 @@ class Game:
         self.players = dict()
         self.hero = Player()
 
+    def __call__(self, cmd, arg):
+        return getattr(self, cmd)(arg) if arg else getattr(self, cmd)()
+
     def build(self):
         """Make a new game
         """

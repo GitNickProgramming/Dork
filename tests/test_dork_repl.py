@@ -1,8 +1,6 @@
 # -*- coding: utf-8 -*-
 """Basic tests for state and entity relationships in dork
 """
-
-from tests.utils import has_method
 import dork
 
 
@@ -32,7 +30,7 @@ def test_repl_evaluate(game, repl_data):
     assert dork.repl.evaluate("Go", game, repl_data) == (
         "Sorry, I don't know that one.", False)
     assert dork.repl.evaluate("walk map", game, repl_data) == (
-        "Sorry, I don't know that one.", False)
+        "You can't go that way", False)
     assert "You have entered" or "You cannot go" in dork.repl.evaluate(
         "N", game, repl_data)
     assert "You have entered" or "You cannot go" in dork.repl.evaluate(
@@ -60,28 +58,6 @@ def test_repl_evaluate_move(game, repl_data):
         'Thanks for playing DORK, None!', True)
     assert dork.repl.evaluate(".z", game, repl_data) == (
         "Oh shit, you found an easter egg!", False)
-
-
-def test_game_build_methods_exist(game):
-    """the game should have build methods
-    """
-    has_method(game, "build")
-    has_method(game, "_build_players")
-    has_method(game, "_build_world")
-    has_method(game, "_build_hero")
-
-
-def test_game_methods_exist(game):
-    """the game should have control methods
-    """
-    has_method(game, "_gtfo")
-    has_method(game, "_move")
-    has_method(game, "_inventory")
-    has_method(game, "_look")
-    has_method(game, "_start_over")
-    has_method(game, "_confirm")
-    has_method(game, "_zork")
-    has_method(game, "_repl_error")
 
 
 def test_repl_method_repl(run, mocker):

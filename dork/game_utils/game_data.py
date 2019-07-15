@@ -67,4 +67,5 @@ META = {
 ERRS = {
     "u": ["_repl_error", "Sorry, I don't know that one."],
     "?": ["_repl_error", "Huh? Can you speak up?"],
+    "no go": ["_repl_error", "You can't go that way"],
 }

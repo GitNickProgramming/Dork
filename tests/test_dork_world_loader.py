@@ -2,6 +2,7 @@
 """Basic tests for world loader
 """
 import dork.game_utils.world_loader as world_loader
+import dork.game_utils.maze_generator as maze_gen
 from tests.utils import is_a
 
 
@@ -21,3 +22,10 @@ def test_main_without_same_name():
     """Tests loading a non-existing save file
     """
     assert isinstance(world_loader.main("nobody"), dict)
+
+
+def test_maze_generator():
+    """run the maze generator
+    """
+    maze_gen.main()
+    maze_gen.main(debug=True)
