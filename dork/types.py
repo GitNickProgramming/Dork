@@ -185,28 +185,27 @@ class Game:
     #     world_writer.main(self)
     #     return "Save successful!", False
 
-
     def _take(self, item="all"):
-    # Item defaults to "all", and adds all items in room to inventory
+        # Item defaults to "all", and adds all items in room to inventory
         room_items = self.hero.location.items
         room_items2 = room_items.copy()
         player = self.hero.items
-
         if item == "all":
             for item_n in room_items2:
                 player[item_n] = room_items.pop(item_n)
             return f"You took {item} item. You took them well.", False
-
         player[item] = room_items.pop(item)
         return f"You took the {item}. You took it well.", False
 
     def _drop_item(self, item):
+        """drops specific item from player to room"""
         player = self.hero.items
         room_items = self.hero.location.items
         room_items[item] = player.pop(item)
         return "Oops, you dropped something!", False
 
     def _use_item(self, item):
+        """uses item then compare to other if true it unlocks"""
         item_to_use = input("on: ")
         use_item = self.hero.items[item]
         room_items = self.hero.location.items[item_to_use]
@@ -248,5 +247,3 @@ class Game:
     @staticmethod
     def _repl_error(arg):
         return f"{arg}", False
-
-    

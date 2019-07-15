@@ -121,90 +121,10 @@ def test_player_has_none(player):
         "Player copied None object as item"
 
 
-def test_sword_can_swing(run):
-    """Tests that a sword object calls swingable"""
-    test_sword = types.Item()
-    test_sword.make({"name": "test sword",
-                     "description": "sword of boring",
-                     "stats": [+1, "attack"]})
-    out = run(test_sword.use)
-    assert out[0] == "You swing the item\n",\
-                     "use method failed for sword items"
-
-
-def test_key_can_open(run):
-    """Tests that a key object calls openable"""
-    test_key = types.Item()
-    test_key.make({"name": "test key",
-                   "description": "jingly keys",
-                   "stats": [+1, "key"]})
-    out = run(test_key.use)
-    assert out[0] == "You insert the item\n",\
-                     "use method failed for key items"
-
-
-def test_potion_can_speed_up(run):
-    """Tests that a stat changing object calls statable"""
-    test_potion = types.Item()
-    test_potion.make({"name": "test potion",
-                      "description": "Looks like booze to me",
-                      "stats": [-100, "speed"]})
-    out = run(test_potion.use)
-    assert out[0] == "The item takes effect\n",\
-                     "use method failed for stat changing items"
-
-
-def test_gem_can_be_inserted(run):
-    """Calls that a gem object calls puzzleable"""
-    test_emerald = types.Item()
-    test_emerald.make({"name": "shiny emerald",
-                       "description": "POWERFUL",
-                       "stats": [+1, "emerald"]})
-    out = run(test_emerald.use)
-    assert out[0] == "You try to fit the item in\n",\
-                     "use method failed for puzzle items"
-
-
-def test_gold_can_pay(run):
-    """Checks that a gold object calls payable"""
-    test_key = types.Item()
-    test_key.make({"name": "bag 'o MOLTEN GOOOLD",
-                   "description": "der bee gould een dem der bag",
-                   "stats": [+100, "gold"]})
-    out = run(test_key.use)
-    assert out[0] == "You use the gold to pay\n",\
-                     "use method failed for gold items"
-
-
-def test_none_item(run):
-    """Checks that an object with none is unusable"""
-    test_key = types.Item()
-    test_key.make({"name": "empty thing",
-                   "description": "nothin",
-                   "stats": None})
-    out = run(test_key.use)
-    assert out[0] == "You find no use of this item\n",\
-                     "use method failed for gold items"
-
-
-def test_only_stat(run):
-    """Checks that an object with only a stat is unusable"""
-    test_key = types.Item()
-    test_key.make({"name": "empty thing",
-                   "description": "nothin",
-                   "stats": [+1]})
-    out = run(test_key.use)
-    assert out[0] == "You find no use of this item\n",\
-                     "use method failed for gold items"
-
 def test_look(run):
     """testing _look for display items and description"""
-    out = run(dork.repl.repl, input_side_effect=["name","look around", ".rq"])
+    out = run(dork.repl.repl, input_side_effect=["name", "look around", ".rq"])
     assert "Items:\nsoggy waffle\ntorn parchment\nbroken quill" in out[0],\
            "item are not found on entrance room"
     test_game = types.Game()
-    assert test_game._look() == (None , False)
-
-
-
-
+    assert test_game._look() == (None, False)
