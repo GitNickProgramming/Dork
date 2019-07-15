@@ -70,7 +70,7 @@ rooms:
             4:  
                 name: key
                 description: the key is rusty, looks like it is for treasure chest.
-                stats: treasure_1
+                stats: broken quill
                 
         clues:
     4:

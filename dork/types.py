@@ -206,10 +206,11 @@ class Game:
     def _use_item(self, item):
         item_to_use =  input("on: ")
         use_item = self.hero.items[item]
-        
-        print(use_item.stats)
+        room_items = self.hero.location.items[item_to_use]
 
-        return "You used the thing! It's super effective!", False
+        if room_items.name == use_item.stats:
+            return "You used the thing! It's super effective!", False
+        return f"\nNothin happend.\n{room_items.description}", False
 
     def _start_over(self, load_or_save):
         if self._confirm():
