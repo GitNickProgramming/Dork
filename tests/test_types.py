@@ -4,6 +4,7 @@
 # pylint: disable=protected-access
 from tests.utils import is_a
 import dork.types as types
+import dork.repl
 
 
 def test_confirm_method_yes(capsys, mocker):
@@ -195,3 +196,15 @@ def test_only_stat(run):
     out = run(test_key.use)
     assert out[0] == "You find no use of this item\n",\
                      "use method failed for gold items"
+
+def test_look(run):
+    """testing _look for display items and description"""
+    out = run(dork.repl.repl, input_side_effect=["name","look around", ".rq"])
+    assert "Items:\nsoggy waffle\ntorn parchment\nbroken quill" in out[0],\
+           "item are not found on entrance room"
+    test_game = types.Game()
+    assert test_game._look() == (None , False)
+
+
+
+
