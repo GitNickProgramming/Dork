@@ -29,7 +29,6 @@ MOVES = {
     "west": ["_move", "west"]
 }
 
-
 CMDS = {
     "go": MOVES,
     "move": MOVES,
@@ -46,8 +45,9 @@ CMDS = {
     # "add": _take,
     # "loot": _take,
     "use": ["_use_item"],
-    # "activate": _use_item,
     "drop": ["_drop_item"]
+    "use": ["_use_item"],
+    "activate": ["_use_item"],
 }
 
 
