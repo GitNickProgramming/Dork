@@ -1,12 +1,10 @@
 # -*- coding: utf-8 -*-
 """Basic tests for state and entity relationships in dork
 """
-from tests.utils import has_a, has_method, is_a
+from tests.utils import is_a
 import dork.types as types
 import dork.repl
 # pylint: disable=protected-access
-from tests.utils import is_a
-import dork.types as types
 
 
 def test_confirm_method_yes(capsys, mocker):
