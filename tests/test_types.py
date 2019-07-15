@@ -4,6 +4,7 @@
 
 from tests.utils import has_a, has_method, is_a
 import dork.types as types
+import dork.repl
 
 
 # pylint: disable=protected-access
@@ -255,3 +256,11 @@ def test_only_stat(run):
     out = run(test_key.use)
     assert out[0] == "You find no use of this item\n",\
                      "use method failed for gold items"
+
+
+def test_runtime_items(run):
+    """Tests the functionality of items in runtime"""
+    out = run(dork.repl.repl, input_side_effect=["tester",
+                                                 "use sword", ".rq"])
+    assert "You don't have that item...\n" in out[0],\
+           "Failed to decline use on non-existant item"

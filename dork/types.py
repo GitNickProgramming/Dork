@@ -272,9 +272,11 @@ class Game:
     # def _drop_item(self, item):
     #     return "Oops, you dropped something!", False
 
-    # def _use_item(self, item):
-    #     item.use()
-    #     return "You used the thing! It's super effective!", False
+    def _use_item(self, item):
+        if item in self.hero.items.keys():
+            self.hero.items[item].use()
+            return "You used the thing! It's super effective!", False
+        return "You don't have that item...", False
 
     def _start_over(self, load_or_save):
         if self._confirm():
