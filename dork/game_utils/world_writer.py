@@ -18,7 +18,18 @@ def save_gamee(game):
     current_name = game.hero.name
 
     data["players"]["hero"]["name"] = current_name
+    rooms_list = data["rooms"]
+
     data["players"]["hero"]["location"] = current_room
+    
+    if current_room != "entrance":
+        data["rooms"][2]["players"] = []
+
+
+    for room in rooms_list:
+        if rooms_list[room]["name"] == current_room:
+            data["rooms"][room]["players"] = [current_name]
+
     # data["players"]["hero"]["inventory"] = current_inventory
     # data["players"]["hero"][]
 
