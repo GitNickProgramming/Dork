@@ -200,11 +200,14 @@ class Game:
         player[item] = room_items.pop(item)
         return f"You took the {item}. You took it well.", False
 
-    # def _drop_item(self, item):
-    #     return "Oops, you dropped something!", False
+    def _drop_item(self, item):
+        player = self.hero.items
+        room_items = self.hero.location.items
+        room_items[item] = player.pop(item)
+        return "Oops, you dropped something!", False
 
     def _use_item(self, item):
-        item_to_use =  input("on: ")
+        item_to_use = input("on: ")
         use_item = self.hero.items[item]
         room_items = self.hero.location.items[item_to_use]
 
@@ -245,3 +248,5 @@ class Game:
     @staticmethod
     def _repl_error(arg):
         return f"{arg}", False
+
+    
