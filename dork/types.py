@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 """Basic entity classes and methods for Dork.
 """
-from random import shuffle
-from random import choice
 from operator import add
+from random import choice, shuffle, randint
 import matplotlib.pyplot as plt
+import dork.game_utils.item_factory as item_factory
 # import dork.game_utils.world_loader as world_loader
 
 
@@ -139,7 +139,11 @@ class Worldmap:
         i = 0
         rooms = self.maze.rooms
         for room in rooms:
-            self.worldmap[room] = Room(room, f"dummy description {i}")
+            new_room = Room(room, f"dummy description {i}")
+            self.worldmap[room] = new_room
+            for i in range(randint(1, 9)):
+                new_item = Item(**item_factory.main())
+                new_room.items[new_item.name] = new_item
             i += 1
 
     def _get_adj(self):
@@ -228,6 +232,9 @@ class Game(Worldmap):
     def _look(self):
         return self.hero.location.description, False
 
+    def _examine(self):
+        return self.hero.location.get_items(self.verbose), False
+
     def _start_over(self, load_or_save):
         if self._confirm():
             self.build()
@@ -276,7 +283,7 @@ class Holder:
         for item in self.items:
             this = self.items[item]
             desc = f":\n    {this.description}" if verbose else ""
-            eqpd = " (equipped)" if this.equipped else ""
+            eqpd = " (equipped)" if hasattr(this, "equipped") else ""
             amt = this.stats.get("amount", None)
             amt = f" ({amt})" if amt else ""
             out += f"\n  {item}{eqpd}{amt}{desc}"
@@ -318,12 +325,16 @@ class Player(Holder):
 class Item:
     """A obtainable/holdable item"""
 
-    def __init__(self):
-        self.name = str()
-        self.description = str()
-        self.stats = dict()
-        self.equipable = bool
-        self.equipped = bool
+    def __init__(self, **kwargs):
+        if kwargs:
+            for key, val in kwargs.items():
+                setattr(self, key, val)
+        else:
+            self.name = str()
+            self.description = str()
+            self.stats = dict()
+            self.equipable = bool
+            self.equipped = bool
 
     def _make(self, item, name):
         """Make an item"""

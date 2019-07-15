@@ -41,6 +41,7 @@ CMDS = {
     "i": ["_inventory"],
     "inv": ["_inventory"],
     "inventory": ["_inventory"],
+    "examine": ["_examine"],
     # "grab": _take,
     # "take": _take,
     # "add": _take,
