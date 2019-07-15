@@ -273,4 +273,3 @@ def test_runtime_items(run):
     out = run(test_game._use_item, "sword")
     assert "You swing the item" in out[0],\
            "Failed to use item in runtime"
-    
