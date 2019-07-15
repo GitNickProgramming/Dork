@@ -42,21 +42,21 @@ CMDS = {
     "inventory": ["_inventory"],
     "grab": ["_take"],
     "take": ["_take"],
-    # "add": _take,
-    # "loot": _take,
     "use": ["_use_item"],
     "drop": ["_drop_item"]
     "use": ["_use_item"],
     "activate": ["_use_item"],
+    # "add": _take,
+    # "loot": _take,
 }
 
 
 META = {
     ".new": ["_start_over", "new game created!"],
     ".load": ["_start_over", "game loaded successfully!"],
-    # ".save":["_save_game"],
     ".rq": ["_gtfo"],
     ".z": ["_zork"],
+     # ".save":["_save_game"],
 }
 
 
