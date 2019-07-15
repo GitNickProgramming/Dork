@@ -129,6 +129,10 @@ class Game:
         self._build_world(rooms=data["rooms"])
         self._build_hero(hero=player_name)
 
+    def _set_location(self):
+        """Set location based on
+        """
+
     def _build_players(self, players):
         for player in players:
             new_player = Player()
