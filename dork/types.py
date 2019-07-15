@@ -53,9 +53,9 @@ class Item:
         else:
             self.usable = uses[new_use]
 
-    def use(self):
+    def use(self, target, name):
         """Strategy pattern call"""
-        self.usable.use()
+        self.usable.use(target, name)
 
 
 class Usable(ABC):
@@ -63,7 +63,7 @@ class Usable(ABC):
 
     @staticmethod
     @abstractmethod
-    def use():
+    def use(target, name):
         """Strategy pattern inspired by refactoring.guru
         use method defaults to doing nothing"""
 
@@ -72,16 +72,16 @@ class Attackable(Usable):
     """Any object that can be swung will say it was swung"""
 
     @staticmethod
-    def use():
+    def use(target, name):
         """Swing use method"""
-        print("You swing the item")
+        print("You swing the " + name + " at " + target)
 
 
 class NotUsable(Usable):
     """Any object that cannot be used"""
 
     @staticmethod
-    def use():
+    def use(target, name):
         """Useless use method"""
         print("You find no use of this item")
 
@@ -90,36 +90,36 @@ class Openable(Usable):
     """Object opening behavior class"""
 
     @staticmethod
-    def use():
+    def use(target, name):
         """Opens object targeted if possible"""
-        print("You insert the item")
+        print("You insert the " + name + " into " + target)
 
 
 class Payable(Usable):
     """Any object that can be used as gold"""
 
     @staticmethod
-    def use():
+    def use(target, name):
         """Gold use method"""
-        print("You use the gold to pay")
+        print("You use the " + name + " to pay " + target)
 
 
 class Puzzleable(Usable):
     """Any object that can be used in a puzzle"""
 
     @staticmethod
-    def use():
+    def use(target, name):
         """Puzzle use method"""
-        print("You try to fit the item in")
+        print("You try to fit the "+ name +" into the " + target)
 
 
 class Statable(Usable):
     """Any object that can change stats"""
 
     @staticmethod
-    def use():
+    def use(target, name):
         """Stat change use method"""
-        print("The item takes effect")
+        print("The " +  name +" takes effect on " + target)
 
 
 class Player(Holder):
@@ -274,7 +274,8 @@ class Game:
 
     def _use_item(self, item):
         if item in self.hero.items.keys():
-            self.hero.items[item].use()
+            target = input("What do you want to use it on? ")
+            self.hero.items[item].use(target, item)
             return "You used the thing! It's super effective!", False
         return "You don't have that item...", False
 
