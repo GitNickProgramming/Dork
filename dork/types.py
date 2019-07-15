@@ -44,10 +44,13 @@ class Item:
     def set_usable(self, new_use):
         """This method changes the use behavior,
         provide usable class as argument"""
-        uses = {"attack": Attackable, "key": Openable,
+        uses = {"attack": Attackable,
+                "key": Openable,
                 "gold": Payable,
-                "emerald" or "diamond": Puzzleable,
-                "speed" or "strength": Statable}
+                "emerald": Puzzleable,
+                "diamond": Puzzleable,
+                "speed": Statable,
+                "strength": Statable}
         if new_use is None or new_use not in uses:
             self.usable = NotUsable
         else:
@@ -275,7 +278,7 @@ class Game:
     # def _drop_item(self, item):
     #     return "Oops, you dropped something!", False
 
-    def _use_item(self, item):
+    def _use_item(self, item="Nothing"):
         if item in self.hero.items.keys():
             target = input("What do you want to use it on? ")
             self.hero.items[item].use(target, item)
