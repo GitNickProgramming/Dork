@@ -7,6 +7,8 @@ def save_gamee(game):
     """Save a game instance.
     """
 
+    print(game.hero.items.keys())
+
     data = game.dataaa
 
     current_room = game.hero.location.name #PLAYER LOCATION
@@ -22,19 +24,22 @@ def save_gamee(game):
 
     data["players"]["hero"]["location"] = current_room
 
-    number = 1
+    number = 0
 
     if player_inventory is not None:
         for item in player_inventory:
             if item is not None:
+                if number == 0:
+                    continue
                 data["players"]["hero"]["inventory"][number]\
                     ["name"] = player_inventory[item].name
                 data["players"]["hero"]["inventory"][number]\
                     ["description"] = player_inventory[item].description
                 data["players"]["hero"]["inventory"][number]\
                     ["stats"] = player_inventory[item].stats
-            if number < len(player_inventory):
-                number += 1
+            if number < len(player_inventory)-1:
+                 number += 1 
+
 
 
     if current_room != "entrance":
@@ -48,5 +53,10 @@ def save_gamee(game):
     with open('./dork/saves/'+current_name+'.yml', 'w') as my_yaml_file:
         yaml.dump(data, my_yaml_file, default_flow_style=False)
 
+
+    print(game.hero.items.keys())
+
     return "Your game was saved as: " + game.hero.name + ".yml"
+
+
 
