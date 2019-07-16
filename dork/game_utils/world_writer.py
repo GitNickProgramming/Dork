@@ -9,37 +9,33 @@ def save_gamee(game):
 
     data = game.dataaa
 
-    current_room = game.hero.location.name
+    current_room = game.hero.location.name #PLAYER LOCATION
 
-    current_name = game.hero.name
+    current_name = game.hero.name #PLAYER NAME
 
-    players_items_list = game.hero.items
-
-    list_of_rooms_in_game = game.worldmap.rooms
-
-    for items in players_items_list:
-        data["players"]["hero"]["inventory"] = items
+    player_inventory = game.hero.items #PLAYER INVENTORY (DICT OF ITEMS)
 
     data["players"]["hero"]["name"] = current_name
     rooms_list = data["rooms"]
 
     data["players"]["hero"]["location"] = current_room
 
+    print(player_inventory)
+    if player_inventory is not None:
+        for item in player_inventory:
+            for number in range(1, len(player_inventory)):
+                data["players"]["hero"]["inventory"][number]["name"] = item.name
+                data["players"]["hero"]["inventory"][number]["description"] = item.description
+                data["players"]["hero"]["inventory"][number]["stats"] = item.stats
+                number += 1
+
     if current_room != "entrance":
         data["rooms"][2]["players"] = []
+
 
     for room in rooms_list:
         if rooms_list[room]["name"] == current_room:
             data["rooms"][room]["players"] = [current_name]
-
-    for roomm in list_of_rooms_in_game:
-        rooms_item_list = roomm.items
-        rooms_list
-
-    #for room in rooms_list:
-    #    rooms_item_list = room.items
-    #    for itemm in rooms_item_list:
-    #        data["rooms"][room]["items"] = itemm
 
     with open('./dork/saves/'+current_name+'.yml', 'w') as my_yaml_file:
         yaml.dump(data, my_yaml_file, default_flow_style=False)
