@@ -29,7 +29,6 @@ MOVES = {
     "west": ["_move", "west"]
 }
 
-
 CMDS = {
     "go": MOVES,
     "move": MOVES,
@@ -41,13 +40,13 @@ CMDS = {
     "i": ["_inventory"],
     "inv": ["_inventory"],
     "inventory": ["_inventory"],
-    # "grab": _take,
-    # "take": _take,
+    "grab": ["_take"],
+    "take": ["_take"],
+    "use": ["_use_item"],
+    "drop": ["_drop_item"],
+    "activate": ["_use_item"],
     # "add": _take,
     # "loot": _take,
-    # "use": _use_item,
-    # "activate": _use_item,
-    # "drop": _drop_item
 }
 
 
@@ -57,6 +56,7 @@ META = {
     ".save": ["_save_game"],
     ".rq": ["_gtfo"],
     ".z": ["_zork"],
+    # ".save":["_save_game"],
 }
 
 

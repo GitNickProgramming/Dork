@@ -15,19 +15,28 @@ def save_gamee(game):
 
     player_inventory = game.hero.items #PLAYER INVENTORY (DICT OF ITEMS)
 
+    list_of_rooms = game.worldmap.rooms #ALL ROOMS IN GAME
+
     data["players"]["hero"]["name"] = current_name
-    rooms_list = data["rooms"]
+    rooms_list = data["rooms"] #ALL ROOMS IN YAML TO DICT
 
     data["players"]["hero"]["location"] = current_room
 
-    print(player_inventory)
+    #print(player_inventory)
     if player_inventory is not None:
         for item in player_inventory:
-            for number in range(1, len(player_inventory)):
+            for number in range(number, len(player_inventory)):
                 data["players"]["hero"]["inventory"][number]["name"] = item.name
                 data["players"]["hero"]["inventory"][number]["description"] = item.description
                 data["players"]["hero"]["inventory"][number]["stats"] = item.stats
-                number += 1
+                break
+            number += 1
+
+    #print(len(rooms_list))
+    #for rooom in list_of_rooms:
+    #    items_in_room = rooom.items
+    #    for number in range(1, len(list_of_rooms))
+    #        data["rooms"][number]["items"]
 
     if current_room != "entrance":
         data["rooms"][2]["players"] = []
@@ -41,3 +50,5 @@ def save_gamee(game):
         yaml.dump(data, my_yaml_file, default_flow_style=False)
 
     return "Your game was saved as: " + game.hero.name + ".yml"
+
+
