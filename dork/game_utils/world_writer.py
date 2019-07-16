@@ -22,21 +22,16 @@ def save_gamee(game):
 
     data["players"]["hero"]["location"] = current_room
 
-    #print(player_inventory)
     if player_inventory is not None:
         for item in player_inventory:
-            for number in range(number, len(player_inventory)):
-                data["players"]["hero"]["inventory"][number]["name"] = item.name
-                data["players"]["hero"]["inventory"][number]["description"] = item.description
-                data["players"]["hero"]["inventory"][number]["stats"] = item.stats
+            for number in range(1, len(player_inventory)):
+                if item is None:
+                    continue
+                data["players"]["hero"]["inventory"][number]["name"] = player_inventory[item].name
+                data["players"]["hero"]["inventory"][number]["description"] = player_inventory[item].description
+                data["players"]["hero"]["inventory"][number]["stats"] = player_inventory[item].stats
                 break
             number += 1
-
-    #print(len(rooms_list))
-    #for rooom in list_of_rooms:
-    #    items_in_room = rooom.items
-    #    for number in range(1, len(list_of_rooms))
-    #        data["rooms"][number]["items"]
 
     if current_room != "entrance":
         data["rooms"][2]["players"] = []
