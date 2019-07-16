@@ -56,7 +56,6 @@ META = {
     ".save": ["_save_game"],
     ".rq": ["_gtfo"],
     ".z": ["_zork"],
-    # ".save":["_save_game"],
 }
 
 

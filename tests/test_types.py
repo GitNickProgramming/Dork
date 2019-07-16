@@ -42,12 +42,6 @@ def test_confirm_method_blank(capsys, mocker):
     assert mocked_input.call_count == 3
 
 
-def test_save_game(capsys, mocker):
-    """saves current game state
-    """
-    assert 
-
-
 def test_start_over_no(capsys, mocker, game):
     """confirm should do things
     """
