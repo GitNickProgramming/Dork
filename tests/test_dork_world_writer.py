@@ -2,7 +2,6 @@
 """
 import dork.game_utils.world_writer as world_writer
 import dork.types as game
-from tests.utils import is_a
 
 
 def test_world_writer():
