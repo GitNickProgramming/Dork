@@ -5,6 +5,7 @@ from operator import add
 from random import choice, shuffle, randint
 import matplotlib.pyplot as plt
 import dork.game_utils.item_factory as item_factory
+import dork.game_utils.yaml_io as yaml_io
 # import dork.game_utils.world_loader as world_loader
 
 
@@ -26,9 +27,9 @@ class Maze:
         [0, 1, 0, 1]
     ]
 
-    def __init__(self, save_file=None):
-        if save_file:
-            self.build(save_file)
+    def __init__(self, data=None):
+        if data:
+            self.build(data)
         else:
             self.rebuild()
 
@@ -38,10 +39,10 @@ class Maze:
             self.maze[y][x] = val.pop()
         return self.maze[y][x]
 
-    def build(self, save_file):
+    def build(self, data):
         """Generate an existing maze"""
-        self.maze = save_file["maze"]
-        self.rooms = save_file["rooms"]
+        self.maze = data["maze"]
+        self.rooms = data["rooms"]
 
     def rebuild(self):
         """Generate a new maze"""
@@ -104,10 +105,6 @@ class Maze:
         self(*self.path[0], 2)
         self(*self.path[-2], 2)
 
-    # def _set_rooms(self, obj):
-    #     for room in self.rooms:
-    #         self(*room, obj)
-
     def _prb_lnk(self, coord):
         nsew = []
         for move in self.moves:
@@ -129,9 +126,9 @@ class Maze:
 class Worldmap:
     """A worldmap containing rooms, and the underlying maze"""
 
-    def __init__(self):
+    def __init__(self, data=None):
         self.worldmap = dict()
-        self.maze = Maze()
+        self.maze = Maze(data)
         self._make_rooms()
         self._get_adj()
 
@@ -174,14 +171,22 @@ class Game(Worldmap):
     verbose = False
 
     def __init__(self):
-        super().__init__()
-        self.hero = Player()
-        self.hero.set_location(
-            self.worldmap[
-                choice(list(self.worldmap.keys()))
-            ]
-        )
-        self.maze(*self.hero.location.coord, self.player_draw_color)
+        player_name = input("What's your name, stranger? ")
+        game_data = yaml_io.load(player_name)
+
+        if not game_data:
+            super().__init__()
+            self.hero = Player()
+            self.hero.name = player_name
+            self.hero.set_location(
+                self.worldmap[
+                    choice(list(self.worldmap.keys()))
+                ]
+            )
+            self.maze(*self.hero.location.coord, self.player_draw_color)
+        else:
+            super().__init__(game_data)
+            self.hero = game_data["hero"]
 
     def __call__(self, cmd, arg):
         return getattr(self, cmd)(arg) if arg else getattr(self, cmd)()
@@ -194,11 +199,13 @@ class Game(Worldmap):
         }[self.verbose]
         return out, False
 
-    def build(self):
+    def _build(self):
         """Make a new game"""
-
         player_name = input("What's your name, stranger? ")
-        self.hero.name = player_name
+        game_data = yaml_io.load(player_name)
+        if not game_data:
+            self.hero.name = player_name
+        return game_data
 
     def _gtfo(self):
         return f"Thanks for playing DORK, {self.hero.name}!", True
@@ -237,11 +244,14 @@ class Game(Worldmap):
 
     def _start_over(self, load_or_save):
         if self._confirm():
-            self.build()
+            self._build()
             out = load_or_save
         else:
             out = "Guess you changed your mind!"
         return out, False
+
+    def _save_game(self):
+        return yaml_io.save(self), False
 
     @staticmethod
     def _confirm():
@@ -276,15 +286,19 @@ class Holder:
     def __init__(self):
         self.items = dict()
 
-    def get_items(self, verbose):
+    def get_items(self, caller, verbose):
         """Print all inventory items"""
 
-        out = "Inventory:" if self.items else "There's nothing in here."
+        if self.items:
+            out = f"{caller}'s inventory:"
+        else:
+            out = f"There's nothing in {caller}'s inventory."
+
         for item in self.items:
             this = self.items[item]
+            amt = this.stats.get("amount", None)
             desc = f":\n    {this.description}" if verbose else ""
             eqpd = " (equipped)" if hasattr(this, "equipped") else ""
-            amt = this.stats.get("amount", None)
             amt = f" ({amt})" if amt else ""
             out += f"\n  {item}{eqpd}{amt}{desc}"
         return out

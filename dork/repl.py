@@ -1,7 +1,7 @@
 """This is the REPL which parses commands and passes them to a Game object.
 """
 from dork.game_utils import game_data
-from dork import types as dork_types
+from dork import new_types as dork_types
 
 
 def read():
@@ -38,7 +38,6 @@ def repl():
     """Read eval print loop
     """
     game_instance = dork_types.Game()
-    game_instance.build()
 
     repl_data = (
         game_data.CMDS,
@@ -47,7 +46,7 @@ def repl():
         game_data.ERRS
     )
 
-    print(f"\nGreetings, {game_instance.hero.name}! " + game_data.TITLE + "\n")
+    # print(f"\nGreetings, {game_instance.hero.name}! " + game_data.TITLE + "\n")
 
     while True:
         output, should_exit = evaluate(

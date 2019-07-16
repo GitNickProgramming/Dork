@@ -1,0 +1,16 @@
+godhusher:
+  stats:
+    attack: 113
+    luck: 24
+    weight: 14
+  type: legendary
+boss:
+  adjacent:
+    east: cave
+    north: gold
+    south: entrance
+    west: armory
+  description: OMG THERE'S A TROLL IN HERE!
+  items:
+    only friend: sword
+    wobblelobbledobdob: wobbly sword

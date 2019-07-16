@@ -53,9 +53,9 @@ CMDS = {
 
 
 META = {
-    ".new": ["_start_over", "new game created!"],
-    ".load": ["_start_over", "game loaded successfully!"],
-    # ".save":["_save_game"],
+    ".n": ["_start_over", "new game created!"],
+    ".l": ["_start_over", "game loaded successfully!"],
+    ".s":["_save_game"],
     ".rq": ["_gtfo"],
     ".z": ["_zork"],
     ".m": ["_draw_maze"],

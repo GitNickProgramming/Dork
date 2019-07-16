@@ -14,66 +14,69 @@ def _load():
     return data["items"], data["names"]
 
 
-ITEMS, NAMES = _load()
+_ITEMS, _NAMES = _load()
 
-TYPES = ITEMS["types"]
-CONDITION = ITEMS["condition"]
-MATERIAL = ITEMS["material"]
 
-POSESSIVE = NAMES["posessive"]
-NONPOSESSIVE = NAMES["nonposessive"]
-SUFFIXES = NAMES["suffixes"]
-ABSTRACT = NAMES["abstract"]
-ADJECTIVES = NAMES["adjectives"]
+_TYPES = _ITEMS["types"]
+_CONDITION = _ITEMS["condition"]
+_MATERIAL = _ITEMS["material"]
 
-SEQUENCE = {
+
+_POSESSIVE = _NAMES["posessive"]
+_NONPOSESSIVE = _NAMES["nonposessive"]
+_SUFFIXES = _NAMES["suffixes"]
+_ABSTRACT = _NAMES["abstract"]
+_ADJECTIVES = _NAMES["adjectives"]
+
+
+_SEQUENCE = {
     "jewelry": {
         "seq": [
-            [CONDITION, MATERIAL, ""],
-            [ADJECTIVES, MATERIAL, ""],
-            [CONDITION, MATERIAL, "", ABSTRACT],
-            [ADJECTIVES, "", ABSTRACT]
+            [_CONDITION, _MATERIAL, ""],
+            [_ADJECTIVES, _MATERIAL, ""],
+            [_CONDITION, _MATERIAL, "", _ABSTRACT],
+            [_ADJECTIVES, "", _ABSTRACT]
         ],
         "w": [15, 6, 3, 1]
     },
     "magic items": {
         "seq": [
-            [CONDITION, MATERIAL, ""],
-            [ADJECTIVES, MATERIAL, ""],
-            [CONDITION, MATERIAL, "", ABSTRACT],
-            [ADJECTIVES, "", ABSTRACT]
+            [_CONDITION, _MATERIAL, ""],
+            [_ADJECTIVES, _MATERIAL, ""],
+            [_CONDITION, _MATERIAL, "", _ABSTRACT],
+            [_ADJECTIVES, "", _ABSTRACT]
         ],
         "w": [15, 6, 3, 1]
     },
     "magic consumables": {
         "seq": [
-            [CONDITION, "", ABSTRACT],
-            [ADJECTIVES, "", ABSTRACT],
+            [_CONDITION, "", _ABSTRACT],
+            [_ADJECTIVES, "", _ABSTRACT],
         ],
         "w": [3, 1]
     },
     "weapon": {
         "seq": [
-            [CONDITION, MATERIAL, ""],
-            [ADJECTIVES, ""],
-            [CONDITION, MATERIAL, "", ABSTRACT],
-            [ADJECTIVES, "", ABSTRACT],
-            [NONPOSESSIVE, SUFFIXES],
-            [POSESSIVE, SUFFIXES],
+            [_CONDITION, _MATERIAL, ""],
+            [_ADJECTIVES, ""],
+            [_CONDITION, _MATERIAL, "", _ABSTRACT],
+            [_ADJECTIVES, "", _ABSTRACT],
+            [_NONPOSESSIVE, _SUFFIXES],
+            [_POSESSIVE, _SUFFIXES],
         ],
         "w": [20, 15, 12, 10, 6, 5]
     },
     "armor": {
         "seq": [
-            [CONDITION, MATERIAL, ""],
-            [ADJECTIVES, ""],
-            [CONDITION, MATERIAL, "", ABSTRACT],
-            [ADJECTIVES, "", ABSTRACT],
+            [_CONDITION, _MATERIAL, ""],
+            [_ADJECTIVES, ""],
+            [_CONDITION, _MATERIAL, "", _ABSTRACT],
+            [_ADJECTIVES, "", _ABSTRACT],
         ],
         "w": [10, 6, 3, 1]
     },
     "filler": {
-        "seq": [[CONDITION, ""]],
+        "seq": [[_CONDITION, ""]],
         "w": [1]
     }
 }
@@ -83,13 +86,13 @@ def main() -> dict:
     """Generate a random item dictionary"""
 
     item_type = choice(choices(
-        population=list(TYPES.keys()),
+        population=list(_TYPES.keys()),
         weights=[10, 8, 3, 7, 5, 35],
-        k=len(list(TYPES.keys()))
+        k=len(list(_TYPES.keys()))
     ))
     item_name = choice(choices(
-        population=TYPES[item_type],
-        k=len(TYPES[item_type])
+        population=_TYPES[item_type],
+        k=len(_TYPES[item_type])
     ))
     return _generate(item_name, item_type)
 
@@ -148,7 +151,7 @@ def _stats(item_name, item_type, unique_type) -> _forge:
 def _generate(item_name, item_type) -> _stats:
     new_name = []
     unique_type = ""
-    build = SEQUENCE[item_type]
+    build = _SEQUENCE[item_type]
 
     seq = choice(choices(
         population=build["seq"],
@@ -170,7 +173,7 @@ def _generate(item_name, item_type) -> _stats:
         ))
 
         if this_word:
-            if this_word in SUFFIXES:
+            if this_word in _SUFFIXES:
                 new_name[-1] += this_word
                 unique_type = item_name
                 item_type = "legendary"
