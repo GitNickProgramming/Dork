@@ -4,6 +4,7 @@ of the maze, and a list of room coordinate tuples."""
 from operator import add
 from random import choice, shuffle
 from numpy import zeros as npzeros
+from dork.game_utils.room_factory import main as RoomFactory
 
 
 __all__ = ["main"]
@@ -23,7 +24,7 @@ _RULES = [
 ]
 
 
-def main():
+def main() -> dict:
     """Generates the maze"""
 
     x = choice([10, 12, 14, 18])
@@ -44,16 +45,41 @@ def main():
             nsew.append([prb, lnk])
         return nsew
 
-    def _neighbors(coord):
+    def _neighbors(maze, coord):
         i, j = coord
-        return [(i-1, j), (i+1, j), (i, j-1), (i, j+1)]
+        return [
+            maze[(i-1, j)],
+            maze[(i+1, j)],
+            maze[(i, j-1)],
+            maze[(i, j+1)],
+        ]
 
-    def _walk(coord):
+    def _walk(maze, coord):
         prb, lnk = coord
         maze[prb] = 1
         maze[lnk] = 1
 
-    def _generate():
+    def _worldmap(maze, rooms, players) -> dict:
+        return {
+            "maze": maze,
+            "rooms": rooms,
+            "players": players,
+        }
+
+    def _get_rooms(maze, path, rooms) -> _worldmap:
+        for coord in path:
+            if _neighbors(maze, coord) in _RULES:
+                rooms.append(coord)
+                maze[coord] = 2
+        maze[path[0]] = 2
+        maze[path[-2]] = 2
+
+        rooms, players = RoomFactory(maze, rooms)
+        maze = maze.tolist()
+
+        return _worldmap(maze, rooms, players)
+
+    def _generate(maze, grid, path, rooms) -> _get_rooms:
         k = path[0]
         grid.remove(k)
         while grid:
@@ -63,7 +89,7 @@ def main():
             for prb_lnk in nsew:
                 probe, _ = prb_lnk
                 if probe in grid:
-                    _walk(prb_lnk)
+                    _walk(maze, prb_lnk)
                     grid.remove(probe)
                     path.extend(prb_lnk)
                     break
@@ -71,18 +97,7 @@ def main():
                 k = path[max(path.index(k)-1, 1)]
             else:
                 k = path[-1]
-        return _get_rooms()
 
-    def _get_rooms():
-        for coord in path:
-            if _neighbors(coord) in _RULES:
-                rooms.append(coord)
-                maze[coord] = 2
-        maze[path[0]] = 2
-        maze[path[-2]] = 2
-        return {
-            "maze": maze,
-            "rooms": rooms,
-        }
+        return _get_rooms(maze, path, rooms)
 
-    return _generate()
+    return _generate(maze, grid, path, rooms)

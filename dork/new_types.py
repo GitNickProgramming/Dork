@@ -4,9 +4,6 @@ import os
 import yaml
 import matplotlib.pyplot as plt
 from dork.game_utils.maze_factory import main as MazeFactory
-# from dork.game_utils.item_factory import main as ItemFactory
-# from dork.game_utils.npc_factory import main as NPCFactory
-# from dork.game_utils.room_factory import main as RoomFactory
 
 
 class Holder:
@@ -65,7 +62,7 @@ class Hero(Player):
     #     super().__init__()
 
 
-class Maze:
+class Worldmap:
     """Generate a maze with rooms on intersections, corners, and dead-ends"""
 
     @staticmethod
@@ -92,10 +89,6 @@ class Maze:
         plt.axis("equal")
         plt.axis("off")
         plt.draw()
-
-
-class Worldmap:
-    """Contains a maze and the rooms within"""
 
 
 class Gamebuilder:
@@ -128,87 +121,48 @@ class Gamebuilder:
         return data
 
     @staticmethod
-    def save_game(data):
+    def save_game(player, data):
         """Save a game instance to a yaml file if it exists, else create one"""
-        game_state = {
-            "maze": data.maze.maze,
-            "worldmap": data.worldmap,
-            "hero": {
-                "location": data.hero.location,
-                "equipped": data.hero.equipped,
-                "items": data.hero.items,
-            }
+
+        data = {
+            "maze": data.maze,
+            "rooms": data.rooms,
+            "players": data.players,
         }
 
-        file_name = f"./dork/saves/{data.hero.name}.yml"
+        file_name = f"./dork/saves/{player}.yml"
         with open(file_name, "w") as save_file:
-            yaml.dump(game_state, save_file, default_flow_style=False)
+            yaml.safe_dump(data, save_file, default_flow_style=False, indent=4)
 
-        return f"Your game was successfully saved as {data.hero.name}.yml!"
+        return f"Your game was successfully saved as {player}.yml!"
 
 
-class Game(Gamebuilder, Worldmap):
+class Game(Gamebuilder):
     """A container for holding a game state"""
     player_draw_color = -5
     verbose = False
 
     def __init__(self):
-        super().__init__(Gamebuilder, Maze)
+        super().__init__()
         player_name = input("What's your name, stranger? ")
-        self.game_data = self.load_game(player_name)
+        load_data = self.load_game(player_name)
 
-        if not self.game_data:
-            self.maze = self.factory(Maze, **MazeFactory())
-
-
-
-            # base_type, type_factory = val
-            # this_type = self.factory(base_type, **type_factory)
-            # self.game_data[key] = this_type
-
-        # else:
-        #     pass
-
-
-
-
-
-
-
-
-# godhusher = {
-#     "name": "godhusher",
-#     "type": "legendary",
-#     "stats": {
-#         "attack": 113,
-#         "weight": 14,
-#         "luck": 24,
-#     },
-# }
-
-# boss = {
-#     "name": "boss",
-#     "description": "OMG THERE"S A TROLL IN HERE!",
-#     "items": {
-#         "only friend": "sword",
-#         "wobblelobbledobdob": "wobbly sword"
-#     },
-#     "adjacent": {
-#         "north": "gold",
-#         "south": "entrance",
-#         "east": "cave",
-#         "west": "armory"
-#     }
-# }
-
-# gamebuilder = Gamebuilder()
-
-# exist_item = gamebuilder.factory(Item, **godhusher)
-# boss_room = gamebuilder.factory(Room, **boss)
-
-# file_name = "./dork/saves/test.yml"
-# with open(file_name, "w") as save_file:
-#     for obj in [exist_item, boss_room]:
-#         name = obj.data.pop("name")
-#         obj_dict = {name: obj.data}
-#         yaml.dump(obj_dict, save_file, default_flow_style=False)
+        if not load_data:
+            self.worldmap = self.factory(Worldmap, **MazeFactory())
+            hero = {
+                "name": player_name,
+                "description": "the hero of dork!",
+                "locataion": self.worldmap.rooms.get(
+                    list(self.worldmap.rooms.keys())[0]
+                ),
+                "items": {},
+                "equipped": {}
+            }
+            self.worldmap.data["hero"] = hero
+            self.hero = self.factory(Hero, **hero)
+            self.save_game(player_name, self.worldmap)
+            # from pprint import pprint
+            # pprint(self.worldmap.players)
+            # pprint(self.worldmap.maze)
+            # pprint(self.worldmap.rooms)
+            # pprint(self.worldmap.data)

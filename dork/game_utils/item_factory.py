@@ -3,11 +3,11 @@
 from random import choices, choice, randint
 import yaml
 
+
 __all__ = ["main"]
 
 
 def _load():
-    print("loading data...")
     file_path = f"./dork/game_utils/item_word_bank.yml"
     with open(file_path) as file:
         data = yaml.safe_load(file.read())
@@ -82,12 +82,16 @@ _SEQUENCE = {
 }
 
 
-def main() -> dict:
+def main(weights=None) -> dict:
     """Generate a random item dictionary"""
+
+    weights = {
+        "player": [10, 8, 0, 7, 5, 0]
+    }.get(weights, [10, 8, 3, 7, 5, 35])
 
     item_type = choice(choices(
         population=list(_TYPES.keys()),
-        weights=[10, 8, 3, 7, 5, 35],
+        weights=weights,
         k=len(list(_TYPES.keys()))
     ))
     item_name = choice(choices(
