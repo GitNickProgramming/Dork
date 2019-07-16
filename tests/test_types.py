@@ -4,6 +4,7 @@
 from tests.utils import is_a
 import dork.types as types
 import dork.repl
+
 # pylint: disable=protected-access
 
 
@@ -119,6 +120,35 @@ def test_player_has_none(player):
     test_player.make(test_dict)
     assert test_player.items == dict(),\
         "Player copied None object as item"
+
+
+def test_look(run):
+    """testing _look for display items and description"""
+    out = run(dork.repl.repl, input_side_effect=["name", "look around", ".rq"])
+    assert "Items:\nsoggy waffle\ntorn parchment\nbroken quill" in out[0],\
+           "item are not found on entrance room"
+    test_game = types.Game()
+    assert test_game._look() == (None, False)
+
+
+def test_take(run):
+    """testing _take the method takes all and specific item"""
+    out = run(dork.repl.repl, input_side_effect=["name", "take", ".rq"])
+    assert "You took all item. You took them well." in out[0],\
+           "item are not found on entrance room"
+    out = run(dork.repl.repl, input_side_effect=["name",
+                                                 "take soggy waffle",
+                                                 ".rq"])
+    assert "You took the soggy waffle. You took it well." in out[0],\
+           "item are not found on entrance room"
+
+
+def test_drop_item(run):
+    """testing _drop_item the method takes all and specific item"""
+    out = run(dork.repl.repl, input_side_effect=["name", "take soggy waffle",
+                                                 "drop soggy waffle", ".rq"])
+    assert "Oops, you dropped something!" in out[0],\
+           "item are not found on entrance room"
 
 
 def test_sword_can_swing(run):
