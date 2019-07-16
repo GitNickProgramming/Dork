@@ -22,16 +22,20 @@ def save_gamee(game):
 
     data["players"]["hero"]["location"] = current_room
 
+    number = 1
+
     if player_inventory is not None:
         for item in player_inventory:
-            for number in range(1, len(player_inventory)):
-                if item is None:
-                    continue
-                data["players"]["hero"]["inventory"][number]["name"] = player_inventory[item].name
-                data["players"]["hero"]["inventory"][number]["description"] = player_inventory[item].description
-                data["players"]["hero"]["inventory"][number]["stats"] = player_inventory[item].stats
-                break
-            number += 1
+            if item is not None:
+                data["players"]["hero"]["inventory"][number]\
+                    ["name"] = player_inventory[item].name
+                data["players"]["hero"]["inventory"][number]\
+                    ["description"] = player_inventory[item].description
+                data["players"]["hero"]["inventory"][number]\
+                    ["stats"] = player_inventory[item].stats
+            if number < len(player_inventory):
+                number += 1
+
 
     if current_room != "entrance":
         data["rooms"][2]["players"] = []
@@ -45,5 +49,4 @@ def save_gamee(game):
         yaml.dump(data, my_yaml_file, default_flow_style=False)
 
     return "Your game was saved as: " + game.hero.name + ".yml"
-
 
