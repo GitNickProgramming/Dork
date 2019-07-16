@@ -7,6 +7,7 @@ import dork.repl
 
 # pylint: disable=protected-access
 
+
 def test_confirm_method_yes(capsys, mocker):
     """confirm should do things
     """

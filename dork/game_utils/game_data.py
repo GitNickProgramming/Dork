@@ -44,7 +44,6 @@ CMDS = {
     "take": ["_take"],
     "use": ["_use_item"],
     "drop": ["_drop_item"],
-    "use": ["_use_item"],
     "activate": ["_use_item"],
     # "add": _take,
     # "loot": _take,
@@ -56,7 +55,7 @@ META = {
     ".load": ["_start_over", "game loaded successfully!"],
     ".rq": ["_gtfo"],
     ".z": ["_zork"],
-     # ".save":["_save_game"],
+    # ".save":["_save_game"],
 }
 
 
