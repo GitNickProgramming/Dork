@@ -43,7 +43,7 @@ CMDS = {
     "grab": ["_take"],
     "take": ["_take"],
     "use": ["_use_item"],
-    "drop": ["_drop_item"]
+    "drop": ["_drop_item"],
     "use": ["_use_item"],
     "activate": ["_use_item"],
     # "add": _take,
