@@ -25,14 +25,13 @@ def save_gamee(game):
     if player_inventory is not None:
         for item in player_inventory:
             if item is not None:
-                if numb == 0:
-                    continue
-                data["players"]["hero"]["inventory"][numb]["name"] \
-                    = player_inventory[item].name
-                data["players"]["hero"]["inventory"][numb]["description"]\
-                    = player_inventory[item].description
-                data["players"]["hero"]["inventory"][numb]["stats"] \
-                    = player_inventory[item].stats
+                if numb > 0:
+                    data["players"]["hero"]["inventory"][numb]["name"]\
+                        = player_inventory[item].name
+                    data["players"]["hero"]["inventory"][numb]["description"]\
+                        = player_inventory[item].description
+                    data["players"]["hero"]["inventory"][numb]["stats"]\
+                        = player_inventory[item].stats
             if numb < len(player_inventory)-1:
                 numb += 1
 
