@@ -9,19 +9,19 @@ from tests.utils import is_a
 def test_world_loader():
     """the game should have attributes
     """
-    is_a(world_loader.main("player_name"), dict)
+    is_a(world_loader.main("player_name"), tuple)
 
 
 def test_main_with_existing_save():
     """Tests loading an existing save file
     """
-    assert isinstance(world_loader.main("bobby b"), dict)
+    assert isinstance(world_loader.main("bobby b"), tuple)
 
 
 def test_main_without_same_name():
     """Tests loading a non-existing save file
     """
-    assert isinstance(world_loader.main("nobody"), dict)
+    assert isinstance(world_loader.main("nobody"), tuple)
 
 
 def test_maze_generator():

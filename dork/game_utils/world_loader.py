@@ -32,4 +32,4 @@ def main(player_name):
         file_to_load = player_name
     else:
         file_to_load = "default_world"
-    return _load(file_to_load + ".yml")
+    return _load(file_to_load + ".yml"), _load(file_to_load + ".yml")
