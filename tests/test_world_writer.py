@@ -12,6 +12,7 @@ def test_world_writer(run):
 def test_world_writer_data(run):
     """Builds game then tests saved
     """
+
     gamee = dork.types.Game()
     run(gamee.build, input_side_effect=["default_world"])
     gamee.hero = dork.types.Player()
