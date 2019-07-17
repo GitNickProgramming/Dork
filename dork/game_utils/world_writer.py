@@ -29,8 +29,7 @@ def save_gamee(game):
                     continue
                 data["players"]["hero"]["inventory"][number]\
                     ["name"] = player_inventory[item].name
-                data["players"]["hero"]["inventory"][number]\
-                    ["description"] = player_inventory[item].description
+                data["players"]["hero"]["inventory"][number]["description"] = player_inventory[item].description
                 data["players"]["hero"]["inventory"][number]\
                     ["stats"] = player_inventory[item].stats
             if number < len(player_inventory)-1:
