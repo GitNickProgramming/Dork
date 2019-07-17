@@ -38,9 +38,9 @@ def main(maze, rooms) -> dict:
             worldmap[room] = new_room
             i += 1
 
-        return _get_adj(worldmap)
+        return _get_adj()
 
-    def _get_adj(worldmap):
+    def _get_adj():
         for coord, room in worldmap.items():
             for direction in moves:
                 searching = True

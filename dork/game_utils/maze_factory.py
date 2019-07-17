@@ -45,7 +45,7 @@ def main() -> dict:
             nsew.append([prb, lnk])
         return nsew
 
-    def _neighbors(maze, coord):
+    def _neighbors(coord):
         i, j = coord
         return [
             maze[(i-1, j)],
@@ -54,14 +54,14 @@ def main() -> dict:
             maze[(i, j+1)],
         ]
 
-    def _walk(maze, coord):
+    def _walk(coord):
         prb, lnk = coord
         maze[prb] = 1
         maze[lnk] = 1
 
-    def _get_rooms(maze, path, rooms) -> dict:
+    def _get_rooms() -> dict:
         for coord in path:
-            if _neighbors(maze, coord) in _RULES:
+            if _neighbors(coord) in _RULES:
                 rooms.append(coord)
                 maze[coord] = 2
         maze[path[0]] = 2
@@ -72,7 +72,7 @@ def main() -> dict:
             "rooms": RoomFactory(maze, rooms),
         }
 
-    def _generate(maze, grid, path, rooms) -> _get_rooms:
+    def _generate() -> _get_rooms:
         k = path[0]
         grid.remove(k)
         while grid:
@@ -82,7 +82,7 @@ def main() -> dict:
             for prb_lnk in nsew:
                 probe, _ = prb_lnk
                 if probe in grid:
-                    _walk(maze, prb_lnk)
+                    _walk(prb_lnk)
                     grid.remove(probe)
                     path.extend(prb_lnk)
                     break
@@ -91,6 +91,5 @@ def main() -> dict:
             else:
                 k = path[-1]
 
-        return _get_rooms(maze, path, rooms)
-
-    return _generate(maze, grid, path, rooms)
+        return _get_rooms()
+    return _generate()
