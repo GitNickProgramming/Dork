@@ -5,6 +5,24 @@
 import dork.types as types
 
 
+def test_make_item():
+    """instantiate an item with and without initial values"""
+
+    types.Item()
+
+    dummy_item_dict = {
+        "a": 1,
+        "b": 2,
+        "c": 3,
+    }
+
+    item = types.Item(**dummy_item_dict)
+
+    assert hasattr(item, "a")
+    assert hasattr(item, "b")
+    assert hasattr(item, "c")
+
+
 def test_confirm_method_yes(capsys, mocker):
     """confirm should do things
     """

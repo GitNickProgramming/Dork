@@ -317,13 +317,3 @@ class Item:
             self.stats = dict()
             self.equipable = bool
             self.equipped = bool
-
-    def _make(self, item, name):
-        """Make an item"""
-
-        self.name = name
-        self.description = item.pop("description")
-        for stat in item:
-            self.stats[stat] = item[stat]
-        self.equipable = self.stats.get("equipable", False)
-        self.equipped = self.stats.get("equipped", False)
