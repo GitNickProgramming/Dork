@@ -22,3 +22,4 @@ def main(i, room) -> dict:
         new_player["equipped"][key] = val
 
     return new_player
+

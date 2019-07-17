@@ -106,27 +106,27 @@ class Gamebuilder:
 
         if not game_data:
             game_data = MazeFactory()
+            hero_location = game_data["rooms"].get(
+                list(game_data["rooms"].keys())[0]
+            )
             hero = {
                 "name": player_name,
                 "description": "the hero of dork!",
-                "location": game_data["rooms"].get(
-                    list(game_data["rooms"].keys())[0]
-                ),
+                "location": hero_location,
                 "items": {},
                 "equipped": {}
             }
-            hero_location = hero["location"]
-            hero_location["players"][player_name] = hero
+            hero_location["players"]["hero"] = hero
             self.save_game(player_name, game_data)
 
-        from pprint import pprint
-        pprint(game_data["maze"])
-        Maze.draw(game_data["maze"])
+        # from pprint import pprint
+        # pprint(game_data["maze"])
+        # Maze.draw(game_data["maze"])
+    #     build(game_data)
 
-    # def build(self) -> Game:
-
+    # def build(self, data) -> Game:
     #     factories = {
-    #         "hero": Hero,
+    #         "maze": Maze,
     #         "rooms": Room,
     #         "players": Player,
     #         "items": Item,
@@ -134,15 +134,22 @@ class Gamebuilder:
     #         "adjacent": Adjacent,
     #     }
 
+    #     new_game = Game()
 
-    #     return new_game
+    #     for types in data:
+    #         recursive_factory(factories.get(types, types), data[types])
+
+    #     def recursive_factory(obj, data):
+            
+
+    #     return recursive_factory(Game, data)
 
     @staticmethod
     def factory(obj, **kwargs):
         """Instantiate and return a new game object of type {obj}"""
 
         new_obj = obj()
-        setattr(new_obj, "data", kwargs)
+        # setattr(new_obj, "data", kwargs)
         for key, val in kwargs.items():
             setattr(new_obj, key, val)
         return new_obj
