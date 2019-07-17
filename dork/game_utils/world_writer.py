@@ -7,20 +7,18 @@ def save_gamee(game):
     """Save a game instance.
     """
 
-    #print(game.hero.items.keys())
-
     data = game.dataaa
 
-    current_room = game.hero.location.name #PLAYER LOCATION
+    current_room = game.hero.location.name
 
-    current_name = game.hero.name #PLAYER NAME
+    current_name = game.hero.name
 
-    player_inventory = game.hero.items #PLAYER INVENTORY (DICT OF ITEMS)
+    player_inventory = game.hero.items
 
     #list_of_rooms = game.worldmap.rooms #ALL ROOMS IN GAME
 
     data["players"]["hero"]["name"] = current_name
-    rooms_list = data["rooms"] #ALL ROOMS IN YAML TO DICT
+    rooms_list = data["rooms"] 
 
     data["players"]["hero"]["location"] = current_room
 
@@ -38,7 +36,7 @@ def save_gamee(game):
                 data["players"]["hero"]["inventory"][number]\
                     ["stats"] = player_inventory[item].stats
             if number < len(player_inventory)-1:
-                 number += 1 
+                number += 1
 
 
 
@@ -57,6 +55,3 @@ def save_gamee(game):
     #print(game.hero.items.keys())
 
     return "Your game was saved as: " + game.hero.name + ".yml"
-
-
-
