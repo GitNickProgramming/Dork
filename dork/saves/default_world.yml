@@ -1,156 +1,182 @@
-rooms:
-    1:
-        name: boss
-        adjacent:
-            north: gold
-            south:
-            east:
-            west:
-        description: OH MY GOD THERE'S AN ANGRY TROLL IN HERE
-        players: [troll]
-        items:
-            1:
-                name: only friend
-                description: the sword is surprisingly sharp
-                stats: [+12, attack]
-            2:
-                name: rusty chains
-                description: it's just a pile of rusty chains
-                stats:
-            3:
-                name: gold
-                description: you picked up some gold.
-                stats: [+3, gold]
-        clues: 
-    2:
-        name: entrance
-        adjacent:
-            north: boss
-            south: 
-            east: cave
-            west: armory
-        description: how'd you get in here?
-        players: [new_player]
-        items: 
-            1:
-                name: soggy waffle
-                description: it's just a soggy waffle
-                stats: [+10, strength]
-            2:
-                name: torn parchment
-                description: the parchment is torn, there is nothing written on it.
-                stats:
-            3:  
-                name: broken quill
-                description: you cannot tell what kind of feather it is made from.
-                stats:
-        clues:
-    3:
-        name: armory
-        adjacent:
-            north: boss
-            south: 
-            east: entrance
-            west: 
-        description: weapons all around!
-        players: []
-        items:
-            1:
-                name: iron bane
-                description: the dagger is rusty, but sharp
-                stats: [+7, attack]
-            2:
-                name: wobblelobbledobdob
-                description: the sword is drunk
-                stats: [-3, attack]
-            3:  
-                name: bow of purposelessness
-                description: the bow has no cord, but it looks nice
-                stats:
-        clues:
-    4:
-        name: cave
-        adjacent:
-            north: boss
-            south: 
-            east: 
-            west: entrance
-        description: this place dank af, yo
-        players: []
-        items:
-            1:
-                name: dragon eye mushrooms
-                description: these mushrooms look delicious, but they're also glowing a little...?
-                stats: [+5, speed]
-        clues:
-    5:
-        name: gold
-        adjacent:
-            north: 
-            south: boss
-            east: 
-            west: 
-        description: I love gooooooold
-        players: [ghost]
-        items:
-            1:
-                name: gold
-                description: you picked up some gold.
-                stats: [+1000, gold]
-            2:
-                name: diamonds
-                description: these diamonds are uncut, but you prefer them that way.
-                stats: [+6, diamonds] 
-            3:  
-                name: emeralds
-                description: these emeralds are way too green
-                stats: [+5, emeralds]
-        clues:
-    
 players:
-    hero:
-        name: new_player
-        location: entrance
-        inventory:
-            1:
-                name:
-                description:
-                stats:
-            2:
-                name:
-                description:
-                stats:
-            3:
-                name:
-                description:
-                stats:
-        equipped:
-        dialog:
-    troll:
-        name: grorg
-        location: boss
-        inventory:
-            1:
-                name: gorgoth
-                description: the hammer is made of mammoth bone, and is way too heavy to lift.
-                stats: [+100, attack]
-            2:
-                name: gold
-                description: you picked up some gold
-                stats: [+227, gold]
-            3:
-                name: handkercheif
-                description: the handkercheif is bloodied
-                stats:
-        equipped: mammoth bone hammer
-        dialog:
-    ghost:
-        name: casper
-        location: gold
-        inventory:
-            1:
-                name:
-                description:
-                stats:
-        equipped:
-        dialog: "woOoOoOoo!"
+  ghost:
+    dialog: woOoOoOoo!
+    equipped: null
+    inventory:
+      1:
+        description: null
+        name: null
+        stats: null
+    location: gold
+    name: casper
+  hero:
+    dialog: null
+    equipped: null
+    inventory:
+      1:
+        description: it's just a soggy waffle
+        name: soggy waffle
+        stats:
+        - 10
+        - strength
+      2:
+        description: the parchment is torn, there is nothing written on it.
+        name: torn parchment
+        stats: null
+      3:
+        description: you cannot tell what kind of feather it is made from.
+        name: broken quill
+        stats: null
+    location: entrance
+    name: default_world
+  troll:
+    dialog: null
+    equipped: mammoth bone hammer
+    inventory:
+      1:
+        description: the hammer is made of mammoth bone, and is way too heavy to lift.
+        name: gorgoth
+        stats:
+        - 100
+        - attack
+      2:
+        description: you picked up some gold
+        name: gold
+        stats:
+        - 227
+        - gold
+      3:
+        description: the handkercheif is bloodied
+        name: handkercheif
+        stats: null
+    location: boss
+    name: grorg
+rooms:
+  1:
+    adjacent:
+      east: null
+      north: gold
+      south: null
+      west: null
+    clues: null
+    description: OH MY GOD THERE'S AN ANGRY TROLL IN HERE
+    items:
+      1:
+        description: the sword is surprisingly sharp
+        name: only friend
+        stats:
+        - 12
+        - attack
+      2:
+        description: it's just a pile of rusty chains
+        name: rusty chains
+        stats: null
+      3:
+        description: you picked up some gold.
+        name: gold
+        stats:
+        - 3
+        - gold
+    name: boss
+    players:
+    - troll
+  2:
+    adjacent:
+      east: cave
+      north: boss
+      south: null
+      west: armory
+    clues: null
+    description: how'd you get in here?
+    items:
+      1:
+        description: it's just a soggy waffle
+        name: soggy waffle
+        stats:
+        - 10
+        - strength
+      2:
+        description: the parchment is torn, there is nothing written on it.
+        name: torn parchment
+        stats: null
+      3:
+        description: you cannot tell what kind of feather it is made from.
+        name: broken quill
+        stats: null
+    name: entrance
+    players:
+    - default_world
+  3:
+    adjacent:
+      east: entrance
+      north: boss
+      south: null
+      west: null
+    clues: null
+    description: weapons all around!
+    items:
+      1:
+        description: the dagger is rusty, but sharp
+        name: iron bane
+        stats:
+        - 7
+        - attack
+      2:
+        description: the sword is drunk
+        name: wobblelobbledobdob
+        stats:
+        - -3
+        - attack
+      3:
+        description: the bow has no cord, but it looks nice
+        name: bow of purposelessness
+        stats: null
+    name: armory
+    players: []
+  4:
+    adjacent:
+      east: null
+      north: boss
+      south: null
+      west: entrance
+    clues: null
+    description: this place dank af, yo
+    items:
+      1:
+        description: these mushrooms look delicious, but they're also glowing a little...?
+        name: dragon eye mushrooms
+        stats:
+        - 5
+        - speed
+    name: cave
+    players: []
+  5:
+    adjacent:
+      east: null
+      north: null
+      south: boss
+      west: null
+    clues: null
+    description: I love gooooooold
+    items:
+      1:
+        description: you picked up some gold.
+        name: gold
+        stats:
+        - 1000
+        - gold
+      2:
+        description: these diamonds are uncut, but you prefer them that way.
+        name: diamonds
+        stats:
+        - 6
+        - diamonds
+      3:
+        description: these emeralds are way too green
+        name: emeralds
+        stats:
+        - 5
+        - emeralds
+    name: gold
+    players:
+    - ghost
