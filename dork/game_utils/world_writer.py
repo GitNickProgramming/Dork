@@ -30,11 +30,11 @@ def save_gamee(game):
                 if number == 0:
                     continue
                 data["players"]["hero"]["inventory"][number] \
-                     ["name"] = player_inventory[item].name
+                ["name"] = player_inventory[item].name
                 data["players"]["hero"]["inventory"][number] \
-                     ["description"] = player_inventory[item].description
+                    ["description"] = player_inventory[item].description
                 data["players"]["hero"]["inventory"][number] \
-                     ["stats"] = player_inventory[item].stats
+                    ["stats"] = player_inventory[item].stats
             if number < len(player_inventory)-1:
                 number += 1
 
