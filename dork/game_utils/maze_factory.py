@@ -59,25 +59,18 @@ def main() -> dict:
         maze[prb] = 1
         maze[lnk] = 1
 
-    def _worldmap(maze, rooms, players) -> dict:
-        return {
-            "maze": maze,
-            "rooms": rooms,
-            "players": players,
-        }
-
-    def _get_rooms(maze, path, rooms) -> _worldmap:
+    def _get_rooms(maze, path, rooms) -> dict:
         for coord in path:
             if _neighbors(maze, coord) in _RULES:
                 rooms.append(coord)
                 maze[coord] = 2
         maze[path[0]] = 2
-        maze[path[-2]] = 2
+        maze[path[-2]] = -5
 
-        rooms, players = RoomFactory(maze, rooms)
-        maze = maze.tolist()
-
-        return _worldmap(maze, rooms, players)
+        return {
+            "maze": maze.tolist(),
+            "rooms": RoomFactory(maze, rooms),
+        }
 
     def _generate(maze, grid, path, rooms) -> _get_rooms:
         k = path[0]

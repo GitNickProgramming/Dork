@@ -26,43 +26,39 @@ class Holder:
         return out
 
 
-class Item:
-    """An obtainable/usable item"""
+class Stats:
+    """stats for items"""
 
+
+class Adjacent:
+    """adjacency object for rooms"""
+
+
+class Item(Stats):
+    """An obtainable/usable item"""
     def __init__(self):
-        self.name = str
-        self.description = str
-        self.location = Holder
+        super().__init__()
 
 
 class Player(Holder):
     """A player or npc in the game"""
-
     def __init__(self):
         super().__init__()
-        self.name = str
-        self.description = str
-        self.location = Room
 
 
-class Room(Holder):
+class Room(Adjacent, Holder):
     """A room on the worldmap"""
-
     def __init__(self):
         super().__init__()
-        self.name = str
-        self.description = str
-        self.location = tuple
 
 
 class Hero(Player):
     """The hero of the game"""
+    def __init__(self):
+        super().__init__()
 
-    # def __init__(self):
-    #     super().__init__()
 
-
-class Worldmap:
+class Maze:
     """Generate a maze with rooms on intersections, corners, and dead-ends"""
 
     @staticmethod
@@ -91,8 +87,54 @@ class Worldmap:
         plt.draw()
 
 
+class Game(Maze):
+    """A container for holding a game state"""
+    player_draw_color = -5
+    verbose = False
+
+    def __init__(self):
+        super().__init__()
+
+
 class Gamebuilder:
     """Gamebuilder"""
+
+    def __init__(self):
+        player_name = input("What's your name, stranger? ")
+        game_data = self.load_game(player_name)
+
+        if not game_data:
+            game_data = MazeFactory()
+            hero = {
+                "name": player_name,
+                "description": "the hero of dork!",
+                "location": game_data["rooms"].get(
+                    list(game_data["rooms"].keys())[0]
+                ),
+                "items": {},
+                "equipped": {}
+            }
+            hero_location = hero["location"]
+            hero_location["players"][player_name] = hero
+            self.save_game(player_name, game_data)
+
+        from pprint import pprint
+        pprint(game_data["maze"])
+        Maze.draw(game_data["maze"])
+
+    # def build(self) -> Game:
+
+    #     factories = {
+    #         "hero": Hero,
+    #         "rooms": Room,
+    #         "players": Player,
+    #         "items": Item,
+    #         "stats": Stats,
+    #         "adjacent": Adjacent,
+    #     }
+
+
+    #     return new_game
 
     @staticmethod
     def factory(obj, **kwargs):
@@ -125,44 +167,18 @@ class Gamebuilder:
         """Save a game instance to a yaml file if it exists, else create one"""
 
         data = {
-            "maze": data.maze,
-            "rooms": data.rooms,
-            "players": data.players,
+            "rooms": data["rooms"],
+            "maze": data["maze"],
+            # "hero": data["hero"],
+            # "players": data["players"],
         }
 
         file_name = f"./dork/saves/{player}.yml"
         with open(file_name, "w") as save_file:
-            yaml.safe_dump(data, save_file, default_flow_style=False, indent=4)
+            yaml.safe_dump(
+                data, save_file,
+                indent=4, width=80,
+                default_flow_style=False
+            )
 
         return f"Your game was successfully saved as {player}.yml!"
-
-
-class Game(Gamebuilder):
-    """A container for holding a game state"""
-    player_draw_color = -5
-    verbose = False
-
-    def __init__(self):
-        super().__init__()
-        player_name = input("What's your name, stranger? ")
-        load_data = self.load_game(player_name)
-
-        if not load_data:
-            self.worldmap = self.factory(Worldmap, **MazeFactory())
-            hero = {
-                "name": player_name,
-                "description": "the hero of dork!",
-                "locataion": self.worldmap.rooms.get(
-                    list(self.worldmap.rooms.keys())[0]
-                ),
-                "items": {},
-                "equipped": {}
-            }
-            self.worldmap.data["hero"] = hero
-            self.hero = self.factory(Hero, **hero)
-            self.save_game(player_name, self.worldmap)
-            # from pprint import pprint
-            # pprint(self.worldmap.players)
-            # pprint(self.worldmap.maze)
-            # pprint(self.worldmap.rooms)
-            # pprint(self.worldmap.data)

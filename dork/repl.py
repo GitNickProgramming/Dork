@@ -5,14 +5,14 @@ from dork import new_types as dork_types
 
 
 def read():
-    """Get input from CLI
-    """
+    """Get input from CLI"""
+
     return str.casefold(input("> "))
 
 
 def evaluate(cmd, game_instance, repl_data):
-    """Parse a cmd and run it
-    """
+    """Parse a cmd and run it"""
+
     cmds, moves, meta, errs = repl_data
     cmd = cmd.strip().split(" ", 1) if (cmd and not cmd.isspace()) else None
     if cmd:
@@ -35,9 +35,9 @@ def evaluate(cmd, game_instance, repl_data):
 
 
 def repl():
-    """Read eval print loop
-    """
-    game_instance = dork_types.Game()
+    """read evaluate print loop"""
+
+    game_instance = dork_types.Gamebuilder()
 
     repl_data = (
         game_data.CMDS,
