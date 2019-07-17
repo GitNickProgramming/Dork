@@ -2,7 +2,9 @@
 """Basic entity classes and methods for Dork.
 """
 # from pprint import pprint
+from abc import ABC, abstractmethod
 import dork.game_utils.world_loader as world_loader
+import dork.game_utils.world_writer as w_writer
 
 
 __all__ = ["Game"]
@@ -24,6 +26,7 @@ class Item:
         self.name = None
         self.description = None
         self.stats = dict()
+        self.usable = NotUsable
 
     def make(self, item):
         """Make an item
@@ -31,6 +34,96 @@ class Item:
         self.name = item["name"]
         self.description = item["description"]
         self.stats = item["stats"]
+        if self.stats is None:
+            self.usable = NotUsable
+
+        elif len(self.stats) > 1:
+            self.set_usable(self.stats[1])
+        else:
+            self.usable = NotUsable
+
+    def set_usable(self, new_use):
+        """This method changes the use behavior,
+        provide usable class as argument"""
+        uses = {"attack": Attackable,
+                "key": Openable,
+                "gold": Payable,
+                "emerald": Puzzleable,
+                "diamond": Puzzleable,
+                "speed": Statable,
+                "strength": Statable}
+        if new_use is None or new_use not in uses:
+            self.usable = NotUsable
+        else:
+            self.usable = uses[new_use]
+
+    def use(self, target, name):
+        """Strategy pattern call"""
+        self.usable.use(target, name)
+
+
+class Usable(ABC):
+    """Abstract class of use behavior in items use method"""
+
+    @staticmethod
+    @abstractmethod
+    def use(target, name):
+        """Strategy pattern inspired by refactoring.guru
+        use method defaults to doing nothing"""
+
+
+class Attackable(Usable):
+    """Any object that can be swung will say it was swung"""
+
+    @staticmethod
+    def use(target, name):
+        """Swing use method"""
+        print("You swing the " + name + " at " + target)
+
+
+class NotUsable(Usable):
+    """Any object that cannot be used"""
+
+    @staticmethod
+    def use(target, name):
+        """Useless use method"""
+        print("You find no use of this item")
+
+
+class Openable(Usable):
+    """Object opening behavior class"""
+
+    @staticmethod
+    def use(target, name):
+        """Opens object targeted if possible"""
+        print("You insert the " + name + " into " + target)
+
+
+class Payable(Usable):
+    """Any object that can be used as gold"""
+
+    @staticmethod
+    def use(target, name):
+        """Gold use method"""
+        print("You use the " + name + " to pay " + target)
+
+
+class Puzzleable(Usable):
+    """Any object that can be used in a puzzle"""
+
+    @staticmethod
+    def use(target, name):
+        """Puzzle use method"""
+        print("You try to fit the " + name + " into the " + target)
+
+
+class Statable(Usable):
+    """Any object that can change stats"""
+
+    @staticmethod
+    def use(target, name):
+        """Stat change use method"""
+        print("The " + name + " takes effect on " + target)
 
 
 class Player(Holder):
@@ -109,20 +202,28 @@ class Worldmap:
 class Game:
     """A container for holding a game state
     """
+    dataaa = {}
 
     def __init__(self):
         self.worldmap = Worldmap()
         self.players = dict()
         self.hero = Player()
 
+    def __call__(self, cmd, arg):
+        return getattr(self, cmd)(arg) if arg else getattr(self, cmd)()
+
     def build(self):
         """Make a new game
         """
         player_name = input("What's your name, stranger? ")
-        data = world_loader.main(player_name)
+        data, self.dataaa = world_loader.main(player_name)
         self._build_players(players=data["players"])
         self._build_world(rooms=data["rooms"])
         self._build_hero(hero=player_name)
+
+    def _set_location(self):
+        """Set location based on
+        """
 
     def _build_players(self, players):
         for player in players:
@@ -169,22 +270,45 @@ class Game:
             out = " "*4 + "You ain't got shit, son!"
         return out, False
 
-    def _look(self):
+    def _look(self, x="n"):
+        if x == "around":
+            items = self.hero.location.items
+            print("\nItems:")
+            for item in items:
+                print(item)
+            print()
         return self.hero.location.description, False
 
-    # def _save_game(self):
-    #     world_writer.main(self)
-    #     return "Save successful!", False
+    def save_game(self):
+        """Saves game data
+        """
+        return w_writer.save_gamee(self), False
 
-    # def _take(self, item="all"):
-    #     # Item defaults to "all", and adds all items in room to inventory
-    #     return "You took the thing. You took it well.", False
+    def _take(self, item="all"):
+        # Item defaults to "all", and adds all items in room to inventory
+        room_items = self.hero.location.items
+        room_items2 = room_items.copy()
+        player = self.hero.items
+        if item == "all":
+            for item_n in room_items2:
+                player[item_n] = room_items.pop(item_n)
+            return f"You took {item} item. You took them well.", False
+        player[item] = room_items.pop(item)
+        return f"You took the {item}. You took it well.", False
 
-    # def _drop_item(self, item):
-    #     return "Oops, you dropped something!", False
+    def _drop_item(self, item):
+        """drops specific item from player to room"""
+        player = self.hero.items
+        room_items = self.hero.location.items
+        room_items[item] = player.pop(item)
+        return "Oops, you dropped something!", False
 
-    # def _use_item(self, item):
-    #     return "You used the thing! It's super effective!", False
+    def _use_item(self, item="Nothing"):
+        if item in self.hero.items.keys():
+            target = input("What do you want to use it on? ")
+            self.hero.items[item].use(target, item)
+            return "You used the thing! It's super effective!", False
+        return "You don't have that item...", False
 
     def _start_over(self, load_or_save):
         if self._confirm():

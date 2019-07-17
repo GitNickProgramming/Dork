@@ -29,7 +29,6 @@ MOVES = {
     "west": ["_move", "west"]
 }
 
-
 CMDS = {
     "go": MOVES,
     "move": MOVES,
@@ -41,20 +40,20 @@ CMDS = {
     "i": ["_inventory"],
     "inv": ["_inventory"],
     "inventory": ["_inventory"],
-    # "grab": _take,
-    # "take": _take,
+    "grab": ["_take"],
+    "take": ["_take"],
+    "use": ["_use_item"],
+    "drop": ["_drop_item"],
+    "activate": ["_use_item"],
     # "add": _take,
     # "loot": _take,
-    # "use": _use_item,
-    # "activate": _use_item,
-    # "drop": _drop_item
 }
 
 
 META = {
     ".new": ["_start_over", "new game created!"],
     ".load": ["_start_over", "game loaded successfully!"],
-    # ".save":["_save_game"],
+    ".save": ["save_game"],
     ".rq": ["_gtfo"],
     ".z": ["_zork"],
 }
@@ -63,4 +62,5 @@ META = {
 ERRS = {
     "u": ["_repl_error", "Sorry, I don't know that one."],
     "?": ["_repl_error", "Huh? Can you speak up?"],
+    "no go": ["_repl_error", "You can't go that way"],
 }

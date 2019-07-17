@@ -10,3 +10,5 @@ Sphinx
 sphinxcontrib-napoleon
 pyyaml
 autopep8
+numpy
+matplotlib
