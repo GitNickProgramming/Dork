@@ -38,18 +38,14 @@ def save_gamee(game):
             if number < len(player_inventory)-1:
                 number += 1
 
-
     if current_room != "entrance":
         data["rooms"][2]["players"] = []
-
 
     for room in rooms_list:
         if rooms_list[room]["name"] == current_room:
             data["rooms"][room]["players"] = [current_name]
 
-
     with open('./dork/saves/'+current_name+'.yml', 'w') as my_yaml_file:
         yaml.dump(data, my_yaml_file, default_flow_style=False)
-
 
     return "Your game was saved as: " + game.hero.name + ".yml"
