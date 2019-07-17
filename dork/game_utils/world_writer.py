@@ -20,21 +20,21 @@ def save_gamee(game):
 
     data["players"]["hero"]["location"] = current_room
 
-    number = 0
+    numb = 0
 
     if player_inventory is not None:
         for item in player_inventory:
             if item is not None:
-                if number == 0:
+                if numb == 0:
                     continue
-                data["players"]["hero"]["inventory"][number]\
-                    ["name"] = player_inventory[item].name
-                data["players"]["hero"]["inventory"][number]\
-                    ["description"] = player_inventory[item].description
-                data["players"]["hero"]["inventory"][number]\
-                    ["stats"] = player_inventory[item].stats
-            if number < len(player_inventory)-1:
-                number += 1
+                data["players"]["hero"]["inventory"][numb]["name"] \
+                    = player_inventory[item].name
+                data["players"]["hero"]["inventory"][numb]["description"]\
+                    = player_inventory[item].description
+                data["players"]["hero"]["inventory"][numb]["stats"] \
+                    = player_inventory[item].stats
+            if numb < len(player_inventory)-1:
+                numb += 1
 
     if current_room != "entrance":
         data["rooms"][2]["players"] = []
