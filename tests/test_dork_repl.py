@@ -21,18 +21,29 @@ def test_repl_method_read(mocker):
 
 
 def test_repl_evaluate(game, repl_data):
-    """Dork.repl.evaluate should deal with all input types
-    """
+    """Dork.repl.evaluate should deal with all input types"""
+
+    assert repl.evaluate(".v", game, repl_data) == (
+        "verbose inventory: ON", False)
+
+    assert repl.evaluate(".v", game, repl_data) == (
+        "verbose inventory: OFF", False)
+
     assert repl.evaluate("", game, repl_data) == (
         'Huh? Can you speak up?', False)
+
     assert repl.evaluate("     ", game, repl_data) == (
         'Huh? Can you speak up?', False)
+
     assert repl.evaluate("Go", game, repl_data) == (
         "Sorry, I don't know that one.", False)
+
     assert repl.evaluate("walk map", game, repl_data) == (
         "You can't go that way", False)
+
     assert "You have entered" or "You cannot go" in repl.evaluate(
         "N", game, repl_data)
+
     assert "You have entered" or "You cannot go" in repl.evaluate(
         "walk south", game, repl_data)
 

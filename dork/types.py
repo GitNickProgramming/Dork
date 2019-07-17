@@ -25,22 +25,14 @@ class Maze:
         [0, 1, 0, 1]
     ]
 
-    def __init__(self, save_file=None):
-        if save_file:
-            self.build(save_file)
-        else:
-            self.rebuild()
+    def __init__(self):
+        self.rebuild()
 
     def __call__(self, *args):
         x, y, *val = args
         if val:
             self.maze[y][x] = val.pop()
         return self.maze[y][x]
-
-    def build(self, save_file):
-        """Generate an existing maze"""
-        self.maze = save_file["maze"]
-        self.rooms = save_file["rooms"]
 
     def rebuild(self):
         """Generate a new maze"""
