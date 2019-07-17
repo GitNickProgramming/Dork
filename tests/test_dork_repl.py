@@ -67,3 +67,15 @@ def test_repl_evaluate(game, repl_data):
 
         if "dummy description" in repl.evaluate("w", game, repl_data):
             break
+
+    assert repl.evaluate(".z", game, repl_data) == (
+        "Oh shit, you found an easter egg!", False)
+
+    assert "There's nothing in here." in repl.evaluate("i", game, repl_data)
+
+    repl.evaluate(".v", game, repl_data)
+    assert "There's nothing in here." in repl.evaluate("i", game, repl_data)
+
+    assert "Inventory:" in repl.evaluate("examine", game, repl_data)[0]
+
+    assert "dummy description" in repl.evaluate("look", game, repl_data)[0]
