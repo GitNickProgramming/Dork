@@ -228,7 +228,6 @@ class Game:
     def _build_players(self, players):
         for player in players:
             new_player = Player()
-            # new_player.location = players[player]["location"]
             new_player.make(players[player])
             self.players[new_player.name] = new_player
 
@@ -280,7 +279,7 @@ class Game:
             print()
         return self.hero.location.description, False
 
-    def _save_game(self):
+    def save_game(self):
         return w_writer.save_gamee(self), False
 
     def _take(self, item="all"):

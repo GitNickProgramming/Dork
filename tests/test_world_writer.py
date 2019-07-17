@@ -7,7 +7,7 @@ import dork.types
 def test_world_writer(run):
     """Tests save print string
     """
-    out = run(repl.repl, input_side_effect=["default_world", "take",
+    out = run(repl.repl, input_side_effect=["bob", "take",
                                             ".save", ".rq"])
     assert "Your game was saved as" in out[0], "Unable to save game data"
 
@@ -24,4 +24,4 @@ def test_world_writer_data(run):
     gamee.worldmap.rooms = {"e": None, "f": dork.types.Room()}
     gamee.players = {"g": "h"}
 
-    assert gamee._save_game() == ("Your game was saved as: b.yml", False)
+    assert gamee.save_game() == ("Your game was saved as: b.yml", False)
