@@ -19,10 +19,16 @@ def item():
     return dork.types.Item()
 
 
+# @pytest.fixture
+# def room():
+#     """A basic dork room fixture"""
+#     return dork.types.Room()
+
+
 @pytest.fixture
-def room():
-    """A basic dork room fixture"""
-    return dork.types.Room()
+def maze():
+    """a maze"""
+    return dork.types.Maze()
 
 
 @pytest.fixture

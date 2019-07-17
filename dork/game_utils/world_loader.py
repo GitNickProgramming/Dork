@@ -32,5 +32,5 @@ def main(player):
     if player in save_files:
         file_to_load = player
     else:
-        file_to_load = "generics"
+        file_to_load = "default"
     return _load(file_to_load + ".yml")

@@ -5,7 +5,6 @@ from operator import add
 from random import choice, shuffle, randint
 import matplotlib.pyplot as plt
 import dork.game_utils.item_factory as item_factory
-# import dork.game_utils.world_loader as world_loader
 
 
 __all__ = ["Game"]
@@ -52,6 +51,8 @@ class Maze:
         rng_y = range(1, y+1, 2)
 
         self.maze = [[0 for i in range(x+1)] for j in range(y+1)]
+        self.x_draw = len(self.maze[0])//2
+        self.y_draw = len(self.maze)//2
         self.grid = [(i, j) for i in rng_x for j in rng_y]
         self.path = [choice(self.grid)]
         self.rooms = []
@@ -60,12 +61,10 @@ class Maze:
     def draw(self):
         """Show an image of the generated maze"""
 
-        _, axes = plt.subplots(figsize=(len(self.maze[0]), len(self.maze)))
-        axes.set_aspect(1.0)
-        plt.xticks([])
-        plt.yticks([])
+        plt.figure(figsize=(self.x_draw, self.y_draw))
         plt.pcolormesh(self.maze, cmap=plt.cm.get_cmap("tab20b"))
-        plt.axis('off')
+        plt.axis("equal")
+        plt.axis("off")
         plt.ion()
         plt.show()
 
@@ -73,7 +72,8 @@ class Maze:
         """Update the map display"""
 
         plt.pcolormesh(self.maze, cmap=plt.cm.get_cmap("tab20b"))
-        plt.axis('off')
+        plt.axis("equal")
+        plt.axis("off")
         plt.draw()
 
     def _generate(self):
@@ -103,10 +103,6 @@ class Maze:
                 self(*coord, 2)
         self(*self.path[0], 2)
         self(*self.path[-2], 2)
-
-    # def _set_rooms(self, obj):
-    #     for room in self.rooms:
-    #         self(*room, obj)
 
     def _prb_lnk(self, coord):
         nsew = []
@@ -206,12 +202,6 @@ class Game(Worldmap):
     def _draw_maze(self):
         self.maze.draw()
         return "", False
-
-    # def _print_maze(self):
-    #     out = ""
-    #     for row in self.maze.maze:
-    #         out += f"\n {row}"
-    #     return out, False
 
     def _move(self, cardinal):
         location = self.hero.get_location()

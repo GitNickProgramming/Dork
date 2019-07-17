@@ -1,0 +1,36 @@
+# load this maze first
+maze: [
+    [1, 2, 5, 1, 0, 0],
+    [1, 2, 5, 1, 0, 0],
+    [1, 2, 5, 1, 0, 0],
+    [1, 2, 5, 1, 0, 0],
+    [1, 2, 5, 1, 0, 0],
+    [1, 2, 5, 1, 0, 0],
+    [1, 2, 5, 1, 0, 0],
+    [1, 2, 5, 1, 0, 0]
+]
+
+rooms:
+    #  place this room in the maze at (0,0)
+    (0,0):
+        description:
+    (0,1):
+        description:
+    (1,7):
+        description:
+    (2,4):
+        description:
+
+players:
+    # place this player in the room at (2,4)
+    (2,4): {name: "bobby b", type: "hero"}
+    (1,7): {name: "grog", type: "troll", description: "", dialog: ""}
+    (0,1): {name: "caspy", type: "ghost", description: "", dialog: ""}
+
+items:
+    # place this item in the room at (0,0)
+    (0,0): {name: "blunderous splendiferer", type: "weapon", description: "", weight: 5}
+    # place this item in hero's inventory
+    hero: {name: "item of itemizing", type: "magic", description: ""}
+    troll: {name: "grog's silver hammer", type: "weapon", description: "", weight: 12}
+    (0,1): {name: "gold", type: "booty", description: "", amount: 135238}
