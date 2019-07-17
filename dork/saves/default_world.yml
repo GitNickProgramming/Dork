@@ -67,11 +67,6 @@ rooms:
                 name: bow of purposelessness
                 description: the bow has no cord, but it looks nice
                 stats:
-            4:  
-                name: key
-                description: the key is rusty, looks like it is for treasure chest.
-                stats: broken quill
-                
         clues:
     4:
         name: cave
