@@ -61,27 +61,28 @@ class Hero(Player):
 class Maze:
     """Generate a maze with rooms on intersections, corners, and dead-ends"""
 
-    @staticmethod
-    def draw(maze):
+    def __init__(self):
+        self.maze = []
+
+    def draw(self):
         """Show an image of the generated maze"""
 
-        x_axis = len(maze[0])//2
-        y_axis = len(maze)//2
+        x_axis = len(self.maze[0])//2
+        y_axis = len(self.maze)//2
         plt.figure(figsize=(x_axis, y_axis))
-        plt.pcolormesh(maze, cmap=plt.cm.get_cmap("tab20b"))
+        plt.pcolormesh(self.maze, cmap=plt.cm.get_cmap("tab20b"))
         plt.axis("equal")
         plt.axis("off")
         plt.ion()
         plt.show()
 
-    @staticmethod
-    def update(maze):
+    def update(self):
         """Update the map display"""
 
-        x_axis = len(maze[0])//2
-        y_axis = len(maze)//2
+        x_axis = len(self.maze[0])//2
+        y_axis = len(self.maze)//2
         plt.figure(figsize=(x_axis, y_axis))
-        plt.pcolormesh(maze, cmap=plt.cm.get_cmap("tab20b"))
+        plt.pcolormesh(self.maze, cmap=plt.cm.get_cmap("tab20b"))
         plt.axis("equal")
         plt.axis("off")
         plt.draw()
