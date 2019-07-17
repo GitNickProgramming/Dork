@@ -29,8 +29,8 @@ def save_gamee(game):
             if item is not None:
                 if number == 0:
                     continue
-                data["players"]["hero"]["inventory"][number] \
-                ["name"] = player_inventory[item].name
+                data["players"]["hero"]["inventory"]\
+                    [number]["name"] = player_inventory[item].name
                 data["players"]["hero"]["inventory"][number] \
                     ["description"] = player_inventory[item].description
                 data["players"]["hero"]["inventory"][number] \
