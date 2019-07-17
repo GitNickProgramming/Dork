@@ -4,6 +4,20 @@ import dork.repl as repl
 import dork.types
 
 
+def test_world_writer_not_inv(run):
+    """Tests save print string
+    """
+    out = run(repl.repl, input_side_effect=["somebody", ".save", ".rq"])
+    assert "Your game was saved as" in out[0], "Unable to save game data"
+
+
+def test_world_writer_empty_inv(run):
+    """Tests save print string
+    """
+    out = run(repl.repl, input_side_effect=["bob", ".save", ".rq"])
+    assert "Your game was saved as" in out[0], "Unable to save game data"
+
+
 def test_world_writer(run):
     """Tests save print string
     """

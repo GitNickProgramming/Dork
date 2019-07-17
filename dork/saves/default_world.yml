@@ -124,6 +124,18 @@ players:
                 name:
                 description:
                 stats:
+            4:
+                name:
+                description:
+                stats: 
+            5:
+                name:
+                description:
+                stats:
+            6:
+                name:
+                description:
+                stats:
         equipped:
         dialog:
     troll:

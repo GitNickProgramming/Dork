@@ -20,18 +20,19 @@ def save_gamee(game):
 
     data["players"]["hero"]["location"] = current_room
 
+    length = len(player_inventory)
+
     numb = 0
 
-    if player_inventory is not None:
+    if length > 1:
         for item in player_inventory:
-            if item is not None:
-                if numb > 0:
-                    data["players"]["hero"]["inventory"][numb]["name"]\
-                        = player_inventory[item].name
-                    data["players"]["hero"]["inventory"][numb]["description"]\
-                        = player_inventory[item].description
-                    data["players"]["hero"]["inventory"][numb]["stats"]\
-                        = player_inventory[item].stats
+            if numb > 0:
+                data["players"]["hero"]["inventory"][numb]["name"]\
+                    = player_inventory[item].name
+                data["players"]["hero"]["inventory"][numb]["description"]\
+                    = player_inventory[item].description
+                data["players"]["hero"]["inventory"][numb]["stats"]\
+                    = player_inventory[item].stats
             if numb < len(player_inventory)-1:
                 numb += 1
 
