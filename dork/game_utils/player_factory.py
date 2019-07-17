@@ -11,7 +11,7 @@ def main(i, room) -> dict:
         "name": f"placeholder player name {i}",
         "description": f"placeholder player description",
         "locataion": room,
-        "items": {},
+        "inventory": {},
         "equipped": {}
     }
 

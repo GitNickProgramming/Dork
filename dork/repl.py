@@ -10,7 +10,7 @@ def read():
     return str.casefold(input("> "))
 
 
-def evaluate(cmd, game_instance, repl_data):
+def evaluate(cmd, dork, repl_data):
     """Parse a cmd and run it"""
 
     cmds, moves, meta, errs = repl_data
@@ -31,13 +31,13 @@ def evaluate(cmd, game_instance, repl_data):
         call = errs["?"]
         method, arg = call
 
-    return game_instance(method, arg)
+    return dork(method, arg)
 
 
 def repl():
     """read evaluate print loop"""
 
-    game_instance = dork_types.Gamebuilder()
+    dork = dork_types.Gamebuilder().game
 
     repl_data = (
         game_data.CMDS,
@@ -46,11 +46,11 @@ def repl():
         game_data.ERRS
     )
 
-    # print(f"\nGreetings, {game_instance.hero.name}! " + game_data.TITLE + "\n")
+    # print(f"\nGreetings, {dork.hero.name}! " + game_data.TITLE + "\n")
 
     while True:
         output, should_exit = evaluate(
-            cmd=read(), game_instance=game_instance, repl_data=repl_data
+            cmd=read(), dork=dork, repl_data=repl_data
         )
         print(output + "\n")
         if should_exit:

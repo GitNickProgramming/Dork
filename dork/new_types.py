@@ -37,6 +37,8 @@ class Holder(Grandparent):
 
 class Stats:
     """stats for items"""
+    def __init__(self):
+        self.stats = {}
 
 
 class Adjacent(Grandparent):
@@ -44,6 +46,8 @@ class Adjacent(Grandparent):
 
     def __init__(self):
         super().__init__()
+        self.data = {}
+        self.adjacent = {}
 
 
 class Item(Stats):
@@ -51,6 +55,10 @@ class Item(Stats):
 
     def __init__(self):
         super().__init__()
+        self.data = {}
+        self.name = str
+        self.description = str
+        self.equipable = bool
 
 
 class Player(Holder):
@@ -58,6 +66,23 @@ class Player(Holder):
 
     def __init__(self):
         super().__init__()
+        self.data = {}
+        self.name = str
+        self.description = str
+        self.location = Room()
+        self.equipped = {}
+    
+    def move(self, cardinal):
+        location = self.location
+        adjacent_room = location.adjacent[cardinal]
+        if not adjacent_room:
+            out = f"You cannot go {cardinal} from here."
+        else:
+            self.maze(*location.coord, 2)
+            self.hero.set_location(adjacent_room)
+            self.maze(*adjacent_room.coord, self.player_draw_color)
+            self.maze.update()
+            out = self.hero.location.description
 
 
 class Room(Adjacent, Holder):
@@ -65,13 +90,10 @@ class Room(Adjacent, Holder):
 
     def __init__(self):
         super().__init__()
-
-
-class Hero(Player):
-    """The hero of the game"""
-
-    def __init__(self):
-        super().__init__()
+        self.data = {}
+        self.name = str
+        self.description = str
+        self.coordinates = []
 
 
 class Maze:
@@ -79,6 +101,7 @@ class Maze:
 
     def __init__(self):
         self.maze = []
+        self.rooms = {}
 
     def draw(self):
         """Show an image of the generated maze"""
@@ -105,25 +128,50 @@ class Maze:
 
 
 class Game(Maze):
-    """A container for holding a game state"""
+    """An instance of Dork"""
+
     player_draw_color = -5
     verbose = False
 
     def __init__(self):
         super().__init__()
+        self.data = {}
+        self.hero = Player
+
+    def __call__(self, cmd, arg):
+        return getattr(self, cmd)(arg) if arg else getattr(self, cmd)()
+
+    def _gtfo(self):
+        # return f"Thanks for playing DORK, {self.hero.name}!", True
+        return "", True
+
+    def _draw_maze(self):
+        self.draw()
+        return "", False
+
+    def _move(self, cardinal):
+        return self.hero.move(cardinal), False
+
+    # def _inventory(self):
+    #     return self.hero.get_items(self.hero.name, self.verbose), False
+
+    @staticmethod
+    def _repl_error(arg):
+        return f"{arg}", False
+
 
 
 class Gamebuilder:
-    """Gamebuilder"""
+    """Build an instance of Game"""
 
     def __init__(self):
         player_name = input("What's your name, stranger? ")
-        game_data = self.load_game(player_name)
+        self.data = self._load_game(player_name)
 
-        if not game_data:
-            game_data = MazeFactory()
-            hero_location = game_data["rooms"].get(
-                list(game_data["rooms"].keys())[0]
+        if not self.data:
+            self.data = MazeFactory()
+            hero_location = self.data["rooms"].get(
+                list(self.data["rooms"].keys())[0]
             )
             hero = {
                 "name": player_name,
@@ -133,15 +181,15 @@ class Gamebuilder:
                 "equipped": {}
             }
             hero_location["players"]["hero"] = hero
-            self.save_game(player_name, game_data)
+            self._save_game(player_name, self.data)
 
-        self._build(game_data)
+        self.game = self._build(**self.data)
 
-    def _build(self, data) -> Game:
+    @staticmethod
+    def _build(**data) -> Game:
         """recursively instantiate a game of Dork from dictionary"""
 
         factories = {
-            "maze": Maze,
             "rooms": Room,
             "players": Player,
             "items": Item,
@@ -149,33 +197,19 @@ class Gamebuilder:
             "adjacent": Adjacent,
         }
 
-        def _recursive_factory(inst, data):
-            for field in data:
-                if field not in factories:
-                    setattr(inst, field, data[field])
+        def rec_fac(clz, **data):
+            new_obj = clz()
+            setattr(new_obj, "data", data)
+            for key, val in data.items():
+                if key in factories:
+                    setattr(new_obj, key, rec_fac(factories[key], **val))
                 else:
-                    setattr(
-                        self.factory(
-                            factories[field], **data[field]
-                        ),
-                        field, _recursive_factory(
-                            factories[field], data[field]
-                        )
-                    )
-        return _recursive_factory(Game, data)
+                    setattr(new_obj, key, val)
+            return new_obj
+        return rec_fac(Game, **data)
 
     @staticmethod
-    def factory(obj, **kwargs):
-        """Instantiate and return a new game object of type {obj}"""
-
-        new_obj = obj()
-        # setattr(new_obj, "data", kwargs)
-        for key, val in kwargs.items():
-            setattr(new_obj, key, val)
-        return new_obj
-
-    @staticmethod
-    def load_game(player):
+    def _load_game(player):
         """Load the save file associated with player"""
 
         save_files = []
@@ -191,14 +225,12 @@ class Gamebuilder:
         return data
 
     @staticmethod
-    def save_game(player, data):
+    def _save_game(player, data):
         """Save a game instance to a yaml file if it exists, else create one"""
 
         data = {
             "rooms": data["rooms"],
             "maze": data["maze"],
-            # "hero": data["hero"],
-            # "players": data["players"],
         }
 
         file_name = f"./dork/saves/{player}.yml"

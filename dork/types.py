@@ -5,8 +5,6 @@ from operator import add
 from random import choice, shuffle, randint
 import matplotlib.pyplot as plt
 import dork.game_utils.item_factory as item_factory
-import dork.game_utils.yaml_io as yaml_io
-# import dork.game_utils.world_loader as world_loader
 
 
 __all__ = ["Game"]
@@ -250,8 +248,6 @@ class Game(Worldmap):
             out = "Guess you changed your mind!"
         return out, False
 
-    def _save_game(self):
-        return yaml_io.save(self), False
 
     @staticmethod
     def _confirm():

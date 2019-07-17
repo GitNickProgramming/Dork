@@ -22,9 +22,10 @@ def main(maze, rooms) -> dict:
             new_room = {
                 "name": f"room {i}",
                 "description": f"room {i} description",
+                "coordinates": [room[0], room[1]],
                 "adjacent": {},
                 "players": {},
-                "items": {},
+                "inventory": {},
             }
 
             for _ in range(randint(1, 7)):
@@ -32,7 +33,7 @@ def main(maze, rooms) -> dict:
                 new_room["items"][new_item["name"]] = new_item
 
             for _ in range(randint(0, 2)):
-                new_player = PlayerFactory(i, new_room["name"])
+                new_player = PlayerFactory(i, new_room)
                 new_room["players"][new_player["name"]] = new_player
 
             worldmap[room] = new_room
