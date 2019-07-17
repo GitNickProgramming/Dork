@@ -6,7 +6,7 @@ import dork.game_utils.maze_generator as maze_gen
 from tests.utils import is_a
 
 
-def test_world_loader():
+def test_world_loader(): 
     """the game should have attributes
     """
     is_a(world_loader.main("player_name"), tuple)
