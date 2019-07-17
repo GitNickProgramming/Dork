@@ -280,6 +280,8 @@ class Game:
         return self.hero.location.description, False
 
     def save_game(self):
+        """Saves game data
+        """
         return w_writer.save_gamee(self), False
 
     def _take(self, item="all"):
