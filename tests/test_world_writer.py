@@ -6,7 +6,7 @@ import dork.types
 def test_world_writer(run):
     """Tests save print string
     """
-    out = run(repl.repl, input_side_effect=["nobody", "take", ".save", ".rq"])
+    out = run(repl.repl, input_side_effect=["default_world", "take", ".save", ".rq"])
     assert "Your game was saved as" in out[0], "Unable to save game data"
 
 def test_world_writer_data(run):
