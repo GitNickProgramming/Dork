@@ -29,6 +29,8 @@ def test_repl_evaluate(game, repl_data):
     assert repl.evaluate(".v", game, repl_data) == (
         "verbose inventory: OFF", False)
 
+    assert repl.evaluate(".m", game, repl_data) == ("", False)
+
     assert repl.evaluate("", game, repl_data) == (
         'Huh? Can you speak up?', False)
 
@@ -53,5 +55,15 @@ def test_repl_evaluate(game, repl_data):
     assert "dummy description" or "You cannot go" in repl.evaluate(
         "w", game, repl_data)
 
-    assert "dummy description" or "You cannot go" in repl.evaluate(
-        "walk south", game, repl_data)
+    for _ in range(4):
+        if "dummy description" in repl.evaluate("n", game, repl_data):
+            break
+
+        if "dummy description" in repl.evaluate("s", game, repl_data):
+            break
+
+        if "dummy description" in repl.evaluate("e", game, repl_data):
+            break
+
+        if "dummy description" in repl.evaluate("w", game, repl_data):
+            break
