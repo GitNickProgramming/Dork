@@ -15,8 +15,6 @@ def save_gamee(game):
 
     player_inventory = game.hero.items
 
-    # list_of_rooms = game.worldmap.rooms
-
     data["players"]["hero"]["name"] = current_name
     rooms_list = data["rooms"]
 
