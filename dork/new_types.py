@@ -6,21 +6,30 @@ import matplotlib.pyplot as plt
 from dork.game_utils.maze_factory import main as MazeFactory
 
 
-class Holder:
+class Grandparent:
+    """grandparent class of holder and adjacent"""
+
+
+class Holder(Grandparent):
     """A holder/container of items"""
 
     def __init__(self):
-        self.items = dict()
+        super().__init__()
+        self.inventory = dict()
 
-    def get_items(self, verbose):
+    def get_items(self, caller, verbose):
         """Print all inventory items"""
 
-        out = "Inventory:" if self.items else "There's nothing in here."
-        for item in self.items:
-            this = self.items[item]
+        if self.inventory:
+            out = f"{caller}'s inventory:"
+        else:
+            out = f"There's nothing in {caller}'s inventory."
+
+        for item in self.inventory:
+            this = self.inventory[item]
+            amt = this.stats.get("amount", None)
             desc = f":\n    {this.description}" if verbose else ""
             eqpd = " (equipped)" if hasattr(this, "equipped") else ""
-            amt = this.stats.get("amount", None)
             amt = f" ({amt})" if amt else ""
             out += f"\n  {item}{eqpd}{amt}{desc}"
         return out
@@ -30,30 +39,37 @@ class Stats:
     """stats for items"""
 
 
-class Adjacent:
+class Adjacent(Grandparent):
     """adjacency object for rooms"""
+
+    def __init__(self):
+        super().__init__()
 
 
 class Item(Stats):
     """An obtainable/usable item"""
+
     def __init__(self):
         super().__init__()
 
 
 class Player(Holder):
     """A player or npc in the game"""
+
     def __init__(self):
         super().__init__()
 
 
 class Room(Adjacent, Holder):
     """A room on the worldmap"""
+
     def __init__(self):
         super().__init__()
 
 
 class Hero(Player):
     """The hero of the game"""
+
     def __init__(self):
         super().__init__()
 
@@ -119,30 +135,34 @@ class Gamebuilder:
             hero_location["players"]["hero"] = hero
             self.save_game(player_name, game_data)
 
-        # from pprint import pprint
-        # pprint(game_data["maze"])
-        # Maze.draw(game_data["maze"])
-    #     build(game_data)
+        self._build(game_data)
 
-    # def build(self, data) -> Game:
-    #     factories = {
-    #         "maze": Maze,
-    #         "rooms": Room,
-    #         "players": Player,
-    #         "items": Item,
-    #         "stats": Stats,
-    #         "adjacent": Adjacent,
-    #     }
+    def _build(self, data) -> Game:
+        """recursively instantiate a game of Dork from dictionary"""
 
-    #     new_game = Game()
+        factories = {
+            "maze": Maze,
+            "rooms": Room,
+            "players": Player,
+            "items": Item,
+            "stats": Stats,
+            "adjacent": Adjacent,
+        }
 
-    #     for types in data:
-    #         recursive_factory(factories.get(types, types), data[types])
-
-    #     def recursive_factory(obj, data):
-            
-
-    #     return recursive_factory(Game, data)
+        def _recursive_factory(inst, data):
+            for field in data:
+                if field not in factories:
+                    setattr(inst, field, data[field])
+                else:
+                    setattr(
+                        self.factory(
+                            factories[field], **data[field]
+                        ),
+                        field, _recursive_factory(
+                            factories[field], data[field]
+                        )
+                    )
+        return _recursive_factory(Game, data)
 
     @staticmethod
     def factory(obj, **kwargs):

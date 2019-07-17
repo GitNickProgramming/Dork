@@ -3,6 +3,7 @@
 from random import randint
 from dork.game_utils.item_factory import main as ItemFactory
 
+
 def main(i, room) -> dict:
     """Make a player, give them items"""
 
@@ -22,4 +23,3 @@ def main(i, room) -> dict:
         new_player["equipped"][key] = val
 
     return new_player
-
