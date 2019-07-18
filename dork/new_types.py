@@ -399,7 +399,7 @@ class RoomFactory:
                     if cls.maze[position] == -2:
                         room["adjacent"][direction] = None
                         searching = False
-                    elif cls.maze[position] == 2:
+                    elif cls.maze[position] == 1:
                         room["adjacent"][direction] = cls.worldmap[position]["name"]
                         searching = False
 
@@ -414,7 +414,7 @@ class MazeFactory:
 
     moves = factory_data.MOVES
     wall_color, path_color, room_color, player_color = (-2, 0, 1, 2)
-    rules = factory_data.rules(-2, 0)
+    rules = factory_data.rules(wall_color, path_color)
 
     @staticmethod
     def draw(maze):
