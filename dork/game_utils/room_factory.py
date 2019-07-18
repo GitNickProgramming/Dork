@@ -22,7 +22,8 @@ def main(maze, rooms) -> dict:
             new_room = {
                 "name": f"room {i}",
                 "description": f"room {i} description",
-                "coordinates": [room[0], room[1]],
+                "x": room[0],
+                "y": room[1],
                 "adjacent": {},
                 "players": {},
                 "inventory": {},
@@ -30,7 +31,7 @@ def main(maze, rooms) -> dict:
 
             for _ in range(randint(1, 7)):
                 new_item = ItemFactory()
-                new_room["items"][new_item["name"]] = new_item
+                new_room["inventory"][new_item["name"]] = new_item
 
             for _ in range(randint(0, 2)):
                 new_player = PlayerFactory(i, new_room)

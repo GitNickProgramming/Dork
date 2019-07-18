@@ -37,8 +37,9 @@ class Holder(Grandparent):
 
 class Stats:
     """stats for items"""
+
     def __init__(self):
-        self.stats = {}
+        self.data = {}
 
 
 class Adjacent(Grandparent):
@@ -64,6 +65,8 @@ class Item(Stats):
 class Player(Holder):
     """A player or npc in the game"""
 
+    player_draw_color = -4
+
     def __init__(self):
         super().__init__()
         self.data = {}
@@ -71,18 +74,23 @@ class Player(Holder):
         self.description = str
         self.location = Room()
         self.equipped = {}
-    
-    def move(self, cardinal):
+
+    def move(self, cardinal, maze):
+        """walk this way"""
+
         location = self.location
-        adjacent_room = location.adjacent[cardinal]
+        adjacent_room = getattr(location.adjacent, cardinal, None)
         if not adjacent_room:
             out = f"You cannot go {cardinal} from here."
         else:
-            self.maze(*location.coord, 2)
-            self.hero.set_location(adjacent_room)
-            self.maze(*adjacent_room.coord, self.player_draw_color)
-            self.maze.update()
-            out = self.hero.location.description
+            maze[location.x][location.y] = 2
+            self.location = adjacent_room
+
+            maze[location.x][location.y] = self.player_draw_color
+            maze.update()
+
+            out = self.location.description
+        return out
 
 
 class Room(Adjacent, Holder):
@@ -92,6 +100,7 @@ class Room(Adjacent, Holder):
         super().__init__()
         self.data = {}
         self.name = str
+        self.coordinates = list
         self.description = str
         self.coordinates = []
 
@@ -130,35 +139,37 @@ class Maze:
 class Game(Maze):
     """An instance of Dork"""
 
-    player_draw_color = -5
     verbose = False
 
     def __init__(self):
         super().__init__()
         self.data = {}
-        self.hero = Player
+        self.hero = Player()
 
     def __call__(self, cmd, arg):
         return getattr(self, cmd)(arg) if arg else getattr(self, cmd)()
 
     def _gtfo(self):
-        # return f"Thanks for playing DORK, {self.hero.name}!", True
-        return "", True
+        return f"Thanks for playing DORK, {self.hero.name}!", True
 
     def _draw_maze(self):
         self.draw()
         return "", False
 
     def _move(self, cardinal):
-        return self.hero.move(cardinal), False
+        return self.hero.move(cardinal, self.maze), False
 
-    # def _inventory(self):
-    #     return self.hero.get_items(self.hero.name, self.verbose), False
+    def _examine(self):
+        return self.hero.location.get_items(
+            self.hero.location.name, self.verbose
+        ), False
+
+    def _inventory(self):
+        return self.hero.get_items(self.hero.name, self.verbose), False
 
     @staticmethod
     def _repl_error(arg):
         return f"{arg}", False
-
 
 
 class Gamebuilder:
@@ -200,6 +211,7 @@ class Gamebuilder:
         def rec_fac(clz, **data):
             new_obj = clz()
             setattr(new_obj, "data", data)
+            print(new_obj)
             for key, val in data.items():
                 if key in factories:
                     setattr(new_obj, key, rec_fac(factories[key], **val))
@@ -238,7 +250,7 @@ class Gamebuilder:
             yaml.safe_dump(
                 data, save_file,
                 indent=4, width=80,
-                default_flow_style=False
+                # default_flow_style=False
             )
 
         return f"Your game was successfully saved as {player}.yml!"

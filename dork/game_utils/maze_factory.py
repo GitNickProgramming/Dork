@@ -65,7 +65,7 @@ def main() -> dict:
                 rooms.append(coord)
                 maze[coord] = 2
         maze[path[0]] = 2
-        maze[path[-2]] = -5
+        maze[path[-2]] = -4
 
         return {
             "maze": maze.tolist(),
