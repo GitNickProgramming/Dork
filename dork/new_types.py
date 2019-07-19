@@ -8,7 +8,7 @@ import yaml
 import matplotlib.pyplot as plt
 from numpy import full as npf
 import dork.game_utils.factory_data as factory_data
-from pprint import pprint
+# pylint: disable=protected-access
 
 
 class Grandparent:
@@ -18,12 +18,9 @@ class Grandparent:
 class Holder(Grandparent):
     """A holder/container of items"""
 
-    instances = []
-
     def __init__(self):
         super().__init__()
         self.inventory = dict
-        self.instances.append(self)
 
     # def get_items(self, caller, verbose):
     #     """Print all inventory items"""
@@ -45,8 +42,6 @@ class Holder(Grandparent):
 class Stats:
     """stats for items"""
 
-    instances = []
-
     def __init__(self):
         self.data = dict
         self.attack = int
@@ -54,7 +49,6 @@ class Stats:
         self.weight = int
         self.luck = int
         self.equipable = bool
-        self.instances.append(self)
 
     def __str__(self):
         return str(self.data)
@@ -63,8 +57,6 @@ class Stats:
 class Adjacent(Grandparent):
     """adjacency object for rooms"""
 
-    instances = []
-
     def __init__(self):
         super().__init__()
         self.data = dict
@@ -72,7 +64,6 @@ class Adjacent(Grandparent):
         self.south = str
         self.east = str
         self.west = str
-        self.instances.append(self)
 
     def __str__(self):
         return str(self.data)
@@ -81,15 +72,12 @@ class Adjacent(Grandparent):
 class Item(Stats):
     """An obtainable/usable item"""
 
-    instances = []
-
     def __init__(self):
         super().__init__()
         self.data = dict
         self.name = str
         self.description = str
         self.type = str
-        self.instances.append(self)
 
     def __str__(self):
         return str(self.data)
@@ -107,6 +95,8 @@ class Player(Holder):
         self.description = str
         self.location = Room
         self.equipped = list
+
+    def _new_instance(self):
         self.instances.append(self)
 
     def __str__(self):
@@ -115,7 +105,9 @@ class Player(Holder):
     def move(self, cardinal, maze):
         """walk this way"""
 
-        adjacent_room = self.location.adjacent.cardinal
+        adjacent_room = getattr(self.location.adjacent, cardinal)
+        print(type(adjacent_room))
+        # print(self.location.x)
 
         if not adjacent_room:
             out = f"You cannot go {cardinal} from here."
@@ -142,6 +134,8 @@ class Room(Adjacent, Holder):
         self.players = dict
         self.x = int
         self.y = int
+
+    def _new_instance(self):
         self.instances.append(self)
 
     def __str__(self):
@@ -155,18 +149,49 @@ class Gamebuilder:
     def build(cls):
         """Instantiate a game of Dork from dictionary"""
 
-
         player_name = input("What's your name, stranger? ")
         data = cls.load_game(player_name)
 
         if not data:
             data = MazeFactory.build()
+
+            hero_data = {
+                "name": player_name,
+                "description": "the hero of dork!",
+                "location": "room 0",
+                "inventory": {},
+                "equipped": []
+            }
+
+            data["rooms"]["room 0"]["players"][player_name] = hero_data
             cls.save_game(player_name, data)
 
-        game = cls.instantiate(Game, **data)
+        game = cls._instantiate(Game, **data)
         setattr(game, "maze", data["maze"])
         setattr(game, "rooms", cls._make_rooms(deepcopy(data["rooms"])))
+
+        cls._place_players(game)
+        cls._make_paths(game)
+
+        for player in Player.instances:
+            if player.name == player_name:
+                hero = player
+
+        game.hero = hero
         return game
+
+    @classmethod
+    def _place_players(cls, game):
+        for _, room in game.rooms.items():
+            for _, player in room.players.items():
+                player.location = room
+
+    @classmethod
+    def _make_paths(cls, game):
+        for _, room in game.rooms.items():
+            for direction, room_name in vars(room.adjacent).items():
+                if room_name and not isinstance(room_name, dict):
+                    setattr(room.adjacent, direction, game.rooms[room_name])
 
     @classmethod
     def _make_rooms(cls, rooms):
@@ -179,7 +204,7 @@ class Gamebuilder:
         }
 
         for name, room in rooms.items():
-            new_room = cls.instantiate(Room, **room)
+            new_room = cls._instantiate(Room, **room)
             for field, data in room.items():
                 if field == "adjacent":
                     setattr(new_room, field, cls._make_adjacent(data))
@@ -190,12 +215,12 @@ class Gamebuilder:
                 else:
                     setattr(new_room, field, data)
             rooms[name] = new_room
+            new_room._new_instance()
         return rooms
 
     @classmethod
     def _make_player(cls, player):
-        print("making player")
-        new_player = cls.instantiate(Player, **player)
+        new_player = cls._instantiate(Player, **player)
         for field, data in player.items():
             if isinstance(data, dict):
                 inventory = getattr(new_player, field)
@@ -203,12 +228,12 @@ class Gamebuilder:
                     inventory[sub] = cls._make_item(data)
             else:
                 setattr(new_player, field, data)
+        new_player._new_instance()
         return new_player
 
     @classmethod
     def _make_item(cls, item):
-        print("making item")
-        new_item = cls.instantiate(Item, **item)
+        new_item = cls._instantiate(Item, **item)
         for field, data in item.items():
             if isinstance(data, dict):
                 setattr(new_item, field, cls._make_stats(data))
@@ -218,17 +243,14 @@ class Gamebuilder:
 
     @classmethod
     def _make_adjacent(cls, adjacent):
-        print("making adjacent")
-        return cls.instantiate(Adjacent, **adjacent)
+        return cls._instantiate(Adjacent, **adjacent)
 
     @classmethod
     def _make_stats(cls, stats):
-        print("making stat")
-        return cls.instantiate(Stats, **stats)
-
+        return cls._instantiate(Stats, **stats)
 
     @staticmethod
-    def instantiate(clz, **data):
+    def _instantiate(clz, **data):
         """return an object of type clz with attributes given by data"""
 
         new_obj = clz()
@@ -236,10 +258,6 @@ class Gamebuilder:
         for key, val in deepcopy(data).items():
             setattr(new_obj, key, val)
         return new_obj
-
-    @staticmethod
-    def player_locations(game):
-        """link the players to their locations"""
 
     @staticmethod
     def load_game(player):
@@ -539,7 +557,7 @@ class MazeFactory:
         cls.rng_x = range(1, x+1, 2)
         cls.rng_y = range(1, y+1, 2)
 
-        cls.maze = npf((x+1, y+1), cls.wall_color)
+        cls.maze = npf((y+1, x+1), cls.wall_color)
         cls.grid = [(i, j) for i in cls.rng_x for j in cls.rng_y]
         cls.path = [choice(cls.grid)]
         cls.rooms = []
@@ -573,8 +591,7 @@ class MazeFactory:
             if neighbors in cls.rules:
                 cls.rooms.append(coord)
                 cls.maze[coord] = cls.room_color
-        cls.maze[cls.path[0]] = cls.room_color
-        cls.maze[cls.path[-2]] = cls.player_color
+        cls.maze[cls.path[0]] = cls.player_color
 
         return {
             "maze": cls.maze.tolist(),
