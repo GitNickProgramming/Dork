@@ -551,40 +551,41 @@ def rules(wall, path):
 def stats(item_type):
     """item type-specific stats"""
 
+    item_type = item_type.split()[0]
+
+    attack = {
+        "weapon": randint(10, 30),
+        "magic": randint(15, 50),
+        "legendary": randint(60, 120),
+    }.get(item_type, 0)
+
+    strength = {
+        "armor": randint(10, 30),
+        "jewelry": randint(-1, 10),
+        "magic": randint(5, 15),
+    }.get(item_type, 0)
+
+    weight = {
+        "weapon": randint(5, 20),
+        "armor": randint(15, 40),
+        "filler": randint(5, 25),
+        "legendary": randint(5, 15),
+    }.get(item_type, 0)
+
+    luck = {
+        "jewelry": randint(-4, 4),
+        "filler": randint(-10, 10),
+        "legendary": randint(20, 80)
+    }.get(item_type, randint(1, 15))
+
+    equipable = {
+        "filler": False
+    }.get(item_type, True)
+
     return {
-        "weapon": {
-            "attack": randint(10, 30),
-            "weight": randint(5, 20),
-            "luck": randint(-10, 10),
-            "equipable": True
-        },
-        "armor": {
-            "strength": randint(10, 30),
-            "weight": randint(15, 40),
-            "luck": randint(-10, 10),
-            "equipable": True
-        },
-        "magic": {
-            "attack": randint(15, 50),
-            "amount": randint(5, 15),
-            "luck": randint(-10, 10),
-            "equipable": True
-        },
-        "jewelry": {
-            "strength": randint(-2, 10),
-            "attack": randint(-2, 10),
-            "luck": randint(-4, 4),
-            "equipable": True
-        },
-        "filler": {
-            "weight": randint(5, 50),
-            "luck": randint(-10, 10),
-            "equipable": False
-        },
-        "legendary": {
-            "attack": randint(60, 120),
-            "weight": randint(5, 15),
-            "luck": randint(20, 80),
-            "equipable": True
-        }
-    }[item_type.split()[0]]
+        "attack": attack,
+        "strength": strength,
+        "weight": weight,
+        "luck": luck,
+        "equipable": equipable
+    }

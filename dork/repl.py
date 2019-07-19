@@ -37,7 +37,7 @@ def evaluate(cmd, dork, repl_data):
 def repl():
     """read evaluate print loop"""
 
-    dork = dork_types.Gamebuilder().game
+    dork = dork_types.Gamebuilder.build()
 
     repl_data = (
         game_data.CMDS,
