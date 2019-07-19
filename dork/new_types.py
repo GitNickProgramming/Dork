@@ -19,31 +19,35 @@ class Holder(Grandparent):
 
     def __init__(self):
         super().__init__()
-        self.inventory = dict()
+        self.inventory = dict
 
-    def get_items(self, caller, verbose):
-        """Print all inventory items"""
+    # def get_items(self, caller, verbose):
+    #     """Print all inventory items"""
 
-        if self.inventory:
-            out = f"{caller}'s inventory:"
-        else:
-            out = f"There's nothing in {caller}'s inventory."
+    #     if self.inventory:
+    #         out = f"{caller}'s inventory:"
+    #     else:
+    #         out = f"There's nothing in {caller}'s inventory."
 
-        for item in self.inventory:
-            this = self.inventory[item]
-            amt = this.stats.get("amount", None)
-            desc = f":\n    {this.description}" if verbose else ""
-            eqpd = " (equipped)" if hasattr(this, "equipped") else ""
-            amt = f" ({amt})" if amt else ""
-            out += f"\n  {item}{eqpd}{amt}{desc}"
-        return out
+    #     for name, item in self.inventory.items():
+    #         amt = item.stats.get("amount", None)
+    #         desc = f":\n    {item.description}" if verbose else ""
+    #         eqpd = " (equipped)" if hasattr(item, "equipped") else ""
+    #         amt = f" ({amt})" if amt else ""
+    #         out += f"\n  {name}{eqpd}{amt}{desc}"
+    #     return out
 
 
 class Stats:
     """stats for items"""
 
     def __init__(self):
-        self.data = {}
+        self.data = dict
+        self.attack = int
+        self.strength = int
+        self.weight = int
+        self.luck = int
+        self.equipable = bool
 
     def __str__(self):
         return str(self.data)
@@ -54,8 +58,11 @@ class Adjacent(Grandparent):
 
     def __init__(self):
         super().__init__()
-        self.data = {}
-        self.adjacent = {}
+        self.data = dict
+        self.north = str
+        self.south = str
+        self.east = str
+        self.west = str
 
     def __str__(self):
         return str(self.data)
@@ -66,10 +73,10 @@ class Item(Stats):
 
     def __init__(self):
         super().__init__()
-        self.data = {}
+        self.data = dict
         self.name = str
         self.description = str
-        self.equipable = bool
+        self.type = str
 
     def __str__(self):
         return str(self.data)
@@ -80,11 +87,11 @@ class Player(Holder):
 
     def __init__(self):
         super().__init__()
-        self.data = {}
+        self.data = dict
         self.name = str
         self.description = str
-        self.location = Room()
-        self.equipped = {}
+        self.location = Room
+        self.equipped = list
 
     def __str__(self):
         return str(self.data)
@@ -92,18 +99,18 @@ class Player(Holder):
     def move(self, cardinal, maze):
         """walk this way"""
 
-        location = self.location
-        adjacent_room = getattr(location.adjacent, cardinal, None)
+        adjacent_room = self.location.adjacent.cardinal
+
         if not adjacent_room:
             out = f"You cannot go {cardinal} from here."
         else:
-            maze[location.x][location.y] = MazeFactory.room_color
-            self.location = adjacent_room
+            maze[self.location.x][self.location.y] = MazeFactory.room_color
 
-            maze[location.x][location.y] = MazeFactory.player_color
-            MazeFactory.update(maze)
+            self.location = adjacent_room
+            maze[self.location.x][self.location.y] = MazeFactory.player_color
 
             out = self.location.description
+            MazeFactory.update(maze)
         return out
 
 
@@ -112,11 +119,11 @@ class Room(Adjacent, Holder):
 
     def __init__(self):
         super().__init__()
-        self.data = {}
-        self.name = str
+        self.data = dict
+        self.description = str
+        self.players = dict
         self.x = int
         self.y = int
-        self.description = str
 
     def __str__(self):
         return str(self.data)
@@ -142,33 +149,45 @@ class Gamebuilder:
 
         if not data:
             data = MazeFactory.build()
-        # save_game(player_name, data)
+            # cls.save_game(player_name, data)
 
         def rec_fac(clz, **data):
             new_obj = clz()
             setattr(new_obj, "data", data)
-            print(type(new_obj))
+            # print(type(new_obj))
             for key, val in data.items():
                 if key in cls.factories:
+                    print(f"key: {key}")
+                    print(f"val: {type(val)}\n")
                     setattr(
                         new_obj, key, rec_fac(
                             cls.factories[key], **val
                         )
                     )
-                elif isinstance(val, dict):
-                    for sub in val:
-                        if sub in cls.factories:
-                            setattr(
-                                new_obj, sub, rec_fac(
-                                    cls.factories[sub], **val[sub]
-                                )
-                            )
-                        else:
-                            setattr(new_obj, sub, val[sub])
+                # elif isinstance(val, dict):
+                #     for sub in val:
+                #         print(f"key: {key}")
+                #         print(f"sub: {sub}")
+                #         print(f"val[sub]: {type(val[sub])}\n")
+                #         if sub in cls.factories:
+                #             setattr(
+                #                 new_obj, sub, rec_fac(
+                #                     cls.factories[sub], **val[sub]
+                #                 )
+                #             )
+                #         else:
+                #             setattr(new_obj, sub, val[sub])
                 else:
+                    # print(f"key: {key}")
+                    # print(f"val: {type(val)}\n")
                     setattr(new_obj, key, val)
             return new_obj
+        # return cls.player_locations(rec_fac(Game, **data))
         return rec_fac(Game, **data)
+
+    @staticmethod
+    def player_locations(game):
+        """link the players to their locations"""
 
     @staticmethod
     def load_game(player):
@@ -191,6 +210,7 @@ class Gamebuilder:
         """Save a game instance to a yaml file if it exists, else create one"""
 
         data = {
+            "hero": data["hero"],
             "rooms": data["rooms"],
             "maze": data["maze"],
         }
@@ -237,8 +257,8 @@ class Game:
             self.hero.location.name, self.verbose
         ), False
 
-    def _inventory(self):
-        return self.hero.get_items(self.hero.name, self.verbose), False
+    # def _inventory(self):
+    #     return self.hero.get_items(self.hero.name, self.verbose), False
 
     @staticmethod
     def _repl_error(arg):

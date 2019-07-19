@@ -559,6 +559,10 @@ def stats(item_type):
         "legendary": randint(60, 120),
     }.get(item_type, 0)
 
+    amount = {
+        "magic": randint(3, 12)
+    }.get(item_type, 0)
+
     strength = {
         "armor": randint(10, 30),
         "jewelry": randint(-1, 10),
@@ -584,6 +588,7 @@ def stats(item_type):
 
     return {
         "attack": attack,
+        "amount": amount,
         "strength": strength,
         "weight": weight,
         "luck": luck,
