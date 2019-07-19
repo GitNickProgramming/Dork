@@ -46,7 +46,7 @@ def repl():
         game_data.ERRS
     )
 
-    # print(f"\nGreetings, {dork.hero.name}! " + game_data.TITLE + "\n")
+    print(f"\nGreetings, {dork.hero.name}! " + game_data.TITLE + "\n")
 
     while True:
         output, should_exit = evaluate(

@@ -460,6 +460,11 @@ class RoomFactory:
         "east": (0, 1), "west": (0, -1),
     }
 
+    # moves = {
+    #     "north": (0, 1), "south": (0, -1),
+    #     "east": (1, 0), "west": (-1, 0),
+    # }
+
     @classmethod
     def build(cls, maze, rooms):
         """build a room"""
@@ -523,7 +528,7 @@ class MazeFactory:
     """Generate a maze with rooms on intersections, corners, and dead-ends"""
 
     moves = factory_data.MOVES
-    wall_color, path_color, room_color, player_color = (-4, 3, -3, 2)
+    wall_color, path_color, room_color, player_color = (-2, 0, 1, 2)
     rules = factory_data.rules(wall_color, path_color)
 
     @staticmethod
@@ -556,7 +561,7 @@ class MazeFactory:
         cls.rng_x = range(1, x+1, 2)
         cls.rng_y = range(1, y+1, 2)
 
-        cls.maze = npf((x+1, y+1), cls.wall_color)
+        cls.maze = npf((x+1, y+1), fill_value=cls.wall_color)
         cls.grid = [(i, j) for i in cls.rng_x for j in cls.rng_y]
         cls.path = [choice(cls.grid)]
         cls.rooms = []
