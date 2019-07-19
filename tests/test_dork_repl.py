@@ -37,39 +37,39 @@ def test_repl_evaluate(game, repl_data):
         "walk south", game, repl_data)
 
 
-def test_repl_evaluate_various_functions(game, repl_data):
-    """Dork.repl.evaluate has various functions
-    """
+# def test_repl_evaluate_various_functions(game, repl_data):
+#     """Dork.repl.evaluate has various functions
+#     """
 
-    assert dork.repl.evaluate(".rq", game, repl_data) == (
-        'Thanks for playing DORK, None!', True)
-    assert dork.repl.evaluate(".z", game, repl_data) == (
-        "Oh shit, you found an easter egg!", False)
-    assert dork.repl.evaluate("look", game, repl_data) == (
-        None, False)
-    assert dork.repl.evaluate("i", game, repl_data) == (
-        "    You ain't got shit, son!", False)
-
-
-def test_repl_evaluate_move(game, repl_data):
-    """Testing simple repl functions
-    """
-    assert dork.repl.evaluate(".rq", game, repl_data) == (
-        'Thanks for playing DORK, None!', True)
-    assert dork.repl.evaluate(".z", game, repl_data) == (
-        "Oh shit, you found an easter egg!", False)
+#     assert dork.repl.evaluate(".rq", game, repl_data) == (
+#         'Thanks for playing DORK, None!', True)
+#     assert dork.repl.evaluate(".z", game, repl_data) == (
+#         "Oh shit, you found an easter egg!", False)
+#     assert dork.repl.evaluate("look", game, repl_data) == (
+#         None, False)
+#     assert dork.repl.evaluate("i", game, repl_data) == (
+#         "    You ain't got shit, son!", False)
 
 
-def test_repl_method_repl(run, mocker):
-    """Dork.repl.repl should output like this then end in these conditions
-    """
-    evaluate_values = [("FooBar", False), ("Bufarr", True)]
-    mocked_evaluate = mocker.patch("dork.repl.evaluate")
-    mocked_evaluate.side_effect = evaluate_values
+# def test_repl_evaluate_move(game, repl_data):
+#     """Testing simple repl functions
+#     """
+#     assert dork.repl.evaluate(".rq", game, repl_data) == (
+#         'Thanks for playing DORK, None!', True)
+#     assert dork.repl.evaluate(".z", game, repl_data) == (
+#         "Oh shit, you found an easter egg!", False)
 
-    out, err, mocked_input = run(
-        dork.repl.repl, input_return_value="42")
-    assert "FooBar" in out
-    assert "Bufarr" in out
-    assert err == ""
-    assert mocked_input.call_count == len(evaluate_values) + 1
+
+# def test_repl_method_repl(run, mocker):
+#     """Dork.repl.repl should output like this then end in these conditions
+#     """
+#     evaluate_values = [("FooBar", False), ("Bufarr", True)]
+#     mocked_evaluate = mocker.patch("dork.repl.evaluate")
+#     mocked_evaluate.side_effect = evaluate_values
+
+#     out, err, mocked_input = run(
+#         dork.repl.repl, input_return_value="42")
+#     assert "FooBar" in out
+#     assert "Bufarr" in out
+#     assert err == ""
+#     assert mocked_input.call_count == len(evaluate_values) + 1

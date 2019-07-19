@@ -1,7 +1,7 @@
 """This is the REPL which parses commands and passes them to a Game object.
 """
 from dork.game_utils import game_data
-from dork import new_types as dork_types
+from dork import types as dork_types
 
 
 def read():
