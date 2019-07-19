@@ -8,6 +8,7 @@ import yaml
 import matplotlib.pyplot as plt
 from numpy import full as npf
 import dork.game_utils.factory_data as factory_data
+from pprint import pprint
 
 
 class Grandparent:
@@ -17,9 +18,12 @@ class Grandparent:
 class Holder(Grandparent):
     """A holder/container of items"""
 
+    instances = []
+
     def __init__(self):
         super().__init__()
         self.inventory = dict
+        self.instances.append(self)
 
     # def get_items(self, caller, verbose):
     #     """Print all inventory items"""
@@ -41,6 +45,8 @@ class Holder(Grandparent):
 class Stats:
     """stats for items"""
 
+    instances = []
+
     def __init__(self):
         self.data = dict
         self.attack = int
@@ -48,6 +54,7 @@ class Stats:
         self.weight = int
         self.luck = int
         self.equipable = bool
+        self.instances.append(self)
 
     def __str__(self):
         return str(self.data)
@@ -56,6 +63,8 @@ class Stats:
 class Adjacent(Grandparent):
     """adjacency object for rooms"""
 
+    instances = []
+
     def __init__(self):
         super().__init__()
         self.data = dict
@@ -63,6 +72,7 @@ class Adjacent(Grandparent):
         self.south = str
         self.east = str
         self.west = str
+        self.instances.append(self)
 
     def __str__(self):
         return str(self.data)
@@ -71,12 +81,15 @@ class Adjacent(Grandparent):
 class Item(Stats):
     """An obtainable/usable item"""
 
+    instances = []
+
     def __init__(self):
         super().__init__()
         self.data = dict
         self.name = str
         self.description = str
         self.type = str
+        self.instances.append(self)
 
     def __str__(self):
         return str(self.data)
@@ -85,6 +98,8 @@ class Item(Stats):
 class Player(Holder):
     """A player or npc in the game"""
 
+    instances = []
+
     def __init__(self):
         super().__init__()
         self.data = dict
@@ -92,6 +107,7 @@ class Player(Holder):
         self.description = str
         self.location = Room
         self.equipped = list
+        self.instances.append(self)
 
     def __str__(self):
         return str(self.data)
@@ -117,6 +133,8 @@ class Player(Holder):
 class Room(Adjacent, Holder):
     """A room on the worldmap"""
 
+    instances = []
+
     def __init__(self):
         super().__init__()
         self.data = dict
@@ -124,6 +142,7 @@ class Room(Adjacent, Holder):
         self.players = dict
         self.x = int
         self.y = int
+        self.instances.append(self)
 
     def __str__(self):
         return str(self.data)
@@ -132,58 +151,91 @@ class Room(Adjacent, Holder):
 class Gamebuilder:
     """Build an instance of Game"""
 
-    factories = {
-        "rooms": Room,
-        "players": Player,
-        "inventory": Item,
-        "stats": Stats,
-        "adjacent": Adjacent,
-    }
-
     @classmethod
     def build(cls):
-        """recursively instantiate a game of Dork from dictionary"""
+        """Instantiate a game of Dork from dictionary"""
+
 
         player_name = input("What's your name, stranger? ")
         data = cls.load_game(player_name)
 
         if not data:
             data = MazeFactory.build()
-            # cls.save_game(player_name, data)
+            cls.save_game(player_name, data)
 
-        def rec_fac(clz, **data):
-            new_obj = clz()
-            setattr(new_obj, "data", data)
-            # print(type(new_obj))
-            for key, val in data.items():
-                if key in cls.factories:
-                    print(f"key: {key}")
-                    print(f"val: {type(val)}\n")
-                    setattr(
-                        new_obj, key, rec_fac(
-                            cls.factories[key], **val
-                        )
-                    )
-                # elif isinstance(val, dict):
-                #     for sub in val:
-                #         print(f"key: {key}")
-                #         print(f"sub: {sub}")
-                #         print(f"val[sub]: {type(val[sub])}\n")
-                #         if sub in cls.factories:
-                #             setattr(
-                #                 new_obj, sub, rec_fac(
-                #                     cls.factories[sub], **val[sub]
-                #                 )
-                #             )
-                #         else:
-                #             setattr(new_obj, sub, val[sub])
+        game = cls.instantiate(Game, **data)
+        setattr(game, "maze", data["maze"])
+        setattr(game, "rooms", cls._make_rooms(deepcopy(data["rooms"])))
+        return game
+
+    @classmethod
+    def _make_rooms(cls, rooms):
+
+        factories = {
+            "adjacent": cls._make_adjacent,
+            "inventory": cls._make_item,
+            "players": cls._make_player,
+            "stats": cls._make_stats,
+        }
+
+        for name, room in rooms.items():
+            new_room = cls.instantiate(Room, **room)
+            for field, data in room.items():
+                if field == "adjacent":
+                    setattr(new_room, field, cls._make_adjacent(data))
+                elif isinstance(data, dict):
+                    room_field = getattr(new_room, field)
+                    for sub in data:
+                        room_field[sub] = factories[field](data[sub])
                 else:
-                    # print(f"key: {key}")
-                    # print(f"val: {type(val)}\n")
-                    setattr(new_obj, key, val)
-            return new_obj
-        # return cls.player_locations(rec_fac(Game, **data))
-        return rec_fac(Game, **data)
+                    setattr(new_room, field, data)
+            rooms[name] = new_room
+        return rooms
+
+    @classmethod
+    def _make_player(cls, player):
+        print("making player")
+        new_player = cls.instantiate(Player, **player)
+        for field, data in player.items():
+            if isinstance(data, dict):
+                inventory = getattr(new_player, field)
+                for sub in data:
+                    inventory[sub] = cls._make_item(data)
+            else:
+                setattr(new_player, field, data)
+        return new_player
+
+    @classmethod
+    def _make_item(cls, item):
+        print("making item")
+        new_item = cls.instantiate(Item, **item)
+        for field, data in item.items():
+            if isinstance(data, dict):
+                setattr(new_item, field, cls._make_stats(data))
+            else:
+                setattr(new_item, field, data)
+        return new_item
+
+    @classmethod
+    def _make_adjacent(cls, adjacent):
+        print("making adjacent")
+        return cls.instantiate(Adjacent, **adjacent)
+
+    @classmethod
+    def _make_stats(cls, stats):
+        print("making stat")
+        return cls.instantiate(Stats, **stats)
+
+
+    @staticmethod
+    def instantiate(clz, **data):
+        """return an object of type clz with attributes given by data"""
+
+        new_obj = clz()
+        setattr(new_obj, "data", data)
+        for key, val in deepcopy(data).items():
+            setattr(new_obj, key, val)
+        return new_obj
 
     @staticmethod
     def player_locations(game):
@@ -210,7 +262,7 @@ class Gamebuilder:
         """Save a game instance to a yaml file if it exists, else create one"""
 
         data = {
-            "hero": data["hero"],
+            # "hero": data["hero"],
             "rooms": data["rooms"],
             "maze": data["maze"],
         }
