@@ -22,6 +22,42 @@ class Holder(Grandparent):
         super().__init__()
         self.inventory = dict
 
+    def get_items(self, caller, verbose):
+        """Print all inventory items"""
+
+        if self.inventory:
+            out = f"inventory:\n"
+        else:
+            out = f"There's nothing here."
+
+        def _verbose_print(data, calls=1):
+            out = ""
+            spc = "    "
+            for key, val in data.items():
+                if isinstance(val, dict):
+                    out += spc*calls + f"{key}:\n{_verbose_print(val, calls+1)}"
+                elif val not in (0, ''):
+                    out += spc*calls + f"{key}: {val}\n"
+            return out
+
+        def _brief_print(data, calls=1):
+            out = ""
+            col = ""
+            spc = "    "
+            for key, val in data.items():
+                if isinstance(val, dict) and calls < 2:
+                    if calls < 1:
+                        col = ":"
+                    out += spc*calls + f"{key}{col}\n{_brief_print(val, calls+1)}"
+                elif val not in (0, '') and calls < 2:
+                    out += spc*calls + f"{key}: {val}\n"
+            return out
+
+        if verbose:
+            return out + _verbose_print(caller.data["inventory"])
+        return out + _brief_print(caller.data["inventory"])
+
+
     # def get_items(self, caller, verbose):
     #     """Print all inventory items"""
 
@@ -308,6 +344,14 @@ class Game:
     def __call__(self, cmd, arg):
         return getattr(self, cmd)(arg) if arg else getattr(self, cmd)()
 
+    def _toggle_verbose(self) -> (str, bool):
+        self.verbose = not self.verbose
+        out = {
+            True: "verbose inventory: ON",
+            False: "verbose inventory: OFF"
+        }[self.verbose]
+        return out, False
+
     def _get_rooms(self):
         return str(self.rooms), False
 
@@ -323,7 +367,7 @@ class Game:
 
     def _examine(self):
         return self.hero.location.get_items(
-            self.hero.location.name, self.verbose
+            self.hero.location, self.verbose
         ), False
 
     # def _inventory(self):

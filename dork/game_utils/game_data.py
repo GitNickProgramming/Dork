@@ -59,7 +59,7 @@ META = {
     ".rq": ["_gtfo"],
     ".z": ["_zork"],
     ".m": ["_draw_maze"],
-    ".r": ["_get_rooms"],
+    ".v": ["_toggle_verbose"]
 }
 
 
