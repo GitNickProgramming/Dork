@@ -35,7 +35,8 @@ class Holder(Grandparent):
             spc = "    "
             for key, val in data.items():
                 if isinstance(val, dict):
-                    out += spc*calls + f"{key}:\n{_verbose_print(val, calls+1)}"
+                    out += spc*calls + \
+                        f"{key}:\n{_verbose_print(val, calls+1)}"
                 elif val not in (0, ''):
                     out += spc*calls + f"{key}: {val}\n"
             return out
@@ -48,7 +49,8 @@ class Holder(Grandparent):
                 if isinstance(val, dict) and calls < 2:
                     if calls < 1:
                         col = ":"
-                    out += spc*calls + f"{key}{col}\n{_brief_print(val, calls+1)}"
+                    out += spc*calls + \
+                        f"{key}{col}\n{_brief_print(val, calls+1)}"
                 elif val not in (0, '') and calls < 2:
                     out += spc*calls + f"{key}: {val}\n"
             return out
@@ -56,23 +58,6 @@ class Holder(Grandparent):
         if verbose:
             return out + _verbose_print(caller.data["inventory"])
         return out + _brief_print(caller.data["inventory"])
-
-
-    # def get_items(self, caller, verbose):
-    #     """Print all inventory items"""
-
-    #     if self.inventory:
-    #         out = f"{caller}'s inventory:"
-    #     else:
-    #         out = f"There's nothing in {caller}'s inventory."
-
-    #     for name, item in self.inventory.items():
-    #         amt = item.stats.get("amount", None)
-    #         desc = f":\n    {item.description}" if verbose else ""
-    #         eqpd = " (equipped)" if hasattr(item, "equipped") else ""
-    #         amt = f" ({amt})" if amt else ""
-    #         out += f"\n  {name}{eqpd}{amt}{desc}"
-    #     return out
 
 
 class Stats:
@@ -180,10 +165,11 @@ class Gamebuilder:
     """Build an instance of Game"""
 
     @classmethod
-    def build(cls):
+    def build(cls, player_name=None):
         """Instantiate a game of Dork from dictionary"""
 
-        player_name = input("What's your name, stranger? ")
+        if not player_name:
+            player_name = input("What's your name, stranger? ")
         data = cls.load_game(player_name)
 
         if not data:
@@ -315,7 +301,6 @@ class Gamebuilder:
         """Save a game instance to a yaml file if it exists, else create one"""
 
         data = {
-            # "hero": data["hero"],
             "rooms": data["rooms"],
             "maze": data["maze"],
         }
@@ -370,12 +355,23 @@ class Game:
             self.hero.location, self.verbose
         ), False
 
-    # def _inventory(self):
-    #     return self.hero.get_items(self.hero.name, self.verbose), False
+    def _inventory(self):
+        return self.hero.get_items(self.hero, self.verbose), False
+
+    def _look(self):
+        return self.hero.location.description, False
+
+    def _save_game(self):
+        Gamebuilder.save_game(self.hero.name, self.data)
+        return "game saved successfully!", False
 
     @staticmethod
     def _repl_error(arg):
         return f"{arg}", False
+
+    @staticmethod
+    def _zork():
+        return "holy *%&#@!!! a wild zork appeared!", False
 
 
 class ItemFactory:
