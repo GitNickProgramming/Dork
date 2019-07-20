@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
-"""Basic tests for state and entity relationships in dork
-"""
+"""Basic tests for state and entity relationships in dork"""
+
 from dork import repl
+# pylint: disable=protected-access
 
 
 def test_repl_evaluate(game, repl_data):

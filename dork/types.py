@@ -258,8 +258,8 @@ class Gamebuilder:
 
     @classmethod
     def _make_coord(cls, room, coord):
-        for key, val in coord.items():
-            setattr(room, key, val)
+        setattr(room, "x", coord[0])
+        setattr(room, "y", coord[1])
 
     @classmethod
     def _make_stats(cls, stats):
