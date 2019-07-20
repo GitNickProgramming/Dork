@@ -1,7 +1,8 @@
-"""This is the REPL which parses commands and passes them to a Game object.
-"""
+"""This is the REPL which parses commands and passes them to a Game object."""
+
 from dork.game_utils import game_data
 from dork import types as dork_types
+# pylint: disable=protected-access
 
 
 def _read():
