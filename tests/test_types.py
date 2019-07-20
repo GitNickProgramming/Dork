@@ -61,7 +61,7 @@ def test_start_over_yes(capsys, mocker, game):
     game._start_over()
     captured = capsys.readouterr()
     assert "\n!!!WARNING!!! You will lose unsaved data!\n" in captured.out
-    assert mocked_input.call_count == 2
+    assert mocked_input.call_count == 1
 
 
 def test_player_location(game):

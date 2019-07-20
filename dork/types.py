@@ -149,11 +149,8 @@ class Gamebuilder:
     """Build an instance of Game"""
 
     @classmethod
-    def build(cls, player_name=None):
+    def build(cls, player_name):
         """Instantiate a game of Dork from dictionary"""
-
-        if not player_name:
-            player_name = input("What's your name, stranger? ")
 
         data = cls.load_game(player_name)
 
@@ -353,7 +350,7 @@ class Game:
 
     def _start_over(self):
         if self._confirm():
-            Gamebuilder.build()
+            # Gamebuilder.build()
             out = ""
         else:
             out = "Guess you changed your mind!"
