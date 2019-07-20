@@ -566,7 +566,8 @@ class RoomFactory:
                         room["adjacent"][direction] = None
                         searching = False
                     elif cls.maze[position] == MazeFactory.room_color:
-                        room["adjacent"][direction] = cls.worldmap[position]["name"]
+                        room["adjacent"][direction] = \
+                            cls.worldmap[position]["name"]
                         searching = False
 
         for coord, room in deepcopy(cls.worldmap).items():
