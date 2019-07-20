@@ -170,6 +170,7 @@ class Gamebuilder:
 
         if not player_name:
             player_name = input("What's your name, stranger? ")
+
         data = cls.load_game(player_name)
 
         if not data:
@@ -184,7 +185,6 @@ class Gamebuilder:
             }
 
             data["rooms"]["room 0"]["players"][player_name] = hero_data
-            # cls.save_game(player_name, data)
 
         game = cls._instantiate(Game, **data)
         setattr(game, "maze", data["maze"])
@@ -364,6 +364,32 @@ class Game:
     def _save_game(self):
         Gamebuilder.save_game(self.hero.name, self.data)
         return "game saved successfully!", False
+
+    def _start_over(self):
+        if self._confirm():
+            Gamebuilder.build()
+            out = ""
+        else:
+            out = "Guess you changed your mind!"
+        return out, False
+
+    @staticmethod
+    def _confirm():
+        print("\n!!!WARNING!!! You will lose unsaved data!\n")
+        conf = False
+        while True:
+            conf = str.casefold(
+                input("Would you like to proceed? Y/N: ")
+            )
+            conf = {
+                "y": True,
+                "n": False
+            }.get(conf, None)
+            if conf is None:
+                print("That is not a valid response!")
+            else:
+                break
+        return conf
 
     @staticmethod
     def _repl_error(arg):
