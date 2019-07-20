@@ -63,13 +63,13 @@ def test_start_over_yes(capsys, mocker, game):
     assert mocked_input.call_count == 2
 
 
-def test_player_location(game, player):
+def test_player_location(game):
     """testing the get and set of player location
     """
     is_a(game.hero.location, types.Room)
 
 
-def test_move_method(game, mocker, cardinals):
+def test_move_method(game, cardinals):
     """testing the move function for any map
     """
 
