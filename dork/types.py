@@ -512,11 +512,6 @@ class RoomFactory:
         "east": (0, 1), "west": (0, -1),
     }
 
-    # moves = {
-    #     "north": (0, 1), "south": (0, -1),
-    #     "east": (1, 0), "west": (-1, 0),
-    # }
-
     @classmethod
     def build(cls, maze, rooms):
         """build a room"""
@@ -561,13 +556,13 @@ class RoomFactory:
                 searching = True
                 position = coord
                 while searching:
-                    this_room = room["adjacent"][direction]
                     position = tuple(map(add, position, cls.moves[direction]))
                     if cls.maze[position] == MazeFactory.wall_color:
-                        this_room = None
+                        room["adjacent"][direction] = None
                         searching = False
                     elif cls.maze[position] == MazeFactory.room_color:
-                        this_room = cls.worldmap[position]["name"]
+                        room["adjacent"][direction] = \
+                            cls.worldmap[position]["name"]
                         searching = False
 
         for coord, room in deepcopy(cls.worldmap).items():
