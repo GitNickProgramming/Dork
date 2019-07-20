@@ -4,11 +4,12 @@
 # pylint: disable=protected-access
 from tests.utils import is_a
 import dork.types as types
+import dork.game_utils.factory_data as factory_data
 
 
 def test_confirm_method_yes(capsys, mocker):
-    """confirm should do things
-    """
+    """confirm should do things"""
+
     mocked_input = mocker.patch('builtins.input')
     mocked_input.side_effect = ["y", "tester"]
     assert types.Game._confirm()
@@ -18,8 +19,8 @@ def test_confirm_method_yes(capsys, mocker):
 
 
 def test_confirm_method_no(capsys, mocker):
-    """confirm should do things
-    """
+    """confirm should do things"""
+
     mocked_input = mocker.patch('builtins.input')
     mocked_input.side_effect = ["n"]
     assert types.Game._confirm() is False
@@ -29,8 +30,8 @@ def test_confirm_method_no(capsys, mocker):
 
 
 def test_confirm_method_blank(capsys, mocker):
-    """confirm should do things
-    """
+    """confirm should do things"""
+
     mocked_input = mocker.patch('builtins.input')
     mocked_input.side_effect = ["afk", "    ", "y", "tester"]
     types.Game._confirm()
@@ -41,8 +42,8 @@ def test_confirm_method_blank(capsys, mocker):
 
 
 def test_start_over_no(capsys, mocker, game):
-    """confirm should do things
-    """
+    """confirm should do things"""
+
     mocked_input = mocker.patch('builtins.input')
     mocked_input.side_effect = ["n", ".rq"]
     assert game._start_over() == ("Guess you changed your mind!", False)
@@ -52,8 +53,8 @@ def test_start_over_no(capsys, mocker, game):
 
 
 def test_start_over_yes(capsys, mocker, game):
-    """confirm should do things
-    """
+    """confirm should do things"""
+
     # the call count here as 2 is a magic number need to document that
     mocked_input = mocker.patch('builtins.input')
     mocked_input.side_effect = ["y", "tester"]
@@ -64,14 +65,13 @@ def test_start_over_yes(capsys, mocker, game):
 
 
 def test_player_location(game):
-    """testing the get and set of player location
-    """
+    """testing the get and set of player location"""
+
     is_a(game.hero.location, types.Room)
 
 
 def test_move_method(game, cardinals):
-    """testing the move function for any map
-    """
+    """testing the move function for any map"""
 
     for direction in cardinals:
         if getattr(game.hero.location, direction) is not None:
@@ -81,3 +81,10 @@ def test_move_method(game, cardinals):
             move_return = game._move(direction)
             assert (
                 f"You cannot go {direction} from here.", False) == move_return
+
+
+def test_factory_data():
+    """test factory data methods"""
+
+    assert isinstance(factory_data.rules(0, 0), list)
+    assert isinstance(factory_data.stats("magic"), dict)
