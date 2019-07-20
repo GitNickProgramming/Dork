@@ -67,8 +67,6 @@ def test_player_location(game, player):
     """testing the get and set of player location
     """
     is_a(game.hero.location, types.Room)
-    # types.Player.set_location(game.hero, "Arcterus")
-    # assert types.Player.get_location(player) == "Arcterus"
 
 
 def test_move_method(game, mocker, cardinals):
