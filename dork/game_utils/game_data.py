@@ -55,7 +55,7 @@ CMDS = {
 META = {
     ".n": ["_start_over"],
     ".l": ["_start_over"],
-    ".s":["_save_game"],
+    ".s": ["_save_game"],
     ".rq": ["_gtfo"],
     ".z": ["_zork"],
     ".m": ["_draw_maze"],
