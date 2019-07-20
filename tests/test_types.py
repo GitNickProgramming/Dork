@@ -77,10 +77,10 @@ def test_move_method(game, mocker, cardinals):
     """
 
     for direction in cardinals:
-        if getattr(game.hero.location.adjacent, direction) is not None:
+        if getattr(game.hero.location, direction) is not None:
             move_return = game._move(direction)
             assert (game.hero.location.description, False) == move_return
-        if not getattr(game.hero.location.adjacent, direction):
+        if not getattr(game.hero.location, direction):
             move_return = game._move(direction)
             assert (
                 f"You cannot go {direction} from here.", False) == move_return
