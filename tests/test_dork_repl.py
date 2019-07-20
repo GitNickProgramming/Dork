@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 """Basic tests for state and entity relationships in dork"""
 
+import dork.types
 from dork import repl
 # pylint: disable=protected-access
 
@@ -62,3 +63,9 @@ def test_all_moves_and_others(game, repl_data):
         "Thanks for playing DORK, tester!", True)
 
     repl._evaluate(".rq", game, repl_data)
+
+
+def test_repl_new_game():
+    game, repl_data = repl._new_game("tester")
+    assert isinstance(game, dork.types.Game)
+    assert isinstance(repl_data, tuple)
