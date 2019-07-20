@@ -11,48 +11,43 @@ import dork.game_utils.factory_data as factory_data
 # pylint: disable=protected-access
 
 
-class Grandparent:
-    """grandparent class of holder and adjacent"""
-
-
-class Holder(Grandparent):
+class Holder():
     """A holder/container of items"""
 
     def __init__(self):
-        super().__init__()
         self.inventory = dict
 
     def get_items(self, caller, verbose):
         """Print all inventory items"""
 
         if self.inventory:
-            out = f"inventory:\n"
+            out = f"\n    inventory:"
         else:
             out = f"There's nothing here."
 
-        def _verbose_print(data, calls=1):
+        def _verbose_print(data, calls=2):
             out = ""
             spc = "    "
             for key, val in data.items():
                 if isinstance(val, dict):
-                    out += spc*calls + \
-                        f"{key}:\n{_verbose_print(val, calls+1)}"
+                    out += "\n" + spc*calls + \
+                        f"{key}:{_verbose_print(val, calls+1)}"
                 elif val not in (0, ''):
-                    out += spc*calls + f"{key}: {val}\n"
+                    out += "\n" + spc*calls + f"{key}: {val}"
             return out
 
-        def _brief_print(data, calls=1):
+        def _brief_print(data, calls=2):
             out = ""
             col = ""
             spc = "    "
             for key, val in data.items():
-                if isinstance(val, dict) and calls < 2:
-                    if calls < 1:
+                if isinstance(val, dict) and calls < 3:
+                    if calls < 2:
                         col = ":"
-                    out += spc*calls + \
-                        f"{key}{col}\n{_brief_print(val, calls+1)}"
-                elif val not in (0, '') and calls < 2:
-                    out += spc*calls + f"{key}: {val}\n"
+                    out += "\n" + spc*calls + \
+                        f"{key}{col}{_brief_print(val, calls+1)}"
+                # elif val not in (0, '') and calls < 2:
+                #     out += spc*calls + f"\n{key}: {val}"
             return out
 
         if verbose:
@@ -70,21 +65,6 @@ class Stats:
         self.weight = int
         self.luck = int
         self.equipable = bool
-
-    def __str__(self):
-        return str(self.data)
-
-
-class Adjacent(Grandparent):
-    """adjacency object for rooms"""
-
-    def __init__(self):
-        super().__init__()
-        self.data = dict
-        self.north = str
-        self.south = str
-        self.east = str
-        self.west = str
 
     def __str__(self):
         return str(self.data)
@@ -126,7 +106,7 @@ class Player(Holder):
     def move(self, cardinal, maze):
         """walk this way"""
 
-        adjacent_room = getattr(self.location.adjacent, cardinal)
+        adjacent_room = getattr(self.location, cardinal)
 
         if not adjacent_room:
             out = f"You cannot go {cardinal} from here."
@@ -141,7 +121,7 @@ class Player(Holder):
         return out
 
 
-class Room(Adjacent, Holder):
+class Room(Holder):
     """A room on the worldmap"""
 
     instances = []
@@ -153,6 +133,10 @@ class Room(Adjacent, Holder):
         self.players = dict
         self.x = int
         self.y = int
+        self.north = None
+        self.south = None
+        self.east = None
+        self.west = None
 
     def _new_instance(self):
         self.instances.append(self)
@@ -209,10 +193,11 @@ class Gamebuilder:
 
     @classmethod
     def _make_paths(cls, game):
+        adj = ["north", "south", "east", "west"]
         for _, room in game.rooms.items():
-            for direction, room_name in vars(room.adjacent).items():
-                if room_name and not isinstance(room_name, dict):
-                    setattr(room.adjacent, direction, game.rooms[room_name])
+            for direction, room_name in vars(room).items():
+                if room_name and direction in adj:
+                    setattr(room, direction, game.rooms[room_name])
 
     @classmethod
     def _make_rooms(cls, rooms):
@@ -228,7 +213,7 @@ class Gamebuilder:
             new_room = cls._instantiate(Room, **room)
             for field, data in room.items():
                 if field == "adjacent":
-                    setattr(new_room, field, cls._make_adjacent(data))
+                    cls._make_adjacent(new_room, data)
                 elif isinstance(data, dict):
                     room_field = getattr(new_room, field)
                     for sub in data:
@@ -263,8 +248,9 @@ class Gamebuilder:
         return new_item
 
     @classmethod
-    def _make_adjacent(cls, adjacent):
-        return cls._instantiate(Adjacent, **adjacent)
+    def _make_adjacent(cls, room, adjacent):
+        for key, val in adjacent.items():
+            setattr(room, key, val)
 
     @classmethod
     def _make_stats(cls, stats):
@@ -442,8 +428,8 @@ class ItemFactory:
     def _generate(cls, unique_type, stats, item_name, item_type):
         return {
             "name": item_name,
-            "type": item_type,
-            "description": unique_type,
+            "type": " ".join([item_type, unique_type]),
+            "description": "",
             "stats": stats
         }
 
