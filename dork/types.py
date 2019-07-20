@@ -561,12 +561,13 @@ class RoomFactory:
                 searching = True
                 position = coord
                 while searching:
+                    this_room = room["adjacent"][direction]
                     position = tuple(map(add, position, cls.moves[direction]))
                     if cls.maze[position] == MazeFactory.wall_color:
-                        room["adjacent"][direction] = None
+                        this_room = None
                         searching = False
                     elif cls.maze[position] == MazeFactory.room_color:
-                        room["adjacent"][direction] = cls.worldmap[position]["name"]
+                        this_room = cls.worldmap[position]["name"]
                         searching = False
 
         for coord, room in deepcopy(cls.worldmap).items():
