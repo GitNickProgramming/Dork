@@ -123,6 +123,7 @@ class Player(Holder):
 
 class Room(Holder):
     """A room on the worldmap"""
+    # pylint: disable=too-many-instance-attributes
 
     instances = []
 

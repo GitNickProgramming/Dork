@@ -37,7 +37,6 @@ def cardinals():
     return ["north", "east", "south", "west"]
 
 
-
 @pytest.fixture
 def holder():
     """A basic dork holder fixture"""
