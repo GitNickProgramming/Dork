@@ -332,9 +332,6 @@ class Game:
         }[self.verbose]
         return out, False
 
-    def _get_rooms(self):
-        return str(self.rooms), False
-
     def _gtfo(self):
         return f"Thanks for playing DORK, {self.hero.name}!", True
 
@@ -362,8 +359,7 @@ class Game:
 
     def _start_over(self):
         if self._confirm():
-            # Gamebuilder.build()
-            out = ""
+            out = "new game"
         else:
             out = "Guess you changed your mind!"
         return out, False
