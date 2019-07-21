@@ -521,6 +521,7 @@ class PlayerFactory:
 class RoomFactory:
     """Generate rooms for a given maze"""
 
+    #  N, S and E, W are backwards because numpy uses column-order
     moves = {
         "north": (1, 0), "south": (-1, 0),
         "east": (0, 1), "west": (0, -1),
