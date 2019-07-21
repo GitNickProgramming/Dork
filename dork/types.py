@@ -127,6 +127,8 @@ class Player(Holder):
         else:
             maze[self.location.x][self.location.y] = MazeFactory.room_color
 
+            adjacent_room.data["players"][self.name] = \
+                self.location.data["players"].pop(self.name)
             self.location = adjacent_room
             maze[self.location.x][self.location.y] = MazeFactory.player_color
 
@@ -354,6 +356,7 @@ class Game:
         return self.hero.location.description, False
 
     def _save_game(self):
+        self._get_state()
         Gamebuilder.save_game(self.hero.name, self.data)
         return "game saved successfully!", False
 
@@ -363,6 +366,10 @@ class Game:
         else:
             out = "Guess you changed your mind!"
         return out, False
+
+    def _get_state(self):
+        for name, room in self.rooms.items():
+            self.data["rooms"][name] = room.data
 
     @staticmethod
     def _confirm():
@@ -564,7 +571,8 @@ class RoomFactory:
                     if cls.maze[position] == MazeFactory.wall_color:
                         room["adjacent"][direction] = None
                         searching = False
-                    elif cls.maze[position] == MazeFactory.room_color:
+                    elif cls.maze[position] in \
+                            [MazeFactory.room_color, MazeFactory.player_color]:
                         room["adjacent"][direction] = \
                             cls.worldmap[position]["name"]
                         searching = False
@@ -579,7 +587,7 @@ class RoomFactory:
 class MazeFactory:
     """Generate a maze with rooms on intersections, corners, and dead-ends"""
 
-    wall_color, path_color, room_color, player_color = (0, 1, -2, 2)
+    wall_color, path_color, room_color, player_color = (-2, 2, 1, 0)
     moves = factory_data.MOVES
     rules = factory_data.rules(wall_color, path_color)
 
@@ -650,6 +658,7 @@ class MazeFactory:
             if neighbors in MazeFactory.rules:
                 rooms.append(coord)
                 maze[coord] = MazeFactory.room_color
+            maze[rooms[0]] = MazeFactory.player_color
 
         return {
             "maze": maze.tolist(),
