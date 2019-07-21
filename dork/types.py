@@ -30,32 +30,9 @@ class Holder(Grandparent):
         else:
             out = f"There's nothing here."
 
-        def _verbose_print(data, calls=2):
-            out = ""
-            spc = "    "
-            for key, val in data.items():
-                if isinstance(val, dict):
-                    out += "\n" + spc*calls + \
-                        f"{key}:{_verbose_print(val, calls+1)}"
-                elif val not in (0, ''):
-                    out += "\n" + spc*calls + f"{key}: {val}"
-            return out
-
-        def _brief_print(data, calls=2):
-            out = ""
-            col = ""
-            spc = "    "
-            for key, val in data.items():
-                if isinstance(val, dict) and calls < 3:
-                    if calls < 2:
-                        col = ":"
-                    out += "\n" + spc*calls + \
-                        f"{key}{col}{_brief_print(val, calls+1)}"
-            return out
-
         if verbose:
-            return out + _verbose_print(caller.data["inventory"])
-        return out + _brief_print(caller.data["inventory"])
+            return out + Game._verbose_print(caller.data["inventory"])
+        return out + Game._brief_print(caller.data["inventory"])
 
 
 class Stats:
@@ -370,6 +347,31 @@ class Game:
     def _get_state(self):
         for name, room in self.rooms.items():
             self.data["rooms"][name] = room.data
+
+    @staticmethod
+    def _verbose_print(data, calls=2):
+        out = ""
+        spc = "    "
+        for key, val in data.items():
+            if isinstance(val, dict):
+                out += "\n" + spc*calls + \
+                    f"{key}:{Game._verbose_print(val, calls+1)}"
+            elif val not in (0, ''):
+                out += "\n" + spc*calls + f"{key}: {val}"
+        return out
+
+    @staticmethod
+    def _brief_print(data, calls=2):
+        out = ""
+        col = ""
+        spc = "    "
+        for key, val in data.items():
+            if isinstance(val, dict) and calls < 3:
+                if calls < 2:
+                    col = ":"
+                out += "\n" + spc*calls + \
+                    f"{key}{col}{Game._brief_print(val, calls+1)}"
+        return out
 
     @staticmethod
     def _confirm():
