@@ -1,16 +1,33 @@
-"""This is the REPL which parses commands and passes them to a Game object.
-"""
+"""This is the REPL which parses commands and passes them to a Game object."""
+
 from dork.game_utils import game_data
 from dork import types as dork_types
+# pylint: disable=protected-access
 
 
-def read():
+def _new_game(player_name=None):
+    if not player_name:
+        player_name = input("What's your name, stranger? ")
+
+    dork = dork_types.Gamebuilder.build(player_name)
+
+    repl_data = (
+        game_data.CMDS,
+        game_data.MOVES,
+        game_data.META,
+        game_data.ERRS
+    )
+
+    return dork, repl_data
+
+
+def _read():
     """Get input from CLI"""
 
     return str.casefold(input("> "))
 
 
-def evaluate(cmd, dork, repl_data):
+def _evaluate(cmd, dork, repl_data):
     """Parse a cmd and run it"""
 
     cmds, moves, meta, errs = repl_data
@@ -37,20 +54,12 @@ def evaluate(cmd, dork, repl_data):
 def repl():
     """read evaluate print loop"""
 
-    dork = dork_types.Gamebuilder.build()
-
-    repl_data = (
-        game_data.CMDS,
-        game_data.MOVES,
-        game_data.META,
-        game_data.ERRS
-    )
-
+    dork, repl_data = _new_game()
     print(f"\nGreetings, {dork.hero.name}! " + game_data.TITLE + "\n")
 
     while True:
-        output, should_exit = evaluate(
-            cmd=read(), dork=dork, repl_data=repl_data
+        output, should_exit = _evaluate(
+            cmd=_read(), dork=dork, repl_data=repl_data
         )
         print(output + "\n")
         if should_exit:

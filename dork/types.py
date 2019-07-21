@@ -11,10 +11,15 @@ import dork.game_utils.factory_data as factory_data
 # pylint: disable=protected-access
 
 
-class Holder():
+class Grandparent:
+    """common parent of holder, adjacent, and coord"""
+
+
+class Holder(Grandparent):
     """A holder/container of items"""
 
     def __init__(self):
+        super().__init__()
         self.inventory = dict
 
     def get_items(self, caller, verbose):
@@ -46,8 +51,6 @@ class Holder():
                         col = ":"
                     out += "\n" + spc*calls + \
                         f"{key}{col}{_brief_print(val, calls+1)}"
-                # elif val not in (0, '') and calls < 2:
-                #     out += spc*calls + f"\n{key}: {val}"
             return out
 
         if verbose:
@@ -66,8 +69,25 @@ class Stats:
         self.luck = int
         self.equipable = bool
 
-    def __str__(self):
-        return str(self.data)
+
+class Adjacent(Grandparent):
+    """adjacency object for rooms"""
+
+    def __init__(self):
+        super().__init__()
+        self.north = str
+        self.south = str
+        self.east = str
+        self.west = str
+
+
+class Coord(Grandparent):
+    """coordinate object for rooms"""
+
+    def __init__(self):
+        super().__init__()
+        self.x = int
+        self.y = int
 
 
 class Item(Stats):
@@ -79,9 +99,6 @@ class Item(Stats):
         self.name = str
         self.description = str
         self.type = str
-
-    def __str__(self):
-        return str(self.data)
 
 
 class Player(Holder):
@@ -99,9 +116,6 @@ class Player(Holder):
 
     def _new_instance(self):
         self.instances.append(self)
-
-    def __str__(self):
-        return str(self.data)
 
     def move(self, cardinal, maze):
         """walk this way"""
@@ -121,7 +135,7 @@ class Player(Holder):
         return out
 
 
-class Room(Holder):
+class Room(Adjacent, Coord, Holder):
     """A room on the worldmap"""
     # pylint: disable=too-many-instance-attributes
 
@@ -132,29 +146,17 @@ class Room(Holder):
         self.data = dict
         self.description = str
         self.players = dict
-        self.x = int
-        self.y = int
-        self.north = None
-        self.south = None
-        self.east = None
-        self.west = None
 
     def _new_instance(self):
         self.instances.append(self)
-
-    def __str__(self):
-        return str(self.data)
 
 
 class Gamebuilder:
     """Build an instance of Game"""
 
     @classmethod
-    def build(cls, player_name=None):
+    def build(cls, player_name):
         """Instantiate a game of Dork from dictionary"""
-
-        if not player_name:
-            player_name = input("What's your name, stranger? ")
 
         data = cls.load_game(player_name)
 
@@ -215,6 +217,8 @@ class Gamebuilder:
             for field, data in room.items():
                 if field == "adjacent":
                     cls._make_adjacent(new_room, data)
+                elif field == "coordinates":
+                    cls._make_coord(new_room, data)
                 elif isinstance(data, dict):
                     room_field = getattr(new_room, field)
                     for sub in data:
@@ -252,6 +256,11 @@ class Gamebuilder:
     def _make_adjacent(cls, room, adjacent):
         for key, val in adjacent.items():
             setattr(room, key, val)
+
+    @classmethod
+    def _make_coord(cls, room, coord):
+        setattr(room, "x", coord[0])
+        setattr(room, "y", coord[1])
 
     @classmethod
     def _make_stats(cls, stats):
@@ -354,7 +363,7 @@ class Game:
 
     def _start_over(self):
         if self._confirm():
-            Gamebuilder.build()
+            # Gamebuilder.build()
             out = ""
         else:
             out = "Guess you changed your mind!"
@@ -513,11 +522,6 @@ class RoomFactory:
         "east": (0, 1), "west": (0, -1),
     }
 
-    # moves = {
-    #     "north": (0, 1), "south": (0, -1),
-    #     "east": (1, 0), "west": (-1, 0),
-    # }
-
     @classmethod
     def build(cls, maze, rooms):
         """build a room"""
@@ -535,8 +539,7 @@ class RoomFactory:
             new_room = {
                 "name": f"room {i}",
                 "description": f"room {i} description",
-                "x": x,
-                "y": y,
+                "coordinates": [x, y],
                 "adjacent": {},
                 "players": {},
                 "inventory": {},
