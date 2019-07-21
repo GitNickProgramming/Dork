@@ -2,7 +2,7 @@
 
 import os
 from copy import deepcopy
-from random import choices, choice, randint
+from random import choices, choice, randint, shuffle
 from operator import add
 import yaml
 import matplotlib.pyplot as plt
@@ -583,13 +583,13 @@ class RoomFactory:
 class MazeFactory:
     """Generate a maze with rooms on intersections, corners, and dead-ends"""
 
+    wall_color, path_color, room_color, player_color = (0, 1, -2, 2)
     moves = factory_data.MOVES
-    wall_color, path_color, room_color, player_color = (-2, 0, 1, 2)
     rules = factory_data.rules(wall_color, path_color)
 
     @staticmethod
     def draw(maze):
-        """display the map"""
+        """display the maze"""
 
         plt.figure(figsize=(len(maze[0])//2, len(maze)//2))
         plt.pcolormesh(maze, cmap=plt.cm.get_cmap("tab20b"))
@@ -600,86 +600,61 @@ class MazeFactory:
 
     @staticmethod
     def update(maze):
-        """update the map display"""
+        """update the maze display"""
 
         plt.pcolormesh(maze, cmap=plt.cm.get_cmap("tab20b"))
         plt.axis("equal")
         plt.axis("off")
         plt.draw()
 
-    @classmethod
-    def build(cls):
-        """build a maze"""
+    @staticmethod
+    def build():
+        """generate a maze"""
 
         x = choice([10, 12, 14, 18])
         y = 148//x
 
-        cls.rng_x = range(1, x+1, 2)
-        cls.rng_y = range(1, y+1, 2)
+        maze = npf((x+1, y+1), MazeFactory.wall_color)
+        grid = [(i, j) for i in range(1, x+1, 2) for j in range(1, y+1, 2)]
+        path = [choice(grid)]
+        rooms = []
+        position = path[0]
+        grid.remove(position)
 
-        cls.maze = npf((x+1, y+1), fill_value=cls.wall_color)
-        cls.grid = [(i, j) for i in cls.rng_x for j in cls.rng_y]
-        cls.path = [choice(cls.grid)]
-        cls.rooms = []
-
-        return cls._generate()
-
-    @classmethod
-    def _generate(cls):
-        k = cls.path[0]
-        cls.grid.remove(k)
-        while cls.grid:
-            n = len(cls.path)
-            nsew = cls._prb_lnk(k)
-            for prb_lnk in nsew:
-                probe, _ = prb_lnk
-                if probe in cls.grid:
-                    cls._walk(prb_lnk)
-                    cls.grid.remove(probe)
-                    cls.path.extend(prb_lnk)
+        while grid:
+            n = len(path)
+            nsew = []
+            for move in MazeFactory.moves:
+                probe = tuple(map(add, move[0], position))
+                link = tuple(map(add, move[1], position))
+                nsew.append([probe, link])
+            shuffle(nsew)
+            for probe in nsew:
+                prb, lnk = probe
+                if prb in grid:
+                    maze[prb] = MazeFactory.path_color
+                    maze[lnk] = MazeFactory.path_color
+                    grid.remove(prb)
+                    path.extend(probe)
                     break
-            if n == len(cls.path):
-                k = cls.path[max(cls.path.index(k)-1, 1)]
+            if n == len(path):
+                position = path[max(path.index(position)-1, 1)]
             else:
-                k = cls.path[-1]
-        return cls._get_rooms()
+                position = path[-1]
 
-    @classmethod
-    def _get_rooms(cls):
-        for coord in cls.path:
-            neighbors = cls._neighbors(coord)
-            if neighbors in cls.rules:
-                cls.rooms.append(coord)
-                cls.maze[coord] = cls.room_color
-        cls.maze[cls.path[0]] = cls.room_color
-        cls.maze[cls.path[-2]] = cls.room_color
+        for coord in path:
+            i, j = coord
+            neighbors = [
+                maze[i-1, j],
+                maze[i+1, j],
+                maze[i, j-1],
+                maze[i, j+1]
+            ]
+            if neighbors in MazeFactory.rules:
+                rooms.append(coord)
+                maze[coord] = MazeFactory.room_color
 
         return {
-            "maze": cls.maze.tolist(),
-            "rooms": RoomFactory.build(cls.maze, cls.rooms),
+            "maze": maze.tolist(),
+            "rooms": RoomFactory.build(maze, rooms)
         }
-
-    @classmethod
-    def _prb_lnk(cls, coord):
-        nsew = []
-        for move in cls.moves:
-            prb = tuple(map(add, move[0], coord))
-            lnk = tuple(map(add, move[1], coord))
-            nsew.append([prb, lnk])
-        return choices(nsew, k=len(nsew))
-
-    @classmethod
-    def _neighbors(cls, coord):
-        i, j = coord
-        return [
-            cls.maze[(i-1, j)],
-            cls.maze[(i+1, j)],
-            cls.maze[(i, j-1)],
-            cls.maze[(i, j+1)],
-        ]
-
-    @classmethod
-    def _walk(cls, coord):
-        prb, lnk = coord
-        cls.maze[prb] = cls.path_color
-        cls.maze[lnk] = cls.path_color
