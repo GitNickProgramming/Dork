@@ -603,6 +603,7 @@ class MazeFactory:
         plt.axis("off")
         plt.draw()
 
+    # pylint: disable=R0914
     @staticmethod
     def build():
         """generate a maze"""
