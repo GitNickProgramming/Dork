@@ -625,16 +625,16 @@ class MazeFactory:
             n = len(path)
             nsew = []
             for move in MazeFactory.moves:
-                probe = tuple(map(add, move[0], position))
-                link = tuple(map(add, move[1], position))
-                nsew.append([probe, link])
+                nsew.append([
+                    tuple(map(add, move[0], position)),
+                    tuple(map(add, move[1], position))
+                ])
             shuffle(nsew)
             for probe in nsew:
-                prb, lnk = probe
-                if prb in grid:
-                    maze[prb] = MazeFactory.path_color
-                    maze[lnk] = MazeFactory.path_color
-                    grid.remove(prb)
+                if probe[0] in grid:
+                    maze[probe[0]] = MazeFactory.path_color
+                    maze[probe[1]] = MazeFactory.path_color
+                    grid.remove(probe[0])
                     path.extend(probe)
                     break
             if n == len(path):

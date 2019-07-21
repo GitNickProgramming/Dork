@@ -67,8 +67,23 @@ def test_all_moves_and_others(game, repl_data):
 
 
 def test_repl_new_game():
-    """test _new_game() from repl"""
+    """test repl with new player"""
 
     game, repl_data = repl._new_game("tester")
     assert isinstance(game, dork.types.Game)
     assert isinstance(repl_data, tuple)
+
+
+def test_repl_load_game():
+    """test repl with existing save file"""
+
+    game, repl_data = repl._new_game("devon")
+    assert isinstance(game, dork.types.Game)
+    assert isinstance(repl_data, tuple)
+
+
+def test_repl_save_game():
+    """test save function"""
+
+    game, repl_data = repl._new_game("devon")
+    repl._evaluate(".s", game, repl_data)
