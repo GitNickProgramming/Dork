@@ -48,6 +48,7 @@ class Stats:
         self.luck = int
         self.equipable = bool
 
+
 class Item(Stats):
     """An obtainable/usable item"""
 
@@ -76,14 +77,14 @@ class Item(Stats):
     def set_usable(self, new_use):
         """This method changes the use behavior,
         provide usable class as argument"""
-        uses = {"filler" : NotUsable,
+        uses = {"filler": NotUsable,
                 "weapon": Attackable,
                 "key": Openable,
                 "gold": Payable,
                 "magic items": Statable,
                 "jewelry": Statable,
-                "armor" : Statable,
-                "magic consumables" : Statable}
+                "armor": Statable,
+                "magic consumables": Statable}
         if new_use is None or new_use not in uses:
             self.usable = NotUsable
         else:
@@ -148,6 +149,7 @@ class Statable(Usable):
         """Stat change use method"""
         print("The " + name + " takes effect on " + target)
 
+
 class Adjacent(Grandparent):
     """adjacency object for rooms"""
 
@@ -166,7 +168,6 @@ class Coord(Grandparent):
         super().__init__()
         self.x = int
         self.y = int
-
 
 
 class Player(Holder):
@@ -433,7 +434,6 @@ class Game:
                 print(item)
             print()
         return self.hero.location.description, False
-
 
     def _save_game(self):
         self._get_state()
