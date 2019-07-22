@@ -139,6 +139,7 @@ class Statable(Usable):
         """Stat change use method"""
         print("The " + name + " takes effect on " + target)
 
+
 class Adjacent(Grandparent):
     """adjacency object for rooms"""
 
@@ -563,23 +564,22 @@ class ItemFactory:
         return cls._forge(item_name, item_type)
 
     @classmethod
-    def _generate(cls, unique_type, stats, item_name, item_type):
+    def _generate(cls, stats, item_name, item_type):
         return {
             "name": item_name,
-            "type": " ".join([item_type, unique_type]),
+            "type": item_type,
             "description": "",
             "stats": stats
         }
 
     @classmethod
-    def _stats(cls, unique_type, item_name, item_type):
+    def _stats(cls, item_name, item_type):
         stats = factory_data.stats(item_type.split()[0])
-        return cls._generate(unique_type, stats, item_name, item_type)
+        return cls._generate(stats, item_name, item_type)
 
     @classmethod
     def _forge(cls, item_name, item_type):
         new_name = []
-        unique_type = ""
         build = cls.sequence[item_type]
 
         seq = choice(choices(
@@ -605,15 +605,14 @@ class ItemFactory:
             if this_word:
                 if this_word in cls.suffixes:
                     new_name[-1] += this_word
-                    unique_type = item_name
-                    item_type = "legendary"
+                    item_type = f"legendary {item_name}"
                 else:
                     new_name.append(this_word)
             else:
                 new_name.append(item_name)
 
         item_name = " ".join(new_name)
-        return cls._stats(unique_type, item_name, item_type)
+        return cls._stats(item_name, item_type)
 
 
 class PlayerFactory:

@@ -425,7 +425,7 @@ NAMES = {
         "mind",
         "god",
         "star",
-        "shadow"
+        "shadow",
         "sun",
         "moon",
         "storm"
@@ -557,30 +557,31 @@ def stats(item_type):
         "weapon": randint(10, 30),
         "magic": randint(15, 50),
         "legendary": randint(60, 120),
-    }.get(item_type, 0)
+    }.get(item_type, None)
 
     amount = {
         "magic": randint(3, 12)
-    }.get(item_type, 0)
+    }.get(item_type, 1)
 
     strength = {
         "armor": randint(10, 30),
         "jewelry": randint(-1, 10),
         "magic": randint(5, 15),
-    }.get(item_type, 0)
+    }.get(item_type, None)
 
     weight = {
         "weapon": randint(5, 20),
         "armor": randint(15, 40),
         "filler": randint(5, 25),
+        "magic": randint(2, 7),
         "legendary": randint(5, 15),
     }.get(item_type, 0)
 
     luck = {
         "jewelry": randint(-4, 4),
-        "filler": randint(-10, 10),
+        "filler": randint(-50, 0),
         "legendary": randint(20, 80)
-    }.get(item_type, randint(1, 15))
+    }.get(item_type, randint(-10, 10))
 
     equipable = {
         "filler": False
