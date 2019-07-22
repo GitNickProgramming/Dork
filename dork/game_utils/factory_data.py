@@ -11,7 +11,7 @@ ROOMS = {"the Cave": "It's very dark in here...",
          "the Valley": "Finally some green around here.",
          "Troll's territory": "There's no one here right now... might be able to take some items",
          "a mansion": "All rooms in the mansion appear to be sealed shut,\
-              should exit before trouble arrives",
+should exit before trouble arrives",
          "Mordor": "Fire everywhere! It burns!",
          "the Ghost Town": "Ah, this feels like home.",
          "the abandoned MSU Denver Campus": "You've never seen it so empty before",
