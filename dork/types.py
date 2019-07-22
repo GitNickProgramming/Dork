@@ -142,8 +142,6 @@ class Gamebuilder:
 
         data = cls.load_game(player_name)
 
-        # print(data)
-
         if not data:
             data = MazeFactory.build()
 
@@ -559,7 +557,7 @@ class RoomFactory:
         list_of_keys = list(factory_data.ROOMS)
         shuffle(list_of_keys)
 
-        print(list_of_keys)
+        # print(list_of_keys)
 
         for room in cls.rooms:
             if i == 0:
@@ -574,7 +572,7 @@ class RoomFactory:
                     "inventory": {},
                 }
             elif i < len(cls.rooms) - 1:
-                rand = choice(list_of_keys)
+                rand = list_of_keys[i]
                 x, y = room
                 new_room = {
                     "number": f"room {i}",
@@ -632,7 +630,44 @@ class RoomFactory:
             new_room = cls.worldmap.pop(coord)
             cls.worldmap[new_room.pop("number")] = new_room
 
+        cls._get_adj_description(cls.worldmap)
+
         return cls.worldmap
+
+    @classmethod
+    def _get_adj_description(cls, worldmap):
+        for rooms in worldmap:
+            adj_list = list()
+            if worldmap[rooms]["adjacent"]["north"] is not None:
+                adj_list.append("North")
+            if worldmap[rooms]["adjacent"]["east"] is not None:
+                adj_list.append("East")
+            if worldmap[rooms]["adjacent"]["south"] is not None:
+                adj_list.append("South")
+            if worldmap[rooms]["adjacent"]["west"] is not None:
+                adj_list.append("West")
+
+            if(len(adj_list) == 1) and rooms != "room 0" and rooms != "room "+str(len(cls.rooms)):
+                desc = factory_data.ADJ_ROOM_DESCRIPTIONS["1"]
+                first_desc = worldmap[rooms]["description"] +"\n"
+                worldmap[rooms]["description"] = first_desc+desc
+            elif len(adj_list) == 2:
+                desc = factory_data.ADJ_ROOM_DESCRIPTIONS["2"] + str(adj_list)
+                first_desc = worldmap[rooms]["description"] +"\n"
+                worldmap[rooms]["description"] = first_desc+desc
+            elif len(adj_list) == 3:
+                desc = factory_data.ADJ_ROOM_DESCRIPTIONS["3"] + str(adj_list)
+                first_desc = worldmap[rooms]["description"] +"\n"
+                worldmap[rooms]["description"] = first_desc+desc
+            
+
+                #print(desc)
+            
+
+            print(adj_list)
+            #print(len(worldmap[rooms]["adjacent"]))
+        return 0
+
 
 
 class MazeFactory:

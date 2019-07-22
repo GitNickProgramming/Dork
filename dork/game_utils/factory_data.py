@@ -29,7 +29,16 @@ ROOMS = {"the Cave": "It's very dark in here...",
          "a farm": "Might be something useful laying around here",
          "Elitches": "All the rides are broken and rotten",
          "a movie theater": "There are videos of zombies running around, looks like actual footage",
-         "the Mountain": "Beautiful views."}
+         "the Mountain": "Beautiful views.",
+         "Blank": "Placeholder",
+         "Blankk": "Placeholder",
+         "Blankkk": "Placeholder",
+         "Blankkkk": "Placeholder"}
+
+ADJ_ROOM_DESCRIPTIONS = {"1": "Also, this appears to be a dead end!",
+                         "2": "From here, all directions seem to be blocked, except ",
+                         "3": "Three directions seem possible... ",
+                         "4": "Looking around, you notice all directions are possible, this could get confusing..."}
 
 ITEMS = {
     "condition": {
