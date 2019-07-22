@@ -119,7 +119,7 @@ def test_player_has_none(mocker):
     test_item = None
     test_game.hero.inventory[test_item] = test_item
     assert None in test_game.hero.inventory,\
-         "Failed to store items in inventory"
+        "Failed to store items in inventory"
 
 
 def test_look(run):
