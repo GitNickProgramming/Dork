@@ -52,7 +52,8 @@ ADJ_ROOM_DESCRIPTIONS = {"1": "Also, this appears to be a dead end!",
                          "4": "Looking around, you notice all directions \
                              are possible, this could get confusing..."}
 
-ROOM_INV_DESCRIPTIONS = {"1": "There seems to be several items in this room!"}
+ROOM_INV_DESCRIPTIONS = {"1": "Looks like there are several items around here",
+                         "2": "It doesn't look like there are many items around here"}
 
 ITEMS = {
     "condition": {

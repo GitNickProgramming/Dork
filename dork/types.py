@@ -630,11 +630,15 @@ class RoomFactory:
     def _get_room_inv_description(cls, worldmap):
         for rooms in worldmap:
             inv_list = worldmap[rooms]["inventory"]
-            if len(inv_list) > 2:
+            num = len(inv_list)
+            if num > 2:
                 first_desc = worldmap[rooms]["description"] + "\n"
                 desc = factory_data.ROOM_INV_DESCRIPTIONS["1"]
                 worldmap[rooms]["description"] = first_desc+desc
-
+            elif num == 1:
+                first_desc = worldmap[rooms]["description"] + "\n"
+                desc = factory_data.ROOM_INV_DESCRIPTIONS["2"]
+                worldmap[rooms]["description"] = first_desc+desc
         return 0
 
     @classmethod
