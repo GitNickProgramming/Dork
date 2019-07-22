@@ -1,11 +1,12 @@
 # -*- coding: utf-8 -*-
-"""Pytest Fixtures and utility methods for Dork.
-"""
+"""Pytest Fixtures and utility methods for Dork"""
+
 import pytest
 
 
 def has_a(obj, attr):
     """has an attribute"""
+
     assert attr in vars(obj), f"{obj} has no {attr}"
 
 
