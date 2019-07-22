@@ -36,7 +36,6 @@ class Holder(Grandparent):
             return out + Game._verbose_print(caller.data["inventory"])
         return out + Game._brief_print(caller.data["inventory"])
 
-
         # if self.stats is None:
         #     self.usable = NotUsable
 
