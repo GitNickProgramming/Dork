@@ -659,7 +659,7 @@ class PlayerFactory:
         return new_player
 
 
-class RoomFactory:
+class RoomFactory: 
     """Generate rooms for a given maze"""
 
     moves = {
