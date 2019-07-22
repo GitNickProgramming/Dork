@@ -145,12 +145,12 @@ class Gamebuilder:
             hero_data = {
                 "name": player_name,
                 "description": "the hero of dork!",
-                "location": "room 0",
+                "location": "Entrance",
                 "inventory": {},
                 "equipped": []
             }
 
-            data["rooms"]["room 0"]["players"][player_name] = hero_data
+            data["rooms"]["Entrance"]["players"][player_name] = hero_data
 
         game = cls._instantiate(Game, **data)
         setattr(game, "maze", data["maze"])
@@ -539,16 +539,28 @@ class RoomFactory:
     @classmethod
     def _make_rooms(cls):
         i = 0
+
         for room in cls.rooms:
-            x, y = room
-            new_room = {
-                "name": f"room {i}",
-                "description": f"room {i} description",
-                "coordinates": [x, y],
-                "adjacent": {},
-                "players": {},
-                "inventory": {},
-            }
+            if i == 0:
+                x, y = room
+                new_room = {
+                    "name": f"Entrance",
+                    "description": f"This is the beginning! Go explore!",
+                    "coordinates": [x, y],
+                    "adjacent": {},
+                    "players": {},
+                    "inventory": {},
+                }
+            else:
+                x, y = room
+                new_room = {
+                    "name": f"room {i}",
+                    "description": f"room {i} description",
+                    "coordinates": [x, y],
+                    "adjacent": {},
+                    "players": {},
+                    "inventory": {},
+                }
 
             for _ in range(randint(1, 7)):
                 new_item = ItemFactory.build()
