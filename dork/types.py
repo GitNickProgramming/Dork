@@ -697,7 +697,7 @@ class RoomFactory:
                     "adjacent": {},
                     "players": {},
                     "inventory": {},
-                } 
+                }
             elif i < len(cls.rooms) - 1:
                 rand = list_of_keys[i]
                 x, y = room
