@@ -799,14 +799,17 @@ class RoomFactory:
             for adj in adj_list:
                 adj_string += " "+adj
 
-            if(len(adj_list) == 1) and rooms != "room 0" and rooms != "room "+str(len(cls.rooms)):
+            if((len(adj_list) == 1)
+               and rooms != "room 0" and rooms != "room "+str(len(cls.rooms))):
                 desc = factory_data.ADJ_ROOM_DESCRIPTIONS["1"]
             elif len(adj_list) == 2:
                 rand_ind = randrange(7)
-                desc = factory_data.ADJ_ROOM_DESCRIPTIONS["2"][rand_ind] + adj_string
+                desc = factory_data.ADJ_ROOM_DESCRIPTIONS["2"][rand_ind] \
+                    + adj_string
             elif len(adj_list) == 3:
                 rand_ind = randrange(5)
-                desc = factory_data.ADJ_ROOM_DESCRIPTIONS["3"][rand_ind] + adj_string
+                desc = factory_data.ADJ_ROOM_DESCRIPTIONS["3"][rand_ind] \
+                    + adj_string
             first_desc = worldmap[rooms]["description"] + "\n"
             worldmap[rooms]["description"] = first_desc+desc
 
