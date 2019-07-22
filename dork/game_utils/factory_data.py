@@ -2,6 +2,16 @@
 
 from random import randint
 
+DEFAULT_ROOMS = {"Entrance": "This is the beginning. Go explore!!!",
+                 "End": "This is the end of the maze. Congrats on completing DORK!!!"}
+
+ROOMS = {"Cave": "It's very dark in here...",
+         "Dead forest": "Trees are all dead! ",
+         "Cemetery": "This has gotta be the worst place in the maze!",
+         "Valley": "Finally some green around here.",
+         "Troll territory": "There's no one here right now... might be able to take some items",
+         "Mansion": "All rooms in the mansion appear to be sealed shut, should exit before trouble arrives"}
+
 ITEMS = {
     "condition": {
         "filler": [

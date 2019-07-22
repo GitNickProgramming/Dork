@@ -139,6 +139,8 @@ class Gamebuilder:
 
         data = cls.load_game(player_name)
 
+        # print(data)
+
         if not data:
             data = MazeFactory.build()
 
@@ -155,6 +157,9 @@ class Gamebuilder:
         game = cls._instantiate(Game, **data)
         setattr(game, "maze", data["maze"])
         setattr(game, "rooms", cls._make_rooms(deepcopy(data["rooms"])))
+
+        #cls._make_descriptions(deepcopy(data["rooms"]))
+        #print(data)
 
         cls._place_players(game)
         cls._make_paths(game)
@@ -181,6 +186,11 @@ class Gamebuilder:
                 if room_name and direction in adj:
                     setattr(room, direction, game.rooms[room_name])
 
+    #@classmethod
+    #def _make_descriptions(cls, rooms):
+
+
+
     @classmethod
     def _make_rooms(cls, rooms):
 
@@ -206,6 +216,8 @@ class Gamebuilder:
                     setattr(new_room, field, data)
             rooms[name] = new_room
             new_room._new_instance()
+        
+        print(rooms["room 1"].data)
         return rooms
 
     @classmethod
@@ -538,6 +550,8 @@ class RoomFactory:
 
     @classmethod
     def _make_rooms(cls):
+        order = dict()
+
         i = 0
 
         for room in cls.rooms:
@@ -545,7 +559,17 @@ class RoomFactory:
                 x, y = room
                 new_room = {
                     "name": f"Entrance",
-                    "description": f"This is the beginning! Go explore!",
+                    "description": factory_data.DEFAULT_ROOMS["Entrance"],
+                    "coordinates": [x, y],
+                    "adjacent": {},
+                    "players": {},
+                    "inventory": {},
+                }
+            elif i < len(cls.rooms) - 1:
+                x, y = room
+                new_room = {
+                    "name": choice(factory_data.ROOMS.keys()),
+                    "description": f"room {i} description",
                     "coordinates": [x, y],
                     "adjacent": {},
                     "players": {},
@@ -554,13 +578,14 @@ class RoomFactory:
             else:
                 x, y = room
                 new_room = {
-                    "name": f"room {i}",
-                    "description": f"room {i} description",
+                    "name": f"End",
+                    "description": factory_data.DEFAULT_ROOMS["End"],
                     "coordinates": [x, y],
                     "adjacent": {},
                     "players": {},
                     "inventory": {},
                 }
+
 
             for _ in range(randint(1, 7)):
                 new_item = ItemFactory.build()
@@ -625,6 +650,7 @@ class MazeFactory:
         plt.axis("equal")
         plt.axis("off")
         plt.draw()
+        plt.show()
 
     # pylint: disable=R0914
     @staticmethod
