@@ -2,7 +2,7 @@
 
 import os
 from copy import deepcopy
-from random import choices, choice, randint
+from random import choices, choice, randint, shuffle
 from operator import add
 import yaml
 import matplotlib.pyplot as plt
@@ -30,32 +30,9 @@ class Holder(Grandparent):
         else:
             out = f"There's nothing here."
 
-        def _verbose_print(data, calls=2):
-            out = ""
-            spc = "    "
-            for key, val in data.items():
-                if isinstance(val, dict):
-                    out += "\n" + spc*calls + \
-                        f"{key}:{_verbose_print(val, calls+1)}"
-                elif val not in (0, ''):
-                    out += "\n" + spc*calls + f"{key}: {val}"
-            return out
-
-        def _brief_print(data, calls=2):
-            out = ""
-            col = ""
-            spc = "    "
-            for key, val in data.items():
-                if isinstance(val, dict) and calls < 3:
-                    if calls < 2:
-                        col = ":"
-                    out += "\n" + spc*calls + \
-                        f"{key}{col}{_brief_print(val, calls+1)}"
-            return out
-
         if verbose:
-            return out + _verbose_print(caller.data["inventory"])
-        return out + _brief_print(caller.data["inventory"])
+            return out + Game._verbose_print(caller.data["inventory"])
+        return out + Game._brief_print(caller.data["inventory"])
 
 
 class Stats:
@@ -127,6 +104,8 @@ class Player(Holder):
         else:
             maze[self.location.x][self.location.y] = MazeFactory.room_color
 
+            adjacent_room.data["players"][self.name] = \
+                self.location.data["players"].pop(self.name)
             self.location = adjacent_room
             maze[self.location.x][self.location.y] = MazeFactory.player_color
 
@@ -333,9 +312,6 @@ class Game:
         }[self.verbose]
         return out, False
 
-    def _get_rooms(self):
-        return str(self.rooms), False
-
     def _gtfo(self):
         return f"Thanks for playing DORK, {self.hero.name}!", True
 
@@ -358,16 +334,45 @@ class Game:
         return self.hero.location.description, False
 
     def _save_game(self):
+        self._get_state()
         Gamebuilder.save_game(self.hero.name, self.data)
         return "game saved successfully!", False
 
     def _start_over(self):
         if self._confirm():
-            # Gamebuilder.build()
-            out = ""
+            out = "new game"
         else:
             out = "Guess you changed your mind!"
         return out, False
+
+    def _get_state(self):
+        for name, room in self.rooms.items():
+            self.data["rooms"][name] = room.data
+
+    @staticmethod
+    def _verbose_print(data, calls=2):
+        out = ""
+        spc = "    "
+        for key, val in data.items():
+            if isinstance(val, dict):
+                out += "\n" + spc*calls + \
+                    f"{key}:{Game._verbose_print(val, calls+1)}"
+            elif val not in (0, ''):
+                out += "\n" + spc*calls + f"{key}: {val}"
+        return out
+
+    @staticmethod
+    def _brief_print(data, calls=2):
+        out = ""
+        col = ""
+        spc = "    "
+        for key, val in data.items():
+            if isinstance(val, dict) and calls < 3:
+                if calls < 2:
+                    col = ":"
+                out += "\n" + spc*calls + \
+                    f"{key}{col}{Game._brief_print(val, calls+1)}"
+        return out
 
     @staticmethod
     def _confirm():
@@ -569,7 +574,8 @@ class RoomFactory:
                     if cls.maze[position] == MazeFactory.wall_color:
                         room["adjacent"][direction] = None
                         searching = False
-                    elif cls.maze[position] == MazeFactory.room_color:
+                    elif cls.maze[position] in \
+                            [MazeFactory.room_color, MazeFactory.player_color]:
                         room["adjacent"][direction] = \
                             cls.worldmap[position]["name"]
                         searching = False
@@ -584,13 +590,13 @@ class RoomFactory:
 class MazeFactory:
     """Generate a maze with rooms on intersections, corners, and dead-ends"""
 
+    wall_color, path_color, room_color, player_color = (-2, 2, 1, 0)
     moves = factory_data.MOVES
-    wall_color, path_color, room_color, player_color = (-2, 0, 1, 2)
     rules = factory_data.rules(wall_color, path_color)
 
     @staticmethod
     def draw(maze):
-        """display the map"""
+        """display the maze"""
 
         plt.figure(figsize=(len(maze[0])//2, len(maze)//2))
         plt.pcolormesh(maze, cmap=plt.cm.get_cmap("tab20b"))
@@ -601,86 +607,63 @@ class MazeFactory:
 
     @staticmethod
     def update(maze):
-        """update the map display"""
+        """update the maze display"""
 
         plt.pcolormesh(maze, cmap=plt.cm.get_cmap("tab20b"))
         plt.axis("equal")
         plt.axis("off")
         plt.draw()
 
-    @classmethod
-    def build(cls):
-        """build a maze"""
+    # pylint: disable=R0914
+    @staticmethod
+    def build():
+        """generate a maze"""
 
         x = choice([10, 12, 14, 18])
         y = 148//x
 
-        cls.rng_x = range(1, x+1, 2)
-        cls.rng_y = range(1, y+1, 2)
+        maze = npf((x+1, y+1), MazeFactory.wall_color)
+        grid = [(i, j) for i in range(1, x+1, 2) for j in range(1, y+1, 2)]
+        path = [choice(grid)]
+        rooms = []
+        position = path[0]
+        grid.remove(position)
 
-        cls.maze = npf((x+1, y+1), fill_value=cls.wall_color)
-        cls.grid = [(i, j) for i in cls.rng_x for j in cls.rng_y]
-        cls.path = [choice(cls.grid)]
-        cls.rooms = []
-
-        return cls._generate()
-
-    @classmethod
-    def _generate(cls):
-        k = cls.path[0]
-        cls.grid.remove(k)
-        while cls.grid:
-            n = len(cls.path)
-            nsew = cls._prb_lnk(k)
-            for prb_lnk in nsew:
-                probe, _ = prb_lnk
-                if probe in cls.grid:
-                    cls._walk(prb_lnk)
-                    cls.grid.remove(probe)
-                    cls.path.extend(prb_lnk)
+        while grid:
+            n = len(path)
+            nsew = []
+            for move in MazeFactory.moves:
+                nsew.append([
+                    tuple(map(add, move[0], position)),
+                    tuple(map(add, move[1], position))
+                ])
+            shuffle(nsew)
+            for probe in nsew:
+                if probe[0] in grid:
+                    maze[probe[0]] = MazeFactory.path_color
+                    maze[probe[1]] = MazeFactory.path_color
+                    grid.remove(probe[0])
+                    path.extend(probe)
                     break
-            if n == len(cls.path):
-                k = cls.path[max(cls.path.index(k)-1, 1)]
+            if n == len(path):
+                position = path[max(path.index(position)-1, 1)]
             else:
-                k = cls.path[-1]
-        return cls._get_rooms()
+                position = path[-1]
 
-    @classmethod
-    def _get_rooms(cls):
-        for coord in cls.path:
-            neighbors = cls._neighbors(coord)
-            if neighbors in cls.rules:
-                cls.rooms.append(coord)
-                cls.maze[coord] = cls.room_color
-        cls.maze[cls.path[0]] = cls.room_color
-        cls.maze[cls.path[-2]] = cls.room_color
+        for coord in path:
+            i, j = coord
+            neighbors = [
+                maze[i-1, j],
+                maze[i+1, j],
+                maze[i, j-1],
+                maze[i, j+1]
+            ]
+            if neighbors in MazeFactory.rules:
+                rooms.append(coord)
+                maze[coord] = MazeFactory.room_color
+            maze[rooms[0]] = MazeFactory.player_color
 
         return {
-            "maze": cls.maze.tolist(),
-            "rooms": RoomFactory.build(cls.maze, cls.rooms),
+            "maze": maze.tolist(),
+            "rooms": RoomFactory.build(maze, rooms)
         }
-
-    @classmethod
-    def _prb_lnk(cls, coord):
-        nsew = []
-        for move in cls.moves:
-            prb = tuple(map(add, move[0], coord))
-            lnk = tuple(map(add, move[1], coord))
-            nsew.append([prb, lnk])
-        return choices(nsew, k=len(nsew))
-
-    @classmethod
-    def _neighbors(cls, coord):
-        i, j = coord
-        return [
-            cls.maze[(i-1, j)],
-            cls.maze[(i+1, j)],
-            cls.maze[(i, j-1)],
-            cls.maze[(i, j+1)],
-        ]
-
-    @classmethod
-    def _walk(cls, coord):
-        prb, lnk = coord
-        cls.maze[prb] = cls.path_color
-        cls.maze[lnk] = cls.path_color

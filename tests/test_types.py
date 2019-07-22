@@ -88,3 +88,9 @@ def test_factory_data():
 
     assert isinstance(factory_data.rules(0, 0), list)
     assert isinstance(factory_data.stats("magic"), dict)
+
+
+def test_mazefactory():
+    """builds all game types"""
+
+    assert isinstance(types.MazeFactory.build(), dict)

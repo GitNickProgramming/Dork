@@ -10,6 +10,7 @@ def _new_game(player_name=None):
         player_name = input("What's your name, stranger? ")
 
     dork = dork_types.Gamebuilder.build(player_name)
+    print(f"\nGreetings, {dork.hero.name}! " + game_data.TITLE + "\n")
 
     repl_data = (
         game_data.CMDS,
@@ -55,13 +56,15 @@ def repl():
     """read evaluate print loop"""
 
     dork, repl_data = _new_game()
-    print(f"\nGreetings, {dork.hero.name}! " + game_data.TITLE + "\n")
 
     while True:
         output, should_exit = _evaluate(
             cmd=_read(), dork=dork, repl_data=repl_data
         )
-        print(output + "\n")
+        if output == "new game":
+            dork, repl_data = _new_game()
+        else:
+            print(output + "\n")
         if should_exit:
             break
 
