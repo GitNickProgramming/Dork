@@ -9,7 +9,6 @@ import dork.repl
 # pylint: disable=protected-access
 
 
-
 def test_confirm_method_yes(capsys, mocker):
     """confirm should do things"""
 
@@ -109,8 +108,7 @@ def test_inventory_has_item(mocker):
     test_item.name = "wobblelobbledobdob"
     test_game.hero.inventory[test_item.name] = test_item
     assert test_item.name in test_game.hero.inventory,\
-         "Failed to store items in inventory"
-    
+        "Failed to store items in inventory"
 
 
 def test_player_has_none(mocker):
@@ -126,7 +124,9 @@ def test_player_has_none(mocker):
 
 def test_look(run):
     """testing _look for display items and description"""
-    out = run(dork.repl.repl, input_side_effect=["devon", "look around", ".rq"])
+    out = run(dork.repl.repl, input_side_effect=["devon",
+                                                 "look around",
+                                                 ".rq"])
     assert "Items:\ndamaged note\nfragile leather greaves" in out[0],\
            "item are not found on entrance room"
 
@@ -136,9 +136,7 @@ def test_take(run):
     out = run(dork.repl.repl, input_side_effect=["name", "take", ".rq"])
     assert "You took all item. You took them well." in out[0],\
            "item are not found on entrance room"
-    #assert "You took the soggy waffle. You took it well." in out[0],\
-    #       "item are not found on entrance room"
-    #FIXME: find how to force map
+
 
 def test_drop_item(run):
     """testing _drop_item the method takes all and specific item"""
@@ -152,14 +150,14 @@ def test_sword_can_swing(run):
     """Tests that a sword object calls swingable"""
     test_sword = types.Item()
     test_sword.make({"name": "test sword",
-                     "description" : '',
+                     "description": '',
                      "amount": 0,
-                     "attack" : 18,
-                     "equipable" : True ,
-                     "luck" : 9, 
-                     "strength" : 0, 
-                     "weight" : 10, 
-                     "type" : 'weapon'})
+                     "attack": 18,
+                     "equipable": True,
+                     "luck": 9,
+                     "strength": 0,
+                     "weight": 10,
+                     "type": 'weapon'})
     out = run(test_sword.use, "player", test_sword.name)
     assert out[0] == "You swing the test sword at player\n",\
                      "use method failed for sword items"
@@ -185,7 +183,6 @@ def test_potion_can_speed_up(run):
     out = run(test_potion.use, "player", test_potion.name)
     assert out[0] == "The test potion takes effect on player\n",\
                      "use method failed for stat changing items"
-
 
 
 def test_gold_can_pay(run):
@@ -227,6 +224,7 @@ def test_runtime_items(run):
                                                  "use sword", ".rq"])
     assert "You don't have that item...\n" in out[0],\
            "Failed to decline use on non-existant item"
+
 
 def test_use_has_target_input(run):
     """Testing that use takes an input"""
