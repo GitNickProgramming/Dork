@@ -111,7 +111,7 @@ class Player(Holder):
 
             outt = self.location.description
             outtt = self.location.name
-            out = "You have entered the "+outtt+"\n"+outt
+            out = "You have entered "+outtt+"\n"+outt
             MazeFactory.update(maze)
         return out
 
@@ -155,7 +155,7 @@ class Gamebuilder:
                 "equipped": []
             }
 
-            data["rooms"]["Entrance"]["players"][player_name] = hero_data
+            data["rooms"]["room 0"]["players"][player_name] = hero_data
 
         game = cls._instantiate(Game, **data)
         setattr(game, "maze", data["maze"])
@@ -557,12 +557,15 @@ class RoomFactory:
         i = 0
 
         list_of_keys = list(factory_data.ROOMS)
+        shuffle(list_of_keys)
+
+        print(list_of_keys)
 
         for room in cls.rooms:
             if i == 0:
                 x, y = room
                 new_room = {
-                    "namee": f"Entrance",
+                    "number": f"room 0",
                     "name": f"Entrance",
                     "description": factory_data.DEFAULT_ROOMS["Entrance"],
                     "coordinates": [x, y],
@@ -574,7 +577,7 @@ class RoomFactory:
                 rand = choice(list_of_keys)
                 x, y = room
                 new_room = {
-                    "namee": f"room {i}",
+                    "number": f"room {i}",
                     "name": rand,
                     "description": factory_data.ROOMS[rand],
                     "coordinates": [x, y],
@@ -585,7 +588,7 @@ class RoomFactory:
             else:
                 x, y = room
                 new_room = {
-                    "namee": f"End",
+                    "number": f"room "+str(len(cls.rooms)),
                     "name": f"End",
                     "description": factory_data.DEFAULT_ROOMS["End"],
                     "coordinates": [x, y],
@@ -622,12 +625,12 @@ class RoomFactory:
                     elif cls.maze[position] in \
                             [MazeFactory.room_color, MazeFactory.player_color]:
                         room["adjacent"][direction] = \
-                            cls.worldmap[position]["namee"]
+                            cls.worldmap[position]["number"]
                         searching = False
 
         for coord, room in deepcopy(cls.worldmap).items():
             new_room = cls.worldmap.pop(coord)
-            cls.worldmap[new_room.pop("namee")] = new_room
+            cls.worldmap[new_room.pop("number")] = new_room
 
         return cls.worldmap
 
