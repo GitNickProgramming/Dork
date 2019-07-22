@@ -36,7 +36,8 @@ ROOMS = {"the Cave": "It's very dark in here...",
          "Blankkkk": "Placeholder"}
 
 ADJ_ROOM_DESCRIPTIONS = {"1": "Also, this appears to be a dead end!",
-                         "2": "From here, all directions seem to be blocked, except ",
+                         "2": {0:"From here, all directions seem to be blocked, except ",
+                               1:"There is a pungent smell coming from the "},
                          "3": "Three directions seem possible... ",
                          "4": "Looking around, you notice all directions are possible, this could get confusing..."}
 

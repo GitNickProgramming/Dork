@@ -659,13 +659,7 @@ class RoomFactory:
                 desc = factory_data.ADJ_ROOM_DESCRIPTIONS["3"] + str(adj_list)
                 first_desc = worldmap[rooms]["description"] +"\n"
                 worldmap[rooms]["description"] = first_desc+desc
-            
-
-                #print(desc)
-            
-
-            print(adj_list)
-            #print(len(worldmap[rooms]["adjacent"]))
+    
         return 0
 
 
