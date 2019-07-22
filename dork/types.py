@@ -2,7 +2,7 @@
 
 import os
 from copy import deepcopy
-from random import choices, choice, randint, shuffle
+from random import choices, choice, randint, shuffle, randrange
 from operator import add
 import yaml
 import matplotlib.pyplot as plt
@@ -637,29 +637,36 @@ class RoomFactory:
     @classmethod
     def _get_adj_description(cls, worldmap):
         for rooms in worldmap:
+            desc = ""
             adj_list = list()
-            if worldmap[rooms]["adjacent"]["north"] is not None:
-                adj_list.append("North")
-            if worldmap[rooms]["adjacent"]["east"] is not None:
-                adj_list.append("East")
-            if worldmap[rooms]["adjacent"]["south"] is not None:
-                adj_list.append("South")
-            if worldmap[rooms]["adjacent"]["west"] is not None:
-                adj_list.append("West")
+            adj_possibilities = {"north", "east", "south", "west"}
+            for pos in adj_possibilities:
+                if worldmap[rooms]["adjacent"][pos] is not None:
+                    adj_list.append(pos)
+
+            #if worldmap[rooms]["adjacent"]["north"] is not None:
+            #    adj_list.append("North")
+            #if worldmap[rooms]["adjacent"]["east"] is not None:
+            #    adj_list.append("East")
+            #if worldmap[rooms]["adjacent"]["south"] is not None:
+            #    adj_list.append("South")
+            #if worldmap[rooms]["adjacent"]["west"] is not None:
+            #    adj_list.append("West")
 
             if(len(adj_list) == 1) and rooms != "room 0" and rooms != "room "+str(len(cls.rooms)):
                 desc = factory_data.ADJ_ROOM_DESCRIPTIONS["1"]
-                first_desc = worldmap[rooms]["description"] +"\n"
-                worldmap[rooms]["description"] = first_desc+desc
             elif len(adj_list) == 2:
-                desc = factory_data.ADJ_ROOM_DESCRIPTIONS["2"] + str(adj_list)
-                first_desc = worldmap[rooms]["description"] +"\n"
-                worldmap[rooms]["description"] = first_desc+desc
+                rand_ind = randrange(7)
+                adj_string = ""
+                for adj in adj_list:
+                    adj_string += " "+adj
+                desc = factory_data.ADJ_ROOM_DESCRIPTIONS["2"][rand_ind] + adj_string
             elif len(adj_list) == 3:
-                desc = factory_data.ADJ_ROOM_DESCRIPTIONS["3"] + str(adj_list)
-                first_desc = worldmap[rooms]["description"] +"\n"
-                worldmap[rooms]["description"] = first_desc+desc
-    
+                rand_ind = randrange(5)
+                desc = factory_data.ADJ_ROOM_DESCRIPTIONS["3"][rand_ind] + str(adj_list)
+            first_desc = worldmap[rooms]["description"] +"\n"
+            worldmap[rooms]["description"] = first_desc+desc
+
         return 0
 
 

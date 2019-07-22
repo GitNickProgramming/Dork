@@ -36,9 +36,18 @@ ROOMS = {"the Cave": "It's very dark in here...",
          "Blankkkk": "Placeholder"}
 
 ADJ_ROOM_DESCRIPTIONS = {"1": "Also, this appears to be a dead end!",
-                         "2": {0:"From here, all directions seem to be blocked, except ",
-                               1:"There is a pungent smell coming from the "},
-                         "3": "Three directions seem possible... ",
+                         "2": {0: "From here, all directions seem to be blocked, except",
+                               1: "There is a strong smell coming from the",
+                               2: "There seems to be a path leading to the",
+                               3: "You hear something coming from the",
+                               4: "Something tells you to go",
+                               5: "You might be able to go",
+                               6: "From here, it seems the direction possibilites are"},
+                         "3": {0: "Three directions seem possible...",
+                               1: "You hear a sound, but you can't decide if it came from",
+                               2: "This is getting tricky... It looks like you can go",
+                               3: "You can't decide whether to go",
+                               4: "Confusion arises, the possibilities of direction are"},
                          "4": "Looking around, you notice all directions are possible, this could get confusing..."}
 
 ITEMS = {
