@@ -78,7 +78,8 @@ def test_move_method(game, cardinals):
     for direction in cardinals:
         if getattr(game.hero.location, direction) is not None:
             move_return = game._move(direction)
-            assert (game.hero.location.description, False) == move_return
+            assert ("You have entered " +game.hero.location.name+"\n"\
+                    +game.hero.location.description, False) == move_return
         if not getattr(game.hero.location, direction):
             move_return = game._move(direction)
             assert (
