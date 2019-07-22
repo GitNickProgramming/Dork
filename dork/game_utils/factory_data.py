@@ -10,7 +10,8 @@ ROOMS = {"the Cave": "It's very dark in here...",
          "the Cemetery": "This has gotta be the worst place in the maze!",
          "the Valley": "Finally some green around here.",
          "Troll's territory": "There's no one here right now... might be able to take some items",
-         "a mansion": "All rooms in the mansion appear to be sealed shut, should exit before trouble arrives",
+         "a mansion": "All rooms in the mansion appear to be sealed shut,\
+              should exit before trouble arrives",
          "Mordor": "Fire everywhere! It burns!",
          "the Ghost Town": "Ah, this feels like home.",
          "the abandoned MSU Denver Campus": "You've never seen it so empty before",
@@ -48,7 +49,10 @@ ADJ_ROOM_DESCRIPTIONS = {"1": "Also, this appears to be a dead end!",
                                2: "This is getting tricky... It looks like you can go",
                                3: "You can't decide whether to go",
                                4: "Confusion arises, the possibilities of direction are"},
-                         "4": "Looking around, you notice all directions are possible, this could get confusing..."}
+                         "4": "Looking around, you notice all directions \
+                             are possible, this could get confusing..."}
+
+ROOM_INV_DESCRIPTIONS = {"1": "There seems to be several items in this room!"}
 
 ITEMS = {
     "condition": {

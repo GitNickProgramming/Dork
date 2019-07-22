@@ -159,9 +159,6 @@ class Gamebuilder:
         setattr(game, "maze", data["maze"])
         setattr(game, "rooms", cls._make_rooms(deepcopy(data["rooms"])))
 
-        #cls._make_descriptions(deepcopy(data["rooms"]))
-        #print(data)
-
         cls._place_players(game)
         cls._make_paths(game)
 
@@ -186,11 +183,6 @@ class Gamebuilder:
             for direction, room_name in vars(room).items():
                 if room_name and direction in adj:
                     setattr(room, direction, game.rooms[room_name])
-
-    #@classmethod
-    #def _make_descriptions(cls, rooms):
-
-
 
     @classmethod
     def _make_rooms(cls, rooms):
@@ -217,7 +209,7 @@ class Gamebuilder:
                     setattr(new_room, field, data)
             rooms[name] = new_room
             new_room._new_instance()
-        
+
         print(rooms["room 1"].data)
         return rooms
 
@@ -595,7 +587,6 @@ class RoomFactory:
                     "inventory": {},
                 }
 
-
             for _ in range(randint(1, 7)):
                 new_item = ItemFactory.build()
                 new_room["inventory"][new_item.pop("name")] = new_item
@@ -631,8 +622,20 @@ class RoomFactory:
             cls.worldmap[new_room.pop("number")] = new_room
 
         cls._get_adj_description(cls.worldmap)
+        cls._get_room_inv_description(cls.worldmap)
 
         return cls.worldmap
+
+    @classmethod
+    def _get_room_inv_description(cls, worldmap):
+        for rooms in worldmap:
+            inv_list = worldmap[rooms]["inventory"]
+            if len(inv_list) > 2:
+                first_desc = worldmap[rooms]["description"] + "\n"
+                desc = factory_data.ROOM_INV_DESCRIPTIONS["1"]
+                worldmap[rooms]["description"] = first_desc+desc
+
+        return 0
 
     @classmethod
     def _get_adj_description(cls, worldmap):
@@ -644,31 +647,31 @@ class RoomFactory:
                 if worldmap[rooms]["adjacent"][pos] is not None:
                     adj_list.append(pos)
 
-            #if worldmap[rooms]["adjacent"]["north"] is not None:
+            # if worldmap[rooms]["adjacent"]["north"] is not None:
             #    adj_list.append("North")
-            #if worldmap[rooms]["adjacent"]["east"] is not None:
+            # if worldmap[rooms]["adjacent"]["east"] is not None:
             #    adj_list.append("East")
-            #if worldmap[rooms]["adjacent"]["south"] is not None:
+            # if worldmap[rooms]["adjacent"]["south"] is not None:
             #    adj_list.append("South")
-            #if worldmap[rooms]["adjacent"]["west"] is not None:
+            # if worldmap[rooms]["adjacent"]["west"] is not None:
             #    adj_list.append("West")
+
+            adj_string = ""
+            for adj in adj_list:
+                adj_string += " "+adj
 
             if(len(adj_list) == 1) and rooms != "room 0" and rooms != "room "+str(len(cls.rooms)):
                 desc = factory_data.ADJ_ROOM_DESCRIPTIONS["1"]
             elif len(adj_list) == 2:
                 rand_ind = randrange(7)
-                adj_string = ""
-                for adj in adj_list:
-                    adj_string += " "+adj
                 desc = factory_data.ADJ_ROOM_DESCRIPTIONS["2"][rand_ind] + adj_string
             elif len(adj_list) == 3:
                 rand_ind = randrange(5)
-                desc = factory_data.ADJ_ROOM_DESCRIPTIONS["3"][rand_ind] + str(adj_list)
-            first_desc = worldmap[rooms]["description"] +"\n"
+                desc = factory_data.ADJ_ROOM_DESCRIPTIONS["3"][rand_ind] + adj_string
+            first_desc = worldmap[rooms]["description"] + "\n"
             worldmap[rooms]["description"] = first_desc+desc
 
         return 0
-
 
 
 class MazeFactory:
