@@ -422,6 +422,7 @@ class Game:
         return "", False
 
     def _move(self, cardinal):
+        
         return self.hero.move(cardinal, self.maze), False
 
     def _examine(self):
@@ -799,7 +800,11 @@ class RoomFactory:
 
             adj_string = ""
             for adj in adj_list:
-                adj_string += " "+adj
+                if adj_list[0] == adj:
+                    adj_string += " "+adj
+                else:
+                    adj_string += ", "+adj
+            adj_string += "..."
 
             if((len(adj_list) == 1)
                and rooms != "room 0" and rooms != "room "+str(len(cls.rooms))):

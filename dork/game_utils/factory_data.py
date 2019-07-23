@@ -40,6 +40,11 @@ ROOMS = [" Cave ",
          " BBlankkk ",
          " BBlankkkk "]
 
+DIRS = {"north":"south",
+        "south":"north",
+        "east":"west",
+        "west":"east"}
+
 ADJ_ROOM_DESCRIPTIONS = {"1": "Also, this appears to be a dead end!",
                          "2": {0: "From here, all directions seem to be \
 blocked, except",
