@@ -302,7 +302,7 @@ class Gamebuilder:
             rooms[name] = new_room
             new_room._new_instance()
 
-        print(rooms["room 1"].data)
+        # print(rooms["room 1"].data)
         return rooms
 
     @classmethod
