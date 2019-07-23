@@ -809,7 +809,7 @@ class RoomFactory:
                and rooms != "room 0" and rooms != "room "+str(len(cls.rooms))):
                 desc = factory_data.ADJ_ROOM_DESCRIPTIONS["1"]
             elif len(adj_list) == 2:
-                rand_ind = randrange(7)
+                rand_ind = randrange(8)
                 desc = factory_data.ADJ_ROOM_DESCRIPTIONS["2"][rand_ind] \
                     + adj_string
             elif len(adj_list) == 3:
