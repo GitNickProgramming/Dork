@@ -67,9 +67,9 @@ of direction are"},
                              are possible, this could get confusing..."}
 
 ROOM_INV_DESCRIPTIONS = {"1": "but first, it looks like there are several items around \
-here",
-                         "2": "and it doesn't look like there are many items \
-around here"}
+here.",
+                         "2": "It doesn't look like there are many items \
+around here, might as well get going."}
 
 ITEMS = {
     "condition": {
