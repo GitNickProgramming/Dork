@@ -532,7 +532,6 @@ class Game:
                 self.hero.inventory[item].use(self.hero)
             else:
                 return "Invalid target", False
-            
         return "You don't have that item...", False
 
     def _start_over(self):
