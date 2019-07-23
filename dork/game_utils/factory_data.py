@@ -13,7 +13,7 @@ ROOMS = {"Cave": "It's very dark in here...",
          "Troll Territory": "There's no one here right now... might be\
 able to take some items",
          "Mansion": "All rooms in the mansion appear to be sealed shut,\
-should exit before trouble arrives",
+ should exit before trouble arrives",
          "Mordor": "Fire everywhere! It burns!",
          "Ghost Town": "Ah, this feels like home.",
          "MSU Denver Campus": "You've never seen it so \
@@ -39,7 +39,11 @@ looks like actual footage",
          "Blank": "Placeholder",
          "Blankk": "Placeholder",
          "Blankkk": "Placeholder",
-         "Blankkkk": "Placeholder"}
+         "Blankkkk": "Placeholder",
+         "BBlank": "Placeholder",
+         "BBlankk": "Placeholder",
+         "BBlankkk": "Placeholder",
+         "BBlankkkk": "Placeholder"}
 
 ADJ_ROOM_DESCRIPTIONS = {"1": "Also, this appears to be a dead end!",
                          "2": {0: "From here, all directions seem to be \
@@ -62,10 +66,10 @@ of direction are"},
                          "4": "Looking around, you notice all directions \
                              are possible, this could get confusing..."}
 
-ROOM_INV_DESCRIPTIONS = {"1": "Looks like there are several items around \
-here",
+ROOM_INV_DESCRIPTIONS = {"1": "but first, it looks like there are several items around \
+here that you might be able to take.",
                          "2": "It doesn't look like there are many items \
-around here"}
+around here, might as well get going."}
 
 ITEMS = {
     "condition": {
