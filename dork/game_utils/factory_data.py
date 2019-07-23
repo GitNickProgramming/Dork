@@ -54,7 +54,8 @@ blocked, except",
                                4: "Something tells you to go",
                                5: "You might be able to go",
                                6: "From here, it seems the direction \
-possibilites are"},
+possibilites are",
+                               7: "There appears to be something odd"},
                          "3": {0: "Three directions seem possible...",
                                1: "You hear a sound, but you can't \
 decide if it came from",
