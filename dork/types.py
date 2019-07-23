@@ -683,8 +683,9 @@ class RoomFactory:
         list_of_keys = factory_data.ROOMS
         shuffle(list_of_keys)
         list_of_adjtvs = factory_data.NAMES["adjectives"]
-        shuffle(list_of_keys)
+        shuffle(list_of_adjtvs)
         list_of_abstract = factory_data.NAMES["abstract"]
+        shuffle(list_of_abstract)
 
         for room in cls.rooms:
             if i == 0:
