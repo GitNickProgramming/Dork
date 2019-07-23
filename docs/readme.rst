@@ -1,11 +1,10 @@
 # Dork
 
-Dork is a text based exporation game full of mystery, intrigue, but most importantly memes!  The player finds him/herself in an exciting world where they can interact with items and npc's. Be careful not to... [CHECK WITH TEAM]
+Dork is a text based exploration game full of mystery, intrigue, but most importantly memes!  The player finds him/herself in an exciting randomly generated maze where they can interact with rooms, items, and npc's. Using cardinal directions and simple commands, the player navigates throughout the maze to find him/herself at the end of the road. Be careful not to stumble upon the [CHECK WITH TEAM]
 
 ## Getting Started
 
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
-
+This game requires the user to have an IDE 
 ### Prerequisites
 
 What things you need to install the software and how to install them
