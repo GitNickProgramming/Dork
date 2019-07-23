@@ -840,7 +840,7 @@ class MazeFactory:
         plt.axis("equal")
         plt.axis("off")
         plt.draw()
-        plt.show()
+        # plt.show()
 
     # pylint: disable=R0914
     @staticmethod
