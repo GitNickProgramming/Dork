@@ -122,6 +122,15 @@ def test_player_has_none(mocker):
     assert None in test_game.hero.inventory,\
         "Failed to store items in inventory"
 
+def test_inventory_prints(mocker):
+    """Tests that inventory prints properly"""
+    with mock.patch('builtins.input') as inpt:
+        inpt.side_effect = ["rand"]
+        test_game = types.Gamebuilder.build('bobby b')
+        test_item = types.Gamebuilder._make_item(dork.types.ItemFactory.build())
+        test_game.hero.inventory[test_item.name] = test_item
+        out = test_game._inventory()
+        assert test_item.name in out[0], "fucked up"
 
 def test_look(run):
     """testing _look for display items and description"""
