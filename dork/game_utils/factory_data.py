@@ -28,7 +28,7 @@ empty before",
          "a haunted house": "Better check my inventory to see what I \
 could use to fight",
          "a vandalized store": "Might as well take something for free",
-         "a dangerous jungle": "Big bugs everywhere!",
+         "a dangerous jungle": "Big bugs are everywhere!",
          "the Desert": "The hot sun makes you thirsty.",
          "the Asylum": "Reminds me of Outlast, better get out of here ASAP",
          "a farm": "Might be something useful laying around here",
@@ -67,7 +67,7 @@ of direction are"},
                              are possible, this could get confusing..."}
 
 ROOM_INV_DESCRIPTIONS = {"1": "but first, it looks like there are several items around \
-here.",
+here that you might be able to take.",
                          "2": "It doesn't look like there are many items \
 around here, might as well get going."}
 
