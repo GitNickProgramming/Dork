@@ -769,8 +769,9 @@ class RoomFactory:
             inv_list = worldmap[rooms]["inventory"]
             num = len(inv_list)
             if num > 2:
+                rand_ind = randrange(4)
                 first_desc = worldmap[rooms]["description"] + "\n"
-                desc = factory_data.ROOM_INV_DESCRIPTIONS["1"]
+                desc = factory_data.ROOM_INV_DESCRIPTIONS["1"][rand_ind]
                 worldmap[rooms]["description"] = first_desc+desc
             elif num == 1:
                 first_desc = worldmap[rooms]["description"] + "\n"

@@ -67,8 +67,14 @@ of direction are"},
                          "4": "Looking around, you notice all directions \
                              are possible, this could get confusing..."}
 
-ROOM_INV_DESCRIPTIONS = {"1": "but first, it looks like there are several items around \
-here that you might be able to take.",
+ROOM_INV_DESCRIPTIONS = {"1": {0: "but first, it looks like there are several\
+ items around here that you might be able to take.",
+                               1: "but first, take a look around and see \
+what you can find.",
+                               2: "before you leave this room, you might \
+wanna take a look around and see what you can find.",
+                               3: "It might be a good idea to loot this \
+area before you leave"},
                          "2": "It doesn't look like there are many items \
 around here, might as well get going."}
 
