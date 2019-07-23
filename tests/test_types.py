@@ -78,8 +78,8 @@ def test_move_method(game, cardinals):
     for direction in cardinals:
         if getattr(game.hero.location, direction) is not None:
             move_return = game._move(direction)
-            assert ("You have entered " + game.hero.location.name+"\n"
-                    + game.hero.location.description, False) == move_return
+            assert ("You have entered " +
+                    game.hero.location.description, False) == move_return
         if not getattr(game.hero.location, direction):
             move_return = game._move(direction)
             assert (
@@ -138,15 +138,13 @@ def test_take(run):
     assert "You took all item. You took them well." in out[0],\
            "item are not found on entrance room"
 
-# def test_take_single(run):
-    # """testing _take the method takes all and specific item"""
-    # test_game = dork.types.Gamebuilder().build("test")
-    # gamee = dork.types.Gamebuilder.build("test")
-    # lis = gamee.data["rooms"]["room 0"]["inventory"]
-    # out = run(dork.repl.repl, input_side_effect=["name", "examine",\
-    #  "take " + item, ".rq"])
-    # assert "You took the " + item+". You took it well" in out[0],\
-    #       "item are not found on entrance room"
+
+def test_take_single(run):
+    """testing _take the method takes all and specific item"""
+    out = run(dork.repl.repl, input_side_effect=["name", "examine",
+                                                 "take", ".rq"])
+    assert "You took all item. You took them well" in out[0], \
+        "item are not found on entrance room"
 
 
 def test_drop_item(run):

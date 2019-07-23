@@ -68,7 +68,6 @@ class Item(Stats):
         self.type = item["type"]
         if not isinstance(self.type, str) or self.type is None:
             self.usable = NotUsable
-
         elif len(self.type) > 1:
             self.set_usable(self.type)
         else:
@@ -202,8 +201,8 @@ class Player(Holder):
             maze[self.location.x][self.location.y] = MazeFactory.player_color
 
             outt = self.location.description
-            outtt = self.location.name
-            out = "You have entered "+outtt+"\n"+outt
+            # outtt = self.location.name
+            out = "You have entered "+outt
             MazeFactory.update(maze)
         return out
 
@@ -679,12 +678,14 @@ class RoomFactory:
     @classmethod
     def _make_rooms(cls):
 
-        i = 0
-
-        list_of_keys = list(factory_data.ROOMS)
+        list_of_keys = factory_data.ROOMS
         shuffle(list_of_keys)
+        list_of_adjtvs = factory_data.NAMES["adjectives"]
+        shuffle(list_of_adjtvs)
+        list_of_abstract = factory_data.NAMES["abstract"]
+        shuffle(list_of_abstract)
 
-        # print(list_of_keys)
+        i = 0
 
         for room in cls.rooms:
             if i == 0:
@@ -704,7 +705,8 @@ class RoomFactory:
                 new_room = {
                     "number": f"room {i}",
                     "name": rand,
-                    "description": factory_data.ROOMS[rand],
+                    "description": "The " + list_of_adjtvs[i] + rand +
+                                   list_of_abstract[i],
                     "coordinates": [x, y],
                     "adjacent": {},
                     "players": {},
@@ -767,8 +769,9 @@ class RoomFactory:
             inv_list = worldmap[rooms]["inventory"]
             num = len(inv_list)
             if num > 2:
+                rand_ind = randrange(4)
                 first_desc = worldmap[rooms]["description"] + "\n"
-                desc = factory_data.ROOM_INV_DESCRIPTIONS["1"]
+                desc = factory_data.ROOM_INV_DESCRIPTIONS["1"][rand_ind]
                 worldmap[rooms]["description"] = first_desc+desc
             elif num == 1:
                 first_desc = worldmap[rooms]["description"] + "\n"
@@ -786,24 +789,19 @@ class RoomFactory:
                 if worldmap[rooms]["adjacent"][pos] is not None:
                     adj_list.append(pos)
 
-            # if worldmap[rooms]["adjacent"]["north"] is not None:
-            #    adj_list.append("North")
-            # if worldmap[rooms]["adjacent"]["east"] is not None:
-            #    adj_list.append("East")
-            # if worldmap[rooms]["adjacent"]["south"] is not None:
-            #    adj_list.append("South")
-            # if worldmap[rooms]["adjacent"]["west"] is not None:
-            #    adj_list.append("West")
-
             adj_string = ""
             for adj in adj_list:
-                adj_string += " "+adj
+                if adj_list[0] == adj:
+                    adj_string += " "+adj
+                else:
+                    adj_string += ", "+adj
+            adj_string += "..."
 
             if((len(adj_list) == 1)
                and rooms != "room 0" and rooms != "room "+str(len(cls.rooms))):
                 desc = factory_data.ADJ_ROOM_DESCRIPTIONS["1"]
             elif len(adj_list) == 2:
-                rand_ind = randrange(7)
+                rand_ind = randrange(8)
                 desc = factory_data.ADJ_ROOM_DESCRIPTIONS["2"][rand_ind] \
                     + adj_string
             elif len(adj_list) == 3:

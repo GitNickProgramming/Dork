@@ -2,44 +2,48 @@
 
 from random import randint
 
-DEFAULT_ROOMS = {"Entrance": "This is the beginning. Go explore!!!",
-                 "End": "This is the end of the maze. Congrats on \
+DEFAULT_ROOMS = {"Entrance": "the beginning. Go explore!!!",
+                 "End": "the end of the maze. Congrats on \
 completing DORK!!!"}
 
-ROOMS = {"the Cave": "It's very dark in here...",
-         "a dead forest": "Trees are all dead! ",
-         "the Cemetery": "This has gotta be the worst place in the maze!",
-         "the Valley": "Finally some green around here.",
-         "Troll's territory": "There's no one here right now... might be\
-able to take some items",
-         "a mansion": "All rooms in the mansion appear to be sealed shut,\
-should exit before trouble arrives",
-         "Mordor": "Fire everywhere! It burns!",
-         "the Ghost Town": "Ah, this feels like home.",
-         "the abandoned MSU Denver Campus": "You've never seen it so \
-empty before",
-         "the Water Park": "Might go for a swim to relieve some stress",
-         "Area 51": "This place was raided back in 2019",
-         "a fancy restaurant": "What an odd area to put a nice restaurant",
-         "a basketball court": "Lets shoot some hoops",
-         "a rat tunnel": "Smells lovely in here!",
-         "a chicken coup": "A rooster stares you down",
-         "a tomb": "How did I get here?",
-         "a haunted house": "Better check my inventory to see what I \
-could use to fight",
-         "a vandalized store": "Might as well take something for free",
-         "a dangerous jungle": "Big bugs everywhere!",
-         "the Desert": "The hot sun makes you thirsty.",
-         "the Asylum": "Reminds me of Outlast, better get out of here ASAP",
-         "a farm": "Might be something useful laying around here",
-         "Elitches": "All the rides are broken and rotten",
-         "a movie theater": "There are videos of zombies running around, \
-looks like actual footage",
-         "the Mountain": "Beautiful views.",
-         "Blank": "Placeholder",
-         "Blankk": "Placeholder",
-         "Blankkk": "Placeholder",
-         "Blankkkk": "Placeholder"}
+ROOMS = [" Cave ",
+         " Forest ",
+         " Cemetery ",
+         " Valley ",
+         " Troll Territory ",
+         " Mansion ",
+         " Mordor ",
+         " Ghost Town ",
+         " MSU Denver Campus ",
+         " Water Park ",
+         " Area 51 ",
+         " Restaurant ",
+         " Basketball Court ",
+         " Rat Tunnel ",
+         " Chicken Coup ",
+         " Tomb ",
+         " Haunted House ",
+         " Vandalized Store ",
+         " Jungle ",
+         " Desert ",
+         " Asylum ",
+         " Farm ",
+         " Amusement Park ",
+         " Movie Theater ",
+         " Mountain",
+         " Blank ",
+         " Blankk ",
+         " Blankkk ",
+         " Blankkkk ",
+         " BBlank ",
+         " BBlankk ",
+         " BBlankkk ",
+         " BBlankkkk "]
+
+DIRS = {"north": "south",
+        "south": "north",
+        "east": "west",
+        "west": "east"}
 
 ADJ_ROOM_DESCRIPTIONS = {"1": "Also, this appears to be a dead end!",
                          "2": {0: "From here, all directions seem to be \
@@ -50,7 +54,8 @@ blocked, except",
                                4: "Something tells you to go",
                                5: "You might be able to go",
                                6: "From here, it seems the direction \
-possibilites are"},
+possibilites are",
+                               7: "There appears to be something odd"},
                          "3": {0: "Three directions seem possible...",
                                1: "You hear a sound, but you can't \
 decide if it came from",
@@ -62,10 +67,16 @@ of direction are"},
                          "4": "Looking around, you notice all directions \
                              are possible, this could get confusing..."}
 
-ROOM_INV_DESCRIPTIONS = {"1": "Looks like there are several items around \
-here",
+ROOM_INV_DESCRIPTIONS = {"1": {0: "but first, it looks like there are several\
+ items around here that you might be able to take.",
+                               1: "but first, take a look around and see \
+what you can find.",
+                               2: "before you leave this room, you might \
+wanna take a look around and see what you can find.",
+                               3: "It might be a good idea to loot this \
+area before you leave"},
                          "2": "It doesn't look like there are many items \
-around here"}
+around here, might as well get going."}
 
 ITEMS = {
     "condition": {
