@@ -36,18 +36,6 @@ class Holder(Grandparent):
             return out + Game._verbose_print(caller.data["inventory"])
         return out + Game._brief_print(caller.data["inventory"])
 
-
-class Stats:
-    """stats for items"""
-
-    def __init__(self):
-        self.data = dict
-        self.attack = int
-        self.strength = int
-        self.weight = int
-        self.luck = int
-        self.equipable = bool
-
         # if self.stats is None:
         #     self.usable = NotUsable
 
@@ -138,6 +126,18 @@ class Statable(Usable):
     def use(target, name):
         """Stat change use method"""
         print("The " + name + " takes effect on " + target)
+
+
+class Stats:
+    """stats for items"""
+
+    def __init__(self):
+        self.data = dict
+        self.attack = int
+        self.strength = int
+        self.weight = int
+        self.luck = int
+        self.equipable = bool
 
 
 class Adjacent(Grandparent):
@@ -317,8 +317,8 @@ class Gamebuilder:
     def _make_item(cls, item):
         new_item = cls._instantiate(Item, **item)
         for field, data in item.items():
-            if isinstance(data, dict):
-                setattr(new_item, field, cls._make_stats(data))
+            if field == "stats":
+                cls._make_stats(new_item, data)
             else:
                 setattr(new_item, field, data)
         return new_item
@@ -334,8 +334,9 @@ class Gamebuilder:
         setattr(room, "y", coord[1])
 
     @classmethod
-    def _make_stats(cls, stats):
-        return cls._instantiate(Stats, **stats)
+    def _make_stats(cls, item, stats):
+        for key, val in stats.items():
+            setattr(item, key, val)
 
     @staticmethod
     def _instantiate(clz, **data):
