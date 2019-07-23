@@ -35,6 +35,70 @@ class Holder(Grandparent):
         if verbose:
             return out + Game._verbose_print(caller.data["inventory"])
         return out + Game._brief_print(caller.data["inventory"])
+class StateMachine():
+    """Basic controller for npc states"""
+    state = None
+    
+    def __init__(self, default_state):
+        self.state = default_state
+    
+    def get_state(self):
+        """getter for current state"""
+        return self.state
+
+    def next_state(self, next_state):
+        """Changes current saved pointer to next state"""
+        self.state = next_state
+
+class State(ABC):
+    """Abstract state class for state machines"""
+
+    def __init__(self, new_player):
+        self.player = new_player
+
+    @abstractmethod
+    def attack(self):
+        """Attack method on target"""
+    
+    @abstractmethod
+    def talk(self):
+        """general talking method on npc"""
+
+
+
+class Alive(State):
+    """generic living state of npc's"""
+
+    def attack(self):
+        """attack on alive npc, kills npc"""
+        self.player.set_state(Dead)
+        
+
+    def talk(self):
+        """talking to alive npc"""
+        print("Hello mah boy, you should try using things...it is cool?")
+       
+class Dead(State):
+    """dead state of all npc's"""
+    def attack(self):
+        """attempted attack on dead npc"""
+        pass
+
+    def talk(self):
+        """attempted talk to dead npc"""
+        pass
+
+
+class Hostile(State):
+    """combat-ready state of enemy npc's"""
+    def attack(self):
+        """attack on hostile npc"""
+        next_state = Dead(self.player)
+        self.player.set_state(next_state)
+
+    def talk(self):
+        """talk to hostile npc"""
+        pass
 
 
 class Stats:
@@ -174,7 +238,7 @@ class Player(Holder):
     """A player or npc in the game"""
 
     instances = []
-
+    state_table = {"attack":{Alive: Dead, Dead: Dead, Hostile: Dead}, "talk":{Alive : Alive, Dead: Dead, Hostile: Alive}}
     def __init__(self):
         super().__init__()
         self.data = dict
@@ -182,6 +246,7 @@ class Player(Holder):
         self.description = str
         self.location = Room
         self.equipped = list
+        self.machine = StateMachine(Alive)
 
     def _new_instance(self):
         self.instances.append(self)
@@ -205,6 +270,21 @@ class Player(Holder):
             MazeFactory.update(maze)
         return out
 
+    def set_state(self, new_state):
+        """setter for state machine state change"""
+        self.machine.next_state(new_state)
+
+    def get_state(self):
+        """getter for state machine state changes"""
+        return self.machine.get_state()
+
+    def attack(self):
+        """outward-facing state machine call to attack a player"""
+        self.machine.next_state(self.state_table["attack"][self.machine.get_state()])
+    
+    def talk(self):
+        """outward-facing state machine call to talk to player"""
+        self.machine.next_state(self.state_table["attack"][self.machine.get_state()])
 
 class Room(Adjacent, Coord, Holder):
     """A room on the worldmap"""

@@ -241,3 +241,34 @@ def test_use_has_target_input(run):
     out = run(test_game._use_item, "sword", input_side_effect=["player"])
     assert "You swing the sword at player" in out[0],\
            "failed to contain a target argument"
+
+def test_player_has_state_machine(player):
+    """Tests to see if a blank player comes with a state"""
+    assert hasattr(player, "machine"), "Players do not have state machines"
+
+def test_player_default_alive(player):
+    """players should default to being alive"""
+    assert player.machine.get_state() == dork.types.Alive, "Players didn't default to alive"
+
+def test_set_state_all_states():
+    """tests that setter works on all states"""
+    test_player = dork.types.Player()
+    test_player.machine.next_state(dork.types.Dead)
+    assert test_player.machine.get_state() is dork.types.Dead, "failed to set dead on player"
+    test_player.machine.next_state(dork.types.Hostile)
+    assert test_player.machine.get_state() is dork.types.Hostile, "failed to set hostile on player"
+    test_player.machine.next_state(dork.types.Alive)
+    assert test_player.machine.get_state() is dork.types.Alive, "failed to set alive on player"
+
+def test_player_attacked_is_dead():
+    """Testing a player attacked will die"""
+    test_player = dork.types.Player()
+    test_player.attack()
+    assert test_player.machine.get_state() == dork.types.Dead, "player failed to die"
+
+def test_attack_dead_npc():
+    """a dead pc can't die again or live again duh"""
+    test_player = dork.types.Player()
+    test_player.attack()
+    test_player.attack()
+    assert test_player.machine.get_state() == dork.types.Dead, "Dead player is not dead"
