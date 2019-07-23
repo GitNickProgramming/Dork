@@ -9,7 +9,7 @@ completing DORK!!!"}
 ROOMS = [" Cave ",
          " Forest ",
          " Cemetery ",
-         "Valley",
+         " Valley ",
          " Troll Territory ",
          " Mansion ",
          " Mordor ",
