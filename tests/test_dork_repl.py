@@ -57,7 +57,7 @@ def test_all_moves_and_others(game, repl_data):
 
     assert "inventory:" in repl._evaluate("examine", game, repl_data)[0]
 
-    assert "beginning" in repl._evaluate("look", game, repl_data)[0]
+    assert "the" in repl._evaluate("look", game, repl_data)[0]
 
     assert repl._evaluate(".rq", game, repl_data) == (
         "Thanks for playing DORK, tester!", True)
