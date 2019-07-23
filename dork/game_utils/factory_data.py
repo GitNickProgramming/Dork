@@ -2,8 +2,8 @@
 
 from random import randint
 
-DEFAULT_ROOMS = {"Entrance": "This is the beginning. Go explore!!!",
-                 "End": "This is the end of the maze. Congrats on \
+DEFAULT_ROOMS = {"Entrance": "the beginning. Go explore!!!",
+                 "End": "the end of the maze. Congrats on \
 completing DORK!!!"}
 
 ROOMS = [" Cave ",
