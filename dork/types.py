@@ -1,10 +1,10 @@
 """Base types for the Dork game"""
 # -*- coding: utf-8 -*-
-
-import os
+# from pprint import pprint
 from abc import ABC, abstractmethod
+import os
 from copy import deepcopy
-from random import choices, choice, randint, shuffle
+from random import choices, choice, randint, shuffle, randrange
 from operator import add
 import yaml
 import matplotlib.pyplot as plt
@@ -36,32 +36,63 @@ class Holder(Grandparent):
             return out + Game._verbose_print(caller.data["inventory"])
         return out + Game._brief_print(caller.data["inventory"])
 
-        # if self.stats is None:
-        #     self.usable = NotUsable
 
-        # elif len(self.stats) > 1:
-        #     self.set_usable(self.stats[1])
-        # else:
-        #     self.usable = NotUsable
+class Stats:
+    """stats for items"""
 
-    # def set_usable(self, new_use):
-    #     """This method changes the use behavior,
-    #     provide usable class as argument"""
-    #     uses = {"attack": Attackable,
-    #             "key": Openable,
-    #             "gold": Payable,
-    #             "emerald": Puzzleable,
-    #             "diamond": Puzzleable,
-    #             "speed": Statable,
-    #             "strength": Statable}
-    #     if new_use is None or new_use not in uses:
-    #         self.usable = NotUsable
-    #     else:
-    #         self.usable = uses[new_use]
+    def __init__(self):
+        self.data = dict
+        self.attack = int
+        self.strength = int
+        self.weight = int
+        self.luck = int
+        self.equipable = bool
 
-    # def use(self, target, name):
-    #     """Strategy pattern call"""
-    #     self.usable.use(target, name)
+
+class Item(Stats):
+    """An obtainable/usable item"""
+
+    def __init__(self):
+        super().__init__()
+        self.data = dict
+        self.name = str
+        self.description = str
+        self.type = str
+        self.usable = NotUsable
+
+    def make(self, item):
+        """Make an item
+        """
+        self.name = item["name"]
+        self.description = item["description"]
+        self.type = item["type"]
+        if not isinstance(self.type, str) or self.type is None:
+            self.usable = NotUsable
+
+        elif len(self.type) > 1:
+            self.set_usable(self.type)
+        else:
+            self.usable = NotUsable
+
+    def set_usable(self, new_use):
+        """This method changes the use behavior,
+        provide usable class as argument"""
+        uses = {"filler": NotUsable,
+                "weapon": Attackable,
+                "key": Openable,
+                "gold": Payable,
+                "magic items": Statable,
+                "jewelry": Statable,
+                "armor": Statable,
+                "magic consumables": Statable}
+        if new_use is None or new_use not in uses:
+            self.usable = NotUsable
+        else:
+            self.usable = uses[new_use]
+
+    def use(self, target, name):
+        """Strategy pattern call"""
+        self.usable.use(target, name)
 
 
 class Usable(ABC):
@@ -110,15 +141,6 @@ class Payable(Usable):
         print("You use the " + name + " to pay " + target)
 
 
-class Puzzleable(Usable):
-    """Any object that can be used in a puzzle"""
-
-    @staticmethod
-    def use(target, name):
-        """Puzzle use method"""
-        print("You try to fit the " + name + " into the " + target)
-
-
 class Statable(Usable):
     """Any object that can change stats"""
 
@@ -126,18 +148,6 @@ class Statable(Usable):
     def use(target, name):
         """Stat change use method"""
         print("The " + name + " takes effect on " + target)
-
-
-class Stats:
-    """stats for items"""
-
-    def __init__(self):
-        self.data = dict
-        self.attack = int
-        self.strength = int
-        self.weight = int
-        self.luck = int
-        self.equipable = bool
 
 
 class Adjacent(Grandparent):
@@ -158,17 +168,6 @@ class Coord(Grandparent):
         super().__init__()
         self.x = int
         self.y = int
-
-
-class Item(Stats):
-    """An obtainable/usable item"""
-
-    def __init__(self):
-        super().__init__()
-        self.data = dict
-        self.name = str
-        self.description = str
-        self.type = str
 
 
 class Player(Holder):
@@ -202,18 +201,22 @@ class Player(Holder):
             self.location = adjacent_room
             maze[self.location.x][self.location.y] = MazeFactory.player_color
 
-            out = self.location.description
+            outt = self.location.description
+            outtt = self.location.name
+            out = "You have entered "+outtt+"\n"+outt
             MazeFactory.update(maze)
         return out
 
 
 class Room(Adjacent, Coord, Holder):
     """A room on the worldmap"""
+    # pylint: disable=too-many-instance-attributes
 
     instances = []
 
     def __init__(self):
         super().__init__()
+        self.name = "yeah"
         self.data = dict
         self.description = str
         self.players = dict
@@ -237,7 +240,7 @@ class Gamebuilder:
             hero_data = {
                 "name": player_name,
                 "description": "the hero of dork!",
-                "location": "room 0",
+                "location": "Entrance",
                 "inventory": {},
                 "equipped": []
             }
@@ -298,6 +301,8 @@ class Gamebuilder:
                     setattr(new_room, field, data)
             rooms[name] = new_room
             new_room._new_instance()
+
+        print(rooms["room 1"].data)
         return rooms
 
     @classmethod
@@ -387,6 +392,7 @@ class Game:
     """An instance of Dork"""
 
     verbose = False
+    dataaa = {}
 
     def __init__(self):
         self.data = {}
@@ -404,6 +410,10 @@ class Game:
             False: "verbose inventory: OFF"
         }[self.verbose]
         return out, False
+
+    def _set_location(self):
+        """Set location based on
+        """
 
     def _gtfo(self):
         return f"Thanks for playing DORK, {self.hero.name}!", True
@@ -425,7 +435,7 @@ class Game:
 
     def _look(self, x="n"):
         if x == "around":
-            items = self.hero.location.items
+            items = self.hero.location.inventory
             print("\nItems:")
             for item in items:
                 print(item)
@@ -437,31 +447,37 @@ class Game:
         Gamebuilder.save_game(self.hero.name, self.data)
         return "game saved successfully!", False
 
-    # def _take(self, item="all"):
-    #     # Item defaults to "all", and adds all items in room to inventory
-    #     room_items = self.hero.location.items
-    #     room_items2 = room_items.copy()
-    #     player = self.hero.items
-    #     if item == "all":
-    #         for item_n in room_items2:
-    #             player[item_n] = room_items.pop(item_n)
-    #         return f"You took {item} item. You took them well.", False
-    #     player[item] = room_items.pop(item)
-    #     return f"You took the {item}. You took it well.", False
+    def _take(self, item="all"):
+        # Item defaults to "all", and adds all items in room to inventory
+        room_items = self.hero.location.inventory
+        room_items2 = room_items.copy()
+        player = self.hero.inventory
+        if item == "all":
+            for item_n in room_items2:
+                player[item_n] = room_items.pop(item_n)
+            return f"You took {item} item. You took them well.", False
+        player[item] = room_items.pop(item)
+        return f"You took the {item}. You took it well.", False
 
-    # def _drop_item(self, item):
-    #     """drops specific item from player to room"""
-    #     player = self.hero.items
-    #     room_items = self.hero.location.items
-    #     room_items[item] = player.pop(item)
-    #     return "Oops, you dropped something!", False
+    def _drop_item(self, item="all"):
+        """drops specific item from player to room"""
+        player = self.hero.inventory
+        player2 = player.copy()
+        room_items = self.hero.location.inventory
+        if item == "all":
+            for item_n in player2:
+                room_items[item_n] = player.pop(item_n)
+            return "Oops, you can't hold all these items", False
+        room_items = self.hero.location.inventory
+        room_items[item] = player.pop(item)
+        return "Oops, you dropped something!", False
 
-    # def _use_item(self, item="Nothing"):
-    #     if item in self.hero.items.keys():
-    #         target = input("What do you want to use it on? ")
-    #         self.hero.items[item].use(target, item)
-    #         return "You used the thing! It's super effective!", False
-    #     return "You don't have that item...", False
+    def _use_item(self, item="Nothing"):
+        if item in self.hero.inventory.keys():
+            target = input("What do you want to use it on? ")
+            self.hero.inventory[item].use(target, item)
+            return "You used the thing! It's super effective!", False
+        return "You don't have that item...", False
 
     def _start_over(self):
         if self._confirm():
@@ -662,17 +678,49 @@ class RoomFactory:
 
     @classmethod
     def _make_rooms(cls):
+
         i = 0
+
+        list_of_keys = list(factory_data.ROOMS)
+        shuffle(list_of_keys)
+
+        # print(list_of_keys)
+
         for room in cls.rooms:
-            x, y = room
-            new_room = {
-                "name": f"room {i}",
-                "description": f"room {i} description",
-                "coordinates": [x, y],
-                "adjacent": {},
-                "players": {},
-                "inventory": {},
-            }
+            if i == 0:
+                x, y = room
+                new_room = {
+                    "number": f"room 0",
+                    "name": f"Entrance",
+                    "description": factory_data.DEFAULT_ROOMS["Entrance"],
+                    "coordinates": [x, y],
+                    "adjacent": {},
+                    "players": {},
+                    "inventory": {},
+                }
+            elif i < len(cls.rooms) - 1:
+                rand = list_of_keys[i]
+                x, y = room
+                new_room = {
+                    "number": f"room {i}",
+                    "name": rand,
+                    "description": factory_data.ROOMS[rand],
+                    "coordinates": [x, y],
+                    "adjacent": {},
+                    "players": {},
+                    "inventory": {},
+                }
+            else:
+                x, y = room
+                new_room = {
+                    "number": f"room "+str(len(cls.rooms)),
+                    "name": f"End",
+                    "description": factory_data.DEFAULT_ROOMS["End"],
+                    "coordinates": [x, y],
+                    "adjacent": {},
+                    "players": {},
+                    "inventory": {},
+                }
 
             for _ in range(randint(1, 7)):
                 new_item = ItemFactory.build()
@@ -701,14 +749,71 @@ class RoomFactory:
                     elif cls.maze[position] in \
                             [MazeFactory.room_color, MazeFactory.player_color]:
                         room["adjacent"][direction] = \
-                            cls.worldmap[position]["name"]
+                            cls.worldmap[position]["number"]
                         searching = False
 
         for coord, room in deepcopy(cls.worldmap).items():
             new_room = cls.worldmap.pop(coord)
-            cls.worldmap[new_room.pop("name")] = new_room
+            cls.worldmap[new_room.pop("number")] = new_room
+
+        cls._get_adj_description(cls.worldmap)
+        cls._get_room_inv_description(cls.worldmap)
 
         return cls.worldmap
+
+    @classmethod
+    def _get_room_inv_description(cls, worldmap):
+        for rooms in worldmap:
+            inv_list = worldmap[rooms]["inventory"]
+            num = len(inv_list)
+            if num > 2:
+                first_desc = worldmap[rooms]["description"] + "\n"
+                desc = factory_data.ROOM_INV_DESCRIPTIONS["1"]
+                worldmap[rooms]["description"] = first_desc+desc
+            elif num == 1:
+                first_desc = worldmap[rooms]["description"] + "\n"
+                desc = factory_data.ROOM_INV_DESCRIPTIONS["2"]
+                worldmap[rooms]["description"] = first_desc+desc
+        return 0
+
+    @classmethod
+    def _get_adj_description(cls, worldmap):
+        for rooms in worldmap:
+            desc = ""
+            adj_list = list()
+            adj_possibilities = {"north", "east", "south", "west"}
+            for pos in adj_possibilities:
+                if worldmap[rooms]["adjacent"][pos] is not None:
+                    adj_list.append(pos)
+
+            # if worldmap[rooms]["adjacent"]["north"] is not None:
+            #    adj_list.append("North")
+            # if worldmap[rooms]["adjacent"]["east"] is not None:
+            #    adj_list.append("East")
+            # if worldmap[rooms]["adjacent"]["south"] is not None:
+            #    adj_list.append("South")
+            # if worldmap[rooms]["adjacent"]["west"] is not None:
+            #    adj_list.append("West")
+
+            adj_string = ""
+            for adj in adj_list:
+                adj_string += " "+adj
+
+            if((len(adj_list) == 1)
+               and rooms != "room 0" and rooms != "room "+str(len(cls.rooms))):
+                desc = factory_data.ADJ_ROOM_DESCRIPTIONS["1"]
+            elif len(adj_list) == 2:
+                rand_ind = randrange(7)
+                desc = factory_data.ADJ_ROOM_DESCRIPTIONS["2"][rand_ind] \
+                    + adj_string
+            elif len(adj_list) == 3:
+                rand_ind = randrange(5)
+                desc = factory_data.ADJ_ROOM_DESCRIPTIONS["3"][rand_ind] \
+                    + adj_string
+            first_desc = worldmap[rooms]["description"] + "\n"
+            worldmap[rooms]["description"] = first_desc+desc
+
+        return 0
 
 
 class MazeFactory:
@@ -737,6 +842,7 @@ class MazeFactory:
         plt.axis("equal")
         plt.axis("off")
         plt.draw()
+        # plt.show()
 
     # pylint: disable=R0914
     @staticmethod
