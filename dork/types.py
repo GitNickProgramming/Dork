@@ -33,8 +33,54 @@ class Holder(Grandparent):
             out = f"There's nothing here."
 
         if verbose:
-            return out + Game._verbose_print(caller.data["inventory"])
-        return out + Game._brief_print(caller.data["inventory"])
+            return out + Game._verbose_print(caller.inventory)
+        return out + Game._brief_print(caller.inventory)
+
+class Alive():
+    """generic living state of npc's"""
+
+    @staticmethod
+    def name():
+        """Returns string representation for dicts"""
+        return "Alive"
+
+       
+class Dead():
+    """Dead state for npc death"""
+    @staticmethod
+    def name():
+        """Returns string representation for dicts"""
+        return "Dead"
+
+class Hostile():
+    """combat-ready state of enemy npcs"""
+
+    @staticmethod
+    def name():
+        """Returns string representation for dicts"""
+        return "Hostile"
+
+
+class StateMachine():
+    """Basic controller for npc states"""
+    state = None
+    state_map = {"Alive": {"Talk": Alive, "Attack": Dead}\
+                , "Hostile": {"Talk": Alive, "Attack": Dead},
+                 "Dead": {"Talk": Dead, "Attack": Dead}}
+    def __init__(self):
+        self.state = Alive
+
+    def set_state(self, new_state):
+        """setter for testing states"""
+        self.state = new_state
+
+    def get_state(self):
+        """getter for current state"""
+        return self.state
+
+    def next_state(self, action):
+        """Changes current saved pointer to next state"""
+        self.state = self.state_map[self.state.name()][action]
 
 
 class Stats:
@@ -90,9 +136,9 @@ class Item(Stats):
         else:
             self.usable = uses[new_use]
 
-    def use(self, target, name):
+    def use(self, target):
         """Strategy pattern call"""
-        self.usable.use(target, name)
+        self.usable.use(target, self.name)
 
 
 class Usable(ABC):
@@ -102,7 +148,8 @@ class Usable(ABC):
     @abstractmethod
     def use(target, name):
         """Strategy pattern inspired by refactoring.guru
-        use method defaults to doing nothing"""
+        use method defaults to doing nothing
+        target must be object"""
 
 
 class Attackable(Usable):
@@ -111,7 +158,8 @@ class Attackable(Usable):
     @staticmethod
     def use(target, name):
         """Swing use method"""
-        print("You swing the " + name + " at " + target)
+        print("You swing the " + name + " at " + target.name)
+        target.attack()
 
 
 class NotUsable(Usable):
@@ -174,7 +222,6 @@ class Player(Holder):
     """A player or npc in the game"""
 
     instances = []
-
     def __init__(self):
         super().__init__()
         self.data = dict
@@ -182,6 +229,7 @@ class Player(Holder):
         self.description = str
         self.location = Room
         self.equipped = list
+        self.machine = StateMachine()
 
     def _new_instance(self):
         self.instances.append(self)
@@ -206,6 +254,14 @@ class Player(Holder):
             out = "You have entered "+outtt+"\n"+outt
             MazeFactory.update(maze)
         return out
+
+    def attack(self):
+        """forward facing attack method, called by weapons"""
+        self.machine.next_state("Attack")
+
+    def talk(self):
+        """forward facing talk method, called by players"""
+        self.machine.next_state("Talk")
 
 
 class Room(Adjacent, Coord, Holder):
@@ -475,8 +531,14 @@ class Game:
     def _use_item(self, item="Nothing"):
         if item in self.hero.inventory.keys():
             target = input("What do you want to use it on? ")
-            self.hero.inventory[item].use(target, item)
-            return "You used the thing! It's super effective!", False
+            if target in self.hero.location.players:
+                target_obj = self.hero.location.players[target]
+                self.hero.inventory[item].use(target_obj)
+                return "You used the thing! It's super effective!", False
+            if target is self.hero.name:
+                self.hero.inventory[item].use(self.hero)
+            else:
+                return "Invalid target", False
         return "You don't have that item...", False
 
     def _start_over(self):
@@ -507,12 +569,8 @@ class Game:
         out = ""
         col = ""
         spc = "    "
-        for key, val in data.items():
-            if isinstance(val, dict) and calls < 3:
-                if calls < 2:
-                    col = ":"
-                out += "\n" + spc*calls + \
-                    f"{key}{col}{Game._brief_print(val, calls+1)}"
+        for key in data.keys():
+            out += spc+ key
         return out
 
     @staticmethod
