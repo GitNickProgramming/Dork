@@ -6,36 +6,36 @@ DEFAULT_ROOMS = {"Entrance": "This is the beginning. Go explore!!!",
                  "End": "This is the end of the maze. Congrats on \
 completing DORK!!!"}
 
-ROOMS = {"the Cave": "It's very dark in here...",
-         "a dead forest": "Trees are all dead! ",
-         "the Cemetery": "This has gotta be the worst place in the maze!",
-         "the Valley": "Finally some green around here.",
-         "Troll's territory": "There's no one here right now... might be\
+ROOMS = {"Cave": "It's very dark in here...",
+         "Forest": "Trees are all dead! ",
+         "Cemetery": "This has gotta be the worst place in the maze!",
+         "Valley": "Finally some green around here.",
+         "Troll Territory": "There's no one here right now... might be\
 able to take some items",
-         "a mansion": "All rooms in the mansion appear to be sealed shut,\
+         "Mansion": "All rooms in the mansion appear to be sealed shut,\
 should exit before trouble arrives",
          "Mordor": "Fire everywhere! It burns!",
-         "the Ghost Town": "Ah, this feels like home.",
-         "the abandoned MSU Denver Campus": "You've never seen it so \
+         "Ghost Town": "Ah, this feels like home.",
+         "MSU Denver Campus": "You've never seen it so \
 empty before",
-         "the Water Park": "Might go for a swim to relieve some stress",
+         "Water Park": "Might go for a swim to relieve some stress",
          "Area 51": "This place was raided back in 2019",
-         "a fancy restaurant": "What an odd area to put a nice restaurant",
-         "a basketball court": "Lets shoot some hoops",
-         "a rat tunnel": "Smells lovely in here!",
-         "a chicken coup": "A rooster stares you down",
-         "a tomb": "How did I get here?",
-         "a haunted house": "Better check my inventory to see what I \
+         "Restaurant": "What an odd area to put a nice restaurant",
+         "Basketball Court": "Lets shoot some hoops",
+         "Rat Tunnel": "Smells lovely in here!",
+         "Chicken Coup": "A rooster stares you down",
+         "Tomb": "How did I get here?",
+         "Haunted House": "Better check my inventory to see what I \
 could use to fight",
-         "a vandalized store": "Might as well take something for free",
-         "a dangerous jungle": "Big bugs everywhere!",
-         "the Desert": "The hot sun makes you thirsty.",
-         "the Asylum": "Reminds me of Outlast, better get out of here ASAP",
-         "a farm": "Might be something useful laying around here",
-         "Elitches": "All the rides are broken and rotten",
-         "a movie theater": "There are videos of zombies running around, \
+         "Vandalized Store": "Might as well take something for free",
+         "Jungle": "Big bugs everywhere!",
+         "Desert": "The hot sun makes you thirsty.",
+         "Asylum": "Reminds me of Outlast, better get out of here ASAP",
+         "Farm": "Might be something useful laying around here",
+         "Amusement Park": "All the rides are broken and rotten",
+         "Movie Theater": "There are videos of zombies running around, \
 looks like actual footage",
-         "the Mountain": "Beautiful views.",
+         "Mountain": "Beautiful views.",
          "Blank": "Placeholder",
          "Blankk": "Placeholder",
          "Blankkk": "Placeholder",
