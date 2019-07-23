@@ -525,10 +525,11 @@ class Game:
         if item in self.hero.inventory.keys():
             target = input("What do you want to use it on? ")
             if target in self.hero.location.players:
-                    target_obj = self.hero.location.players[target]
-                    self.hero.inventory[item].use(target_obj)
-                    return "You used the thing! It's super effective!", False
-            #FIXME: search for target object in room with name
+                target_obj = self.hero.location.players[target]
+                self.hero.inventory[item].use(target_obj)
+                return "You used the thing! It's super effective!", False
+            if target is self.hero.name:
+                self.hero.inventory[item].use(self.hero)
             else:
                 return "Invalid target", False
             

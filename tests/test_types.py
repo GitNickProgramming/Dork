@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 """Basic tests for state and entity relationships in dork
 """
+from unittest import mock as mock
 from tests.utils import is_a
 import dork.types as types
 import dork.game_utils.factory_data as factory_data
@@ -238,10 +239,15 @@ def test_use_has_target_input(run):
     test_item.make({"name": "sword",
                     "description": "its made of foam",
                     "type": "weapon"})
-    test_game = dork.types.Gamebuilder().build("test")
+    test_game = dork.types.Gamebuilder().build("tester")
     test_game.hero.inventory[test_item.name] = test_item
-    out = run(test_game._use_item, "sword", input_side_effect=["tester"])
-    assert "You swing the sword at player" in out[0],\
+    with mock.patch('builtins.input') as inpt:
+        inpt.side_effect = ["tester"]
+        assert test_game._use_item("sword") == ("You used the thing! It's super effective!", False),\
+           "failed to contain a target argument"
+    with mock.patch('builtins.input') as inpt:
+        inpt.side_effect = ["your mom"]
+        assert test_game._use_item("sword") == ("Invalid target", False),\
            "failed to contain a target argument"
 
 
