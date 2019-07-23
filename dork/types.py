@@ -68,7 +68,6 @@ class Item(Stats):
         self.type = item["type"]
         if not isinstance(self.type, str) or self.type is None:
             self.usable = NotUsable
-
         elif len(self.type) > 1:
             self.set_usable(self.type)
         else:
