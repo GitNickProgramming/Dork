@@ -678,14 +678,14 @@ class RoomFactory:
     @classmethod
     def _make_rooms(cls):
 
-        i = 0
-
         list_of_keys = factory_data.ROOMS
         shuffle(list_of_keys)
         list_of_adjtvs = factory_data.NAMES["adjectives"]
         shuffle(list_of_adjtvs)
         list_of_abstract = factory_data.NAMES["abstract"]
         shuffle(list_of_abstract)
+
+        i = 0
 
         for room in cls.rooms:
             if i == 0:
@@ -789,15 +789,6 @@ class RoomFactory:
                 if worldmap[rooms]["adjacent"][pos] is not None:
                     adj_list.append(pos)
 
-            # if worldmap[rooms]["adjacent"]["north"] is not None:
-            #    adj_list.append("North")
-            # if worldmap[rooms]["adjacent"]["east"] is not None:
-            #    adj_list.append("East")
-            # if worldmap[rooms]["adjacent"]["south"] is not None:
-            #    adj_list.append("South")
-            # if worldmap[rooms]["adjacent"]["west"] is not None:
-            #    adj_list.append("West")
-
             adj_string = ""
             for adj in adj_list:
                 if adj_list[0] == adj:
@@ -849,7 +840,7 @@ class MazeFactory:
         plt.axis("equal")
         plt.axis("off")
         plt.draw()
-        # plt.show()
+        plt.show()
 
     # pylint: disable=R0914
     @staticmethod
