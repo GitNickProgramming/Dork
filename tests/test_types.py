@@ -149,6 +149,8 @@ def test_drop_item(run):
 def test_sword_can_swing(run):
     """Tests that a sword object calls swingable"""
     test_sword = types.Item()
+    test_player = dork.types.Player()
+    test_player.name = "player"
     test_sword.make({"name": "test sword",
                      "description": '',
                      "amount": 0,
@@ -158,7 +160,7 @@ def test_sword_can_swing(run):
                      "strength": 0,
                      "weight": 10,
                      "type": 'weapon'})
-    out = run(test_sword.use, "player", test_sword.name)
+    out = run(test_sword.use, test_player)
     assert out[0] == "You swing the test sword at player\n",\
                      "use method failed for sword items"
 
@@ -169,7 +171,7 @@ def test_key_can_open(run):
     test_key.make({"name": "test key",
                    "description": "jingly keys",
                    "type": "key"})
-    out = run(test_key.use, "rock", test_key.name)
+    out = run(test_key.use, "rock")
     assert out[0] == "You insert the test key into rock\n",\
                      "use method failed for key items"
 
@@ -180,7 +182,7 @@ def test_potion_can_speed_up(run):
     test_potion.make({"name": "test potion",
                       "description": "Looks like booze to me",
                       "type": "magic items"})
-    out = run(test_potion.use, "player", test_potion.name)
+    out = run(test_potion.use, "player")
     assert out[0] == "The test potion takes effect on player\n",\
                      "use method failed for stat changing items"
 
@@ -191,7 +193,7 @@ def test_gold_can_pay(run):
     test_key.make({"name": "bag 'o MOLTEN GOOOLD",
                    "description": "der bee gould een dem der bag",
                    "type": "gold"})
-    out = run(test_key.use, "player", test_key.name)
+    out = run(test_key.use, "player")
     assert out[0] == "You use the bag 'o MOLTEN GOOOLD to pay player\n",\
                      "use method failed for gold items"
 
@@ -202,7 +204,7 @@ def test_none_item(run):
     test_key.make({"name": "empty thing",
                    "description": "nothin",
                    "type": None})
-    out = run(test_key.use, "player", "player")
+    out = run(test_key.use, "player")
     assert out[0] == "You find no use of this item\n",\
                      "use method failed for gold items"
 
@@ -213,7 +215,7 @@ def test_only_stat(run):
     test_key.make({"name": "empty thing",
                    "description": "nothin",
                    "type": 1})
-    out = run(test_key.use, "player", "player")
+    out = run(test_key.use, "player")
     assert out[0] == "You find no use of this item\n",\
                      "use method failed for gold items"
 
@@ -238,37 +240,47 @@ def test_use_has_target_input(run):
                     "type": "weapon"})
     test_game = dork.types.Gamebuilder().build("test")
     test_game.hero.inventory[test_item.name] = test_item
-    out = run(test_game._use_item, "sword", input_side_effect=["player"])
+    out = run(test_game._use_item, "sword", input_side_effect=["tester"])
     assert "You swing the sword at player" in out[0],\
            "failed to contain a target argument"
 
-def test_player_has_state_machine(player):
-    """Tests to see if a blank player comes with a state"""
-    assert hasattr(player, "machine"), "Players do not have state machines"
 
-def test_player_default_alive(player):
-    """players should default to being alive"""
-    assert player.machine.get_state() == dork.types.Alive, "Players didn't default to alive"
+def test_has_state_machine(player):
+    """Testing the state machine exists composed in player"""
+    assert hasattr(player, "machine"), "Player does not have state machine inside"
 
-def test_set_state_all_states():
-    """tests that setter works on all states"""
+
+def test_attacked_player_dies():
+    """testing if player becomes dead state is attacked"""
     test_player = dork.types.Player()
-    test_player.machine.next_state(dork.types.Dead)
-    assert test_player.machine.get_state() is dork.types.Dead, "failed to set dead on player"
-    test_player.machine.next_state(dork.types.Hostile)
-    assert test_player.machine.get_state() is dork.types.Hostile, "failed to set hostile on player"
-    test_player.machine.next_state(dork.types.Alive)
-    assert test_player.machine.get_state() is dork.types.Alive, "failed to set alive on player"
+    assert test_player.machine.get_state() == dork.types.Alive, "Player doesn't default to alive"
+    test_player.machine.next_state("Attack")
+    assert test_player.machine.get_state() == dork.types.Dead, "Alive player failed to die"
+    test_player.machine.set_state(dork.types.Hostile)
+    assert test_player.machine.get_state() == dork.types.Hostile, "Player failed to set state to hostile"
+    test_player.machine.next_state("Attack")
+    assert test_player.machine.get_state() == dork.types.Dead, "Hostile player failed to die"
+    test_player.machine.next_state("Attack")
+    assert test_player.machine.get_state() == dork.types.Dead, "Dead player failed to stay dead"
 
-def test_player_attacked_is_dead():
-    """Testing a player attacked will die"""
+def test_talking_to_players():
+    """testing the talk method state changes"""
     test_player = dork.types.Player()
-    test_player.attack()
-    assert test_player.machine.get_state() == dork.types.Dead, "player failed to die"
+    test_player.machine.next_state("Talk")
+    assert test_player.machine.get_state() == dork.types.Alive, "Player isn't alive by talking"
+    test_player.machine.set_state(dork.types.Hostile)
+    test_player.machine.next_state("Talk")
+    assert test_player.machine.get_state() == dork.types.Alive, "Player didn't calm to Alive upon talk()"
+    test_player.machine.set_state(dork.types.Dead)
+    test_player.machine.next_state("Talk")
+    assert test_player.machine.get_state() == dork.types.Dead, "Player that is dead is still dead after talk()"
 
-def test_attack_dead_npc():
-    """a dead pc can't die again or live again duh"""
-    test_player = dork.types.Player()
+
+def test_forward_facing_calls_state_machine(player):
+    """tests that player has forward facing methods"""
+    assert hasattr(player, "attack"), "players fail to have attack method"
+    assert hasattr(player, "talk"), "players fail to have talk method"
+    test_player = player
     test_player.attack()
-    test_player.attack()
-    assert test_player.machine.get_state() == dork.types.Dead, "Dead player is not dead"
+    assert test_player.machine.get_state() == dork.types.Dead, "player failed to die by forward calls"
+
