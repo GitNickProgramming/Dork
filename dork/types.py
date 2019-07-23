@@ -201,8 +201,8 @@ class Player(Holder):
             maze[self.location.x][self.location.y] = MazeFactory.player_color
 
             outt = self.location.description
-            outtt = self.location.name
-            out = "You have entered "+outtt+"\n"+outt
+            #outtt = self.location.name
+            out = "You have entered "+outt
             MazeFactory.update(maze)
         return out
 
@@ -680,10 +680,11 @@ class RoomFactory:
 
         i = 0
 
-        list_of_keys = list(factory_data.ROOMS)
+        list_of_keys = factory_data.ROOMS
         shuffle(list_of_keys)
-
-        # print(list_of_keys)
+        list_of_adjtvs = factory_data.NAMES["adjectives"]
+        shuffle(list_of_keys)
+        list_of_abstract = factory_data.NAMES["abstract"]
 
         for room in cls.rooms:
             if i == 0:
@@ -703,7 +704,7 @@ class RoomFactory:
                 new_room = {
                     "number": f"room {i}",
                     "name": rand,
-                    "description": factory_data.ROOMS[rand],
+                    "description": "The "+list_of_adjtvs[i]+rand+list_of_abstract[i],
                     "coordinates": [x, y],
                     "adjacent": {},
                     "players": {},
