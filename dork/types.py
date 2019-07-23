@@ -201,7 +201,7 @@ class Player(Holder):
             maze[self.location.x][self.location.y] = MazeFactory.player_color
 
             outt = self.location.description
-            #outtt = self.location.name
+            # outtt = self.location.name
             out = "You have entered "+outt
             MazeFactory.update(maze)
         return out
@@ -704,7 +704,8 @@ class RoomFactory:
                 new_room = {
                     "number": f"room {i}",
                     "name": rand,
-                    "description": "The "+list_of_adjtvs[i]+rand+list_of_abstract[i],
+                    "description": "The " + list_of_adjtvs[i] + rand +
+                                   list_of_abstract[i],
                     "coordinates": [x, y],
                     "adjacent": {},
                     "players": {},

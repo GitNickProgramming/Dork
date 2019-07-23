@@ -40,8 +40,6 @@ ROOMS = [" Cave ",
          " BBlankkk ",
          " BBlankkkk "]
 
-#ADJ
-
 ADJ_ROOM_DESCRIPTIONS = {"1": "Also, this appears to be a dead end!",
                          "2": {0: "From here, all directions seem to be \
 blocked, except",
