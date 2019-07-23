@@ -125,7 +125,7 @@ def test_player_has_none(mocker):
 def test_inventory_prints(mocker):
     """Tests that inventory prints properly"""
     with mock.patch('builtins.input') as inpt:
-        inpt.side_effect = ["rand"]
+        inpt.side_effect = ["bobby b"]
         test_game = types.Gamebuilder.build('bobby b')
         test_item = types.Gamebuilder._make_item(dork.types.ItemFactory.build())
         test_game.hero.inventory[test_item.name] = test_item

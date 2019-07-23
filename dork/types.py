@@ -33,8 +33,8 @@ class Holder(Grandparent):
             out = f"There's nothing here."
 
         if verbose:
-            return out + Game._verbose_print(caller.data["inventory"])
-        return out + Game._brief_print(caller.data["inventory"])
+            return out + Game._verbose_print(caller.inventory)
+        return out + Game._brief_print(caller.inventory)
 
 class Alive():
     """generic living state of npc's"""
@@ -562,12 +562,8 @@ class Game:
         out = ""
         col = ""
         spc = "    "
-        for key, val in data.items():
-            if isinstance(val, dict) and calls < 3:
-                if calls < 2:
-                    col = ":"
-                out += "\n" + spc*calls + \
-                    f"{key}{col}{Game._brief_print(val, calls+1)}"
+        for key in data.keys():
+            out += spc+ key
         return out
 
     @staticmethod
