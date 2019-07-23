@@ -35,7 +35,7 @@ could use to fight",
          "Elitches": "All the rides are broken and rotten",
          "a movie theater": "There are videos of zombies running around, \
 looks like actual footage",
-         "the Mountain": "Beautiful views.",
+         "the Mountain": "Beautiful views from up here.",
          "Blank": "Placeholder",
          "Blankk": "Placeholder",
          "Blankkk": "Placeholder",
