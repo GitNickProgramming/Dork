@@ -1,6 +1,9 @@
 # Dork
 
-Dork is a text based exploration game full of mystery, intrigue, but most importantly memes!  The player finds him/herself in an exciting randomly generated maze where they can interact with rooms, items, and npc's. Using cardinal directions and simple commands, the player navigates throughout the maze to find him/herself at the end of the road. Be careful not to stumble upon the [CHECK WITH TEAM]
+Dork is a text based exploration game full of mystery, intrigue, but most importantly memes!  
+The player finds him/herself in an exciting randomly generated maze where they can interact with rooms, items, and npc's. 
+Using cardinal directions and simple commands, the player navigates throughout the maze to find him/herself at the end of the road. 
+Be careful not to stumble upon the [CHECK WITH TEAM]
 
 ## Getting Started
 
@@ -71,7 +74,12 @@ We use [SemVer](http://semver.org/) for versioning. For the versions available, 
 
 ## Authors
 
-* **Billie Thompson** - *Initial work* - [PurpleBooth](https://github.com/PurpleBooth)
+* **David Dews** -
+* **Larsen Close** -
+* **Fernando Bobonoyaba** -
+* **Devon DeJohn** -
+* **Zachory Anguiano** -
+* **Nick Gagliardi** -
 
 See also the list of [contributors](https://github.com/your/project/contributors) who participated in this project.
 
