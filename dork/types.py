@@ -10,6 +10,7 @@ import yaml
 import matplotlib.pyplot as plt
 from numpy import full as npf
 import dork.game_utils.factory_data as factory_data
+from inspect import signature
 # pylint: disable=protected-access
 
 
@@ -400,7 +401,15 @@ class Game:
         self.hero = Player()
 
     def __call__(self, cmd, arg):
-        return getattr(self, cmd)(arg) if arg else getattr(self, cmd)()
+        do_this = getattr(self, cmd)
+        num_args = len(signature(do_this).parameters)
+        if arg and num_args == 0:
+            return self._repl_error("This command takes no arguments")
+        elif not arg and num_args != 0:
+            return self._repl_error("You seem to be missing something")
+        elif arg and num_args == 1:
+            return do_this(arg)
+        return do_this()
 
     def _toggle_verbose(self) -> (str, bool):
         self.verbose = not self.verbose

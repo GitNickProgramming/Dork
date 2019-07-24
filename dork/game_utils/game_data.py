@@ -53,12 +53,9 @@ CMDS = {
 
 
 META = {
-    ".n": ["_start_over"],
-    ".l": ["_start_over"],
-    ".s": ["_save_game"],
-    ".new": ["_start_over", "new game created!"],
-    ".load": ["_start_over", "game loaded successfully!"],
-    ".save": ["save_game"],
+    ".new": ["_start_over"],
+    ".load": ["_start_over"],
+    ".save": ["_save_game"],
     ".rq": ["_gtfo"],
     ".z": ["_zork"],
     ".m": ["_draw_maze"],
@@ -70,4 +67,5 @@ ERRS = {
     "u": ["_repl_error", "Sorry, I don't know that one."],
     "?": ["_repl_error", "Huh? Can you speak up?"],
     "no go": ["_repl_error", "You can't go that way"],
+    "which way": ["_repl_error", "Uh. Which way are you trying to go?"],
 }

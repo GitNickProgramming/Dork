@@ -132,27 +132,27 @@ def test_look(run):
            "item are not found on entrance room"
 
 
-def test_take(run):
-    """testing _take the method takes all and specific item"""
-    out = run(dork.repl.repl, input_side_effect=["name", "take", ".rq"])
-    assert "You took all item. You took them well." in out[0],\
-           "item are not found on entrance room"
+# def test_take(run):
+#     """testing _take the method takes all and specific item"""
+#     out = run(dork.repl.repl, input_side_effect=["name", "take", ".rq"])
+#     assert "You took all item. You took them well." in out[0],\
+#            "item are not found on entrance room"
 
 
-def test_take_single(run):
-    """testing _take the method takes all and specific item"""
-    out = run(dork.repl.repl, input_side_effect=["name", "examine",
-                                                 "take", ".rq"])
-    assert "You took all item. You took them well" in out[0], \
-        "item are not found on entrance room"
+# def test_take_single(run):
+#     """testing _take the method takes all and specific item"""
+#     out = run(dork.repl.repl, input_side_effect=["name", "examine",
+#                                                  "take", ".rq"])
+#     assert "You took all item. You took them well" in out[0], \
+#         "item are not found on entrance room"
 
 
-def test_drop_item(run):
-    """testing _drop_item the method takes all and specific item"""
-    out = run(dork.repl.repl, input_side_effect=["name", "take",
-                                                 "drop", ".rq"])
-    assert "Oops, you can't hold all these items" in out[0],\
-           "item are not found on entrance room"
+# def test_drop_item(run):
+#     """testing _drop_item the method takes all and specific item"""
+#     out = run(dork.repl.repl, input_side_effect=["name", "take",
+#                                                  "drop", ".rq"])
+#     assert "Oops, you can't hold all these items" in out[0],\
+#            "item are not found on entrance room"
 
 
 def test_sword_can_swing(run):
