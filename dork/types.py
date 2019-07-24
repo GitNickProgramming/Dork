@@ -1,11 +1,11 @@
 """Base types for the Dork game"""
 # -*- coding: utf-8 -*-
-# from pprint import pprint
 from abc import ABC, abstractmethod
 import os
 from copy import deepcopy
 from random import choices, choice, randint, shuffle, randrange
 from operator import add
+from inspect import signature
 import yaml
 import matplotlib.pyplot as plt
 from numpy import full as npf
@@ -400,7 +400,15 @@ class Game:
         self.hero = Player()
 
     def __call__(self, cmd, arg):
-        return getattr(self, cmd)(arg) if arg else getattr(self, cmd)()
+        do_this = getattr(self, cmd)
+        num_args = len(signature(do_this).parameters)
+        if arg and num_args == 0:
+            return self._repl_error("This command takes no arguments")
+        if not arg and num_args != 0:
+            return self._repl_error("You seem to be missing something")
+        if arg and num_args == 1:
+            return do_this(arg)
+        return do_this()
 
     def _toggle_verbose(self) -> (str, bool):
         self.verbose = not self.verbose

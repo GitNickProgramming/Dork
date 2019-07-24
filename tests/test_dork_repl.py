@@ -97,3 +97,27 @@ def test_repl_save_game():
 
     game, repl_data = repl._new_game("devon")
     repl._evaluate(".s", game, repl_data)
+
+
+def test_repl_evaluate_safety(game, repl_data):
+    """testing ways to break the repl"""
+
+    assert repl._evaluate("n LARSEN", game, repl_data)
+    assert repl._evaluate("north LARSEN", game, repl_data)
+    assert repl._evaluate("i LARSEN", game, repl_data)
+    assert repl._evaluate("examine LARSEN", game, repl_data)
+    assert repl._evaluate(".new LARSEN", game, repl_data)
+    assert repl._evaluate(".load LARSEN", game, repl_data)
+    assert repl._evaluate(".save LARSEN", game, repl_data)
+    assert repl._evaluate(".m LARSEN", game, repl_data)
+    assert repl._evaluate(".v LARSEN", game, repl_data)
+    assert repl._evaluate(".rq LARSEN", game, repl_data)
+    assert repl._evaluate("points LARSEN", game, repl_data)
+
+
+# def test_repl_bad_keys(game, repl_data):
+#     """these are bad keys for take and drop commands"""
+
+    # assert repl._evaluate("drop LARSEN", game, repl_data)
+    # assert repl._evaluate("take LARSEN", game, repl_data)
+    # assert repl._evaluate("loot LARSEN", game, repl_data)
