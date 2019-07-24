@@ -28,19 +28,13 @@ def room():
 @pytest.fixture
 def game():
     """A basic dork game fixture"""
-    return dork.types.Game()
+    return dork.types.Gamebuilder.build("tester")
 
 
 @pytest.fixture
 def cardinals():
     """A fixture of the cardinal directions"""
     return ["north", "east", "south", "west"]
-
-
-@pytest.fixture
-def worldmap():
-    """A basic dork worldmap fixture"""
-    return dork.types.Worldmap()
 
 
 @pytest.fixture
