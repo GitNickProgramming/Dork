@@ -41,14 +41,13 @@ CMDS = {
     "inv": ["_inventory"],
     "inventory": ["_inventory"],
     "examine": ["_examine"],
+    "add": ["_take"],
     "grab": ["_take"],
     "take": ["_take"],
     "loot": ["_take"],
     "use": ["_use_item"],
     "drop": ["_drop_item"],
     "activate": ["_use_item"],
-    "add": ["_take"],
-    "loot": ["_take"],
 }
 
 
