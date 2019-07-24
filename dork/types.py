@@ -1,16 +1,15 @@
 """Base types for the Dork game"""
 # -*- coding: utf-8 -*-
-# from pprint import pprint
 from abc import ABC, abstractmethod
 import os
 from copy import deepcopy
 from random import choices, choice, randint, shuffle, randrange
 from operator import add
+from inspect import signature
 import yaml
 import matplotlib.pyplot as plt
 from numpy import full as npf
 import dork.game_utils.factory_data as factory_data
-from inspect import signature
 # pylint: disable=protected-access
 
 
@@ -405,9 +404,9 @@ class Game:
         num_args = len(signature(do_this).parameters)
         if arg and num_args == 0:
             return self._repl_error("This command takes no arguments")
-        elif not arg and num_args != 0:
+        if not arg and num_args != 0:
             return self._repl_error("You seem to be missing something")
-        elif arg and num_args == 1:
+        if arg and num_args == 1:
             return do_this(arg)
         return do_this()
 
