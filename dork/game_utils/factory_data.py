@@ -76,7 +76,8 @@ wanna take a look around and see what you can find.",
                                3: "It might be a good idea to loot this \
 area before you leave"},
                          "2": "It doesn't look like there are many items \
-around here, might as well get going."}
+around here, might as well get going.",
+                         "3": "This room has no items!"}
 
 ITEMS = {
     "condition": {
