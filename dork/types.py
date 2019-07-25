@@ -398,20 +398,15 @@ class Game:
         self.hero = Player()
 
     def __call__(self, cmd, arg):
-        do_this = getattr(self, cmd)
-        args = argspec(do_this).args
-        # defaults = argspec(do_this).defaults
+        do_func = getattr(self, cmd)
+        func_args = argspec(do_func).args
         if arg:
-            if not args:
-                out = self._repl_error("This command takes no arguments")
-            elif len(args) == 1 and "self" in args:
+            if not func_args or ("self" in func_args and len(func_args) == 1):
                 out = self._repl_error("This command takes no arguments")
             else:
-                out = do_this(arg)
-        # elif not arg and not defaults and len(args) > 1:
-        #     out = self._repl_error("You seem to be missing something")
+                out = do_func(arg)
         else:
-            out = do_this()
+            out = do_func()
         return out
 
     def _toggle_verbose(self) -> (str, bool):
@@ -436,14 +431,14 @@ class Game:
         out = ""
         location = self.hero.location
         if self.verbose:
-            out += f"players:" + Game._verbose_print(
+            out += f"    players:" + Game._verbose_print(
                 location.data["players"]
             )
             out += f"\n\n    inventory:" + Game._verbose_print(
                 location.data["inventory"]
             )
         else:
-            out += f"players:" + Game._brief_print(
+            out += f"    players:" + Game._brief_print(
                 location.data["players"]
             )
             out += f"\n\n    inventory:" + Game._brief_print(
@@ -530,14 +525,11 @@ class Game:
     @staticmethod
     def _brief_print(data, calls=2):
         out = ""
-        col = ""
         spc = "    "
         for key, val in data.items():
             if isinstance(val, dict) and calls < 3:
-                if calls < 2:
-                    col = ":"
                 out += "\n" + spc*calls + \
-                    f"{key}{col}{Game._brief_print(val, calls+1)}"
+                    f"{key}{Game._brief_print(val, calls+1)}"
         return out
 
     @staticmethod
