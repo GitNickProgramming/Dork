@@ -13,6 +13,7 @@ def test_take_all(game, repl_data):
 
     repl._evaluate("take", game, repl_data)
     assert repl._evaluate("i", game, repl_data)[0] == room_inventory
+    assert room_0.get_items(room_0, False) == "There's nothing here."
 
 
 # def test_player_has_none(player):
