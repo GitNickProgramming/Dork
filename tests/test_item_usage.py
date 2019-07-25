@@ -1,6 +1,18 @@
-# """Test the various usable items"""
+"""Test the various usable items"""
 
-# import dork.repl
+from dork import repl, types
+# pylint: disable=protected-access
+
+
+def test_take_all(game, repl_data):
+    """take all items, confirm they are now in inventory
+    confirm room inventory is empty"""
+
+    room_0 = game.rooms["room 0"]
+    room_inventory = room_0.get_items(room_0, False)
+
+    repl._evaluate("take", game, repl_data)
+    assert repl._evaluate("i", game, repl_data)[0] == room_inventory
 
 
 # def test_player_has_none(player):
