@@ -1,11 +1,12 @@
 """Test the various usable items"""
 
-from dork import repl, types
+from dork import repl
+from random import choice
 # pylint: disable=protected-access
 
 
 def test_take_all(game, repl_data):
-    """take all items, confirm they are now in inventory
+    """take all items, confirm they are now in player inventory,
     confirm room inventory is empty"""
 
     room_0 = game.rooms["room 0"]
@@ -14,6 +15,26 @@ def test_take_all(game, repl_data):
     repl._evaluate("take", game, repl_data)
     assert repl._evaluate("i", game, repl_data)[0] == room_inventory
     assert room_0.get_items(room_0, False) == "There's nothing here."
+
+
+def test_take_item_here(game, repl_data):
+    """take an item that is present, confirm it is now in player inventory,
+    confirm item is not in room inventory"""
+
+    room_0 = game.rooms["room 0"]
+    room_inventory = room_0.data["inventory"]
+    random_item = choice(list(room_inventory.keys()))
+
+    repl._evaluate(f"take {random_item}", game, repl_data)
+    assert random_item in game.hero.inventory
+    assert random_item not in room_0.inventory
+
+
+def test_take_item_not_here(game, repl_data):
+    """try to take an item that is not here"""
+
+    no_take = repl._evaluate(f"take larsen", game, repl_data)
+    assert no_take == ("There is no larsen here.", False)
 
 
 # def test_player_has_none(player):
