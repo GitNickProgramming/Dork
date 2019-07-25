@@ -66,7 +66,10 @@ def repl():
         output, should_exit = _evaluate(
             cmd=_read(), dork=dork, repl_data=repl_data
         )
-        print(output + "\n")
+        if output == "new game":
+            dork, repl_data = _new_game()
+        else:
+            print(output + "\n")
 
         if should_exit:
             break
