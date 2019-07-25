@@ -400,7 +400,7 @@ class Game:
     def __call__(self, cmd, arg):
         do_this = getattr(self, cmd)
         args = argspec(do_this).args
-        defaults = argspec(do_this).defaults
+        # defaults = argspec(do_this).defaults
         if arg:
             if not args:
                 out = self._repl_error("This command takes no arguments")
