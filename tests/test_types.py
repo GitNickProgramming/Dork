@@ -127,13 +127,6 @@ def test_look(game, repl_data):
     assert "the beginning" in repl._evaluate("look", game, repl_data)[0]
 
 
-# def test_take(run):
-#     """testing _take the method takes all and specific item"""
-#     out = run(repl, input_side_effect=["name", "take", ".rq"])
-#     assert "You took all item. You took them well." in out[0],\
-#            "item are not found on entrance room"
-
-
 # def test_take_single(run):
 #     """testing _take the method takes all and specific item"""
 #     out = run(repl, input_side_effect=["name", "examine",

@@ -265,22 +265,26 @@ class Gamebuilder:
     @classmethod
     def _get_room_inv_description(cls, worldmapp):
         worldmap = worldmapp.rooms
+        worldmap_length = len(worldmap)
+        iterator = 0
         for rooms in worldmap:
-            inv_list = worldmap[rooms].inventory
-            num = len(inv_list)
-            if num > 2:
-                rand_ind = randrange(4)
-                first_desc = worldmap[rooms].description + "\n"
-                desc = factory_data.ROOM_INV_DESCRIPTIONS["1"][rand_ind]
-                worldmap[rooms].description = first_desc+desc
-            elif num == 1:
-                first_desc = worldmap[rooms].description + "\n"
-                desc = factory_data.ROOM_INV_DESCRIPTIONS["2"]
-                worldmap[rooms].description = first_desc+desc
-            elif num == 0:
-                first_desc = worldmap[rooms].description + "\n"
-                desc = factory_data.ROOM_INV_DESCRIPTIONS["3"]
-                worldmap[rooms].description = first_desc+desc
+            if iterator != worldmap_length - 1:
+                inv_list = worldmap[rooms].inventory
+                num = len(inv_list)
+                if num > 2:
+                    rand_ind = randrange(4)
+                    first_desc = worldmap[rooms].description + "\n"
+                    desc = factory_data.ROOM_INV_DESCRIPTIONS["1"][rand_ind]
+                    worldmap[rooms].description = first_desc+desc
+                elif num == 1:
+                    first_desc = worldmap[rooms].description + "\n"
+                    desc = factory_data.ROOM_INV_DESCRIPTIONS["2"]
+                    worldmap[rooms].description = first_desc+desc
+                elif num == 0:
+                    first_desc = worldmap[rooms].description + "\n"
+                    desc = factory_data.ROOM_INV_DESCRIPTIONS["3"]
+                    worldmap[rooms].description = first_desc+desc
+            iterator += 1
         return 0
 
     @classmethod
@@ -548,18 +552,22 @@ class Game:
 
         return out, False
 
-    def _update_room_inv_description(self, location):
+    @classmethod
+    def _update_room_inv_description(cls, location):
         inv_list = location.inventory
         num = len(inv_list)
         description = location.description.splitlines()
+        desc_length = len(description)
+        des = str()
         if num == 1:
-            first_desc = description[0] + "\n" + description[1] + "\n"
-            desc = factory_data.ROOM_INV_DESCRIPTIONS["2"]
-            location.description = first_desc+desc
+            if desc_length in (2, 3):
+                des = description[0] + "\n" + description[1] \
+                    + "\n" + factory_data.ROOM_INV_DESCRIPTIONS["2"]
         elif num == 0:
-            first_desc = description[0] + "\n" + description[1] + "\n"
-            desc = factory_data.ROOM_INV_DESCRIPTIONS["3"]
-            location.description = first_desc+desc
+            if desc_length in (2, 3):
+                des = description[0] + "\n" + description[1] \
+                    + "\n" + factory_data.ROOM_INV_DESCRIPTIONS["3"]
+        location.description = des
         return 0
 
     # def _drop_item(self, item="all"):
