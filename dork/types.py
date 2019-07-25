@@ -482,18 +482,17 @@ class Game:
             out = f"There is no {item_name} here."
         return out, False
 
-    def _drop_item(self, item="all"):
-        """drops specific item from player to room"""
-        player = self.hero.inventory
-        player2 = player.copy()
-        room_items = self.hero.location.inventory
-        if item == "all":
-            for item_n in player2:
-                room_items[item_n] = player.pop(item_n)
-            return "Oops, you can't hold all these items", False
-        room_items = self.hero.location.inventory
-        room_items[item] = player.pop(item)
-        return "Oops, you dropped something!", False
+    # def _drop_item(self, item="all"):
+    #     player = self.hero.inventory
+    #     player2 = player.copy()
+    #     room_items = self.hero.location.inventory
+    #     if item == "all":
+    #         for item_n in player2:
+    #             room_items[item_n] = player.pop(item_n)
+    #         return "Oops, you can't hold all these items", False
+    #     room_items = self.hero.location.inventory
+    #     room_items[item] = player.pop(item)
+    #     return "Oops, you dropped something!", False
 
     def _use_item(self, item="Nothing"):
         if item in self.hero.inventory.keys():

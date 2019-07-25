@@ -1,7 +1,7 @@
 """Test the various usable items"""
 
-from dork import repl
 from random import choice
+from dork import repl
 # pylint: disable=protected-access
 
 
