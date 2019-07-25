@@ -408,8 +408,8 @@ class Game:
                 out = self._repl_error("This command takes no arguments")
             else:
                 out = do_this(arg)
-        elif not arg and not defaults and len(args) > 1:
-            out = self._repl_error("You seem to be missing something")
+        # elif not arg and not defaults and len(args) > 1:
+        #     out = self._repl_error("You seem to be missing something")
         else:
             out = do_this()
         return out
