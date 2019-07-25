@@ -400,13 +400,16 @@ class Game:
     def __call__(self, cmd, arg):
         do_this = getattr(self, cmd)
         args = argspec(do_this).args
+        defaults = argspec(do_this).defaults
         if arg:
-            if len(args) == 1 and "self" in args:
+            if not args:
+                out = self._repl_error("This command takes no arguments")
+            elif len(args) == 1 and "self" in args:
                 out = self._repl_error("This command takes no arguments")
             else:
                 out = do_this(arg)
-        # elif not arg and not defaults and len(args) > 1:
-        #     out = self._repl_error("You seem to be missing something")
+        elif not arg and not defaults and len(args) > 1:
+            out = self._repl_error("You seem to be missing something")
         else:
             out = do_this()
         return out

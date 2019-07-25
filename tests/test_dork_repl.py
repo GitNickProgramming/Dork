@@ -40,7 +40,8 @@ def test_all_moves_and_others(game, repl_data):
             break
 
     assert repl._evaluate(".z", game, repl_data) == (
-        "holy *%&#@!!! a wild zork appeared!", False)
+        "holy *%&#@!!! a wild zork appeared!", False
+    )
 
     assert repl._evaluate("look david", game, repl_data) == (
         "This command takes no arguments", False
