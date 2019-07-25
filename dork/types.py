@@ -738,23 +738,23 @@ class PlayerFactory:
     @staticmethod
     def build(i, room):
         """Make a player, give them items"""
-
+        firsts = factory_data.FIRST_NAMES
+        rand_first = choice(firsts)
+        lasts = factory_data.LAST_NAMES
+        rand_last = choice(lasts)
         new_player = {
-            "name": f"player {i}",
+            "name": rand_first + " " + rand_last,
             "description": f"player {i} description",
             "location": room["name"],
             "inventory": {},
             "equipped": []
         }
-
         for _ in range(randint(1, 3)):
             new_item = ItemFactory.build("player")
             new_player["inventory"][new_item.pop("name")] = new_item
-
         for key, val in new_player["inventory"].items():
             if val["stats"]["equipable"]:
                 new_player["equipped"].append(key)
-
         return new_player
 
 

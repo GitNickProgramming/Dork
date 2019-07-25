@@ -39,7 +39,7 @@ def test_take_item_not_here(game, repl_data):
 
 # def test_player_has_none(player):
 #     """Tests race case where player contains None"""
-
+#
 #     test_dict = {"name": "leather belt",
 #                  "equipped": "leather belt", "inventory": [None, None]}
 #     test_player = player
