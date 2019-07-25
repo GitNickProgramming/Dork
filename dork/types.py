@@ -248,7 +248,6 @@ class Gamebuilder:
         setattr(game, "maze", data["maze"])
         setattr(game, "rooms", cls._make_rooms(deepcopy(data["rooms"])))
 
-        # print(game.rooms)
         cls._get_adj_description(game)
         cls._get_room_inv_description(game)
 
@@ -286,11 +285,9 @@ class Gamebuilder:
 
     @classmethod
     def _get_adj_description(cls, worldmapp):
-        #print(worldmapp.data)
+
         worldmap = worldmapp.rooms
-        #print(worldmap)
-        #print(worldmap["room 0"].data)
-        #print(worldmap["room 0"].description)
+
         for rooms in worldmap:
             desc = ""
             adj_list = list()
@@ -363,7 +360,6 @@ class Gamebuilder:
             rooms[name] = new_room
             new_room._new_instance()
 
-        # print(rooms["room 1"].data)
         return rooms
 
     @classmethod
@@ -795,7 +791,6 @@ class RoomFactory:
         i = 0
 
         for room in cls.rooms:
-            print(room)
             if i == 0:
                 x, y = room
                 new_room = {
