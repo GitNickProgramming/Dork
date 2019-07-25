@@ -751,12 +751,12 @@ class PlayerFactory:
         lasts = factory_data.LAST_NAMES
         rand_last = choice(lasts)
         new_player = {
-           "name": rand_first + " " + rand_last,
-           "description": f"player {i} description",
-           "location": room["name"],
-           "inventory": {},
-           "equipped": []
-       }
+            "name": rand_first + " " + rand_last,
+            "description": f"player {i} description",
+            "location": room["name"],
+            "inventory": {},
+            "equipped": []
+        }
         for _ in range(randint(1, 3)):
             new_item = ItemFactory.build("player")
             new_player["inventory"][new_item.pop("name")] = new_item
