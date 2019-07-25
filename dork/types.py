@@ -557,16 +557,14 @@ class Game:
         inv_list = location.inventory
         num = len(inv_list)
         description = location.description.splitlines()
-        desc_length = len(description)
+        # desc_length = len(description)
         des = str()
         if num == 1:
-            if desc_length in (2, 3):
-                des = description[0] + "\n" + description[1] \
-                    + "\n" + factory_data.ROOM_INV_DESCRIPTIONS["2"]
+            des = description[0] + "\n" + description[1] \
+                + "\n" + factory_data.ROOM_INV_DESCRIPTIONS["2"]
         elif num == 0:
-            if desc_length in (2, 3):
-                des = description[0] + "\n" + description[1] \
-                    + "\n" + factory_data.ROOM_INV_DESCRIPTIONS["3"]
+            des = description[0] + "\n" + description[1] \
+                + "\n" + factory_data.ROOM_INV_DESCRIPTIONS["3"]
         location.description = des
         return 0
 
