@@ -42,6 +42,14 @@ def test_all_moves_and_others(game, repl_data):
     assert repl._evaluate(".z", game, repl_data) == (
         "holy *%&#@!!! a wild zork appeared!", False)
 
+    assert repl._evaluate("look david", game, repl_data) == (
+        "This command takes no arguments", False
+    )
+
+    assert repl._evaluate("north north", game, repl_data) == (
+        "Uh. Which way are you trying to go?", False
+    )
+
     assert repl._evaluate(".m", game, repl_data) == ("", False)
 
     assert repl._evaluate(".v", game, repl_data) == (
@@ -78,7 +86,7 @@ def test_new_game_command(run):
 
     _, _, mocked_input = run(
         cli.main, '-?', input_side_effect=[
-            'tester', '.n', 'y', 'tester', '.rq'
+            'tester', '.new', 'y', 'tester', '.rq'
         ]
     )
     assert mocked_input.call_count == 5
@@ -96,7 +104,7 @@ def test_repl_save_game():
     """test save function"""
 
     game, repl_data = repl._new_game("devon")
-    repl._evaluate(".s", game, repl_data)
+    repl._evaluate(".save", game, repl_data)
 
 
 def test_repl_evaluate_safety(game, repl_data):
