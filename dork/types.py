@@ -460,6 +460,7 @@ class Game:
         self.maze = []
         self.rooms = {}
         self.hero = Player()
+        self.points = 10
 
     def __call__(self, cmd, arg):
         do_func = getattr(self, cmd)
@@ -490,6 +491,20 @@ class Game:
 
     def _move(self, cardinal):
         return self.hero.move(cardinal, self.maze), False
+    
+    def _points(self, user_input):
+        if '_repl_error' in user_input:
+            self.points = 0
+        elif '_get_points' in user_input:
+            pass
+        else:
+            self.points += 1
+
+    def _get_points(self):
+        point = self.points
+        if point == 0:
+            return f"Booooooo! you suck.\nYou have {point} points.", False
+        return f"your have: {point}", False
 
     def _examine(self):
         out = ""

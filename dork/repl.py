@@ -11,7 +11,7 @@ def _new_game(player_name=None):
 
     dork = dork_types.Gamebuilder.build(player_name)
     print(f"\nGreetings, {dork.hero.name}! " + game_data.TITLE + "\n")
-
+    
     repl_data = (
         game_data.CMDS,
         game_data.MOVES,
@@ -53,7 +53,7 @@ def _evaluate(cmd, dork, repl_data):
     else:
         call = errs["?"]
         method, arg = call
-
+    dork._points(call)
     return dork(method, arg)
 
 

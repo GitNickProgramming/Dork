@@ -48,6 +48,7 @@ CMDS = {
     "use": ["_use_item"],
     "drop": ["_drop_item"],
     "activate": ["_use_item"],
+    "points": ["_get_points"]
 }
 
 

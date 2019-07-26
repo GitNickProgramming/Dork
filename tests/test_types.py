@@ -24,7 +24,7 @@ def test_confirm_method_no(capsys, mocker):
 
     mocked_input = mocker.patch('builtins.input')
     mocked_input.side_effect = ["n"]
-    assert types.Game._confirm() is False
+    assert< types.Game._confirm() is False
     captured = capsys.readouterr()
     assert "\n!!!WARNING!!! You will lose unsaved data!\n" in captured.out
     assert mocked_input.call_count == 1
@@ -67,7 +67,6 @@ def test_start_over_yes(capsys, mocker, game):
 
 def test_player_location(game):
     """testing the get and set of player location"""
-
     is_a(game.hero.location, types.Room)
 
 
@@ -125,6 +124,12 @@ def test_player_has_none(mocker):
 def test_look(game, repl_data):
     """testing _look for room description"""
     assert "the beginning" in repl._evaluate("look", game, repl_data)[0]
+
+def test_points(run):
+        out = run(repl, input_side_effect=["name", "examine",
+                                                  "take", ".rq"])
+     assert "You took all item. You took them well" in out[0], \
+         "item are not found on entrance room"
 
 
 # def test_take_single(run):
