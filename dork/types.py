@@ -547,32 +547,30 @@ class Game:
 
         return out, False
 
-    @classmethod
-    def _update_room_inv_description(cls, location):
-        inv_list = location.inventory
-        num = len(inv_list)
-        description = location.description.splitlines()
-        des = str()
-        if num == 1:
-            des = description[0] + "\n" + description[1] \
-                + "\n" + factory_data.ROOM_INV_DESCRIPTIONS["2"]
-        elif num == 0:
-            des = description[0] + "\n" + description[1] \
-                + "\n" + factory_data.ROOM_INV_DESCRIPTIONS["3"]
-        location.description = des
-        return 0
+    def _drop(self, item_name=None):
+        out = ""
+        hero = self.hero
+        room = hero.location
+        if not item_name:
+            player_copy = deepcopy(hero.inventory)
+            for item in player_copy:
+                this_item = hero.inventory.pop(item)
+                this_data = hero.data["inventory"].pop(item)
+                room.inventory[item] = this_item
+                room.data["inventory"][item] = this_data
+                out += f"You dropped {item}\n"
+        elif item_name in hero.inventory:
+            this_item = hero.inventory.pop(item_name)
+            this_data = hero.data["inventory"].pop(item_name)
+            room.inventory[item_name] = this_item
+            room.data["inventory"][item_name] = this_data
+            out += f"You dropped {item_name}. How clumsy."
+        else:
+            out = f"There is no {item_name} in your inventory."
 
-    # def _drop_item(self, item="all"):
-    #     player = self.hero.inventory
-    #     player2 = player.copy()
-    #     room_items = self.hero.location.inventory
-    #     if item == "all":
-    #         for item_n in player2:
-    #             room_items[item_n] = player.pop(item_n)
-    #         return "Oops, you can't hold all these items", False
-    #     room_items = self.hero.location.inventory
-    #     room_items[item] = player.pop(item)
-    #     return "Oops, you dropped something!", False
+        self._update_room_inv_description(room)
+
+        return out, False
 
     def _use_item(self, item="Nothing"):
         if item in self.hero.inventory.keys():
@@ -591,6 +589,21 @@ class Game:
     def _get_state(self):
         for name, room in self.rooms.items():
             self.data["rooms"][name] = room.data
+
+    @staticmethod
+    def _update_room_inv_description(location):
+        inv_list = location.inventory
+        num = len(inv_list)
+        description = location.description.splitlines()
+        des = str()
+        if num == 1:
+            des = description[0] + "\n" + description[1] \
+                + "\n" + factory_data.ROOM_INV_DESCRIPTIONS["2"]
+        elif num == 0:
+            des = description[0] + "\n" + description[1] \
+                + "\n" + factory_data.ROOM_INV_DESCRIPTIONS["3"]
+        location.description = des
+        return 0
 
     @staticmethod
     def _verbose_print(data, calls=2):
@@ -872,7 +885,8 @@ class MazeFactory:
     def draw(maze):
         """display the maze"""
 
-        plt.figure(figsize=(len(maze[0])//2, len(maze)//2))
+        x_dim, y_dim = len(maze[0])//2, len(maze)//2
+        plt.figure(figsize=(x_dim, y_dim))
         plt.pcolormesh(maze, cmap=plt.cm.get_cmap("tab20b"))
         plt.axis("equal")
         plt.axis("off")
@@ -887,7 +901,6 @@ class MazeFactory:
         plt.axis("equal")
         plt.axis("off")
         plt.draw()
-        plt.show()
 
     # pylint: disable=R0914
     @staticmethod

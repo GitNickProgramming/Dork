@@ -37,6 +37,58 @@ def test_take_item_not_here(game, repl_data):
     assert no_take == ("There is no larsen here.", False)
 
 
+def test_drop_all(game, repl_data):
+    """
+        1. take all items
+        2. confirm they are now in player inventory
+        3. confirm room inventory is empty
+        4. drop all items
+        5. confirm player inventory empty
+        6. confirm all items now in room inventory
+    """
+
+    room_0 = game.rooms["room 0"]
+    room_inventory = room_0.get_items(room_0, False)
+
+    repl._evaluate("take", game, repl_data)
+    assert repl._evaluate("i", game, repl_data)[0] == room_inventory
+    assert room_0.get_items(room_0, False) == "There's nothing here."
+
+    repl._evaluate("drop", game, repl_data)
+    assert game.hero.get_items(game.hero, False) == "There's nothing here."
+    assert room_0.get_items(room_0, False) == room_inventory
+
+
+def test_drop_item_from_inv(game, repl_data):
+    """
+        1. take a random item from the room
+        2. confirm it is in player inventory
+        3. confirm it is not in room inventory
+        4. drop item
+        5. confirm no longer in player inventory
+        6. confirm item in room inventory
+    """
+
+    room_0 = game.rooms["room 0"]
+    room_inventory = room_0.data["inventory"]
+    random_item = choice(list(room_inventory.keys()))
+
+    repl._evaluate(f"take {random_item}", game, repl_data)
+    assert random_item in game.hero.inventory
+    assert random_item not in room_0.inventory
+
+    repl._evaluate(f"drop {random_item}", game, repl_data)
+    assert random_item not in game.hero.inventory
+    assert random_item in room_0.inventory
+
+
+def test_take_item_not_in_inv(game, repl_data):
+    """try to drop an item you do not have"""
+
+    no_drop = repl._evaluate(f"drop larsen", game, repl_data)
+    assert no_drop == ("There is no larsen in your inventory.", False)
+
+
 # def test_player_has_none(player):
 #     """Tests race case where player contains None"""
 #
