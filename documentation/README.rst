@@ -41,6 +41,7 @@ If using a version of python installed from python.org that is version 3.0 or ne
 If the "pip" commands are not recognizable, you can download pip using this link:
 
 For Windows users:
+------------------------
 
 Right click on this link and then click "save link as" and save to a safe location. 
 https://bootstrap.pypa.io/get-pip.py 
@@ -52,6 +53,7 @@ python get-pip.py
 ```
 
 For Mac users:
+------------------------
 
 An easy way to handle installation packages is to use HomeBrew. 
 Open your command terminal and use the following command:
@@ -74,6 +76,7 @@ brew install python
 Setting up a virtual environment using pip:
 
 For Windows users:
+------------------------
 
 Use the following command:
 ```
@@ -86,6 +89,7 @@ virtualenv env
 ```
 
 For Mac users:
+------------------------
 
 Using command line, navigate to your project's folder and then use the following command:
 ```
@@ -131,12 +135,6 @@ python -m dork
 ## Deployment
 
 There will be no further support for this project by the original development team, the project can be branched to create more content.
-
-## Built With
-
-* []() - 
-* []() - 
-* []() - 
 
 ## Versioning
 
