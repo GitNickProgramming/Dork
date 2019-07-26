@@ -63,9 +63,9 @@ class Item(Stats):
     def make(self, item):
         """Make an item
         """
-        self.name = item["name"]
-        self.description = item["description"]
-        self.type = item["type"]
+        self.name = item.get("name", "")
+        self.description = item.get("description", "")
+        self.type = item.get("type", "filler")
         if not isinstance(self.type, str) or self.type is None:
             self.usable = NotUsable
         elif len(self.type) > 1:

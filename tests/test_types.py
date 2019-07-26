@@ -238,3 +238,33 @@ def test_only_stat(run):
 #     out = run(test_game._use_item, "sword", input_side_effect=["player"])
 #     assert "You swing the sword at player" in out[0],\
 #            "failed to contain a target argument"
+
+def test_type_not_str_item_make():
+    """Tests that empty dict creates unusable filler item"""
+    test_item = types.Item()
+    test_item.make({"type": {}})
+    assert test_item.usable == types.NotUsable,\
+        "Failed to set empty string item to NotUsable"
+
+
+def test_set_use_not_str():
+    """Tests that unkown object becomes filled in usable"""
+    test_item = types.Item()
+    test_item.set_usable(object)
+    assert test_item.usable == types.NotUsable,\
+        "Failed to set unknown object use to notusable"
+
+
+def test_use_item(mocker):
+    """Testing the _use_item private method"""
+    with mocker.patch('builtins.input'):
+        test_game = types.Gamebuilder.build("angryDave")
+        test_game._use_item()
+        assert test_game._use_item() == ("You don't have that item...",
+                                         False),\
+            "Failed to call _use_item on unfound item"
+        test_game.hero.inventory["bogus"] = types.Item()
+        assert test_game._use_item("bogus") == ("You used the thing! " +
+                                                "It's super effective!",
+                                                False),\
+            "Failed to call _use_item"
