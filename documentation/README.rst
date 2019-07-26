@@ -7,15 +7,23 @@ Be careful not to stumble upon Trolly McTrollFace...
 
 ## Getting Started
 
-This game requires the user to have an IDE that can run Python programs. 
+You will need to have an IDE installed on your computer that is compatible with python programs. 
+Here are some resources for installing an IDE to your computer (Choose the correct download for your operating system):
 
-First install Python 3 for your OS:
+To download visual studio code:
+https://code.visualstudio.com/
+
+To download eclipse:
+https://www.eclipse.org/downloads/
+
+To download intelliJ:
+https://www.jetbrains.com/idea/download/#section=windows
+
+Next you will need to install Python 3.0.To install Python 3 for your OS follow the link below:
 https://www.python.org/downloads/
 
 You can clone the Dork repository onto your local machine using this link:
 https://github.com/GitNickProgramming/Dork.git
-
-
 
 ### Prerequisites
 
@@ -24,12 +32,12 @@ If using a version of python installed from python.org that is version 3.0 or ne
 The command below will install any needed extensions for running and testing the program. 
 
 ```
-pip install -r requirements-dev.txt
+pip install -r documentation/requirements-dev.txt
 ```
 
 ### Installing
 
-A step by step series of examples that tell you how to get a development env running
+To get a 
 
 Say what the step will be
 
@@ -84,16 +92,22 @@ Add additional notes about how to deploy this on a live system
 
 ## Versioning
 
-For the versions available, see the [tags on this repository](https://github.com/GitNickProgramming/Dork/tags). 
+For the versions available, see the [tags on this repository](https://github.com/GitNickProgramming/Dork/tags).
 
-## Authors
+## Development Leads
 
-* **David Dews** -
-* **Larsen Close** -
-* **Fernando Bobonoyaba** -
-* **Devon DeJohn** -
-* **Zachory Anguiano** -
-* **Nick Gagliardi** -
+* **Peter Nielson** <peter@boxoforanmore.com>
+* **James Morgan** <jmorga68@msudenver.edu>
+
+## Contributers
+
+* **Nick Gagliardi** <ngagliar@msudenver.edu>
+* **Zachory Anguiano** <zanguian@msudenver.edu>
+* **Fernando Babonoyaba** <fbabonoy@msudenver.edu>
+* **Nicole Beck** <nbeck4@msudenver.edu>
+* **Larsen Close** <lclose@msudenver.edu>
+* **Devon DeJohn** <ddejohn@msudenver.edu>
+* **David Dews** <ddews1@msudenver.edu>
 
 See also the list of [contributors](https://github.com/GitNickProgramming/Dork/contributors) who participated in this project.
 
