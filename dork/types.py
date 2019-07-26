@@ -271,7 +271,7 @@ class Gamebuilder:
             if iterator != worldmap_length - 1:
                 inv_list = worldmap[rooms].inventory
                 num = len(inv_list)
-                if num > 2:
+                if num >= 2:
                     rand_ind = randrange(4)
                     first_desc = worldmap[rooms].description + "\n"
                     desc = factory_data.ROOM_INV_DESCRIPTIONS["1"][rand_ind]
@@ -567,7 +567,6 @@ class Game:
         inv_list = location.inventory
         num = len(inv_list)
         description = location.description.splitlines()
-        # desc_length = len(description)
         des = str()
         if num == 1:
             des = description[0] + "\n" + description[1] \
