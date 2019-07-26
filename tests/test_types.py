@@ -24,7 +24,7 @@ def test_confirm_method_no(capsys, mocker):
 
     mocked_input = mocker.patch('builtins.input')
     mocked_input.side_effect = ["n"]
-    assert< types.Game._confirm() is False
+    assert types.Game._confirm() is False
     captured = capsys.readouterr()
     assert "\n!!!WARNING!!! You will lose unsaved data!\n" in captured.out
     assert mocked_input.call_count == 1
@@ -125,11 +125,15 @@ def test_look(game, repl_data):
     """testing _look for room description"""
     assert "the beginning" in repl._evaluate("look", game, repl_data)[0]
 
-def test_points(run):
-        out = run(repl, input_side_effect=["name", "examine",
-                                                  "take", ".rq"])
-     assert "You took all item. You took them well" in out[0], \
-         "item are not found on entrance room"
+def test_points():
+    """testing _points for: add, remove, and no points"""
+    game = types.Game()
+    result = game._points('_get_points')
+    assert result == 10, "points where not added"
+    result = game._points('_take')
+    assert result == 11, "points where not added"
+    result = game._points('_repl_error')
+    assert result == 0, "points where not added"
 
 
 # def test_take_single(run):

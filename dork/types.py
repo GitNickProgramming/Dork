@@ -499,6 +499,7 @@ class Game:
             pass
         else:
             self.points += 1
+        return self.points
 
     def _get_points(self):
         point = self.points
