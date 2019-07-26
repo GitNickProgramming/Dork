@@ -23,21 +23,39 @@
 <p>This is the REPL which parses commands and passes them to a Game object.</p>
 <details class="source">
 <summary>Source code</summary>
-<pre><code class="python">&#34;&#34;&#34;This is the REPL which parses commands and passes them to a Game object.
-&#34;&#34;&#34;
+<pre><code class="python">&#34;&#34;&#34;This is the REPL which parses commands and passes them to a Game object.&#34;&#34;&#34;
+
 from dork.game_utils import game_data
 from dork import types as dork_types
+# pylint: disable=protected-access
 
 
-def read():
-    &#34;&#34;&#34;Get input from CLI
-    &#34;&#34;&#34;
+def _new_game(player_name=None):
+    if not player_name:
+        player_name = input(&#34;What&#39;s your name, stranger? &#34;)
+
+    dork = dork_types.Gamebuilder.build(player_name)
+    print(f&#34;\nGreetings, {dork.hero.name}! &#34; + game_data.TITLE + &#34;\n&#34;)
+
+    repl_data = (
+        game_data.CMDS,
+        game_data.MOVES,
+        game_data.META,
+        game_data.ERRS
+    )
+
+    return dork, repl_data
+
+
+def _read():
+    &#34;&#34;&#34;Get input from CLI&#34;&#34;&#34;
+
     return str.casefold(input(&#34;&gt; &#34;))
 
 
-def evaluate(cmd, game_instance, repl_data):
-    &#34;&#34;&#34;Parse a cmd and run it
-    &#34;&#34;&#34;
+def _evaluate(cmd, dork, repl_data):
+    &#34;&#34;&#34;Parse a cmd and run it&#34;&#34;&#34;
+
     cmds, moves, meta, errs = repl_data
     cmd = cmd.strip().split(&#34; &#34;, 1) if (cmd and not cmd.isspace()) else None
     if cmd:
@@ -47,38 +65,37 @@ def evaluate(cmd, game_instance, repl_data):
         if isinstance(call, dict):
             method, arg = call.get(noun, errs[&#34;no go&#34;])
         elif call not in errs.values():
-            method, arg = call[0], noun if noun else (
-                call[1] if len(call) &gt; 1 else None
-            )
+            if noun and len(call) &gt; 1:
+                method, arg = errs[&#34;which way&#34;]
+            elif noun and len(call) == 1:
+                method, arg = call[0], noun
+            elif not noun and len(call) &gt; 1:
+                method, arg = call
+            else:
+                method, arg = call[0], None
         else:
             method, arg = call
     else:
         call = errs[&#34;?&#34;]
         method, arg = call
 
-    return game_instance(method, arg)
+    return dork(method, arg)
 
 
 def repl():
-    &#34;&#34;&#34;Read eval print loop
-    &#34;&#34;&#34;
-    game_instance = dork_types.Game()
-    game_instance.build()
+    &#34;&#34;&#34;read evaluate print loop&#34;&#34;&#34;
 
-    repl_data = (
-        game_data.CMDS,
-        game_data.MOVES,
-        game_data.META,
-        game_data.ERRS
-    )
-
-    print(f&#34;\nGreetings, {game_instance.hero.name}! &#34; + game_data.TITLE + &#34;\n&#34;)
+    dork, repl_data = _new_game()
 
     while True:
-        output, should_exit = evaluate(
-            cmd=read(), game_instance=game_instance, repl_data=repl_data
+        output, should_exit = _evaluate(
+            cmd=_read(), dork=dork, repl_data=repl_data
         )
-        print(output + &#34;\n&#34;)
+        if output == &#34;new game&#34;:
+            dork, repl_data = _new_game()
+        else:
+            print(output + &#34;\n&#34;)
+
         if should_exit:
             break
 
@@ -92,77 +109,27 @@ def repl():
 <section>
 <h2 class="section-title" id="header-functions">Functions</h2>
 <dl>
-<dt id="dork.repl.evaluate"><code class="name flex">
-<span>def <span class="ident">evaluate</span></span>(<span>cmd, game_instance, repl_data)</span>
-</code></dt>
-<dd>
-<section class="desc"><p>Parse a cmd and run it</p></section>
-<details class="source">
-<summary>Source code</summary>
-<pre><code class="python">def evaluate(cmd, game_instance, repl_data):
-    &#34;&#34;&#34;Parse a cmd and run it
-    &#34;&#34;&#34;
-    cmds, moves, meta, errs = repl_data
-    cmd = cmd.strip().split(&#34; &#34;, 1) if (cmd and not cmd.isspace()) else None
-    if cmd:
-        verb, *noun = cmd
-        noun = noun[0] if noun else None
-        call = cmds.get(verb, moves.get(verb, meta.get(verb, errs[&#34;u&#34;])))
-        if isinstance(call, dict):
-            method, arg = call.get(noun, errs[&#34;no go&#34;])
-        elif call not in errs.values():
-            method, arg = call[0], noun if noun else (
-                call[1] if len(call) &gt; 1 else None
-            )
-        else:
-            method, arg = call
-    else:
-        call = errs[&#34;?&#34;]
-        method, arg = call
-
-    return game_instance(method, arg)</code></pre>
-</details>
-</dd>
-<dt id="dork.repl.read"><code class="name flex">
-<span>def <span class="ident">read</span></span>(<span>)</span>
-</code></dt>
-<dd>
-<section class="desc"><p>Get input from CLI</p></section>
-<details class="source">
-<summary>Source code</summary>
-<pre><code class="python">def read():
-    &#34;&#34;&#34;Get input from CLI
-    &#34;&#34;&#34;
-    return str.casefold(input(&#34;&gt; &#34;))</code></pre>
-</details>
-</dd>
 <dt id="dork.repl.repl"><code class="name flex">
 <span>def <span class="ident">repl</span></span>(<span>)</span>
 </code></dt>
 <dd>
-<section class="desc"><p>Read eval print loop</p></section>
+<section class="desc"><p>read evaluate print loop</p></section>
 <details class="source">
 <summary>Source code</summary>
 <pre><code class="python">def repl():
-    &#34;&#34;&#34;Read eval print loop
-    &#34;&#34;&#34;
-    game_instance = dork_types.Game()
-    game_instance.build()
+    &#34;&#34;&#34;read evaluate print loop&#34;&#34;&#34;
 
-    repl_data = (
-        game_data.CMDS,
-        game_data.MOVES,
-        game_data.META,
-        game_data.ERRS
-    )
-
-    print(f&#34;\nGreetings, {game_instance.hero.name}! &#34; + game_data.TITLE + &#34;\n&#34;)
+    dork, repl_data = _new_game()
 
     while True:
-        output, should_exit = evaluate(
-            cmd=read(), game_instance=game_instance, repl_data=repl_data
+        output, should_exit = _evaluate(
+            cmd=_read(), dork=dork, repl_data=repl_data
         )
-        print(output + &#34;\n&#34;)
+        if output == &#34;new game&#34;:
+            dork, repl_data = _new_game()
+        else:
+            print(output + &#34;\n&#34;)
+
         if should_exit:
             break
 
@@ -187,8 +154,6 @@ def repl():
 </li>
 <li><h3><a href="#header-functions">Functions</a></h3>
 <ul class="">
-<li><code><a title="dork.repl.evaluate" href="#dork.repl.evaluate">evaluate</a></code></li>
-<li><code><a title="dork.repl.read" href="#dork.repl.read">read</a></code></li>
 <li><code><a title="dork.repl.repl" href="#dork.repl.repl">repl</a></code></li>
 </ul>
 </li>

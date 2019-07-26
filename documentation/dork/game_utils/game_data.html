@@ -54,7 +54,6 @@ MOVES = {
     &#34;west&#34;: [&#34;_move&#34;, &#34;west&#34;]
 }
 
-
 CMDS = {
     &#34;go&#34;: MOVES,
     &#34;move&#34;: MOVES,
@@ -66,22 +65,25 @@ CMDS = {
     &#34;i&#34;: [&#34;_inventory&#34;],
     &#34;inv&#34;: [&#34;_inventory&#34;],
     &#34;inventory&#34;: [&#34;_inventory&#34;],
-    # &#34;grab&#34;: _take,
-    # &#34;take&#34;: _take,
-    # &#34;add&#34;: _take,
-    # &#34;loot&#34;: _take,
-    # &#34;use&#34;: _use_item,
-    # &#34;activate&#34;: _use_item,
-    # &#34;drop&#34;: _drop_item
+    &#34;examine&#34;: [&#34;_examine&#34;],
+    &#34;add&#34;: [&#34;_take&#34;],
+    &#34;grab&#34;: [&#34;_take&#34;],
+    &#34;take&#34;: [&#34;_take&#34;],
+    &#34;loot&#34;: [&#34;_take&#34;],
+    &#34;drop&#34;: [&#34;_drop&#34;],
+    &#34;use&#34;: [&#34;_use&#34;],
+    &#34;activate&#34;: [&#34;_use&#34;],
 }
 
 
 META = {
-    &#34;.new&#34;: [&#34;_start_over&#34;, &#34;new game created!&#34;],
-    &#34;.load&#34;: [&#34;_start_over&#34;, &#34;game loaded successfully!&#34;],
-    # &#34;.save&#34;:[&#34;_save_game&#34;],
+    &#34;.new&#34;: [&#34;_start_over&#34;],
+    &#34;.load&#34;: [&#34;_start_over&#34;],
+    &#34;.save&#34;: [&#34;_save_game&#34;],
     &#34;.rq&#34;: [&#34;_gtfo&#34;],
     &#34;.z&#34;: [&#34;_zork&#34;],
+    &#34;.m&#34;: [&#34;_draw_maze&#34;],
+    &#34;.v&#34;: [&#34;_toggle_verbose&#34;]
 }
 
 
@@ -89,6 +91,7 @@ ERRS = {
     &#34;u&#34;: [&#34;_repl_error&#34;, &#34;Sorry, I don&#39;t know that one.&#34;],
     &#34;?&#34;: [&#34;_repl_error&#34;, &#34;Huh? Can you speak up?&#34;],
     &#34;no go&#34;: [&#34;_repl_error&#34;, &#34;You can&#39;t go that way&#34;],
+    &#34;which way&#34;: [&#34;_repl_error&#34;, &#34;Uh. Which way are you trying to go?&#34;],
 }</code></pre>
 </details>
 </section>

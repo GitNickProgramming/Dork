@@ -1,0 +1,907 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.6.3" />
+<title>dork.game_utils.factory_data API documentation</title>
+<meta name="description" content="data for factories" />
+<link href='https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css' rel='stylesheet'>
+<link href='https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/8.0.0/sanitize.min.css' rel='stylesheet'>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css" rel="stylesheet">
+<style>.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{font-weight:bold}#index h4 + ul{margin-bottom:.6em}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase;cursor:pointer}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>dork.game_utils.factory_data</code></h1>
+</header>
+<section id="section-intro">
+<p>data for factories</p>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">&#34;&#34;&#34;data for factories&#34;&#34;&#34;
+
+from random import randint
+
+DEFAULT_ROOMS = {&#34;Entrance&#34;: &#34;the beginning. Go explore!!!&#34;,
+                 &#34;End&#34;: &#34;the end of the maze. Congrats on \
+completing DORK!!!&#34;}
+
+ROOMS = [&#34; Cave &#34;,
+         &#34; Forest &#34;,
+         &#34; Cemetery &#34;,
+         &#34; Valley &#34;,
+         &#34; Troll Territory &#34;,
+         &#34; Mansion &#34;,
+         &#34; Mordor &#34;,
+         &#34; Ghost Town &#34;,
+         &#34; MSU Denver Campus &#34;,
+         &#34; Water Park &#34;,
+         &#34; Area 51 &#34;,
+         &#34; Restaurant &#34;,
+         &#34; Basketball Court &#34;,
+         &#34; Rat Tunnel &#34;,
+         &#34; Chicken Coup &#34;,
+         &#34; Tomb &#34;,
+         &#34; Haunted House &#34;,
+         &#34; Vandalized Store &#34;,
+         &#34; Jungle &#34;,
+         &#34; Desert &#34;,
+         &#34; Asylum &#34;,
+         &#34; Farm &#34;,
+         &#34; Amusement Park &#34;,
+         &#34; Movie Theater &#34;,
+         &#34; Mountain&#34;,
+         &#34; Blank &#34;,
+         &#34; Blankk &#34;,
+         &#34; Blankkk &#34;,
+         &#34; Blankkkk &#34;,
+         &#34; BBlank &#34;,
+         &#34; BBlankk &#34;,
+         &#34; BBlankkk &#34;,
+         &#34; BBlankkkk &#34;]
+
+DIRS = {&#34;north&#34;: &#34;south&#34;,
+        &#34;south&#34;: &#34;north&#34;,
+        &#34;east&#34;: &#34;west&#34;,
+        &#34;west&#34;: &#34;east&#34;}
+
+ADJ_ROOM_DESCRIPTIONS = {&#34;1&#34;: &#34;Also, this appears to be a dead end!&#34;,
+                         &#34;2&#34;: {0: &#34;From here, all directions seem to be \
+blocked, except&#34;,
+                               1: &#34;There is a strong smell coming from the&#34;,
+                               2: &#34;There seems to be a path leading to the&#34;,
+                               3: &#34;You hear something coming from the&#34;,
+                               4: &#34;Something tells you to go&#34;,
+                               5: &#34;You might be able to go&#34;,
+                               6: &#34;From here, it seems the direction \
+possibilites are&#34;,
+                               7: &#34;There appears to be something odd&#34;},
+                         &#34;3&#34;: {0: &#34;Three directions seem possible...&#34;,
+                               1: &#34;You hear a sound, but you can&#39;t \
+decide if it came from&#34;,
+                               2: &#34;This is getting tricky... It looks \
+like you can go&#34;,
+                               3: &#34;You can&#39;t decide whether to go&#34;,
+                               4: &#34;Confusion arises, the possibilities \
+of direction are&#34;},
+                         &#34;4&#34;: &#34;Looking around, you notice all directions \
+                             are possible, this could get confusing...&#34;}
+
+ROOM_INV_DESCRIPTIONS = {&#34;1&#34;: {0: &#34;but first, it looks like there are several\
+ items around here that you might be able to take.&#34;,
+                               1: &#34;but first, take a look around and see \
+what you can find.&#34;,
+                               2: &#34;before you leave this room, you might \
+wanna take a look around and see what you can find.&#34;,
+                               3: &#34;It might be a good idea to loot this \
+area before you leave&#34;},
+                         &#34;2&#34;: &#34;It doesn&#39;t look like there are many items \
+around here, might as well get going.&#34;,
+                         &#34;3&#34;: &#34;This room has no items!&#34;}
+
+FIRST_NAMES = [&#34;Stubby&#34;,
+               &#34;Borkl&#34;,
+               &#34;Trolly&#34;,
+               &#34;Bumble Bee&#34;,
+               &#34;Hurr Durr&#34;,
+               &#34;Spidey&#34;,
+               &#34;Doctor&#34;,
+               &#34;Mr.&#34;,
+               &#34;Mrs.&#34;,
+               &#34;Sir&#34;,
+               &#34;The Great&#34;,
+               &#34;Billy&#34;,
+               &#34;Bobby&#34;,
+               &#34;Smelly&#34;,
+               &#34;Yolanda&#34;,
+               &#34;Pepper de&#34;,
+               &#34;Squaty&#34;,
+               &#34;Giant&#34;,
+               &#34;Speedy&#34;,
+               &#34;Buzz&#34;,
+               &#34;Thicc&#34;,
+               &#34;Squeedly&#34;,
+               &#34;Lavender&#34;,
+               &#34;Willy&#34;,
+               &#34;Miles&#34;,
+               &#34;Slowpoke&#34;,
+               &#34;Oompa&#34;,
+               &#34;Boneless&#34;,
+               &#34;Mooshy&#34;,
+               &#34;Yertle&#34;,
+               &#34;Stinky&#34;,
+               &#34;Charlie&#34;,
+               &#34;Bender&#34;,
+               &#34;Droopy&#34;,
+               &#34;Piggish&#34;,
+               &#34;Lonely&#34;,
+               &#34;Norman&#34;,
+               &#34;Captain&#34;,
+               &#34;King&#34;,
+               &#34;Weird&#34;
+               ]
+
+LAST_NAMES = [&#34;Osborn&#34;,
+              &#34;Benjamin&#34;,
+              &#34;Sebastian&#34;,
+              &#34;Jacquelyn&#34;,
+              &#34;Brunhild&#34;,
+              &#34;Hildegard&#34;,
+              &#34;Gloriana&#34;,
+              &#34;Arthur&#34;,
+              &#34;Xalvador&#34;,
+              &#34;Borin&#34;,
+              &#34;Geoffrey&#34;,
+              &#34;William&#34;,
+              &#34;Charles&#34;,
+              &#34;Gregory&#34;,
+              &#34;Donald&#34;,
+              &#34;Amy&#34;,
+              &#34;Benedict&#34;,
+              &#34;Henry&#34;,
+              &#34;James&#34;,
+              &#34;Peter&#34;,
+              &#34;Griffin&#34;,
+              &#34;Zuckerberg&#34;,
+              &#34;Frederick&#34;,
+              &#34;Ronald&#34;,
+              &#34;Edmund&#34;,
+              &#34;Simon&#34;,
+              &#34;Oliver&#34;,
+              &#34;Walter&#34;,
+              &#34;Earl&#34;,
+              &#34;J.R.&#34;,
+              &#34;Brom&#34;,
+              &#34;Isabel&#34;,
+              &#34;Zach&#34;,
+              &#34;David&#34;,
+              &#34;Nick&#34;,
+              &#34;Devon&#34;,
+              &#34;Nicole&#34;,
+              &#34;Fernando&#34;,
+              &#34;Larsen&#34;,
+              &#34;Jimmy&#34;
+              ]
+
+ITEMS = {
+    &#34;condition&#34;: {
+        &#34;filler&#34;: [
+            &#34;ruined&#34;,
+            &#34;damaged&#34;,
+            &#34;burnt&#34;,
+            &#34;waterlogged&#34;,
+            &#34;derelict&#34;,
+            &#34;dusty&#34;,
+            &#34;rusty&#34;,
+            &#34;cobwebbed&#34;,
+            &#34;chewed&#34;,
+            &#34;mended&#34;,
+            &#34;dirty&#34;,
+            &#34;moldy&#34;,
+            &#34;chipped&#34;
+        ],
+        &#34;jewelry&#34;: [
+            &#34;crude&#34;,
+            &#34;rusty&#34;,
+            &#34;worn&#34;,
+            &#34;flawed&#34;,
+            &#34;filthy&#34;,
+            &#34;dirty&#34;,
+            &#34;mended&#34;,
+            &#34;adequate&#34;,
+            &#34;fair&#34;,
+            &#34;fine&#34;,
+            &#34;polished&#34;,
+            &#34;untouched&#34;,
+            &#34;pristine&#34;,
+            &#34;ornate&#34;
+        ],
+        &#34;magic consumables&#34;: [
+            &#34;petty&#34;,
+            &#34;lesser&#34;,
+            &#34;common&#34;,
+            &#34;greater&#34;,
+            &#34;grand&#34;
+        ],
+        &#34;magic items&#34;: [
+            &#34;petty&#34;,
+            &#34;lesser&#34;,
+            &#34;common&#34;,
+            &#34;greater&#34;,
+            &#34;grand&#34;
+        ],
+        &#34;usable&#34;: [
+            &#34;damaged&#34;,
+            &#34;ruined&#34;,
+            &#34;fragile&#34;,
+            &#34;decrepit&#34;,
+            &#34;crude&#34;,
+            &#34;rusty&#34;,
+            &#34;worn&#34;,
+            &#34;filthy&#34;,
+            &#34;dirty&#34;,
+            &#34;old&#34;,
+            &#34;etched&#34;,
+            &#34;carved&#34;,
+            &#34;adequate&#34;,
+            &#34;fair&#34;,
+            &#34;fine&#34;,
+            &#34;pristine&#34;
+        ]
+    },
+    &#34;material&#34;: {
+        &#34;armor&#34;: [
+            &#34;bone&#34;,
+            &#34;dragonscale&#34;,
+            &#34;hide&#34;,
+            &#34;iron&#34;,
+            &#34;steel&#34;,
+            &#34;leather&#34;,
+            &#34;plate&#34;,
+            &#34;mail&#34;
+        ],
+        &#34;jewelry&#34;: [
+            &#34;bone&#34;,
+            &#34;gold&#34;,
+            &#34;silver&#34;,
+            &#34;onyx&#34;,
+            &#34;obsidian&#34;,
+            &#34;amethyst&#34;,
+            &#34;emerald&#34;,
+            &#34;ruby&#34;,
+            &#34;jade&#34;,
+            &#34;turquoise&#34;,
+            &#34;ivory&#34;,
+            &#34;bronze&#34;,
+            &#34;copper&#34;,
+            &#34;meteorite&#34;,
+            &#34;adamantine&#34;
+        ],
+        &#34;magic items&#34;: [
+            &#34;bone&#34;,
+            &#34;gold&#34;,
+            &#34;silver&#34;,
+            &#34;onyx&#34;,
+            &#34;obsidian&#34;,
+            &#34;amethyst&#34;,
+            &#34;emerald&#34;,
+            &#34;ruby&#34;,
+            &#34;jade&#34;,
+            &#34;turquoise&#34;,
+            &#34;ivory&#34;,
+            &#34;bronze&#34;,
+            &#34;copper&#34;,
+            &#34;meteorite&#34;,
+            &#34;adamantine&#34;
+        ],
+        &#34;weapon&#34;: [
+            &#34;bone&#34;,
+            &#34;iron&#34;,
+            &#34;steel&#34;,
+            &#34;glass&#34;,
+            &#34;golden&#34;,
+            &#34;silver&#34;,
+            &#34;bronze&#34;,
+            &#34;meteorite&#34;,
+            &#34;adamantine&#34;
+        ]
+    },
+    &#34;types&#34;: {
+        &#34;armor&#34;: [
+            &#34;bascinet&#34;,
+            &#34;helm&#34;,
+            &#34;hood&#34;,
+            &#34;gorget&#34;,
+            &#34;morion&#34;,
+            &#34;brigandine&#34;,
+            &#34;gambeson&#34;,
+            &#34;cuirass&#34;,
+            &#34;vest&#34;,
+            &#34;pauldrons&#34;,
+            &#34;spaulders&#34;,
+            &#34;vambrace&#34;,
+            &#34;cloak&#34;,
+            &#34;greaves&#34;,
+            &#34;gauntlets&#34;,
+            &#34;gloves&#34;
+        ],
+        &#34;filler&#34;: [
+            &#34;chains&#34;,
+            &#34;urn&#34;,
+            &#34;crate&#34;,
+            &#34;pottery&#34;,
+            &#34;chair&#34;,
+            &#34;stool&#34;,
+            &#34;pail&#34;,
+            &#34;beaker&#34;,
+            &#34;alembic&#34;,
+            &#34;cauldron&#34;,
+            &#34;bowl&#34;,
+            &#34;decanter&#34;,
+            &#34;bedroll&#34;,
+            &#34;blanket&#34;,
+            &#34;mortar&#34;,
+            &#34;pestle&#34;,
+            &#34;rope&#34;,
+            &#34;funnel&#34;,
+            &#34;cup&#34;,
+            &#34;pot&#34;,
+            &#34;cuffs&#34;,
+            &#34;rags&#34;,
+            &#34;parchment&#34;,
+            &#34;teeth&#34;,
+            &#34;bones&#34;,
+            &#34;dust&#34;,
+            &#34;book&#34;,
+            &#34;journal&#34;,
+            &#34;charcoal&#34;,
+            &#34;note&#34;,
+            &#34;incense&#34;,
+            &#34;lamp&#34;,
+            &#34;candle&#34;,
+            &#34;lantern&#34;,
+            &#34;torch&#34;
+        ],
+        &#34;jewelry&#34;: [
+            &#34;ring&#34;,
+            &#34;amulet&#34;,
+            &#34;circlet&#34;,
+            &#34;talisman&#34;
+        ],
+        &#34;magic consumables&#34;: [
+            &#34;potion&#34;,
+            &#34;philter&#34;,
+            &#34;scroll&#34;,
+            &#34;tome&#34;
+        ],
+        &#34;magic items&#34;: [
+            &#34;dust&#34;,
+            &#34;gem&#34;,
+            &#34;orb&#34;,
+            &#34;magestone&#34;,
+            &#34;shard&#34;,
+            &#34;horn&#34;
+        ],
+        &#34;weapon&#34;: [
+            &#34;longsword&#34;,
+            &#34;staff&#34;,
+            &#34;longbow&#34;,
+            &#34;recurve bow&#34;,
+            &#34;war hammer&#34;,
+            &#34;halberd&#34;,
+            &#34;spear&#34;,
+            &#34;battle axe&#34;,
+            &#34;glaive&#34;,
+            &#34;scythe&#34;,
+            &#34;shortsword&#34;,
+            &#34;blade&#34;,
+            &#34;falchion&#34;,
+            &#34;dagger&#34;,
+            &#34;mace&#34;,
+            &#34;crossbow&#34;,
+            &#34;scimitar&#34;,
+            &#34;club&#34;,
+            &#34;morning star&#34;
+        ]
+    }
+}
+
+NAMES = {
+    &#34;abstract&#34;: [
+        &#34;of blooding&#34;,
+        &#34;of humiliation&#34;,
+        &#34;of hubris&#34;,
+        &#34;of the hunt&#34;,
+        &#34;of spite&#34;,
+        &#34;of death&#34;,
+        &#34;of life&#34;,
+        &#34;of regret&#34;,
+        &#34;of dread&#34;,
+        &#34;of sorrow&#34;,
+        &#34;of screams&#34;,
+        &#34;of lust&#34;,
+        &#34;of carving&#34;,
+        &#34;of surprise&#34;,
+        &#34;of confusion&#34;,
+        &#34;of frenzy&#34;,
+        &#34;of breaking&#34;,
+        &#34;of loathing&#34;,
+        &#34;of sickness&#34;,
+        &#34;of poisons&#34;,
+        &#34;of tragedy&#34;,
+        &#34;of souls&#34;,
+        &#34;of rotting&#34;,
+        &#34;of governing&#34;,
+        &#34;of ecstasy&#34;,
+        &#34;of torpor&#34;,
+        &#34;of truth&#34;,
+        &#34;of lies&#34;,
+        &#34;of victory&#34;,
+        &#34;of ambition&#34;,
+        &#34;of vengeance&#34;,
+        &#34;of somnolence&#34;,
+        &#34;of joy&#34;,
+        &#34;of the heretic&#34;,
+        &#34;of the prophet&#34;,
+        &#34;of corruption&#34;,
+        &#34;of erosion&#34;,
+        &#34;of jubilance&#34;,
+        &#34;of merit&#34;,
+        &#34;of witching&#34;,
+        &#34;of burdens&#34;,
+        &#34;of honor&#34;,
+        &#34;of repulsion&#34;,
+        &#34;of reckoning&#34;,
+        &#34;of mourning&#34;,
+        &#34;of grieving&#34;,
+        &#34;of judgement&#34;,
+        &#34;of battering&#34;,
+        &#34;of the night&#34;,
+        &#34;of the stars&#34;,
+        &#34;of the dawn&#34;,
+        &#34;of the dusk&#34;,
+        &#34;of the morning&#34;,
+        &#34;of hell&#34;,
+        &#34;of starlight&#34;,
+        &#34;of scorching&#34;,
+        &#34;of smite&#34;,
+        &#34;of waning&#34;,
+        &#34;of smiting&#34;,
+        &#34;of diffusion&#34;,
+        &#34;of mummification&#34;,
+        &#34;of crushing&#34;,
+        &#34;of extraction&#34;,
+        &#34;of valor&#34;,
+        &#34;of fear&#34;,
+        &#34;of firestorms&#34;,
+        &#34;of icestorms&#34;,
+        &#34;of ice&#34;,
+        &#34;of thunder&#34;,
+        &#34;of lightning&#34;,
+        &#34;of hatred&#34;,
+        &#34;of terror&#34;,
+        &#34;of ruin&#34;,
+        &#34;of ruining&#34;,
+        &#34;of fury&#34;,
+        &#34;of disgust&#34;,
+        &#34;of friendship&#34;,
+        &#34;of calming&#34;,
+        &#34;of shame&#34;,
+        &#34;of pity&#34;,
+        &#34;of envy&#34;,
+        &#34;of suffering&#34;,
+        &#34;of weeping&#34;,
+        &#34;of disdain&#34;,
+        &#34;of putrification&#34;,
+        &#34;of contempt&#34;,
+        &#34;of mediocrity&#34;,
+        &#34;of misery&#34;,
+        &#34;of thorns&#34;,
+        &#34;of light&#34;,
+        &#34;of dark&#34;,
+        &#34;of darkness&#34;,
+        &#34;of dawn&#34;,
+        &#34;of dusk&#34;,
+        &#34;of herecy&#34;,
+        &#34;of twilight&#34;,
+        &#34;of maleficence&#34;,
+        &#34;of brutality&#34;,
+        &#34;of savagery&#34;,
+        &#34;of malice&#34;,
+        &#34;of quickening&#34;,
+        &#34;of grace&#34;,
+        &#34;of disintegration&#34;,
+        &#34;of disintegrating&#34;,
+        &#34;of embalming&#34;,
+        &#34;of destruction&#34;,
+        &#34;of exsanguination&#34;
+    ],
+    &#34;adjectives&#34;: [
+        &#34;ghastly&#34;,
+        &#34;addictive&#34;,
+        &#34;gilded&#34;,
+        &#34;beautiful&#34;,
+        &#34;valorous&#34;,
+        &#34;ancient&#34;,
+        &#34;magnificent&#34;,
+        &#34;strange&#34;,
+        &#34;dreaded&#34;,
+        &#34;fearful&#34;,
+        &#34;splendid&#34;,
+        &#34;horrible&#34;,
+        &#34;luminous&#34;,
+        &#34;furious&#34;,
+        &#34;shameful&#34;,
+        &#34;friendly&#34;,
+        &#34;piteous&#34;,
+        &#34;weeping&#34;,
+        &#34;splendiferous&#34;,
+        &#34;loathsome&#34;,
+        &#34;blunderous&#34;,
+        &#34;magnetic&#34;,
+        &#34;electric&#34;,
+        &#34;burning&#34;,
+        &#34;brutal&#34;,
+        &#34;savage&#34;,
+        &#34;graceful&#34;,
+        &#34;volcanic&#34;,
+        &#34;uncanny&#34;,
+        &#34;spectral&#34;,
+        &#34;sinister&#34;,
+        &#34;ornate&#34;,
+        &#34;bloody&#34;,
+        &#34;ashen&#34;,
+        &#34;gleaming&#34;,
+        &#34;glittering&#34;,
+        &#34;eldritch&#34;,
+        &#34;eerie&#34;,
+        &#34;elegant&#34;,
+        &#34;exquisite&#34;,
+        &#34;munificent&#34;,
+        &#34;ineffable&#34;,
+        &#34;mirthful&#34;,
+        &#34;noxious&#34;,
+        &#34;nefarious&#34;,
+        &#34;repulsive&#34;,
+        &#34;freakish&#34;,
+        &#34;bewitched&#34;,
+        &#34;repugnant&#34;,
+        &#34;exotic&#34;,
+        &#34;burdensome&#34;,
+        &#34;vigilant&#34;,
+        &#34;bewildering&#34;,
+        &#34;chosen&#34;,
+        &#34;dazzling&#34;,
+        &#34;dusky&#34;,
+        &#34;putrid&#34;,
+        &#34;unpleasant&#34;,
+        &#34;bizarre&#34;,
+        &#34;frenzied&#34;,
+        &#34;stormy&#34;,
+        &#34;erosive&#34;,
+        &#34;vengeful&#34;,
+        &#34;somnolent&#34;,
+        &#34;opulent&#34;,
+        &#34;lustrous&#34;,
+        &#34;hideous&#34;,
+        &#34;insideous&#34;,
+        &#34;spiteful&#34;,
+        &#34;ugly&#34;,
+        &#34;thorny&#34;,
+        &#34;barbed&#34;,
+        &#34;ghoulish&#34;,
+        &#34;soulless&#34;,
+        &#34;corrupted&#34;,
+        &#34;envious&#34;,
+        &#34;grotesque&#34;,
+        &#34;weeping&#34;
+    ],
+    &#34;nonposessive&#34;: [
+        &#34;doom&#34;,
+        &#34;death&#34;,
+        &#34;hate&#34;,
+        &#34;fear&#34;,
+        &#34;soul&#34;,
+        &#34;sky&#34;,
+        &#34;mind&#34;,
+        &#34;god&#34;,
+        &#34;star&#34;,
+        &#34;shadow&#34;,
+        &#34;sun&#34;,
+        &#34;moon&#34;,
+        &#34;storm&#34;
+    ],
+    &#34;posessive&#34;: [
+        &#34;wolf&#34;,
+        &#34;troll&#34;,
+        &#34;goliath&#34;,
+        &#34;raven&#34;,
+        &#34;dragon&#34;,
+        &#34;crow&#34;,
+        &#34;widow&#34;,
+        &#34;wraith&#34;,
+        &#34;heart&#34;
+    ],
+    &#34;suffixes&#34;: [
+        &#34;sbane&#34;,
+        &#34;ripper&#34;,
+        &#34;eater&#34;,
+        &#34;stealer&#34;,
+        &#34;absorber&#34;,
+        &#34;shredder&#34;,
+        &#34;bruiser&#34;,
+        &#34;seer&#34;,
+        &#34;destroyer&#34;,
+        &#34;killer&#34;,
+        &#34;purger&#34;,
+        &#34;bearer&#34;,
+        &#34;corrupter&#34;,
+        &#34;preacher&#34;,
+        &#34;defier&#34;,
+        &#34;husher&#34;,
+        &#34;defiler&#34;,
+        &#34;dredger&#34;,
+        &#34;mutilator&#34;,
+        &#34;adder&#34;,
+        &#34;breaker&#34;,
+        &#34;scorcher&#34;,
+        &#34;maker&#34;,
+        &#34;bringer&#34;,
+        &#34;slayer&#34;
+    ]
+}
+
+SEQUENCE = {
+    &#34;jewelry&#34;: {
+        &#34;seq&#34;: [
+            [ITEMS[&#34;condition&#34;], ITEMS[&#34;material&#34;], &#34;&#34;],
+            [NAMES[&#34;adjectives&#34;], ITEMS[&#34;material&#34;], &#34;&#34;],
+            [ITEMS[&#34;condition&#34;], ITEMS[&#34;material&#34;], &#34;&#34;, NAMES[&#34;abstract&#34;]],
+            [NAMES[&#34;adjectives&#34;], &#34;&#34;, NAMES[&#34;abstract&#34;]]
+        ],
+        &#34;w&#34;: [15, 6, 3, 1]
+    },
+    &#34;magic items&#34;: {
+        &#34;seq&#34;: [
+            [ITEMS[&#34;condition&#34;], ITEMS[&#34;material&#34;], &#34;&#34;],
+            [NAMES[&#34;adjectives&#34;], ITEMS[&#34;material&#34;], &#34;&#34;],
+            [ITEMS[&#34;condition&#34;], ITEMS[&#34;material&#34;], &#34;&#34;, NAMES[&#34;abstract&#34;]],
+            [NAMES[&#34;adjectives&#34;], &#34;&#34;, NAMES[&#34;abstract&#34;]]
+        ],
+        &#34;w&#34;: [15, 6, 3, 1]
+    },
+    &#34;magic consumables&#34;: {
+        &#34;seq&#34;: [
+            [ITEMS[&#34;condition&#34;], &#34;&#34;, NAMES[&#34;abstract&#34;]],
+            [NAMES[&#34;adjectives&#34;], &#34;&#34;, NAMES[&#34;abstract&#34;]],
+        ],
+        &#34;w&#34;: [3, 1]
+    },
+    &#34;weapon&#34;: {
+        &#34;seq&#34;: [
+            [ITEMS[&#34;condition&#34;], ITEMS[&#34;material&#34;], &#34;&#34;],
+            [NAMES[&#34;adjectives&#34;], &#34;&#34;],
+            [ITEMS[&#34;condition&#34;], ITEMS[&#34;material&#34;], &#34;&#34;, NAMES[&#34;abstract&#34;]],
+            [NAMES[&#34;adjectives&#34;], &#34;&#34;, NAMES[&#34;abstract&#34;]],
+            [NAMES[&#34;nonposessive&#34;], NAMES[&#34;suffixes&#34;]],
+            [NAMES[&#34;posessive&#34;], NAMES[&#34;suffixes&#34;]],
+        ],
+        &#34;w&#34;: [20, 15, 12, 10, 6, 5]
+    },
+    &#34;armor&#34;: {
+        &#34;seq&#34;: [
+            [ITEMS[&#34;condition&#34;], ITEMS[&#34;material&#34;], &#34;&#34;],
+            [NAMES[&#34;adjectives&#34;], &#34;&#34;],
+            [ITEMS[&#34;condition&#34;], ITEMS[&#34;material&#34;], &#34;&#34;, NAMES[&#34;abstract&#34;]],
+            [NAMES[&#34;adjectives&#34;], &#34;&#34;, NAMES[&#34;abstract&#34;]],
+        ],
+        &#34;w&#34;: [10, 6, 3, 1]
+    },
+    &#34;filler&#34;: {
+        &#34;seq&#34;: [[ITEMS[&#34;condition&#34;], &#34;&#34;]],
+        &#34;w&#34;: [1]
+    }
+}
+
+MOVES = [
+    [(0, 2), (0, 1)], [(0, -2), (0, -1)],
+    [(2, 0), (1, 0)], [(-2, 0), (-1, 0)]
+]
+
+
+def rules(wall, path):
+    &#34;&#34;&#34;rules for neighbor checking during maze generation&#34;&#34;&#34;
+
+    return [
+        [wall, wall, wall, path],
+        [wall, wall, path, wall],
+        [wall, path, wall, wall],
+        [path, wall, wall, wall],
+        [path, path, path, wall],
+        [path, path, wall, path],
+        [path, wall, path, path],
+        [wall, path, path, path],
+        [path, path, path, path],
+        [path, wall, path, wall],
+        [path, wall, wall, path],
+        [wall, path, path, wall],
+        [wall, path, wall, path]
+    ]
+
+
+def stats(item_type):
+    &#34;&#34;&#34;item type-specific stats&#34;&#34;&#34;
+
+    item_type = item_type.split()[0]
+
+    attack = {
+        &#34;weapon&#34;: randint(10, 30),
+        &#34;magic&#34;: randint(15, 50),
+        &#34;legendary&#34;: randint(60, 120),
+    }.get(item_type, None)
+
+    amount = {
+        &#34;magic&#34;: randint(3, 12)
+    }.get(item_type, 1)
+
+    strength = {
+        &#34;armor&#34;: randint(10, 30),
+        &#34;jewelry&#34;: randint(-1, 10),
+        &#34;magic&#34;: randint(5, 15),
+    }.get(item_type, None)
+
+    weight = {
+        &#34;weapon&#34;: randint(5, 20),
+        &#34;armor&#34;: randint(15, 40),
+        &#34;filler&#34;: randint(5, 25),
+        &#34;magic&#34;: randint(2, 7),
+        &#34;legendary&#34;: randint(5, 15),
+    }.get(item_type, 0)
+
+    luck = {
+        &#34;jewelry&#34;: randint(-4, 4),
+        &#34;filler&#34;: randint(-50, 0),
+        &#34;legendary&#34;: randint(20, 80)
+    }.get(item_type, randint(-10, 10))
+
+    equipable = {
+        &#34;filler&#34;: False
+    }.get(item_type, True)
+
+    return {
+        &#34;attack&#34;: attack,
+        &#34;amount&#34;: amount,
+        &#34;strength&#34;: strength,
+        &#34;weight&#34;: weight,
+        &#34;luck&#34;: luck,
+        &#34;equipable&#34;: equipable
+    }</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-functions">Functions</h2>
+<dl>
+<dt id="dork.game_utils.factory_data.rules"><code class="name flex">
+<span>def <span class="ident">rules</span></span>(<span>wall, path)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>rules for neighbor checking during maze generation</p></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def rules(wall, path):
+    &#34;&#34;&#34;rules for neighbor checking during maze generation&#34;&#34;&#34;
+
+    return [
+        [wall, wall, wall, path],
+        [wall, wall, path, wall],
+        [wall, path, wall, wall],
+        [path, wall, wall, wall],
+        [path, path, path, wall],
+        [path, path, wall, path],
+        [path, wall, path, path],
+        [wall, path, path, path],
+        [path, path, path, path],
+        [path, wall, path, wall],
+        [path, wall, wall, path],
+        [wall, path, path, wall],
+        [wall, path, wall, path]
+    ]</code></pre>
+</details>
+</dd>
+<dt id="dork.game_utils.factory_data.stats"><code class="name flex">
+<span>def <span class="ident">stats</span></span>(<span>item_type)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>item type-specific stats</p></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def stats(item_type):
+    &#34;&#34;&#34;item type-specific stats&#34;&#34;&#34;
+
+    item_type = item_type.split()[0]
+
+    attack = {
+        &#34;weapon&#34;: randint(10, 30),
+        &#34;magic&#34;: randint(15, 50),
+        &#34;legendary&#34;: randint(60, 120),
+    }.get(item_type, None)
+
+    amount = {
+        &#34;magic&#34;: randint(3, 12)
+    }.get(item_type, 1)
+
+    strength = {
+        &#34;armor&#34;: randint(10, 30),
+        &#34;jewelry&#34;: randint(-1, 10),
+        &#34;magic&#34;: randint(5, 15),
+    }.get(item_type, None)
+
+    weight = {
+        &#34;weapon&#34;: randint(5, 20),
+        &#34;armor&#34;: randint(15, 40),
+        &#34;filler&#34;: randint(5, 25),
+        &#34;magic&#34;: randint(2, 7),
+        &#34;legendary&#34;: randint(5, 15),
+    }.get(item_type, 0)
+
+    luck = {
+        &#34;jewelry&#34;: randint(-4, 4),
+        &#34;filler&#34;: randint(-50, 0),
+        &#34;legendary&#34;: randint(20, 80)
+    }.get(item_type, randint(-10, 10))
+
+    equipable = {
+        &#34;filler&#34;: False
+    }.get(item_type, True)
+
+    return {
+        &#34;attack&#34;: attack,
+        &#34;amount&#34;: amount,
+        &#34;strength&#34;: strength,
+        &#34;weight&#34;: weight,
+        &#34;luck&#34;: luck,
+        &#34;equipable&#34;: equipable
+    }</code></pre>
+</details>
+</dd>
+</dl>
+</section>
+<section>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="dork.game_utils" href="index.html">dork.game_utils</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-functions">Functions</a></h3>
+<ul class="">
+<li><code><a title="dork.game_utils.factory_data.rules" href="#dork.game_utils.factory_data.rules">rules</a></code></li>
+<li><code><a title="dork.game_utils.factory_data.stats" href="#dork.game_utils.factory_data.stats">stats</a></code></li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.6.3</a>.</p>
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad()</script>
+</body>
+</html>

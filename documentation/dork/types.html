@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
 <meta name="generator" content="pdoc 0.6.3" />
 <title>dork.types API documentation</title>
-<meta name="description" content="Basic entity classes and methods for Dork." />
+<meta name="description" content="Base types for the Dork game" />
 <link href='https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css' rel='stylesheet'>
 <link href='https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/8.0.0/sanitize.min.css' rel='stylesheet'>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css" rel="stylesheet">
@@ -20,207 +20,637 @@
 <h1 class="title">Module <code>dork.types</code></h1>
 </header>
 <section id="section-intro">
-<p>Basic entity classes and methods for Dork.</p>
+<p>Base types for the Dork game</p>
 <details class="source">
 <summary>Source code</summary>
-<pre><code class="python"># -*- coding: utf-8 -*-
-&#34;&#34;&#34;Basic entity classes and methods for Dork.
-&#34;&#34;&#34;
-# from pprint import pprint
-import dork.game_utils.world_loader as world_loader
+<pre><code class="python">&#34;&#34;&#34;Base types for the Dork game&#34;&#34;&#34;
+# -*- coding: utf-8 -*-
+from abc import ABC, abstractmethod
+import os
+from copy import deepcopy
+from random import choices, choice, randint, shuffle, randrange
+from operator import add
+from inspect import getfullargspec as argspec
+import yaml
+import matplotlib.pyplot as plt
+from numpy import full as npf
+import dork.game_utils.factory_data as factory_data
+# pylint: disable=protected-access
 
 
-__all__ = [&#34;Game&#34;]
+class Grandparent:
+    &#34;&#34;&#34;common parent of holder, adjacent, and coord&#34;&#34;&#34;
 
 
-class Holder:
-    &#34;&#34;&#34;A holder/container of items
-    &#34;&#34;&#34;
+class Holder(Grandparent):
+    &#34;&#34;&#34;A holder/container of items&#34;&#34;&#34;
 
     def __init__(self):
-        self.items = dict()
+        super().__init__()
+        self.inventory = dict
+
+    def get_items(self, caller, verbose):
+        &#34;&#34;&#34;Print all inventory items&#34;&#34;&#34;
+
+        if self.inventory:
+            out = f&#34;\n    inventory:&#34;
+        else:
+            out = f&#34;There&#39;s nothing here.&#34;
+
+        if verbose:
+            return out + Game._verbose_print(caller.data[&#34;inventory&#34;])
+        return out + Game._brief_print(caller.data[&#34;inventory&#34;])
 
 
-class Item:
-    &#34;&#34;&#34;A obtainable/holdable item
-    &#34;&#34;&#34;
+class Stats:
+    &#34;&#34;&#34;stats for items&#34;&#34;&#34;
 
     def __init__(self):
-        self.name = None
-        self.description = None
-        self.stats = dict()
+        self.data = dict
+        self.attack = int
+        self.strength = int
+        self.weight = int
+        self.luck = int
+        self.equipable = bool
+
+
+class Item(Stats):
+    &#34;&#34;&#34;An obtainable/usable item&#34;&#34;&#34;
+
+    def __init__(self):
+        super().__init__()
+        self.data = dict
+        self.name = str
+        self.description = str
+        self.type = str
+        self.usable = NotUsable
 
     def make(self, item):
         &#34;&#34;&#34;Make an item
         &#34;&#34;&#34;
         self.name = item[&#34;name&#34;]
         self.description = item[&#34;description&#34;]
-        self.stats = item[&#34;stats&#34;]
+        self.type = item[&#34;type&#34;]
+        if not isinstance(self.type, str) or self.type is None:
+            self.usable = NotUsable
+        elif len(self.type) &gt; 1:
+            self.set_usable(self.type)
+        else:
+            self.usable = NotUsable
+
+    def set_usable(self, new_use):
+        &#34;&#34;&#34;This method changes the use behavior,
+        provide usable class as argument&#34;&#34;&#34;
+        uses = {&#34;filler&#34;: NotUsable,
+                &#34;weapon&#34;: Attackable,
+                &#34;key&#34;: Openable,
+                &#34;gold&#34;: Payable,
+                &#34;magic items&#34;: Statable,
+                &#34;jewelry&#34;: Statable,
+                &#34;armor&#34;: Statable,
+                &#34;magic consumables&#34;: Statable}
+        if new_use is None or new_use not in uses:
+            self.usable = NotUsable
+        else:
+            self.usable = uses[new_use]
+
+    def use(self, target, name):
+        &#34;&#34;&#34;Strategy pattern call&#34;&#34;&#34;
+        self.usable.use(target, name)
+
+
+class Usable(ABC):
+    &#34;&#34;&#34;Abstract class of use behavior in items use method&#34;&#34;&#34;
+
+    @staticmethod
+    @abstractmethod
+    def use(target, name):
+        &#34;&#34;&#34;Strategy pattern inspired by refactoring.guru
+        use method defaults to doing nothing&#34;&#34;&#34;
+
+
+class Attackable(Usable):
+    &#34;&#34;&#34;Any object that can be swung will say it was swung&#34;&#34;&#34;
+
+    @staticmethod
+    def use(target, name):
+        &#34;&#34;&#34;Swing use method&#34;&#34;&#34;
+        print(&#34;You swing the &#34; + name + &#34; at &#34; + target)
+
+
+class NotUsable(Usable):
+    &#34;&#34;&#34;Any object that cannot be used&#34;&#34;&#34;
+
+    @staticmethod
+    def use(target, name):
+        &#34;&#34;&#34;Useless use method&#34;&#34;&#34;
+        print(&#34;You find no use of this item&#34;)
+
+
+class Openable(Usable):
+    &#34;&#34;&#34;Object opening behavior class&#34;&#34;&#34;
+
+    @staticmethod
+    def use(target, name):
+        &#34;&#34;&#34;Opens object targeted if possible&#34;&#34;&#34;
+        print(&#34;You insert the &#34; + name + &#34; into &#34; + target)
+
+
+class Payable(Usable):
+    &#34;&#34;&#34;Any object that can be used as gold&#34;&#34;&#34;
+
+    @staticmethod
+    def use(target, name):
+        &#34;&#34;&#34;Gold use method&#34;&#34;&#34;
+        print(&#34;You use the &#34; + name + &#34; to pay &#34; + target)
+
+
+class Statable(Usable):
+    &#34;&#34;&#34;Any object that can change stats&#34;&#34;&#34;
+
+    @staticmethod
+    def use(target, name):
+        &#34;&#34;&#34;Stat change use method&#34;&#34;&#34;
+        print(&#34;The &#34; + name + &#34; takes effect on &#34; + target)
+
+
+class Adjacent(Grandparent):
+    &#34;&#34;&#34;adjacency object for rooms&#34;&#34;&#34;
+
+    def __init__(self):
+        super().__init__()
+        self.north = str
+        self.south = str
+        self.east = str
+        self.west = str
+
+
+class Coord(Grandparent):
+    &#34;&#34;&#34;coordinate object for rooms&#34;&#34;&#34;
+
+    def __init__(self):
+        super().__init__()
+        self.x = int
+        self.y = int
 
 
 class Player(Holder):
-    &#34;&#34;&#34;A player or NPC in the game
-    &#34;&#34;&#34;
+    &#34;&#34;&#34;A player or npc in the game&#34;&#34;&#34;
+
+    instances = []
 
     def __init__(self):
         super().__init__()
-        self.name = None
-        self.location = Room()
-        self.equipped = None
+        self.data = dict
+        self.name = str
+        self.description = str
+        self.location = Room
+        self.equipped = list
 
-    def make(self, player):
-        &#34;&#34;&#34;Make a player
-        &#34;&#34;&#34;
-        self.name = player[&#34;name&#34;]
-        self.equipped = player[&#34;equipped&#34;]
-        inventory = player[&#34;inventory&#34;]
-        for item in inventory:
-            if item is not None:
-                new_item = Item()
-                new_item.make(inventory[item])
-                self.items[new_item.name] = new_item
+    def _new_instance(self):
+        self.instances.append(self)
 
-    def set_location(self, location):
-        &#34;&#34;&#34;Set player&#39;s location
-        &#34;&#34;&#34;
-        self.location = location
+    def move(self, cardinal, maze):
+        &#34;&#34;&#34;walk this way&#34;&#34;&#34;
 
-    def get_location(self):
-        &#34;&#34;&#34;Get Player&#39;s location
-        &#34;&#34;&#34;
-        return self.location
+        adjacent_room = getattr(self.location, cardinal)
+
+        if not adjacent_room:
+            out = f&#34;You cannot go {cardinal} from here.&#34;
+        else:
+            maze[self.location.x][self.location.y] = MazeFactory.room_color
+
+            adjacent_room.data[&#34;players&#34;][self.name] = \
+                self.location.data[&#34;players&#34;].pop(self.name)
+            self.location = adjacent_room
+            maze[self.location.x][self.location.y] = MazeFactory.player_color
+
+            out = &#34;You have entered &#34; + self.location.description
+            MazeFactory.update(maze)
+        return out
 
 
-class Room(Holder):
-    &#34;&#34;&#34;A room on the map
-    &#34;&#34;&#34;
+class Room(Adjacent, Coord, Holder):
+    &#34;&#34;&#34;A room on the worldmap&#34;&#34;&#34;
+    # pylint: disable=too-many-instance-attributes
+
+    instances = []
 
     def __init__(self):
         super().__init__()
-        self.name = None
-        self.description = None
-        self.adjacent = dict()
-        self.players = list()
-        self.clues = dict()
+        self.name = str
+        self.data = dict
+        self.description = str
+        self.players = dict
 
-    def make(self, room, players):
-        &#34;&#34;&#34;Make a room
-        &#34;&#34;&#34;
-        self.name = room[&#34;name&#34;]
-        self.description = room[&#34;description&#34;]
-        self.adjacent = room[&#34;adjacent&#34;]
-        self.clues = room[&#34;clues&#34;]
-        items = room[&#34;items&#34;]
-        for item in items:
-            new_item = Item()
-            new_item.make(items[item])
-            self.items[new_item.name] = new_item
-        for player in players:
-            if players[player].name in room[&#34;players&#34;]:
-                self.players.append(players[player])
-                players[player].location = self
+    def _new_instance(self):
+        self.instances.append(self)
 
 
-class Worldmap:
-    &#34;&#34;&#34;A map relating the rooms connectivity
-        as well as the players/items within
-    &#34;&#34;&#34;
+class Gamebuilder:
+    &#34;&#34;&#34;Build an instance of Game&#34;&#34;&#34;
 
-    def __init__(self):
-        self.rooms = dict()
-        self.players = dict()
+    @classmethod
+    def build(cls, player_name):
+        &#34;&#34;&#34;Instantiate a game of Dork from dictionary&#34;&#34;&#34;
+
+        data = cls.load_game(player_name)
+
+        if not data:
+            data = MazeFactory.build()
+
+            hero_data = {
+                &#34;name&#34;: player_name,
+                &#34;description&#34;: &#34;the hero of dork!&#34;,
+                &#34;location&#34;: &#34;Entrance&#34;,
+                &#34;inventory&#34;: {},
+                &#34;equipped&#34;: []
+            }
+
+            data[&#34;rooms&#34;][&#34;room 0&#34;][&#34;players&#34;][player_name] = hero_data
+
+        game = cls._instantiate(Game, **data)
+        setattr(game, &#34;maze&#34;, data[&#34;maze&#34;])
+        setattr(game, &#34;rooms&#34;, cls._make_rooms(deepcopy(data[&#34;rooms&#34;])))
+
+        cls._get_adj_description(game)
+        cls._get_room_inv_description(game)
+
+        cls._place_players(game)
+        cls._make_paths(game)
+
+        for player in Player.instances:
+            if player.name == player_name:
+                hero = player
+
+        game.hero = hero
+        game.maze[hero.location.x][hero.location.y] = MazeFactory.player_color
+        return game
+
+    @classmethod
+    def _get_room_inv_description(cls, worldmapp):
+        worldmap = worldmapp.rooms
+        worldmap_length = len(worldmap)
+        iterator = 0
+        for rooms in worldmap:
+            if iterator != worldmap_length - 1:
+                inv_list = worldmap[rooms].inventory
+                num = len(inv_list)
+                if num &gt;= 2:
+                    rand_ind = randrange(4)
+                    first_desc = worldmap[rooms].description + &#34;\n&#34;
+                    desc = factory_data.ROOM_INV_DESCRIPTIONS[&#34;1&#34;][rand_ind]
+                    worldmap[rooms].description = first_desc+desc
+                elif num == 1:
+                    first_desc = worldmap[rooms].description + &#34;\n&#34;
+                    desc = factory_data.ROOM_INV_DESCRIPTIONS[&#34;2&#34;]
+                    worldmap[rooms].description = first_desc+desc
+                elif num == 0:
+                    first_desc = worldmap[rooms].description + &#34;\n&#34;
+                    desc = factory_data.ROOM_INV_DESCRIPTIONS[&#34;3&#34;]
+                    worldmap[rooms].description = first_desc+desc
+            iterator += 1
+        return 0
+
+    @classmethod
+    def _get_adj_description(cls, worldmapp):
+
+        worldmap = worldmapp.rooms
+
+        for rooms in worldmap:
+            desc = &#34;&#34;
+            adj_list = list()
+            adj_possibilities = {&#34;north&#34;, &#34;east&#34;, &#34;south&#34;, &#34;west&#34;}
+            for pos in adj_possibilities:
+                if worldmap[rooms].data[&#34;adjacent&#34;][pos] is not None:
+                    adj_list.append(pos)
+
+            adj_string = &#34;&#34;
+            for adj in adj_list:
+                if adj_list[0] == adj:
+                    adj_string += &#34; &#34;+adj
+                else:
+                    adj_string += &#34;, &#34;+adj
+            adj_string += &#34;...&#34;
+
+            if((len(adj_list) == 1)
+               and rooms != &#34;room 0&#34; and rooms != &#34;room &#34;+str(len(worldmap))):
+                desc = factory_data.ADJ_ROOM_DESCRIPTIONS[&#34;1&#34;]
+            elif len(adj_list) == 2:
+                rand_ind = randrange(8)
+                desc = factory_data.ADJ_ROOM_DESCRIPTIONS[&#34;2&#34;][rand_ind] \
+                    + adj_string
+            elif len(adj_list) == 3:
+                rand_ind = randrange(5)
+                desc = factory_data.ADJ_ROOM_DESCRIPTIONS[&#34;3&#34;][rand_ind] \
+                    + adj_string
+            first_desc = worldmap[rooms].description + &#34;\n&#34;
+            worldmap[rooms].description = first_desc+desc
+
+        return 0
+
+    @classmethod
+    def _place_players(cls, game):
+        for _, room in game.rooms.items():
+            for _, player in room.players.items():
+                player.location = room
+
+    @classmethod
+    def _make_paths(cls, game):
+        adj = [&#34;north&#34;, &#34;south&#34;, &#34;east&#34;, &#34;west&#34;]
+        for _, room in game.rooms.items():
+            for direction, room_name in vars(room).items():
+                if room_name and direction in adj:
+                    setattr(room, direction, game.rooms[room_name])
+
+    @classmethod
+    def _make_rooms(cls, rooms):
+
+        factories = {
+            &#34;adjacent&#34;: cls._make_adjacent,
+            &#34;inventory&#34;: cls._make_item,
+            &#34;players&#34;: cls._make_player,
+            &#34;stats&#34;: cls._make_stats,
+        }
+
+        for name, room in rooms.items():
+            new_room = cls._instantiate(Room, **room)
+            for field, data in room.items():
+                if field == &#34;adjacent&#34;:
+                    cls._make_adjacent(new_room, data)
+                elif field == &#34;coordinates&#34;:
+                    cls._make_coord(new_room, data)
+                elif isinstance(data, dict):
+                    room_field = getattr(new_room, field)
+                    for sub in data:
+                        room_field[sub] = factories[field](data[sub])
+                else:
+                    setattr(new_room, field, data)
+            rooms[name] = new_room
+            new_room._new_instance()
+
+        return rooms
+
+    @classmethod
+    def _make_player(cls, player):
+        new_player = cls._instantiate(Player, **player)
+        for field, data in player.items():
+            if isinstance(data, dict):
+                inventory = getattr(new_player, field)
+                for sub in data:
+                    inventory[sub] = cls._make_item(data)
+            else:
+                setattr(new_player, field, data)
+        new_player._new_instance()
+        return new_player
+
+    @classmethod
+    def _make_item(cls, item):
+        new_item = cls._instantiate(Item, **item)
+        for field, data in item.items():
+            if field == &#34;stats&#34;:
+                cls._make_stats(new_item, data)
+            else:
+                setattr(new_item, field, data)
+        return new_item
+
+    @classmethod
+    def _make_adjacent(cls, room, adjacent):
+        for key, val in adjacent.items():
+            setattr(room, key, val)
+
+    @classmethod
+    def _make_coord(cls, room, coord):
+        setattr(room, &#34;x&#34;, coord[0])
+        setattr(room, &#34;y&#34;, coord[1])
+
+    @classmethod
+    def _make_stats(cls, item, stats):
+        for key, val in stats.items():
+            setattr(item, key, val)
+
+    @staticmethod
+    def _instantiate(clz, **data):
+        &#34;&#34;&#34;return an object of type clz with attributes given by data&#34;&#34;&#34;
+
+        new_obj = clz()
+        setattr(new_obj, &#34;data&#34;, data)
+        for key, val in deepcopy(data).items():
+            setattr(new_obj, key, val)
+        return new_obj
+
+    @staticmethod
+    def load_game(player):
+        &#34;&#34;&#34;Load the save file associated with player&#34;&#34;&#34;
+
+        save_files = []
+        with os.scandir(&#34;./dork/saves&#34;) as saves:
+            for entry in saves:
+                save_files.append(entry.name.strip(&#34;.yml&#34;))
+        if player in save_files:
+            file_path = f&#34;./dork/saves/{player}.yml&#34;
+            with open(file_path) as file:
+                data = yaml.safe_load(file.read())
+        else:
+            data = dict()
+        return data
+
+    @staticmethod
+    def save_game(player, data):
+        &#34;&#34;&#34;Save a game instance to a yaml file if it exists, else create one&#34;&#34;&#34;
+
+        data = {
+            &#34;rooms&#34;: data[&#34;rooms&#34;],
+            &#34;maze&#34;: data[&#34;maze&#34;],
+        }
+
+        file_name = f&#34;./dork/saves/{player}.yml&#34;
+        with open(file_name, &#34;w&#34;) as save_file:
+            yaml.safe_dump(
+                data, save_file,
+                indent=4, width=80,
+            )
+
+        return f&#34;Your game was successfully saved as {player}.yml!&#34;
 
 
 class Game:
-    &#34;&#34;&#34;A container for holding a game state
-    &#34;&#34;&#34;
+    &#34;&#34;&#34;An instance of Dork&#34;&#34;&#34;
+
+    verbose = False
+    dataaa = {}
 
     def __init__(self):
-        self.worldmap = Worldmap()
-        self.players = dict()
+        self.data = {}
+        self.maze = []
+        self.rooms = {}
         self.hero = Player()
 
     def __call__(self, cmd, arg):
-        return getattr(self, cmd)(arg) if arg else getattr(self, cmd)()
+        do_func = getattr(self, cmd)
+        func_args = argspec(do_func).args
+        if arg:
+            if not func_args or (&#34;self&#34; in func_args and len(func_args) == 1):
+                out = self._repl_error(&#34;This command takes no arguments&#34;)
+            else:
+                out = do_func(arg)
+        else:
+            out = do_func()
+        return out
 
-    def build(self):
-        &#34;&#34;&#34;Make a new game
-        &#34;&#34;&#34;
-        player_name = input(&#34;What&#39;s your name, stranger? &#34;)
-        data = world_loader.main(player_name)
-        self._build_players(players=data[&#34;players&#34;])
-        self._build_world(rooms=data[&#34;rooms&#34;])
-        self._build_hero(hero=player_name)
-
-    def _build_players(self, players):
-        for player in players:
-            new_player = Player()
-            new_player.make(players[player])
-            self.players[new_player.name] = new_player
-
-    def _build_world(self, rooms):
-        self.worldmap.players = self.players
-        for room in rooms:
-            new_room = Room()
-            new_room.make(rooms[room], self.players)
-            self.worldmap.rooms[new_room.name] = new_room
-
-    def _build_hero(self, hero):
-        self.hero = self.players.get(
-            hero, self.players.get(&#34;new_player&#34;)
-        )
-        self.hero.name = hero
+    def _toggle_verbose(self) -&gt; (str, bool):
+        self.verbose = not self.verbose
+        out = {
+            True: &#34;verbose inventory: ON&#34;,
+            False: &#34;verbose inventory: OFF&#34;
+        }[self.verbose]
+        return out, False
 
     def _gtfo(self):
         return f&#34;Thanks for playing DORK, {self.hero.name}!&#34;, True
 
+    def _draw_maze(self):
+        MazeFactory.draw(self.maze)
+        return &#34;&#34;, False
+
     def _move(self, cardinal):
-        location = self.hero.get_location()
-        adjacent_room = location.adjacent.get(cardinal, None)
-        if not adjacent_room:
-            out = f&#34;You cannot go {cardinal} from here.&#34;
+        return self.hero.move(cardinal, self.maze), False
+
+    def _examine(self):
+        out = &#34;&#34;
+        location = self.hero.location
+        if self.verbose:
+            out += f&#34;    players:&#34; + Game._verbose_print(
+                location.data[&#34;players&#34;]
+            )
+            out += f&#34;\n\n    inventory:&#34; + Game._verbose_print(
+                location.data[&#34;inventory&#34;]
+            )
         else:
-            self.hero.set_location(self.worldmap.rooms[adjacent_room])
-            print(f&#34;You have entered {self.hero.location.name}&#34;)
-            out = self.hero.location.description
+            out += f&#34;    players:&#34; + Game._brief_print(
+                location.data[&#34;players&#34;]
+            )
+            out += f&#34;\n\n    inventory:&#34; + Game._brief_print(
+                location.data[&#34;inventory&#34;]
+            )
         return out, False
 
     def _inventory(self):
-        items = self.hero.items
-        item_count = 0
-        out = &#34;Inventory:\n&#34;
-        for item in items:
-            if item is not None:
-                out += &#34;\n&#34; + &#34; &#34;*4 + items[item].name
-                item_count += 1
-        if item_count == 0:
-            out = &#34; &#34;*4 + &#34;You ain&#39;t got shit, son!&#34;
-        return out, False
+        return self.hero.get_items(self.hero, self.verbose), False
 
     def _look(self):
         return self.hero.location.description, False
 
-    # def _save_game(self):
-    #     world_writer.main(self)
-    #     return &#34;Save successful!&#34;, False
+    def _save_game(self):
+        self._get_state()
+        Gamebuilder.save_game(self.hero.name, self.data)
+        return &#34;game saved successfully!&#34;, False
 
-    # def _take(self, item=&#34;all&#34;):
-    #     # Item defaults to &#34;all&#34;, and adds all items in room to inventory
-    #     return &#34;You took the thing. You took it well.&#34;, False
+    # item_name defaults to None, so we take all items in room
+    def _take(self, item_name=None):
+        out = &#34;&#34;
+        hero = self.hero
+        room = hero.location
+        if not item_name:
+            room_copy = deepcopy(room.inventory)
+            for item in room_copy:
+                this_item = room.inventory.pop(item)
+                this_data = room.data[&#34;inventory&#34;].pop(item)
+                hero.inventory[item] = this_item
+                hero.data[&#34;inventory&#34;][item] = this_data
+                out += f&#34;You took {item}\n&#34;
+        elif item_name in room.inventory:
+            this_item = room.inventory.pop(item_name)
+            this_data = room.data[&#34;inventory&#34;].pop(item_name)
+            hero.inventory[item_name] = this_item
+            hero.data[&#34;inventory&#34;][item_name] = this_data
+            out += f&#34;You took {item_name}. You took it well.&#34;
+        else:
+            out = f&#34;There is no {item_name} here.&#34;
 
-    # def _drop_item(self, item):
-    #     return &#34;Oops, you dropped something!&#34;, False
+        self._update_room_inv_description(room)
 
-    # def _use_item(self, item):
-    #     return &#34;You used the thing! It&#39;s super effective!&#34;, False
+        return out, False
 
-    def _start_over(self, load_or_save):
+    def _drop(self, item_name=None):
+        out = &#34;&#34;
+        hero = self.hero
+        room = hero.location
+        if not item_name:
+            player_copy = deepcopy(hero.inventory)
+            for item in player_copy:
+                this_item = hero.inventory.pop(item)
+                this_data = hero.data[&#34;inventory&#34;].pop(item)
+                room.inventory[item] = this_item
+                room.data[&#34;inventory&#34;][item] = this_data
+                out += f&#34;You dropped {item}\n&#34;
+        elif item_name in hero.inventory:
+            this_item = hero.inventory.pop(item_name)
+            this_data = hero.data[&#34;inventory&#34;].pop(item_name)
+            room.inventory[item_name] = this_item
+            room.data[&#34;inventory&#34;][item_name] = this_data
+            out += f&#34;You dropped {item_name}. How clumsy.&#34;
+        else:
+            out = f&#34;There is no {item_name} in your inventory.&#34;
+
+        self._update_room_inv_description(room)
+
+        return out, False
+
+    def _use_item(self, item=&#34;Nothing&#34;):
+        if item in self.hero.inventory.keys():
+            target = input(&#34;What do you want to use it on? &#34;)
+            self.hero.inventory[item].use(target, item)
+            return &#34;You used the thing! It&#39;s super effective!&#34;, False
+        return &#34;You don&#39;t have that item...&#34;, False
+
+    def _start_over(self):
         if self._confirm():
-            self.build()
-            out = load_or_save
+            out = &#34;new game&#34;
         else:
             out = &#34;Guess you changed your mind!&#34;
         return out, False
+
+    def _get_state(self):
+        for name, room in self.rooms.items():
+            self.data[&#34;rooms&#34;][name] = room.data
+
+    @staticmethod
+    def _update_room_inv_description(location):
+        inv_list = location.inventory
+        num = len(inv_list)
+        description = location.description.splitlines()
+        des = str()
+        if num == 1:
+            des = description[0] + &#34;\n&#34; + description[1] \
+                + &#34;\n&#34; + factory_data.ROOM_INV_DESCRIPTIONS[&#34;2&#34;]
+        elif num == 0:
+            des = description[0] + &#34;\n&#34; + description[1] \
+                + &#34;\n&#34; + factory_data.ROOM_INV_DESCRIPTIONS[&#34;3&#34;]
+        location.description = des
+        return 0
+
+    @staticmethod
+    def _verbose_print(data, calls=2):
+        out = &#34;&#34;
+        spc = &#34;    &#34;
+        for key, val in data.items():
+            if isinstance(val, dict):
+                out += &#34;\n&#34; + spc*calls + \
+                    f&#34;{key}:{Game._verbose_print(val, calls+1)}&#34;
+            elif val not in (0, &#39;&#39;):
+                out += &#34;\n&#34; + spc*calls + f&#34;{key}: {val}&#34;
+        return out
+
+    @staticmethod
+    def _brief_print(data, calls=2):
+        out = &#34;&#34;
+        spc = &#34;    &#34;
+        for key, val in data.items():
+            if isinstance(val, dict) and calls &lt; 3:
+                out += &#34;\n&#34; + spc*calls + \
+                    f&#34;{key}{Game._brief_print(val, calls+1)}&#34;
+        return out
 
     @staticmethod
     def _confirm():
@@ -241,12 +671,315 @@ class Game:
         return conf
 
     @staticmethod
-    def _zork():
-        return &#34;Oh shit, you found an easter egg!&#34;, False
+    def _repl_error(arg):
+        return f&#34;{arg}&#34;, False
 
     @staticmethod
-    def _repl_error(arg):
-        return f&#34;{arg}&#34;, False</code></pre>
+    def _zork():
+        return &#34;holy *%&amp;#@!!! a wild zork appeared!&#34;, False
+
+
+class ItemFactory:
+    &#34;&#34;&#34;Generates a random named item with randomized stats&#34;&#34;&#34;
+
+    items = factory_data.ITEMS
+    names = factory_data.NAMES
+    sequence = factory_data.SEQUENCE
+
+    types = items[&#34;types&#34;]
+    condition = items[&#34;condition&#34;]
+    material = items[&#34;material&#34;]
+
+    posessive = names[&#34;posessive&#34;]
+    nonposessive = names[&#34;nonposessive&#34;]
+    suffixes = names[&#34;suffixes&#34;]
+    abstract = names[&#34;abstract&#34;]
+    adjectives = names[&#34;adjectives&#34;]
+
+    @classmethod
+    def build(cls, weights=None):
+        &#34;&#34;&#34;generate a random item&#34;&#34;&#34;
+
+        weights = {
+            &#34;player&#34;: [8, 0, 0, 7, 5, 10]
+        }.get(weights, [8, 35, 3, 7, 5, 10])
+
+        item_type = choice(choices(
+            population=list(cls.types.keys()),
+            weights=weights,
+            k=len(list(cls.types.keys()))
+        ))
+
+        item_name = choice(choices(
+            population=cls.types[item_type],
+            k=len(cls.types[item_type])
+        ))
+
+        return cls._forge(item_name, item_type)
+
+    @classmethod
+    def _generate(cls, stats, item_name, item_type):
+        return {
+            &#34;name&#34;: item_name,
+            &#34;type&#34;: item_type,
+            &#34;description&#34;: &#34;&#34;,
+            &#34;stats&#34;: stats
+        }
+
+    @classmethod
+    def _stats(cls, item_name, item_type):
+        stats = factory_data.stats(item_type.split()[0])
+        return cls._generate(stats, item_name, item_type)
+
+    @classmethod
+    def _forge(cls, item_name, item_type):
+        new_name = []
+        build = cls.sequence[item_type]
+
+        seq = choice(choices(
+            population=build[&#34;seq&#34;],
+            weights=build[&#34;w&#34;],
+            k=len(build[&#34;seq&#34;])
+        ))
+
+        for lists in seq:
+            if isinstance(lists, dict):
+                this_list = lists.get(
+                    item_type, lists.get(&#34;usable&#34;, [&#39;&#39;]))
+            elif lists:
+                this_list = lists
+            else:
+                this_list = [&#39;&#39;]
+
+            this_word = choice(choices(
+                population=this_list,
+                k=len(this_list)
+            ))
+
+            if this_word:
+                if this_word in cls.suffixes:
+                    new_name[-1] += this_word
+                    item_type = f&#34;legendary {item_name}&#34;
+                else:
+                    new_name.append(this_word)
+            else:
+                new_name.append(item_name)
+
+        item_name = &#34; &#34;.join(new_name)
+        return cls._stats(item_name, item_type)
+
+
+class PlayerFactory:
+    &#34;&#34;&#34;Generate players for a room&#34;&#34;&#34;
+
+    @staticmethod
+    def build(i, room):
+        &#34;&#34;&#34;Make a player, give them items&#34;&#34;&#34;
+        firsts = factory_data.FIRST_NAMES
+        rand_first = choice(firsts)
+        lasts = factory_data.LAST_NAMES
+        rand_last = choice(lasts)
+        new_player = {
+            &#34;name&#34;: rand_first + &#34; &#34; + rand_last,
+            &#34;description&#34;: f&#34;player {i} description&#34;,
+            &#34;location&#34;: room[&#34;name&#34;],
+            &#34;inventory&#34;: {},
+            &#34;equipped&#34;: []
+        }
+        for _ in range(randint(1, 3)):
+            new_item = ItemFactory.build(&#34;player&#34;)
+            new_player[&#34;inventory&#34;][new_item.pop(&#34;name&#34;)] = new_item
+        for key, val in new_player[&#34;inventory&#34;].items():
+            if val[&#34;stats&#34;][&#34;equipable&#34;]:
+                new_player[&#34;equipped&#34;].append(key)
+        return new_player
+
+
+class RoomFactory:
+    &#34;&#34;&#34;Generate rooms for a given maze&#34;&#34;&#34;
+
+    #  N, S and E, W are backwards because numpy uses column-order
+    moves = {
+        &#34;north&#34;: (1, 0), &#34;south&#34;: (-1, 0),
+        &#34;east&#34;: (0, 1), &#34;west&#34;: (0, -1),
+    }
+
+    @classmethod
+    def build(cls, maze, rooms):
+        &#34;&#34;&#34;build a room&#34;&#34;&#34;
+
+        cls.maze = maze
+        cls.rooms = rooms
+        cls.worldmap = {}
+        return cls._make_rooms()
+
+    @classmethod
+    def _make_rooms(cls):
+
+        list_of_keys = factory_data.ROOMS
+        shuffle(list_of_keys)
+        list_of_adjtvs = factory_data.NAMES[&#34;adjectives&#34;]
+        shuffle(list_of_adjtvs)
+        list_of_abstract = factory_data.NAMES[&#34;abstract&#34;]
+        shuffle(list_of_abstract)
+
+        i = 0
+
+        for room in cls.rooms:
+            if i == 0:
+                x, y = room
+                new_room = {
+                    &#34;number&#34;: f&#34;room 0&#34;,
+                    &#34;name&#34;: f&#34;Entrance&#34;,
+                    &#34;description&#34;: factory_data.DEFAULT_ROOMS[&#34;Entrance&#34;],
+                    &#34;coordinates&#34;: [x, y],
+                    &#34;adjacent&#34;: {},
+                    &#34;players&#34;: {},
+                    &#34;inventory&#34;: {},
+                }
+            elif i &lt; len(cls.rooms) - 1:
+                rand = list_of_keys[i]
+                x, y = room
+                new_room = {
+                    &#34;number&#34;: f&#34;room {i}&#34;,
+                    &#34;name&#34;: rand,
+                    &#34;description&#34;: &#34;The &#34; + list_of_adjtvs[i] + rand +
+                                   list_of_abstract[i],
+                    &#34;coordinates&#34;: [x, y],
+                    &#34;adjacent&#34;: {},
+                    &#34;players&#34;: {},
+                    &#34;inventory&#34;: {},
+                }
+            else:
+                x, y = room
+                new_room = {
+                    &#34;number&#34;: f&#34;room &#34;+str(len(cls.rooms)),
+                    &#34;name&#34;: f&#34;End&#34;,
+                    &#34;description&#34;: factory_data.DEFAULT_ROOMS[&#34;End&#34;],
+                    &#34;coordinates&#34;: [x, y],
+                    &#34;adjacent&#34;: {},
+                    &#34;players&#34;: {},
+                    &#34;inventory&#34;: {},
+                }
+
+            for _ in range(randint(1, 7)):
+                new_item = ItemFactory.build()
+                new_room[&#34;inventory&#34;][new_item.pop(&#34;name&#34;)] = new_item
+
+            for _ in range(randint(0, 2)):
+                new_player = PlayerFactory.build(i, new_room)
+                new_room[&#34;players&#34;][new_player.pop(&#34;name&#34;)] = new_player
+
+            cls.worldmap[room] = new_room
+            i += 1
+
+        return cls._get_adj()
+
+    @classmethod
+    def _get_adj(cls):
+        for coord, room in cls.worldmap.items():
+            for direction in cls.moves:
+                searching = True
+                position = coord
+                while searching:
+                    position = tuple(map(add, position, cls.moves[direction]))
+                    if cls.maze[position] == MazeFactory.wall_color:
+                        room[&#34;adjacent&#34;][direction] = None
+                        searching = False
+                    elif cls.maze[position] in \
+                            [MazeFactory.room_color, MazeFactory.player_color]:
+                        room[&#34;adjacent&#34;][direction] = \
+                            cls.worldmap[position][&#34;number&#34;]
+                        searching = False
+
+        for coord, room in deepcopy(cls.worldmap).items():
+            new_room = cls.worldmap.pop(coord)
+            cls.worldmap[new_room.pop(&#34;number&#34;)] = new_room
+
+        return cls.worldmap
+
+
+class MazeFactory:
+    &#34;&#34;&#34;Generate a maze with rooms on intersections, corners, and dead-ends&#34;&#34;&#34;
+
+    wall_color, path_color, room_color, player_color = (-2, 2, 1, 0)
+    moves = factory_data.MOVES
+    rules = factory_data.rules(wall_color, path_color)
+
+    @staticmethod
+    def draw(maze):
+        &#34;&#34;&#34;display the maze&#34;&#34;&#34;
+
+        x_dim, y_dim = len(maze[0])//2, len(maze)//2
+        plt.figure(figsize=(x_dim, y_dim))
+        plt.pcolormesh(maze, cmap=plt.cm.get_cmap(&#34;tab20b&#34;))
+        plt.axis(&#34;equal&#34;)
+        plt.axis(&#34;off&#34;)
+        plt.ion()
+        plt.show()
+
+    @staticmethod
+    def update(maze):
+        &#34;&#34;&#34;update the maze display&#34;&#34;&#34;
+
+        plt.pcolormesh(maze, cmap=plt.cm.get_cmap(&#34;tab20b&#34;))
+        plt.axis(&#34;equal&#34;)
+        plt.axis(&#34;off&#34;)
+        plt.draw()
+
+    # pylint: disable=R0914
+    @staticmethod
+    def build():
+        &#34;&#34;&#34;generate a maze&#34;&#34;&#34;
+
+        x = choice([10, 12, 14, 18])
+        y = 148//x
+
+        maze = npf((x+1, y+1), MazeFactory.wall_color)
+        grid = [(i, j) for i in range(1, x+1, 2) for j in range(1, y+1, 2)]
+        path = [choice(grid)]
+        rooms = []
+        position = path[0]
+        grid.remove(position)
+
+        while grid:
+            n = len(path)
+            nsew = []
+            for move in MazeFactory.moves:
+                nsew.append([
+                    tuple(map(add, move[0], position)),
+                    tuple(map(add, move[1], position))
+                ])
+            shuffle(nsew)
+            for probe in nsew:
+                if probe[0] in grid:
+                    maze[probe[0]] = MazeFactory.path_color
+                    maze[probe[1]] = MazeFactory.path_color
+                    grid.remove(probe[0])
+                    path.extend(probe)
+                    break
+            if n == len(path):
+                position = path[max(path.index(position)-1, 1)]
+            else:
+                position = path[-1]
+
+        for coord in path:
+            i, j = coord
+            neighbors = [
+                maze[i-1, j],
+                maze[i+1, j],
+                maze[i, j-1],
+                maze[i, j+1]
+            ]
+            if neighbors in MazeFactory.rules:
+                rooms.append(coord)
+                maze[coord] = MazeFactory.room_color
+            maze[rooms[0]] = MazeFactory.player_color
+
+        return {
+            &#34;maze&#34;: maze.tolist(),
+            &#34;rooms&#34;: RoomFactory.build(maze, rooms)
+        }</code></pre>
 </details>
 </section>
 <section>
@@ -258,103 +991,278 @@ class Game:
 <section>
 <h2 class="section-title" id="header-classes">Classes</h2>
 <dl>
+<dt id="dork.types.Adjacent"><code class="flex name class">
+<span>class <span class="ident">Adjacent</span></span>
+</code></dt>
+<dd>
+<section class="desc"><p>adjacency object for rooms</p></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">class Adjacent(Grandparent):
+    &#34;&#34;&#34;adjacency object for rooms&#34;&#34;&#34;
+
+    def __init__(self):
+        super().__init__()
+        self.north = str
+        self.south = str
+        self.east = str
+        self.west = str</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="dork.types.Grandparent" href="#dork.types.Grandparent">Grandparent</a></li>
+</ul>
+<h3>Subclasses</h3>
+<ul class="hlist">
+<li><a title="dork.types.Room" href="#dork.types.Room">Room</a></li>
+</ul>
+</dd>
+<dt id="dork.types.Attackable"><code class="flex name class">
+<span>class <span class="ident">Attackable</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Any object that can be swung will say it was swung</p></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">class Attackable(Usable):
+    &#34;&#34;&#34;Any object that can be swung will say it was swung&#34;&#34;&#34;
+
+    @staticmethod
+    def use(target, name):
+        &#34;&#34;&#34;Swing use method&#34;&#34;&#34;
+        print(&#34;You swing the &#34; + name + &#34; at &#34; + target)</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="dork.types.Usable" href="#dork.types.Usable">Usable</a></li>
+<li>abc.ABC</li>
+</ul>
+<h3>Static methods</h3>
+<dl>
+<dt id="dork.types.Attackable.use"><code class="name flex">
+<span>def <span class="ident">use</span></span>(<span>target, name)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Swing use method</p></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">@staticmethod
+def use(target, name):
+    &#34;&#34;&#34;Swing use method&#34;&#34;&#34;
+    print(&#34;You swing the &#34; + name + &#34; at &#34; + target)</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="dork.types.Coord"><code class="flex name class">
+<span>class <span class="ident">Coord</span></span>
+</code></dt>
+<dd>
+<section class="desc"><p>coordinate object for rooms</p></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">class Coord(Grandparent):
+    &#34;&#34;&#34;coordinate object for rooms&#34;&#34;&#34;
+
+    def __init__(self):
+        super().__init__()
+        self.x = int
+        self.y = int</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="dork.types.Grandparent" href="#dork.types.Grandparent">Grandparent</a></li>
+</ul>
+<h3>Subclasses</h3>
+<ul class="hlist">
+<li><a title="dork.types.Room" href="#dork.types.Room">Room</a></li>
+</ul>
+</dd>
 <dt id="dork.types.Game"><code class="flex name class">
 <span>class <span class="ident">Game</span></span>
 </code></dt>
 <dd>
-<section class="desc"><p>A container for holding a game state</p></section>
+<section class="desc"><p>An instance of Dork</p></section>
 <details class="source">
 <summary>Source code</summary>
 <pre><code class="python">class Game:
-    &#34;&#34;&#34;A container for holding a game state
-    &#34;&#34;&#34;
+    &#34;&#34;&#34;An instance of Dork&#34;&#34;&#34;
+
+    verbose = False
+    dataaa = {}
 
     def __init__(self):
-        self.worldmap = Worldmap()
-        self.players = dict()
+        self.data = {}
+        self.maze = []
+        self.rooms = {}
         self.hero = Player()
 
     def __call__(self, cmd, arg):
-        return getattr(self, cmd)(arg) if arg else getattr(self, cmd)()
+        do_func = getattr(self, cmd)
+        func_args = argspec(do_func).args
+        if arg:
+            if not func_args or (&#34;self&#34; in func_args and len(func_args) == 1):
+                out = self._repl_error(&#34;This command takes no arguments&#34;)
+            else:
+                out = do_func(arg)
+        else:
+            out = do_func()
+        return out
 
-    def build(self):
-        &#34;&#34;&#34;Make a new game
-        &#34;&#34;&#34;
-        player_name = input(&#34;What&#39;s your name, stranger? &#34;)
-        data = world_loader.main(player_name)
-        self._build_players(players=data[&#34;players&#34;])
-        self._build_world(rooms=data[&#34;rooms&#34;])
-        self._build_hero(hero=player_name)
-
-    def _build_players(self, players):
-        for player in players:
-            new_player = Player()
-            new_player.make(players[player])
-            self.players[new_player.name] = new_player
-
-    def _build_world(self, rooms):
-        self.worldmap.players = self.players
-        for room in rooms:
-            new_room = Room()
-            new_room.make(rooms[room], self.players)
-            self.worldmap.rooms[new_room.name] = new_room
-
-    def _build_hero(self, hero):
-        self.hero = self.players.get(
-            hero, self.players.get(&#34;new_player&#34;)
-        )
-        self.hero.name = hero
+    def _toggle_verbose(self) -&gt; (str, bool):
+        self.verbose = not self.verbose
+        out = {
+            True: &#34;verbose inventory: ON&#34;,
+            False: &#34;verbose inventory: OFF&#34;
+        }[self.verbose]
+        return out, False
 
     def _gtfo(self):
         return f&#34;Thanks for playing DORK, {self.hero.name}!&#34;, True
 
+    def _draw_maze(self):
+        MazeFactory.draw(self.maze)
+        return &#34;&#34;, False
+
     def _move(self, cardinal):
-        location = self.hero.get_location()
-        adjacent_room = location.adjacent.get(cardinal, None)
-        if not adjacent_room:
-            out = f&#34;You cannot go {cardinal} from here.&#34;
+        return self.hero.move(cardinal, self.maze), False
+
+    def _examine(self):
+        out = &#34;&#34;
+        location = self.hero.location
+        if self.verbose:
+            out += f&#34;    players:&#34; + Game._verbose_print(
+                location.data[&#34;players&#34;]
+            )
+            out += f&#34;\n\n    inventory:&#34; + Game._verbose_print(
+                location.data[&#34;inventory&#34;]
+            )
         else:
-            self.hero.set_location(self.worldmap.rooms[adjacent_room])
-            print(f&#34;You have entered {self.hero.location.name}&#34;)
-            out = self.hero.location.description
+            out += f&#34;    players:&#34; + Game._brief_print(
+                location.data[&#34;players&#34;]
+            )
+            out += f&#34;\n\n    inventory:&#34; + Game._brief_print(
+                location.data[&#34;inventory&#34;]
+            )
         return out, False
 
     def _inventory(self):
-        items = self.hero.items
-        item_count = 0
-        out = &#34;Inventory:\n&#34;
-        for item in items:
-            if item is not None:
-                out += &#34;\n&#34; + &#34; &#34;*4 + items[item].name
-                item_count += 1
-        if item_count == 0:
-            out = &#34; &#34;*4 + &#34;You ain&#39;t got shit, son!&#34;
-        return out, False
+        return self.hero.get_items(self.hero, self.verbose), False
 
     def _look(self):
         return self.hero.location.description, False
 
-    # def _save_game(self):
-    #     world_writer.main(self)
-    #     return &#34;Save successful!&#34;, False
+    def _save_game(self):
+        self._get_state()
+        Gamebuilder.save_game(self.hero.name, self.data)
+        return &#34;game saved successfully!&#34;, False
 
-    # def _take(self, item=&#34;all&#34;):
-    #     # Item defaults to &#34;all&#34;, and adds all items in room to inventory
-    #     return &#34;You took the thing. You took it well.&#34;, False
+    # item_name defaults to None, so we take all items in room
+    def _take(self, item_name=None):
+        out = &#34;&#34;
+        hero = self.hero
+        room = hero.location
+        if not item_name:
+            room_copy = deepcopy(room.inventory)
+            for item in room_copy:
+                this_item = room.inventory.pop(item)
+                this_data = room.data[&#34;inventory&#34;].pop(item)
+                hero.inventory[item] = this_item
+                hero.data[&#34;inventory&#34;][item] = this_data
+                out += f&#34;You took {item}\n&#34;
+        elif item_name in room.inventory:
+            this_item = room.inventory.pop(item_name)
+            this_data = room.data[&#34;inventory&#34;].pop(item_name)
+            hero.inventory[item_name] = this_item
+            hero.data[&#34;inventory&#34;][item_name] = this_data
+            out += f&#34;You took {item_name}. You took it well.&#34;
+        else:
+            out = f&#34;There is no {item_name} here.&#34;
 
-    # def _drop_item(self, item):
-    #     return &#34;Oops, you dropped something!&#34;, False
+        self._update_room_inv_description(room)
 
-    # def _use_item(self, item):
-    #     return &#34;You used the thing! It&#39;s super effective!&#34;, False
+        return out, False
 
-    def _start_over(self, load_or_save):
+    def _drop(self, item_name=None):
+        out = &#34;&#34;
+        hero = self.hero
+        room = hero.location
+        if not item_name:
+            player_copy = deepcopy(hero.inventory)
+            for item in player_copy:
+                this_item = hero.inventory.pop(item)
+                this_data = hero.data[&#34;inventory&#34;].pop(item)
+                room.inventory[item] = this_item
+                room.data[&#34;inventory&#34;][item] = this_data
+                out += f&#34;You dropped {item}\n&#34;
+        elif item_name in hero.inventory:
+            this_item = hero.inventory.pop(item_name)
+            this_data = hero.data[&#34;inventory&#34;].pop(item_name)
+            room.inventory[item_name] = this_item
+            room.data[&#34;inventory&#34;][item_name] = this_data
+            out += f&#34;You dropped {item_name}. How clumsy.&#34;
+        else:
+            out = f&#34;There is no {item_name} in your inventory.&#34;
+
+        self._update_room_inv_description(room)
+
+        return out, False
+
+    def _use_item(self, item=&#34;Nothing&#34;):
+        if item in self.hero.inventory.keys():
+            target = input(&#34;What do you want to use it on? &#34;)
+            self.hero.inventory[item].use(target, item)
+            return &#34;You used the thing! It&#39;s super effective!&#34;, False
+        return &#34;You don&#39;t have that item...&#34;, False
+
+    def _start_over(self):
         if self._confirm():
-            self.build()
-            out = load_or_save
+            out = &#34;new game&#34;
         else:
             out = &#34;Guess you changed your mind!&#34;
         return out, False
+
+    def _get_state(self):
+        for name, room in self.rooms.items():
+            self.data[&#34;rooms&#34;][name] = room.data
+
+    @staticmethod
+    def _update_room_inv_description(location):
+        inv_list = location.inventory
+        num = len(inv_list)
+        description = location.description.splitlines()
+        des = str()
+        if num == 1:
+            des = description[0] + &#34;\n&#34; + description[1] \
+                + &#34;\n&#34; + factory_data.ROOM_INV_DESCRIPTIONS[&#34;2&#34;]
+        elif num == 0:
+            des = description[0] + &#34;\n&#34; + description[1] \
+                + &#34;\n&#34; + factory_data.ROOM_INV_DESCRIPTIONS[&#34;3&#34;]
+        location.description = des
+        return 0
+
+    @staticmethod
+    def _verbose_print(data, calls=2):
+        out = &#34;&#34;
+        spc = &#34;    &#34;
+        for key, val in data.items():
+            if isinstance(val, dict):
+                out += &#34;\n&#34; + spc*calls + \
+                    f&#34;{key}:{Game._verbose_print(val, calls+1)}&#34;
+            elif val not in (0, &#39;&#39;):
+                out += &#34;\n&#34; + spc*calls + f&#34;{key}: {val}&#34;
+        return out
+
+    @staticmethod
+    def _brief_print(data, calls=2):
+        out = &#34;&#34;
+        spc = &#34;    &#34;
+        for key, val in data.items():
+            if isinstance(val, dict) and calls &lt; 3:
+                out += &#34;\n&#34; + spc*calls + \
+                    f&#34;{key}{Game._brief_print(val, calls+1)}&#34;
+        return out
 
     @staticmethod
     def _confirm():
@@ -375,30 +1283,1512 @@ class Game:
         return conf
 
     @staticmethod
-    def _zork():
-        return &#34;Oh shit, you found an easter egg!&#34;, False
+    def _repl_error(arg):
+        return f&#34;{arg}&#34;, False
 
     @staticmethod
-    def _repl_error(arg):
-        return f&#34;{arg}&#34;, False</code></pre>
+    def _zork():
+        return &#34;holy *%&amp;#@!!! a wild zork appeared!&#34;, False</code></pre>
 </details>
-<h3>Methods</h3>
+<h3>Class variables</h3>
 <dl>
-<dt id="dork.types.Game.build"><code class="name flex">
-<span>def <span class="ident">build</span></span>(<span>self)</span>
+<dt id="dork.types.Game.dataaa"><code class="name">var <span class="ident">dataaa</span></code></dt>
+<dd>
+<section class="desc"></section>
+</dd>
+<dt id="dork.types.Game.verbose"><code class="name">var <span class="ident">verbose</span></code></dt>
+<dd>
+<section class="desc"></section>
+</dd>
+</dl>
+</dd>
+<dt id="dork.types.Gamebuilder"><code class="flex name class">
+<span>class <span class="ident">Gamebuilder</span></span>
+<span>(</span><span>*args, **kwargs)</span>
 </code></dt>
 <dd>
-<section class="desc"><p>Make a new game</p></section>
+<section class="desc"><p>Build an instance of Game</p></section>
 <details class="source">
 <summary>Source code</summary>
-<pre><code class="python">def build(self):
-    &#34;&#34;&#34;Make a new game
+<pre><code class="python">class Gamebuilder:
+    &#34;&#34;&#34;Build an instance of Game&#34;&#34;&#34;
+
+    @classmethod
+    def build(cls, player_name):
+        &#34;&#34;&#34;Instantiate a game of Dork from dictionary&#34;&#34;&#34;
+
+        data = cls.load_game(player_name)
+
+        if not data:
+            data = MazeFactory.build()
+
+            hero_data = {
+                &#34;name&#34;: player_name,
+                &#34;description&#34;: &#34;the hero of dork!&#34;,
+                &#34;location&#34;: &#34;Entrance&#34;,
+                &#34;inventory&#34;: {},
+                &#34;equipped&#34;: []
+            }
+
+            data[&#34;rooms&#34;][&#34;room 0&#34;][&#34;players&#34;][player_name] = hero_data
+
+        game = cls._instantiate(Game, **data)
+        setattr(game, &#34;maze&#34;, data[&#34;maze&#34;])
+        setattr(game, &#34;rooms&#34;, cls._make_rooms(deepcopy(data[&#34;rooms&#34;])))
+
+        cls._get_adj_description(game)
+        cls._get_room_inv_description(game)
+
+        cls._place_players(game)
+        cls._make_paths(game)
+
+        for player in Player.instances:
+            if player.name == player_name:
+                hero = player
+
+        game.hero = hero
+        game.maze[hero.location.x][hero.location.y] = MazeFactory.player_color
+        return game
+
+    @classmethod
+    def _get_room_inv_description(cls, worldmapp):
+        worldmap = worldmapp.rooms
+        worldmap_length = len(worldmap)
+        iterator = 0
+        for rooms in worldmap:
+            if iterator != worldmap_length - 1:
+                inv_list = worldmap[rooms].inventory
+                num = len(inv_list)
+                if num &gt;= 2:
+                    rand_ind = randrange(4)
+                    first_desc = worldmap[rooms].description + &#34;\n&#34;
+                    desc = factory_data.ROOM_INV_DESCRIPTIONS[&#34;1&#34;][rand_ind]
+                    worldmap[rooms].description = first_desc+desc
+                elif num == 1:
+                    first_desc = worldmap[rooms].description + &#34;\n&#34;
+                    desc = factory_data.ROOM_INV_DESCRIPTIONS[&#34;2&#34;]
+                    worldmap[rooms].description = first_desc+desc
+                elif num == 0:
+                    first_desc = worldmap[rooms].description + &#34;\n&#34;
+                    desc = factory_data.ROOM_INV_DESCRIPTIONS[&#34;3&#34;]
+                    worldmap[rooms].description = first_desc+desc
+            iterator += 1
+        return 0
+
+    @classmethod
+    def _get_adj_description(cls, worldmapp):
+
+        worldmap = worldmapp.rooms
+
+        for rooms in worldmap:
+            desc = &#34;&#34;
+            adj_list = list()
+            adj_possibilities = {&#34;north&#34;, &#34;east&#34;, &#34;south&#34;, &#34;west&#34;}
+            for pos in adj_possibilities:
+                if worldmap[rooms].data[&#34;adjacent&#34;][pos] is not None:
+                    adj_list.append(pos)
+
+            adj_string = &#34;&#34;
+            for adj in adj_list:
+                if adj_list[0] == adj:
+                    adj_string += &#34; &#34;+adj
+                else:
+                    adj_string += &#34;, &#34;+adj
+            adj_string += &#34;...&#34;
+
+            if((len(adj_list) == 1)
+               and rooms != &#34;room 0&#34; and rooms != &#34;room &#34;+str(len(worldmap))):
+                desc = factory_data.ADJ_ROOM_DESCRIPTIONS[&#34;1&#34;]
+            elif len(adj_list) == 2:
+                rand_ind = randrange(8)
+                desc = factory_data.ADJ_ROOM_DESCRIPTIONS[&#34;2&#34;][rand_ind] \
+                    + adj_string
+            elif len(adj_list) == 3:
+                rand_ind = randrange(5)
+                desc = factory_data.ADJ_ROOM_DESCRIPTIONS[&#34;3&#34;][rand_ind] \
+                    + adj_string
+            first_desc = worldmap[rooms].description + &#34;\n&#34;
+            worldmap[rooms].description = first_desc+desc
+
+        return 0
+
+    @classmethod
+    def _place_players(cls, game):
+        for _, room in game.rooms.items():
+            for _, player in room.players.items():
+                player.location = room
+
+    @classmethod
+    def _make_paths(cls, game):
+        adj = [&#34;north&#34;, &#34;south&#34;, &#34;east&#34;, &#34;west&#34;]
+        for _, room in game.rooms.items():
+            for direction, room_name in vars(room).items():
+                if room_name and direction in adj:
+                    setattr(room, direction, game.rooms[room_name])
+
+    @classmethod
+    def _make_rooms(cls, rooms):
+
+        factories = {
+            &#34;adjacent&#34;: cls._make_adjacent,
+            &#34;inventory&#34;: cls._make_item,
+            &#34;players&#34;: cls._make_player,
+            &#34;stats&#34;: cls._make_stats,
+        }
+
+        for name, room in rooms.items():
+            new_room = cls._instantiate(Room, **room)
+            for field, data in room.items():
+                if field == &#34;adjacent&#34;:
+                    cls._make_adjacent(new_room, data)
+                elif field == &#34;coordinates&#34;:
+                    cls._make_coord(new_room, data)
+                elif isinstance(data, dict):
+                    room_field = getattr(new_room, field)
+                    for sub in data:
+                        room_field[sub] = factories[field](data[sub])
+                else:
+                    setattr(new_room, field, data)
+            rooms[name] = new_room
+            new_room._new_instance()
+
+        return rooms
+
+    @classmethod
+    def _make_player(cls, player):
+        new_player = cls._instantiate(Player, **player)
+        for field, data in player.items():
+            if isinstance(data, dict):
+                inventory = getattr(new_player, field)
+                for sub in data:
+                    inventory[sub] = cls._make_item(data)
+            else:
+                setattr(new_player, field, data)
+        new_player._new_instance()
+        return new_player
+
+    @classmethod
+    def _make_item(cls, item):
+        new_item = cls._instantiate(Item, **item)
+        for field, data in item.items():
+            if field == &#34;stats&#34;:
+                cls._make_stats(new_item, data)
+            else:
+                setattr(new_item, field, data)
+        return new_item
+
+    @classmethod
+    def _make_adjacent(cls, room, adjacent):
+        for key, val in adjacent.items():
+            setattr(room, key, val)
+
+    @classmethod
+    def _make_coord(cls, room, coord):
+        setattr(room, &#34;x&#34;, coord[0])
+        setattr(room, &#34;y&#34;, coord[1])
+
+    @classmethod
+    def _make_stats(cls, item, stats):
+        for key, val in stats.items():
+            setattr(item, key, val)
+
+    @staticmethod
+    def _instantiate(clz, **data):
+        &#34;&#34;&#34;return an object of type clz with attributes given by data&#34;&#34;&#34;
+
+        new_obj = clz()
+        setattr(new_obj, &#34;data&#34;, data)
+        for key, val in deepcopy(data).items():
+            setattr(new_obj, key, val)
+        return new_obj
+
+    @staticmethod
+    def load_game(player):
+        &#34;&#34;&#34;Load the save file associated with player&#34;&#34;&#34;
+
+        save_files = []
+        with os.scandir(&#34;./dork/saves&#34;) as saves:
+            for entry in saves:
+                save_files.append(entry.name.strip(&#34;.yml&#34;))
+        if player in save_files:
+            file_path = f&#34;./dork/saves/{player}.yml&#34;
+            with open(file_path) as file:
+                data = yaml.safe_load(file.read())
+        else:
+            data = dict()
+        return data
+
+    @staticmethod
+    def save_game(player, data):
+        &#34;&#34;&#34;Save a game instance to a yaml file if it exists, else create one&#34;&#34;&#34;
+
+        data = {
+            &#34;rooms&#34;: data[&#34;rooms&#34;],
+            &#34;maze&#34;: data[&#34;maze&#34;],
+        }
+
+        file_name = f&#34;./dork/saves/{player}.yml&#34;
+        with open(file_name, &#34;w&#34;) as save_file:
+            yaml.safe_dump(
+                data, save_file,
+                indent=4, width=80,
+            )
+
+        return f&#34;Your game was successfully saved as {player}.yml!&#34;</code></pre>
+</details>
+<h3>Static methods</h3>
+<dl>
+<dt id="dork.types.Gamebuilder.build"><code class="name flex">
+<span>def <span class="ident">build</span></span>(<span>player_name)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Instantiate a game of Dork from dictionary</p></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">@classmethod
+def build(cls, player_name):
+    &#34;&#34;&#34;Instantiate a game of Dork from dictionary&#34;&#34;&#34;
+
+    data = cls.load_game(player_name)
+
+    if not data:
+        data = MazeFactory.build()
+
+        hero_data = {
+            &#34;name&#34;: player_name,
+            &#34;description&#34;: &#34;the hero of dork!&#34;,
+            &#34;location&#34;: &#34;Entrance&#34;,
+            &#34;inventory&#34;: {},
+            &#34;equipped&#34;: []
+        }
+
+        data[&#34;rooms&#34;][&#34;room 0&#34;][&#34;players&#34;][player_name] = hero_data
+
+    game = cls._instantiate(Game, **data)
+    setattr(game, &#34;maze&#34;, data[&#34;maze&#34;])
+    setattr(game, &#34;rooms&#34;, cls._make_rooms(deepcopy(data[&#34;rooms&#34;])))
+
+    cls._get_adj_description(game)
+    cls._get_room_inv_description(game)
+
+    cls._place_players(game)
+    cls._make_paths(game)
+
+    for player in Player.instances:
+        if player.name == player_name:
+            hero = player
+
+    game.hero = hero
+    game.maze[hero.location.x][hero.location.y] = MazeFactory.player_color
+    return game</code></pre>
+</details>
+</dd>
+<dt id="dork.types.Gamebuilder.load_game"><code class="name flex">
+<span>def <span class="ident">load_game</span></span>(<span>player)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Load the save file associated with player</p></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">@staticmethod
+def load_game(player):
+    &#34;&#34;&#34;Load the save file associated with player&#34;&#34;&#34;
+
+    save_files = []
+    with os.scandir(&#34;./dork/saves&#34;) as saves:
+        for entry in saves:
+            save_files.append(entry.name.strip(&#34;.yml&#34;))
+    if player in save_files:
+        file_path = f&#34;./dork/saves/{player}.yml&#34;
+        with open(file_path) as file:
+            data = yaml.safe_load(file.read())
+    else:
+        data = dict()
+    return data</code></pre>
+</details>
+</dd>
+<dt id="dork.types.Gamebuilder.save_game"><code class="name flex">
+<span>def <span class="ident">save_game</span></span>(<span>player, data)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Save a game instance to a yaml file if it exists, else create one</p></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">@staticmethod
+def save_game(player, data):
+    &#34;&#34;&#34;Save a game instance to a yaml file if it exists, else create one&#34;&#34;&#34;
+
+    data = {
+        &#34;rooms&#34;: data[&#34;rooms&#34;],
+        &#34;maze&#34;: data[&#34;maze&#34;],
+    }
+
+    file_name = f&#34;./dork/saves/{player}.yml&#34;
+    with open(file_name, &#34;w&#34;) as save_file:
+        yaml.safe_dump(
+            data, save_file,
+            indent=4, width=80,
+        )
+
+    return f&#34;Your game was successfully saved as {player}.yml!&#34;</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="dork.types.Grandparent"><code class="flex name class">
+<span>class <span class="ident">Grandparent</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>common parent of holder, adjacent, and coord</p></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">class Grandparent:
+    &#34;&#34;&#34;common parent of holder, adjacent, and coord&#34;&#34;&#34;</code></pre>
+</details>
+<h3>Subclasses</h3>
+<ul class="hlist">
+<li><a title="dork.types.Holder" href="#dork.types.Holder">Holder</a></li>
+<li><a title="dork.types.Adjacent" href="#dork.types.Adjacent">Adjacent</a></li>
+<li><a title="dork.types.Coord" href="#dork.types.Coord">Coord</a></li>
+</ul>
+</dd>
+<dt id="dork.types.Holder"><code class="flex name class">
+<span>class <span class="ident">Holder</span></span>
+</code></dt>
+<dd>
+<section class="desc"><p>A holder/container of items</p></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">class Holder(Grandparent):
+    &#34;&#34;&#34;A holder/container of items&#34;&#34;&#34;
+
+    def __init__(self):
+        super().__init__()
+        self.inventory = dict
+
+    def get_items(self, caller, verbose):
+        &#34;&#34;&#34;Print all inventory items&#34;&#34;&#34;
+
+        if self.inventory:
+            out = f&#34;\n    inventory:&#34;
+        else:
+            out = f&#34;There&#39;s nothing here.&#34;
+
+        if verbose:
+            return out + Game._verbose_print(caller.data[&#34;inventory&#34;])
+        return out + Game._brief_print(caller.data[&#34;inventory&#34;])</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="dork.types.Grandparent" href="#dork.types.Grandparent">Grandparent</a></li>
+</ul>
+<h3>Subclasses</h3>
+<ul class="hlist">
+<li><a title="dork.types.Player" href="#dork.types.Player">Player</a></li>
+<li><a title="dork.types.Room" href="#dork.types.Room">Room</a></li>
+</ul>
+<h3>Methods</h3>
+<dl>
+<dt id="dork.types.Holder.get_items"><code class="name flex">
+<span>def <span class="ident">get_items</span></span>(<span>self, caller, verbose)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Print all inventory items</p></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def get_items(self, caller, verbose):
+    &#34;&#34;&#34;Print all inventory items&#34;&#34;&#34;
+
+    if self.inventory:
+        out = f&#34;\n    inventory:&#34;
+    else:
+        out = f&#34;There&#39;s nothing here.&#34;
+
+    if verbose:
+        return out + Game._verbose_print(caller.data[&#34;inventory&#34;])
+    return out + Game._brief_print(caller.data[&#34;inventory&#34;])</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="dork.types.Item"><code class="flex name class">
+<span>class <span class="ident">Item</span></span>
+</code></dt>
+<dd>
+<section class="desc"><p>An obtainable/usable item</p></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">class Item(Stats):
+    &#34;&#34;&#34;An obtainable/usable item&#34;&#34;&#34;
+
+    def __init__(self):
+        super().__init__()
+        self.data = dict
+        self.name = str
+        self.description = str
+        self.type = str
+        self.usable = NotUsable
+
+    def make(self, item):
+        &#34;&#34;&#34;Make an item
+        &#34;&#34;&#34;
+        self.name = item[&#34;name&#34;]
+        self.description = item[&#34;description&#34;]
+        self.type = item[&#34;type&#34;]
+        if not isinstance(self.type, str) or self.type is None:
+            self.usable = NotUsable
+        elif len(self.type) &gt; 1:
+            self.set_usable(self.type)
+        else:
+            self.usable = NotUsable
+
+    def set_usable(self, new_use):
+        &#34;&#34;&#34;This method changes the use behavior,
+        provide usable class as argument&#34;&#34;&#34;
+        uses = {&#34;filler&#34;: NotUsable,
+                &#34;weapon&#34;: Attackable,
+                &#34;key&#34;: Openable,
+                &#34;gold&#34;: Payable,
+                &#34;magic items&#34;: Statable,
+                &#34;jewelry&#34;: Statable,
+                &#34;armor&#34;: Statable,
+                &#34;magic consumables&#34;: Statable}
+        if new_use is None or new_use not in uses:
+            self.usable = NotUsable
+        else:
+            self.usable = uses[new_use]
+
+    def use(self, target, name):
+        &#34;&#34;&#34;Strategy pattern call&#34;&#34;&#34;
+        self.usable.use(target, name)</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="dork.types.Stats" href="#dork.types.Stats">Stats</a></li>
+</ul>
+<h3>Methods</h3>
+<dl>
+<dt id="dork.types.Item.make"><code class="name flex">
+<span>def <span class="ident">make</span></span>(<span>self, item)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Make an item</p></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def make(self, item):
+    &#34;&#34;&#34;Make an item
     &#34;&#34;&#34;
-    player_name = input(&#34;What&#39;s your name, stranger? &#34;)
-    data = world_loader.main(player_name)
-    self._build_players(players=data[&#34;players&#34;])
-    self._build_world(rooms=data[&#34;rooms&#34;])
-    self._build_hero(hero=player_name)</code></pre>
+    self.name = item[&#34;name&#34;]
+    self.description = item[&#34;description&#34;]
+    self.type = item[&#34;type&#34;]
+    if not isinstance(self.type, str) or self.type is None:
+        self.usable = NotUsable
+    elif len(self.type) &gt; 1:
+        self.set_usable(self.type)
+    else:
+        self.usable = NotUsable</code></pre>
+</details>
+</dd>
+<dt id="dork.types.Item.set_usable"><code class="name flex">
+<span>def <span class="ident">set_usable</span></span>(<span>self, new_use)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>This method changes the use behavior,
+provide usable class as argument</p></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def set_usable(self, new_use):
+    &#34;&#34;&#34;This method changes the use behavior,
+    provide usable class as argument&#34;&#34;&#34;
+    uses = {&#34;filler&#34;: NotUsable,
+            &#34;weapon&#34;: Attackable,
+            &#34;key&#34;: Openable,
+            &#34;gold&#34;: Payable,
+            &#34;magic items&#34;: Statable,
+            &#34;jewelry&#34;: Statable,
+            &#34;armor&#34;: Statable,
+            &#34;magic consumables&#34;: Statable}
+    if new_use is None or new_use not in uses:
+        self.usable = NotUsable
+    else:
+        self.usable = uses[new_use]</code></pre>
+</details>
+</dd>
+<dt id="dork.types.Item.use"><code class="name flex">
+<span>def <span class="ident">use</span></span>(<span>self, target, name)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Strategy pattern call</p></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def use(self, target, name):
+    &#34;&#34;&#34;Strategy pattern call&#34;&#34;&#34;
+    self.usable.use(target, name)</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="dork.types.ItemFactory"><code class="flex name class">
+<span>class <span class="ident">ItemFactory</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Generates a random named item with randomized stats</p></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">class ItemFactory:
+    &#34;&#34;&#34;Generates a random named item with randomized stats&#34;&#34;&#34;
+
+    items = factory_data.ITEMS
+    names = factory_data.NAMES
+    sequence = factory_data.SEQUENCE
+
+    types = items[&#34;types&#34;]
+    condition = items[&#34;condition&#34;]
+    material = items[&#34;material&#34;]
+
+    posessive = names[&#34;posessive&#34;]
+    nonposessive = names[&#34;nonposessive&#34;]
+    suffixes = names[&#34;suffixes&#34;]
+    abstract = names[&#34;abstract&#34;]
+    adjectives = names[&#34;adjectives&#34;]
+
+    @classmethod
+    def build(cls, weights=None):
+        &#34;&#34;&#34;generate a random item&#34;&#34;&#34;
+
+        weights = {
+            &#34;player&#34;: [8, 0, 0, 7, 5, 10]
+        }.get(weights, [8, 35, 3, 7, 5, 10])
+
+        item_type = choice(choices(
+            population=list(cls.types.keys()),
+            weights=weights,
+            k=len(list(cls.types.keys()))
+        ))
+
+        item_name = choice(choices(
+            population=cls.types[item_type],
+            k=len(cls.types[item_type])
+        ))
+
+        return cls._forge(item_name, item_type)
+
+    @classmethod
+    def _generate(cls, stats, item_name, item_type):
+        return {
+            &#34;name&#34;: item_name,
+            &#34;type&#34;: item_type,
+            &#34;description&#34;: &#34;&#34;,
+            &#34;stats&#34;: stats
+        }
+
+    @classmethod
+    def _stats(cls, item_name, item_type):
+        stats = factory_data.stats(item_type.split()[0])
+        return cls._generate(stats, item_name, item_type)
+
+    @classmethod
+    def _forge(cls, item_name, item_type):
+        new_name = []
+        build = cls.sequence[item_type]
+
+        seq = choice(choices(
+            population=build[&#34;seq&#34;],
+            weights=build[&#34;w&#34;],
+            k=len(build[&#34;seq&#34;])
+        ))
+
+        for lists in seq:
+            if isinstance(lists, dict):
+                this_list = lists.get(
+                    item_type, lists.get(&#34;usable&#34;, [&#39;&#39;]))
+            elif lists:
+                this_list = lists
+            else:
+                this_list = [&#39;&#39;]
+
+            this_word = choice(choices(
+                population=this_list,
+                k=len(this_list)
+            ))
+
+            if this_word:
+                if this_word in cls.suffixes:
+                    new_name[-1] += this_word
+                    item_type = f&#34;legendary {item_name}&#34;
+                else:
+                    new_name.append(this_word)
+            else:
+                new_name.append(item_name)
+
+        item_name = &#34; &#34;.join(new_name)
+        return cls._stats(item_name, item_type)</code></pre>
+</details>
+<h3>Class variables</h3>
+<dl>
+<dt id="dork.types.ItemFactory.abstract"><code class="name">var <span class="ident">abstract</span></code></dt>
+<dd>
+<section class="desc"></section>
+</dd>
+<dt id="dork.types.ItemFactory.adjectives"><code class="name">var <span class="ident">adjectives</span></code></dt>
+<dd>
+<section class="desc"></section>
+</dd>
+<dt id="dork.types.ItemFactory.condition"><code class="name">var <span class="ident">condition</span></code></dt>
+<dd>
+<section class="desc"></section>
+</dd>
+<dt id="dork.types.ItemFactory.items"><code class="name">var <span class="ident">items</span></code></dt>
+<dd>
+<section class="desc"></section>
+</dd>
+<dt id="dork.types.ItemFactory.material"><code class="name">var <span class="ident">material</span></code></dt>
+<dd>
+<section class="desc"></section>
+</dd>
+<dt id="dork.types.ItemFactory.names"><code class="name">var <span class="ident">names</span></code></dt>
+<dd>
+<section class="desc"></section>
+</dd>
+<dt id="dork.types.ItemFactory.nonposessive"><code class="name">var <span class="ident">nonposessive</span></code></dt>
+<dd>
+<section class="desc"></section>
+</dd>
+<dt id="dork.types.ItemFactory.posessive"><code class="name">var <span class="ident">posessive</span></code></dt>
+<dd>
+<section class="desc"></section>
+</dd>
+<dt id="dork.types.ItemFactory.sequence"><code class="name">var <span class="ident">sequence</span></code></dt>
+<dd>
+<section class="desc"></section>
+</dd>
+<dt id="dork.types.ItemFactory.suffixes"><code class="name">var <span class="ident">suffixes</span></code></dt>
+<dd>
+<section class="desc"></section>
+</dd>
+<dt id="dork.types.ItemFactory.types"><code class="name">var <span class="ident">types</span></code></dt>
+<dd>
+<section class="desc"></section>
+</dd>
+</dl>
+<h3>Static methods</h3>
+<dl>
+<dt id="dork.types.ItemFactory.build"><code class="name flex">
+<span>def <span class="ident">build</span></span>(<span>weights=None)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>generate a random item</p></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">@classmethod
+def build(cls, weights=None):
+    &#34;&#34;&#34;generate a random item&#34;&#34;&#34;
+
+    weights = {
+        &#34;player&#34;: [8, 0, 0, 7, 5, 10]
+    }.get(weights, [8, 35, 3, 7, 5, 10])
+
+    item_type = choice(choices(
+        population=list(cls.types.keys()),
+        weights=weights,
+        k=len(list(cls.types.keys()))
+    ))
+
+    item_name = choice(choices(
+        population=cls.types[item_type],
+        k=len(cls.types[item_type])
+    ))
+
+    return cls._forge(item_name, item_type)</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="dork.types.MazeFactory"><code class="flex name class">
+<span>class <span class="ident">MazeFactory</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Generate a maze with rooms on intersections, corners, and dead-ends</p></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">class MazeFactory:
+    &#34;&#34;&#34;Generate a maze with rooms on intersections, corners, and dead-ends&#34;&#34;&#34;
+
+    wall_color, path_color, room_color, player_color = (-2, 2, 1, 0)
+    moves = factory_data.MOVES
+    rules = factory_data.rules(wall_color, path_color)
+
+    @staticmethod
+    def draw(maze):
+        &#34;&#34;&#34;display the maze&#34;&#34;&#34;
+
+        x_dim, y_dim = len(maze[0])//2, len(maze)//2
+        plt.figure(figsize=(x_dim, y_dim))
+        plt.pcolormesh(maze, cmap=plt.cm.get_cmap(&#34;tab20b&#34;))
+        plt.axis(&#34;equal&#34;)
+        plt.axis(&#34;off&#34;)
+        plt.ion()
+        plt.show()
+
+    @staticmethod
+    def update(maze):
+        &#34;&#34;&#34;update the maze display&#34;&#34;&#34;
+
+        plt.pcolormesh(maze, cmap=plt.cm.get_cmap(&#34;tab20b&#34;))
+        plt.axis(&#34;equal&#34;)
+        plt.axis(&#34;off&#34;)
+        plt.draw()
+
+    # pylint: disable=R0914
+    @staticmethod
+    def build():
+        &#34;&#34;&#34;generate a maze&#34;&#34;&#34;
+
+        x = choice([10, 12, 14, 18])
+        y = 148//x
+
+        maze = npf((x+1, y+1), MazeFactory.wall_color)
+        grid = [(i, j) for i in range(1, x+1, 2) for j in range(1, y+1, 2)]
+        path = [choice(grid)]
+        rooms = []
+        position = path[0]
+        grid.remove(position)
+
+        while grid:
+            n = len(path)
+            nsew = []
+            for move in MazeFactory.moves:
+                nsew.append([
+                    tuple(map(add, move[0], position)),
+                    tuple(map(add, move[1], position))
+                ])
+            shuffle(nsew)
+            for probe in nsew:
+                if probe[0] in grid:
+                    maze[probe[0]] = MazeFactory.path_color
+                    maze[probe[1]] = MazeFactory.path_color
+                    grid.remove(probe[0])
+                    path.extend(probe)
+                    break
+            if n == len(path):
+                position = path[max(path.index(position)-1, 1)]
+            else:
+                position = path[-1]
+
+        for coord in path:
+            i, j = coord
+            neighbors = [
+                maze[i-1, j],
+                maze[i+1, j],
+                maze[i, j-1],
+                maze[i, j+1]
+            ]
+            if neighbors in MazeFactory.rules:
+                rooms.append(coord)
+                maze[coord] = MazeFactory.room_color
+            maze[rooms[0]] = MazeFactory.player_color
+
+        return {
+            &#34;maze&#34;: maze.tolist(),
+            &#34;rooms&#34;: RoomFactory.build(maze, rooms)
+        }</code></pre>
+</details>
+<h3>Class variables</h3>
+<dl>
+<dt id="dork.types.MazeFactory.moves"><code class="name">var <span class="ident">moves</span></code></dt>
+<dd>
+<section class="desc"></section>
+</dd>
+<dt id="dork.types.MazeFactory.path_color"><code class="name">var <span class="ident">path_color</span></code></dt>
+<dd>
+<section class="desc"></section>
+</dd>
+<dt id="dork.types.MazeFactory.player_color"><code class="name">var <span class="ident">player_color</span></code></dt>
+<dd>
+<section class="desc"></section>
+</dd>
+<dt id="dork.types.MazeFactory.room_color"><code class="name">var <span class="ident">room_color</span></code></dt>
+<dd>
+<section class="desc"></section>
+</dd>
+<dt id="dork.types.MazeFactory.rules"><code class="name">var <span class="ident">rules</span></code></dt>
+<dd>
+<section class="desc"></section>
+</dd>
+<dt id="dork.types.MazeFactory.wall_color"><code class="name">var <span class="ident">wall_color</span></code></dt>
+<dd>
+<section class="desc"></section>
+</dd>
+</dl>
+<h3>Static methods</h3>
+<dl>
+<dt id="dork.types.MazeFactory.build"><code class="name flex">
+<span>def <span class="ident">build</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>generate a maze</p></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">@staticmethod
+def build():
+    &#34;&#34;&#34;generate a maze&#34;&#34;&#34;
+
+    x = choice([10, 12, 14, 18])
+    y = 148//x
+
+    maze = npf((x+1, y+1), MazeFactory.wall_color)
+    grid = [(i, j) for i in range(1, x+1, 2) for j in range(1, y+1, 2)]
+    path = [choice(grid)]
+    rooms = []
+    position = path[0]
+    grid.remove(position)
+
+    while grid:
+        n = len(path)
+        nsew = []
+        for move in MazeFactory.moves:
+            nsew.append([
+                tuple(map(add, move[0], position)),
+                tuple(map(add, move[1], position))
+            ])
+        shuffle(nsew)
+        for probe in nsew:
+            if probe[0] in grid:
+                maze[probe[0]] = MazeFactory.path_color
+                maze[probe[1]] = MazeFactory.path_color
+                grid.remove(probe[0])
+                path.extend(probe)
+                break
+        if n == len(path):
+            position = path[max(path.index(position)-1, 1)]
+        else:
+            position = path[-1]
+
+    for coord in path:
+        i, j = coord
+        neighbors = [
+            maze[i-1, j],
+            maze[i+1, j],
+            maze[i, j-1],
+            maze[i, j+1]
+        ]
+        if neighbors in MazeFactory.rules:
+            rooms.append(coord)
+            maze[coord] = MazeFactory.room_color
+        maze[rooms[0]] = MazeFactory.player_color
+
+    return {
+        &#34;maze&#34;: maze.tolist(),
+        &#34;rooms&#34;: RoomFactory.build(maze, rooms)
+    }</code></pre>
+</details>
+</dd>
+<dt id="dork.types.MazeFactory.draw"><code class="name flex">
+<span>def <span class="ident">draw</span></span>(<span>maze)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>display the maze</p></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">@staticmethod
+def draw(maze):
+    &#34;&#34;&#34;display the maze&#34;&#34;&#34;
+
+    x_dim, y_dim = len(maze[0])//2, len(maze)//2
+    plt.figure(figsize=(x_dim, y_dim))
+    plt.pcolormesh(maze, cmap=plt.cm.get_cmap(&#34;tab20b&#34;))
+    plt.axis(&#34;equal&#34;)
+    plt.axis(&#34;off&#34;)
+    plt.ion()
+    plt.show()</code></pre>
+</details>
+</dd>
+<dt id="dork.types.MazeFactory.update"><code class="name flex">
+<span>def <span class="ident">update</span></span>(<span>maze)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>update the maze display</p></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">@staticmethod
+def update(maze):
+    &#34;&#34;&#34;update the maze display&#34;&#34;&#34;
+
+    plt.pcolormesh(maze, cmap=plt.cm.get_cmap(&#34;tab20b&#34;))
+    plt.axis(&#34;equal&#34;)
+    plt.axis(&#34;off&#34;)
+    plt.draw()</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="dork.types.NotUsable"><code class="flex name class">
+<span>class <span class="ident">NotUsable</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Any object that cannot be used</p></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">class NotUsable(Usable):
+    &#34;&#34;&#34;Any object that cannot be used&#34;&#34;&#34;
+
+    @staticmethod
+    def use(target, name):
+        &#34;&#34;&#34;Useless use method&#34;&#34;&#34;
+        print(&#34;You find no use of this item&#34;)</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="dork.types.Usable" href="#dork.types.Usable">Usable</a></li>
+<li>abc.ABC</li>
+</ul>
+<h3>Static methods</h3>
+<dl>
+<dt id="dork.types.NotUsable.use"><code class="name flex">
+<span>def <span class="ident">use</span></span>(<span>target, name)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Useless use method</p></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">@staticmethod
+def use(target, name):
+    &#34;&#34;&#34;Useless use method&#34;&#34;&#34;
+    print(&#34;You find no use of this item&#34;)</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="dork.types.Openable"><code class="flex name class">
+<span>class <span class="ident">Openable</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Object opening behavior class</p></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">class Openable(Usable):
+    &#34;&#34;&#34;Object opening behavior class&#34;&#34;&#34;
+
+    @staticmethod
+    def use(target, name):
+        &#34;&#34;&#34;Opens object targeted if possible&#34;&#34;&#34;
+        print(&#34;You insert the &#34; + name + &#34; into &#34; + target)</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="dork.types.Usable" href="#dork.types.Usable">Usable</a></li>
+<li>abc.ABC</li>
+</ul>
+<h3>Static methods</h3>
+<dl>
+<dt id="dork.types.Openable.use"><code class="name flex">
+<span>def <span class="ident">use</span></span>(<span>target, name)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Opens object targeted if possible</p></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">@staticmethod
+def use(target, name):
+    &#34;&#34;&#34;Opens object targeted if possible&#34;&#34;&#34;
+    print(&#34;You insert the &#34; + name + &#34; into &#34; + target)</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="dork.types.Payable"><code class="flex name class">
+<span>class <span class="ident">Payable</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Any object that can be used as gold</p></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">class Payable(Usable):
+    &#34;&#34;&#34;Any object that can be used as gold&#34;&#34;&#34;
+
+    @staticmethod
+    def use(target, name):
+        &#34;&#34;&#34;Gold use method&#34;&#34;&#34;
+        print(&#34;You use the &#34; + name + &#34; to pay &#34; + target)</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="dork.types.Usable" href="#dork.types.Usable">Usable</a></li>
+<li>abc.ABC</li>
+</ul>
+<h3>Static methods</h3>
+<dl>
+<dt id="dork.types.Payable.use"><code class="name flex">
+<span>def <span class="ident">use</span></span>(<span>target, name)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Gold use method</p></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">@staticmethod
+def use(target, name):
+    &#34;&#34;&#34;Gold use method&#34;&#34;&#34;
+    print(&#34;You use the &#34; + name + &#34; to pay &#34; + target)</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="dork.types.Player"><code class="flex name class">
+<span>class <span class="ident">Player</span></span>
+</code></dt>
+<dd>
+<section class="desc"><p>A player or npc in the game</p></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">class Player(Holder):
+    &#34;&#34;&#34;A player or npc in the game&#34;&#34;&#34;
+
+    instances = []
+
+    def __init__(self):
+        super().__init__()
+        self.data = dict
+        self.name = str
+        self.description = str
+        self.location = Room
+        self.equipped = list
+
+    def _new_instance(self):
+        self.instances.append(self)
+
+    def move(self, cardinal, maze):
+        &#34;&#34;&#34;walk this way&#34;&#34;&#34;
+
+        adjacent_room = getattr(self.location, cardinal)
+
+        if not adjacent_room:
+            out = f&#34;You cannot go {cardinal} from here.&#34;
+        else:
+            maze[self.location.x][self.location.y] = MazeFactory.room_color
+
+            adjacent_room.data[&#34;players&#34;][self.name] = \
+                self.location.data[&#34;players&#34;].pop(self.name)
+            self.location = adjacent_room
+            maze[self.location.x][self.location.y] = MazeFactory.player_color
+
+            out = &#34;You have entered &#34; + self.location.description
+            MazeFactory.update(maze)
+        return out</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="dork.types.Holder" href="#dork.types.Holder">Holder</a></li>
+<li><a title="dork.types.Grandparent" href="#dork.types.Grandparent">Grandparent</a></li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="dork.types.Player.instances"><code class="name">var <span class="ident">instances</span></code></dt>
+<dd>
+<section class="desc"></section>
+</dd>
+</dl>
+<h3>Methods</h3>
+<dl>
+<dt id="dork.types.Player.move"><code class="name flex">
+<span>def <span class="ident">move</span></span>(<span>self, cardinal, maze)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>walk this way</p></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def move(self, cardinal, maze):
+    &#34;&#34;&#34;walk this way&#34;&#34;&#34;
+
+    adjacent_room = getattr(self.location, cardinal)
+
+    if not adjacent_room:
+        out = f&#34;You cannot go {cardinal} from here.&#34;
+    else:
+        maze[self.location.x][self.location.y] = MazeFactory.room_color
+
+        adjacent_room.data[&#34;players&#34;][self.name] = \
+            self.location.data[&#34;players&#34;].pop(self.name)
+        self.location = adjacent_room
+        maze[self.location.x][self.location.y] = MazeFactory.player_color
+
+        out = &#34;You have entered &#34; + self.location.description
+        MazeFactory.update(maze)
+    return out</code></pre>
+</details>
+</dd>
+</dl>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="dork.types.Holder" href="#dork.types.Holder">Holder</a></b></code>:
+<ul class="hlist">
+<li><code><a title="dork.types.Holder.get_items" href="#dork.types.Holder.get_items">get_items</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+<dt id="dork.types.PlayerFactory"><code class="flex name class">
+<span>class <span class="ident">PlayerFactory</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Generate players for a room</p></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">class PlayerFactory:
+    &#34;&#34;&#34;Generate players for a room&#34;&#34;&#34;
+
+    @staticmethod
+    def build(i, room):
+        &#34;&#34;&#34;Make a player, give them items&#34;&#34;&#34;
+        firsts = factory_data.FIRST_NAMES
+        rand_first = choice(firsts)
+        lasts = factory_data.LAST_NAMES
+        rand_last = choice(lasts)
+        new_player = {
+            &#34;name&#34;: rand_first + &#34; &#34; + rand_last,
+            &#34;description&#34;: f&#34;player {i} description&#34;,
+            &#34;location&#34;: room[&#34;name&#34;],
+            &#34;inventory&#34;: {},
+            &#34;equipped&#34;: []
+        }
+        for _ in range(randint(1, 3)):
+            new_item = ItemFactory.build(&#34;player&#34;)
+            new_player[&#34;inventory&#34;][new_item.pop(&#34;name&#34;)] = new_item
+        for key, val in new_player[&#34;inventory&#34;].items():
+            if val[&#34;stats&#34;][&#34;equipable&#34;]:
+                new_player[&#34;equipped&#34;].append(key)
+        return new_player</code></pre>
+</details>
+<h3>Static methods</h3>
+<dl>
+<dt id="dork.types.PlayerFactory.build"><code class="name flex">
+<span>def <span class="ident">build</span></span>(<span>i, room)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Make a player, give them items</p></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">@staticmethod
+def build(i, room):
+    &#34;&#34;&#34;Make a player, give them items&#34;&#34;&#34;
+    firsts = factory_data.FIRST_NAMES
+    rand_first = choice(firsts)
+    lasts = factory_data.LAST_NAMES
+    rand_last = choice(lasts)
+    new_player = {
+        &#34;name&#34;: rand_first + &#34; &#34; + rand_last,
+        &#34;description&#34;: f&#34;player {i} description&#34;,
+        &#34;location&#34;: room[&#34;name&#34;],
+        &#34;inventory&#34;: {},
+        &#34;equipped&#34;: []
+    }
+    for _ in range(randint(1, 3)):
+        new_item = ItemFactory.build(&#34;player&#34;)
+        new_player[&#34;inventory&#34;][new_item.pop(&#34;name&#34;)] = new_item
+    for key, val in new_player[&#34;inventory&#34;].items():
+        if val[&#34;stats&#34;][&#34;equipable&#34;]:
+            new_player[&#34;equipped&#34;].append(key)
+    return new_player</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="dork.types.Room"><code class="flex name class">
+<span>class <span class="ident">Room</span></span>
+</code></dt>
+<dd>
+<section class="desc"><p>A room on the worldmap</p></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">class Room(Adjacent, Coord, Holder):
+    &#34;&#34;&#34;A room on the worldmap&#34;&#34;&#34;
+    # pylint: disable=too-many-instance-attributes
+
+    instances = []
+
+    def __init__(self):
+        super().__init__()
+        self.name = str
+        self.data = dict
+        self.description = str
+        self.players = dict
+
+    def _new_instance(self):
+        self.instances.append(self)</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="dork.types.Adjacent" href="#dork.types.Adjacent">Adjacent</a></li>
+<li><a title="dork.types.Coord" href="#dork.types.Coord">Coord</a></li>
+<li><a title="dork.types.Holder" href="#dork.types.Holder">Holder</a></li>
+<li><a title="dork.types.Grandparent" href="#dork.types.Grandparent">Grandparent</a></li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="dork.types.Room.instances"><code class="name">var <span class="ident">instances</span></code></dt>
+<dd>
+<section class="desc"></section>
+</dd>
+</dl>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="dork.types.Holder" href="#dork.types.Holder">Holder</a></b></code>:
+<ul class="hlist">
+<li><code><a title="dork.types.Holder.get_items" href="#dork.types.Holder.get_items">get_items</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+<dt id="dork.types.RoomFactory"><code class="flex name class">
+<span>class <span class="ident">RoomFactory</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Generate rooms for a given maze</p></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">class RoomFactory:
+    &#34;&#34;&#34;Generate rooms for a given maze&#34;&#34;&#34;
+
+    #  N, S and E, W are backwards because numpy uses column-order
+    moves = {
+        &#34;north&#34;: (1, 0), &#34;south&#34;: (-1, 0),
+        &#34;east&#34;: (0, 1), &#34;west&#34;: (0, -1),
+    }
+
+    @classmethod
+    def build(cls, maze, rooms):
+        &#34;&#34;&#34;build a room&#34;&#34;&#34;
+
+        cls.maze = maze
+        cls.rooms = rooms
+        cls.worldmap = {}
+        return cls._make_rooms()
+
+    @classmethod
+    def _make_rooms(cls):
+
+        list_of_keys = factory_data.ROOMS
+        shuffle(list_of_keys)
+        list_of_adjtvs = factory_data.NAMES[&#34;adjectives&#34;]
+        shuffle(list_of_adjtvs)
+        list_of_abstract = factory_data.NAMES[&#34;abstract&#34;]
+        shuffle(list_of_abstract)
+
+        i = 0
+
+        for room in cls.rooms:
+            if i == 0:
+                x, y = room
+                new_room = {
+                    &#34;number&#34;: f&#34;room 0&#34;,
+                    &#34;name&#34;: f&#34;Entrance&#34;,
+                    &#34;description&#34;: factory_data.DEFAULT_ROOMS[&#34;Entrance&#34;],
+                    &#34;coordinates&#34;: [x, y],
+                    &#34;adjacent&#34;: {},
+                    &#34;players&#34;: {},
+                    &#34;inventory&#34;: {},
+                }
+            elif i &lt; len(cls.rooms) - 1:
+                rand = list_of_keys[i]
+                x, y = room
+                new_room = {
+                    &#34;number&#34;: f&#34;room {i}&#34;,
+                    &#34;name&#34;: rand,
+                    &#34;description&#34;: &#34;The &#34; + list_of_adjtvs[i] + rand +
+                                   list_of_abstract[i],
+                    &#34;coordinates&#34;: [x, y],
+                    &#34;adjacent&#34;: {},
+                    &#34;players&#34;: {},
+                    &#34;inventory&#34;: {},
+                }
+            else:
+                x, y = room
+                new_room = {
+                    &#34;number&#34;: f&#34;room &#34;+str(len(cls.rooms)),
+                    &#34;name&#34;: f&#34;End&#34;,
+                    &#34;description&#34;: factory_data.DEFAULT_ROOMS[&#34;End&#34;],
+                    &#34;coordinates&#34;: [x, y],
+                    &#34;adjacent&#34;: {},
+                    &#34;players&#34;: {},
+                    &#34;inventory&#34;: {},
+                }
+
+            for _ in range(randint(1, 7)):
+                new_item = ItemFactory.build()
+                new_room[&#34;inventory&#34;][new_item.pop(&#34;name&#34;)] = new_item
+
+            for _ in range(randint(0, 2)):
+                new_player = PlayerFactory.build(i, new_room)
+                new_room[&#34;players&#34;][new_player.pop(&#34;name&#34;)] = new_player
+
+            cls.worldmap[room] = new_room
+            i += 1
+
+        return cls._get_adj()
+
+    @classmethod
+    def _get_adj(cls):
+        for coord, room in cls.worldmap.items():
+            for direction in cls.moves:
+                searching = True
+                position = coord
+                while searching:
+                    position = tuple(map(add, position, cls.moves[direction]))
+                    if cls.maze[position] == MazeFactory.wall_color:
+                        room[&#34;adjacent&#34;][direction] = None
+                        searching = False
+                    elif cls.maze[position] in \
+                            [MazeFactory.room_color, MazeFactory.player_color]:
+                        room[&#34;adjacent&#34;][direction] = \
+                            cls.worldmap[position][&#34;number&#34;]
+                        searching = False
+
+        for coord, room in deepcopy(cls.worldmap).items():
+            new_room = cls.worldmap.pop(coord)
+            cls.worldmap[new_room.pop(&#34;number&#34;)] = new_room
+
+        return cls.worldmap</code></pre>
+</details>
+<h3>Class variables</h3>
+<dl>
+<dt id="dork.types.RoomFactory.moves"><code class="name">var <span class="ident">moves</span></code></dt>
+<dd>
+<section class="desc"></section>
+</dd>
+</dl>
+<h3>Static methods</h3>
+<dl>
+<dt id="dork.types.RoomFactory.build"><code class="name flex">
+<span>def <span class="ident">build</span></span>(<span>maze, rooms)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>build a room</p></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">@classmethod
+def build(cls, maze, rooms):
+    &#34;&#34;&#34;build a room&#34;&#34;&#34;
+
+    cls.maze = maze
+    cls.rooms = rooms
+    cls.worldmap = {}
+    return cls._make_rooms()</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="dork.types.Statable"><code class="flex name class">
+<span>class <span class="ident">Statable</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Any object that can change stats</p></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">class Statable(Usable):
+    &#34;&#34;&#34;Any object that can change stats&#34;&#34;&#34;
+
+    @staticmethod
+    def use(target, name):
+        &#34;&#34;&#34;Stat change use method&#34;&#34;&#34;
+        print(&#34;The &#34; + name + &#34; takes effect on &#34; + target)</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="dork.types.Usable" href="#dork.types.Usable">Usable</a></li>
+<li>abc.ABC</li>
+</ul>
+<h3>Static methods</h3>
+<dl>
+<dt id="dork.types.Statable.use"><code class="name flex">
+<span>def <span class="ident">use</span></span>(<span>target, name)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Stat change use method</p></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">@staticmethod
+def use(target, name):
+    &#34;&#34;&#34;Stat change use method&#34;&#34;&#34;
+    print(&#34;The &#34; + name + &#34; takes effect on &#34; + target)</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="dork.types.Stats"><code class="flex name class">
+<span>class <span class="ident">Stats</span></span>
+</code></dt>
+<dd>
+<section class="desc"><p>stats for items</p></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">class Stats:
+    &#34;&#34;&#34;stats for items&#34;&#34;&#34;
+
+    def __init__(self):
+        self.data = dict
+        self.attack = int
+        self.strength = int
+        self.weight = int
+        self.luck = int
+        self.equipable = bool</code></pre>
+</details>
+<h3>Subclasses</h3>
+<ul class="hlist">
+<li><a title="dork.types.Item" href="#dork.types.Item">Item</a></li>
+</ul>
+</dd>
+<dt id="dork.types.Usable"><code class="flex name class">
+<span>class <span class="ident">Usable</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Abstract class of use behavior in items use method</p></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">class Usable(ABC):
+    &#34;&#34;&#34;Abstract class of use behavior in items use method&#34;&#34;&#34;
+
+    @staticmethod
+    @abstractmethod
+    def use(target, name):
+        &#34;&#34;&#34;Strategy pattern inspired by refactoring.guru
+        use method defaults to doing nothing&#34;&#34;&#34;</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>abc.ABC</li>
+</ul>
+<h3>Subclasses</h3>
+<ul class="hlist">
+<li><a title="dork.types.Attackable" href="#dork.types.Attackable">Attackable</a></li>
+<li><a title="dork.types.NotUsable" href="#dork.types.NotUsable">NotUsable</a></li>
+<li><a title="dork.types.Openable" href="#dork.types.Openable">Openable</a></li>
+<li><a title="dork.types.Payable" href="#dork.types.Payable">Payable</a></li>
+<li><a title="dork.types.Statable" href="#dork.types.Statable">Statable</a></li>
+</ul>
+<h3>Static methods</h3>
+<dl>
+<dt id="dork.types.Usable.use"><code class="name flex">
+<span>def <span class="ident">use</span></span>(<span>target, name)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Strategy pattern inspired by refactoring.guru
+use method defaults to doing nothing</p></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">@staticmethod
+@abstractmethod
+def use(target, name):
+    &#34;&#34;&#34;Strategy pattern inspired by refactoring.guru
+    use method defaults to doing nothing&#34;&#34;&#34;</code></pre>
 </details>
 </dd>
 </dl>
@@ -420,9 +2810,137 @@ class Game:
 <li><h3><a href="#header-classes">Classes</a></h3>
 <ul>
 <li>
+<h4><code><a title="dork.types.Adjacent" href="#dork.types.Adjacent">Adjacent</a></code></h4>
+</li>
+<li>
+<h4><code><a title="dork.types.Attackable" href="#dork.types.Attackable">Attackable</a></code></h4>
+<ul class="">
+<li><code><a title="dork.types.Attackable.use" href="#dork.types.Attackable.use">use</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="dork.types.Coord" href="#dork.types.Coord">Coord</a></code></h4>
+</li>
+<li>
 <h4><code><a title="dork.types.Game" href="#dork.types.Game">Game</a></code></h4>
 <ul class="">
-<li><code><a title="dork.types.Game.build" href="#dork.types.Game.build">build</a></code></li>
+<li><code><a title="dork.types.Game.dataaa" href="#dork.types.Game.dataaa">dataaa</a></code></li>
+<li><code><a title="dork.types.Game.verbose" href="#dork.types.Game.verbose">verbose</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="dork.types.Gamebuilder" href="#dork.types.Gamebuilder">Gamebuilder</a></code></h4>
+<ul class="">
+<li><code><a title="dork.types.Gamebuilder.build" href="#dork.types.Gamebuilder.build">build</a></code></li>
+<li><code><a title="dork.types.Gamebuilder.load_game" href="#dork.types.Gamebuilder.load_game">load_game</a></code></li>
+<li><code><a title="dork.types.Gamebuilder.save_game" href="#dork.types.Gamebuilder.save_game">save_game</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="dork.types.Grandparent" href="#dork.types.Grandparent">Grandparent</a></code></h4>
+</li>
+<li>
+<h4><code><a title="dork.types.Holder" href="#dork.types.Holder">Holder</a></code></h4>
+<ul class="">
+<li><code><a title="dork.types.Holder.get_items" href="#dork.types.Holder.get_items">get_items</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="dork.types.Item" href="#dork.types.Item">Item</a></code></h4>
+<ul class="">
+<li><code><a title="dork.types.Item.make" href="#dork.types.Item.make">make</a></code></li>
+<li><code><a title="dork.types.Item.set_usable" href="#dork.types.Item.set_usable">set_usable</a></code></li>
+<li><code><a title="dork.types.Item.use" href="#dork.types.Item.use">use</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="dork.types.ItemFactory" href="#dork.types.ItemFactory">ItemFactory</a></code></h4>
+<ul class="two-column">
+<li><code><a title="dork.types.ItemFactory.abstract" href="#dork.types.ItemFactory.abstract">abstract</a></code></li>
+<li><code><a title="dork.types.ItemFactory.adjectives" href="#dork.types.ItemFactory.adjectives">adjectives</a></code></li>
+<li><code><a title="dork.types.ItemFactory.build" href="#dork.types.ItemFactory.build">build</a></code></li>
+<li><code><a title="dork.types.ItemFactory.condition" href="#dork.types.ItemFactory.condition">condition</a></code></li>
+<li><code><a title="dork.types.ItemFactory.items" href="#dork.types.ItemFactory.items">items</a></code></li>
+<li><code><a title="dork.types.ItemFactory.material" href="#dork.types.ItemFactory.material">material</a></code></li>
+<li><code><a title="dork.types.ItemFactory.names" href="#dork.types.ItemFactory.names">names</a></code></li>
+<li><code><a title="dork.types.ItemFactory.nonposessive" href="#dork.types.ItemFactory.nonposessive">nonposessive</a></code></li>
+<li><code><a title="dork.types.ItemFactory.posessive" href="#dork.types.ItemFactory.posessive">posessive</a></code></li>
+<li><code><a title="dork.types.ItemFactory.sequence" href="#dork.types.ItemFactory.sequence">sequence</a></code></li>
+<li><code><a title="dork.types.ItemFactory.suffixes" href="#dork.types.ItemFactory.suffixes">suffixes</a></code></li>
+<li><code><a title="dork.types.ItemFactory.types" href="#dork.types.ItemFactory.types">types</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="dork.types.MazeFactory" href="#dork.types.MazeFactory">MazeFactory</a></code></h4>
+<ul class="two-column">
+<li><code><a title="dork.types.MazeFactory.build" href="#dork.types.MazeFactory.build">build</a></code></li>
+<li><code><a title="dork.types.MazeFactory.draw" href="#dork.types.MazeFactory.draw">draw</a></code></li>
+<li><code><a title="dork.types.MazeFactory.moves" href="#dork.types.MazeFactory.moves">moves</a></code></li>
+<li><code><a title="dork.types.MazeFactory.path_color" href="#dork.types.MazeFactory.path_color">path_color</a></code></li>
+<li><code><a title="dork.types.MazeFactory.player_color" href="#dork.types.MazeFactory.player_color">player_color</a></code></li>
+<li><code><a title="dork.types.MazeFactory.room_color" href="#dork.types.MazeFactory.room_color">room_color</a></code></li>
+<li><code><a title="dork.types.MazeFactory.rules" href="#dork.types.MazeFactory.rules">rules</a></code></li>
+<li><code><a title="dork.types.MazeFactory.update" href="#dork.types.MazeFactory.update">update</a></code></li>
+<li><code><a title="dork.types.MazeFactory.wall_color" href="#dork.types.MazeFactory.wall_color">wall_color</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="dork.types.NotUsable" href="#dork.types.NotUsable">NotUsable</a></code></h4>
+<ul class="">
+<li><code><a title="dork.types.NotUsable.use" href="#dork.types.NotUsable.use">use</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="dork.types.Openable" href="#dork.types.Openable">Openable</a></code></h4>
+<ul class="">
+<li><code><a title="dork.types.Openable.use" href="#dork.types.Openable.use">use</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="dork.types.Payable" href="#dork.types.Payable">Payable</a></code></h4>
+<ul class="">
+<li><code><a title="dork.types.Payable.use" href="#dork.types.Payable.use">use</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="dork.types.Player" href="#dork.types.Player">Player</a></code></h4>
+<ul class="">
+<li><code><a title="dork.types.Player.instances" href="#dork.types.Player.instances">instances</a></code></li>
+<li><code><a title="dork.types.Player.move" href="#dork.types.Player.move">move</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="dork.types.PlayerFactory" href="#dork.types.PlayerFactory">PlayerFactory</a></code></h4>
+<ul class="">
+<li><code><a title="dork.types.PlayerFactory.build" href="#dork.types.PlayerFactory.build">build</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="dork.types.Room" href="#dork.types.Room">Room</a></code></h4>
+<ul class="">
+<li><code><a title="dork.types.Room.instances" href="#dork.types.Room.instances">instances</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="dork.types.RoomFactory" href="#dork.types.RoomFactory">RoomFactory</a></code></h4>
+<ul class="">
+<li><code><a title="dork.types.RoomFactory.build" href="#dork.types.RoomFactory.build">build</a></code></li>
+<li><code><a title="dork.types.RoomFactory.moves" href="#dork.types.RoomFactory.moves">moves</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="dork.types.Statable" href="#dork.types.Statable">Statable</a></code></h4>
+<ul class="">
+<li><code><a title="dork.types.Statable.use" href="#dork.types.Statable.use">use</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="dork.types.Stats" href="#dork.types.Stats">Stats</a></code></h4>
+</li>
+<li>
+<h4><code><a title="dork.types.Usable" href="#dork.types.Usable">Usable</a></code></h4>
+<ul class="">
+<li><code><a title="dork.types.Usable.use" href="#dork.types.Usable.use">use</a></code></li>
 </ul>
 </li>
 </ul>
