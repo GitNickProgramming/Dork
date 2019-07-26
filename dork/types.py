@@ -505,7 +505,7 @@ class Game:
         point = self.points
         if point == 0:
             return f"Booooooo! you suck.\nYou have {point} points.", False
-        return f"your have: {point}", False
+        return f"you have: {point}", False
 
     def _examine(self):
         out = ""

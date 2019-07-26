@@ -136,6 +136,10 @@ def test_points():
     assert result == 0, "points where not added"
 
 
+def test_get_points(game, repl_data):
+    """prints points"""
+    assert "you have:" in repl._evaluate("points", game, repl_data)[0]
+
 # def test_take_single(run):
 #     """testing _take the method takes all and specific item"""
 #     out = run(repl, input_side_effect=["name", "examine",
