@@ -1310,37 +1310,7 @@ rooms:
         - 1
         - 9
         description: room 4 description
-        inventory:
-            bewildering potion of firestorms:
-                description: ''
-                stats:
-                    amount: 4
-                    attack: 26
-                    equipable: true
-                    luck: 10
-                    strength: 14
-                    weight: 0
-                type: 'magic consumables '
-            damaged bowl:
-                description: ''
-                stats:
-                    amount: 0
-                    attack: 0
-                    equipable: false
-                    luck: 2
-                    strength: 0
-                    weight: 24
-                type: 'filler '
-            pristine iron crossbow of the heretic:
-                description: ''
-                stats:
-                    amount: 0
-                    attack: 28
-                    equipable: true
-                    luck: 15
-                    strength: 0
-                    weight: 14
-                type: 'weapon '
+        inventory: {}
         players: {}
     room 5:
         adjacent:
@@ -1362,16 +1332,6 @@ rooms:
                     luck: 9
                     strength: 0
                     weight: 22
-                type: 'filler '
-            burnt pestle:
-                description: ''
-                stats:
-                    amount: 0
-                    attack: 0
-                    equipable: false
-                    luck: -10
-                    strength: 0
-                    weight: 17
                 type: 'filler '
             greater philter of dread:
                 description: ''
@@ -1472,27 +1432,7 @@ rooms:
         - 1
         - 7
         description: room 6 description
-        inventory:
-            chipped cup:
-                description: ''
-                stats:
-                    amount: 1
-                    attack: null
-                    equipable: false
-                    luck: -10
-                    strength: 0
-                    weight: 10
-                type: 'filler '
-            ruined chains:
-                description: ''
-                stats:
-                    amount: 0
-                    attack: 0
-                    equipable: false
-                    luck: 10
-                    strength: 0
-                    weight: 11
-                type: 'filler '
+        inventory: {}
         players:
             player 6:
                 description: player 6 description

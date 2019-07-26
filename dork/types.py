@@ -1,11 +1,11 @@
 """Base types for the Dork game"""
 # -*- coding: utf-8 -*-
-# from pprint import pprint
 from abc import ABC, abstractmethod
 import os
 from copy import deepcopy
 from random import choices, choice, randint, shuffle, randrange
 from operator import add
+from inspect import getfullargspec as argspec
 import yaml
 import matplotlib.pyplot as plt
 from numpy import full as npf
@@ -248,9 +248,7 @@ class Player(Holder):
             self.location = adjacent_room
             maze[self.location.x][self.location.y] = MazeFactory.player_color
 
-            outt = self.location.description
-            # outtt = self.location.name
-            out = "You have entered "+outt
+            out = "You have entered " + self.location.description
             MazeFactory.update(maze)
         return out
 
@@ -271,7 +269,7 @@ class Room(Adjacent, Coord, Holder):
 
     def __init__(self):
         super().__init__()
-        self.name = "yeah"
+        self.name = str
         self.data = dict
         self.description = str
         self.players = dict
@@ -306,6 +304,9 @@ class Gamebuilder:
         setattr(game, "maze", data["maze"])
         setattr(game, "rooms", cls._make_rooms(deepcopy(data["rooms"])))
 
+        cls._get_adj_description(game)
+        cls._get_room_inv_description(game)
+
         cls._place_players(game)
         cls._make_paths(game)
 
@@ -316,6 +317,68 @@ class Gamebuilder:
         game.hero = hero
         game.maze[hero.location.x][hero.location.y] = MazeFactory.player_color
         return game
+
+    @classmethod
+    def _get_room_inv_description(cls, worldmapp):
+        worldmap = worldmapp.rooms
+        worldmap_length = len(worldmap)
+        iterator = 0
+        for rooms in worldmap:
+            if iterator != worldmap_length - 1:
+                inv_list = worldmap[rooms].inventory
+                num = len(inv_list)
+                if num >= 2:
+                    rand_ind = randrange(4)
+                    first_desc = worldmap[rooms].description + "\n"
+                    desc = factory_data.ROOM_INV_DESCRIPTIONS["1"][rand_ind]
+                    worldmap[rooms].description = first_desc+desc
+                elif num == 1:
+                    first_desc = worldmap[rooms].description + "\n"
+                    desc = factory_data.ROOM_INV_DESCRIPTIONS["2"]
+                    worldmap[rooms].description = first_desc+desc
+                elif num == 0:
+                    first_desc = worldmap[rooms].description + "\n"
+                    desc = factory_data.ROOM_INV_DESCRIPTIONS["3"]
+                    worldmap[rooms].description = first_desc+desc
+            iterator += 1
+        return 0
+
+    @classmethod
+    def _get_adj_description(cls, worldmapp):
+
+        worldmap = worldmapp.rooms
+
+        for rooms in worldmap:
+            desc = ""
+            adj_list = list()
+            adj_possibilities = {"north", "east", "south", "west"}
+            for pos in adj_possibilities:
+                if worldmap[rooms].data["adjacent"][pos] is not None:
+                    adj_list.append(pos)
+
+            adj_string = ""
+            for adj in adj_list:
+                if adj_list[0] == adj:
+                    adj_string += " "+adj
+                else:
+                    adj_string += ", "+adj
+            adj_string += "..."
+
+            if((len(adj_list) == 1)
+               and rooms != "room 0" and rooms != "room "+str(len(worldmap))):
+                desc = factory_data.ADJ_ROOM_DESCRIPTIONS["1"]
+            elif len(adj_list) == 2:
+                rand_ind = randrange(8)
+                desc = factory_data.ADJ_ROOM_DESCRIPTIONS["2"][rand_ind] \
+                    + adj_string
+            elif len(adj_list) == 3:
+                rand_ind = randrange(5)
+                desc = factory_data.ADJ_ROOM_DESCRIPTIONS["3"][rand_ind] \
+                    + adj_string
+            first_desc = worldmap[rooms].description + "\n"
+            worldmap[rooms].description = first_desc+desc
+
+        return 0
 
     @classmethod
     def _place_players(cls, game):
@@ -357,7 +420,6 @@ class Gamebuilder:
             rooms[name] = new_room
             new_room._new_instance()
 
-        # print(rooms["room 1"].data)
         return rooms
 
     @classmethod
@@ -456,7 +518,16 @@ class Game:
         self.hero = Player()
 
     def __call__(self, cmd, arg):
-        return getattr(self, cmd)(arg) if arg else getattr(self, cmd)()
+        do_func = getattr(self, cmd)
+        func_args = argspec(do_func).args
+        if arg:
+            if not func_args or ("self" in func_args and len(func_args) == 1):
+                out = self._repl_error("This command takes no arguments")
+            else:
+                out = do_func(arg)
+        else:
+            out = do_func()
+        return out
 
     def _toggle_verbose(self) -> (str, bool):
         self.verbose = not self.verbose
@@ -465,10 +536,6 @@ class Game:
             False: "verbose inventory: OFF"
         }[self.verbose]
         return out, False
-
-    def _set_location(self):
-        """Set location based on
-        """
 
     def _gtfo(self):
         return f"Thanks for playing DORK, {self.hero.name}!", True
@@ -481,20 +548,28 @@ class Game:
         return self.hero.move(cardinal, self.maze), False
 
     def _examine(self):
-        return self.hero.location.get_items(
-            self.hero.location, self.verbose
-        ), False
+        out = ""
+        location = self.hero.location
+        if self.verbose:
+            out += f"    players:" + Game._verbose_print(
+                location.data["players"]
+            )
+            out += f"\n\n    inventory:" + Game._verbose_print(
+                location.data["inventory"]
+            )
+        else:
+            out += f"    players:" + Game._brief_print(
+                location.data["players"]
+            )
+            out += f"\n\n    inventory:" + Game._brief_print(
+                location.data["inventory"]
+            )
+        return out, False
 
     def _inventory(self):
         return self.hero.get_items(self.hero, self.verbose), False
 
-    def _look(self, x="n"):
-        if x == "around":
-            items = self.hero.location.inventory
-            print("\nItems:")
-            for item in items:
-                print(item)
-            print()
+    def _look(self):
         return self.hero.location.description, False
 
     def _save_game(self):
@@ -502,30 +577,58 @@ class Game:
         Gamebuilder.save_game(self.hero.name, self.data)
         return "game saved successfully!", False
 
-    def _take(self, item="all"):
-        # Item defaults to "all", and adds all items in room to inventory
-        room_items = self.hero.location.inventory
-        room_items2 = room_items.copy()
-        player = self.hero.inventory
-        if item == "all":
-            for item_n in room_items2:
-                player[item_n] = room_items.pop(item_n)
-            return f"You took {item} item. You took them well.", False
-        player[item] = room_items.pop(item)
-        return f"You took the {item}. You took it well.", False
+    # item_name defaults to None, so we take all items in room
+    def _take(self, item_name=None):
+        out = ""
+        hero = self.hero
+        room = hero.location
+        if not item_name:
+            room_copy = deepcopy(room.inventory)
+            for item in room_copy:
+                this_item = room.inventory.pop(item)
+                this_data = room.data["inventory"].pop(item)
+                hero.inventory[item] = this_item
+                hero.data["inventory"][item] = this_data
+                out += f"You took {item}\n"
+        elif item_name in room.inventory:
+            this_item = room.inventory.pop(item_name)
+            this_data = room.data["inventory"].pop(item_name)
+            hero.inventory[item_name] = this_item
+            hero.data["inventory"][item_name] = this_data
+            out += f"You took {item_name}. You took it well."
+        else:
+            out = f"There is no {item_name} here."
 
-    def _drop_item(self, item="all"):
-        """drops specific item from player to room"""
-        player = self.hero.inventory
-        player2 = player.copy()
-        room_items = self.hero.location.inventory
-        if item == "all":
-            for item_n in player2:
-                room_items[item_n] = player.pop(item_n)
-            return "Oops, you can't hold all these items", False
-        room_items = self.hero.location.inventory
-        room_items[item] = player.pop(item)
-        return "Oops, you dropped something!", False
+        self._update_room_inv_description(room)
+
+        return out, False
+
+    @classmethod
+    def _update_room_inv_description(cls, location):
+        inv_list = location.inventory
+        num = len(inv_list)
+        description = location.description.splitlines()
+        des = str()
+        if num == 1:
+            des = description[0] + "\n" + description[1] \
+                + "\n" + factory_data.ROOM_INV_DESCRIPTIONS["2"]
+        elif num == 0:
+            des = description[0] + "\n" + description[1] \
+                + "\n" + factory_data.ROOM_INV_DESCRIPTIONS["3"]
+        location.description = des
+        return 0
+
+    # def _drop_item(self, item="all"):
+    #     player = self.hero.inventory
+    #     player2 = player.copy()
+    #     room_items = self.hero.location.inventory
+    #     if item == "all":
+    #         for item_n in player2:
+    #             room_items[item_n] = player.pop(item_n)
+    #         return "Oops, you can't hold all these items", False
+    #     room_items = self.hero.location.inventory
+    #     room_items[item] = player.pop(item)
+    #     return "Oops, you dropped something!", False
 
     def _use_item(self, item="Nothing"):
         if item in self.hero.inventory.keys():
@@ -542,7 +645,7 @@ class Game:
 
     def _start_over(self):
         if self._confirm():
-            out = ""
+            out = "new game"
         else:
             out = "Guess you changed your mind!"
         return out, False
@@ -566,10 +669,16 @@ class Game:
     @staticmethod
     def _brief_print(data, calls=2):
         out = ""
-        col = ""
         spc = "    "
+<<<<<<< HEAD
         for key in data.keys():
             out += spc+ key
+=======
+        for key, val in data.items():
+            if isinstance(val, dict) and calls < 3:
+                out += "\n" + spc*calls + \
+                    f"{key}{Game._brief_print(val, calls+1)}"
+>>>>>>> d558fbb675a08e5626d5d0b90936d50237d8cc69
         return out
 
     @staticmethod
@@ -695,23 +804,23 @@ class PlayerFactory:
     @staticmethod
     def build(i, room):
         """Make a player, give them items"""
-
+        firsts = factory_data.FIRST_NAMES
+        rand_first = choice(firsts)
+        lasts = factory_data.LAST_NAMES
+        rand_last = choice(lasts)
         new_player = {
-            "name": f"player {i}",
+            "name": rand_first + " " + rand_last,
             "description": f"player {i} description",
             "location": room["name"],
             "inventory": {},
             "equipped": []
         }
-
         for _ in range(randint(1, 3)):
             new_item = ItemFactory.build("player")
             new_player["inventory"][new_item.pop("name")] = new_item
-
         for key, val in new_player["inventory"].items():
             if val["stats"]["equipable"]:
                 new_player["equipped"].append(key)
-
         return new_player
 
 
@@ -816,60 +925,7 @@ class RoomFactory:
             new_room = cls.worldmap.pop(coord)
             cls.worldmap[new_room.pop("number")] = new_room
 
-        cls._get_adj_description(cls.worldmap)
-        cls._get_room_inv_description(cls.worldmap)
-
         return cls.worldmap
-
-    @classmethod
-    def _get_room_inv_description(cls, worldmap):
-        for rooms in worldmap:
-            inv_list = worldmap[rooms]["inventory"]
-            num = len(inv_list)
-            if num > 2:
-                rand_ind = randrange(4)
-                first_desc = worldmap[rooms]["description"] + "\n"
-                desc = factory_data.ROOM_INV_DESCRIPTIONS["1"][rand_ind]
-                worldmap[rooms]["description"] = first_desc+desc
-            elif num == 1:
-                first_desc = worldmap[rooms]["description"] + "\n"
-                desc = factory_data.ROOM_INV_DESCRIPTIONS["2"]
-                worldmap[rooms]["description"] = first_desc+desc
-        return 0
-
-    @classmethod
-    def _get_adj_description(cls, worldmap):
-        for rooms in worldmap:
-            desc = ""
-            adj_list = list()
-            adj_possibilities = {"north", "east", "south", "west"}
-            for pos in adj_possibilities:
-                if worldmap[rooms]["adjacent"][pos] is not None:
-                    adj_list.append(pos)
-
-            adj_string = ""
-            for adj in adj_list:
-                if adj_list[0] == adj:
-                    adj_string += " "+adj
-                else:
-                    adj_string += ", "+adj
-            adj_string += "..."
-
-            if((len(adj_list) == 1)
-               and rooms != "room 0" and rooms != "room "+str(len(cls.rooms))):
-                desc = factory_data.ADJ_ROOM_DESCRIPTIONS["1"]
-            elif len(adj_list) == 2:
-                rand_ind = randrange(8)
-                desc = factory_data.ADJ_ROOM_DESCRIPTIONS["2"][rand_ind] \
-                    + adj_string
-            elif len(adj_list) == 3:
-                rand_ind = randrange(5)
-                desc = factory_data.ADJ_ROOM_DESCRIPTIONS["3"][rand_ind] \
-                    + adj_string
-            first_desc = worldmap[rooms]["description"] + "\n"
-            worldmap[rooms]["description"] = first_desc+desc
-
-        return 0
 
 
 class MazeFactory:
@@ -898,7 +954,7 @@ class MazeFactory:
         plt.axis("equal")
         plt.axis("off")
         plt.draw()
-        # plt.show()
+        plt.show()
 
     # pylint: disable=R0914
     @staticmethod

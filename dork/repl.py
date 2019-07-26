@@ -40,9 +40,14 @@ def _evaluate(cmd, dork, repl_data):
         if isinstance(call, dict):
             method, arg = call.get(noun, errs["no go"])
         elif call not in errs.values():
-            method, arg = call[0], noun if noun else (
-                call[1] if len(call) > 1 else None
-            )
+            if noun and len(call) > 1:
+                method, arg = errs["which way"]
+            elif noun and len(call) == 1:
+                method, arg = call[0], noun
+            elif not noun and len(call) > 1:
+                method, arg = call
+            else:
+                method, arg = call[0], None
         else:
             method, arg = call
     else:
@@ -61,7 +66,10 @@ def repl():
         output, should_exit = _evaluate(
             cmd=_read(), dork=dork, repl_data=repl_data
         )
-        print(output + "\n")
+        if output == "new game":
+            dork, repl_data = _new_game()
+        else:
+            print(output + "\n")
 
         if should_exit:
             break

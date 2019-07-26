@@ -3,9 +3,8 @@
 """
 from unittest import mock as mock
 from tests.utils import is_a
-import dork.types as types
+from dork import repl, types
 import dork.game_utils.factory_data as factory_data
-import dork.repl
 
 # pylint: disable=protected-access
 
@@ -106,7 +105,7 @@ def test_inventory_has_item(mocker):
     mocked_input = mocker.patch('builtins.input')
     mocked_input.side_effect = ["bobby b"]
     test_game = types.Gamebuilder.build('bobby b')
-    test_item = dork.types.Item()
+    test_item = types.Item()
     test_item.name = "wobblelobbledobdob"
     test_game.hero.inventory[test_item.name] = test_item
     assert test_item.name in test_game.hero.inventory,\
@@ -133,36 +132,25 @@ def test_inventory_prints(mocker):
         out = test_game._inventory()
         assert test_item.name in out[0], "fucked up"
 
-def test_look(run):
-    """testing _look for display items and description"""
-    out = run(dork.repl.repl, input_side_effect=["devon",
-                                                 "look around",
-                                                 ".rq"])
-    assert "Items:\ndamaged note\nfragile leather greaves" in out[0],\
-           "item are not found on entrance room"
+def test_look(game, repl_data):
+    """testing _look for room description"""
+    assert "the beginning" in repl._evaluate("look", game, repl_data)[0]
 
 
-def test_take(run):
-    """testing _take the method takes all and specific item"""
-    out = run(dork.repl.repl, input_side_effect=["name", "take", ".rq"])
-    assert "You took all item. You took them well." in out[0],\
-           "item are not found on entrance room"
+# def test_take_single(run):
+#     """testing _take the method takes all and specific item"""
+#     out = run(repl, input_side_effect=["name", "examine",
+#                                                  "take", ".rq"])
+#     assert "You took all item. You took them well" in out[0], \
+#         "item are not found on entrance room"
 
 
-def test_take_single(run):
-    """testing _take the method takes all and specific item"""
-    out = run(dork.repl.repl, input_side_effect=["name", "examine",
-                                                 "take", ".rq"])
-    assert "You took all item. You took them well" in out[0], \
-        "item are not found on entrance room"
-
-
-def test_drop_item(run):
-    """testing _drop_item the method takes all and specific item"""
-    out = run(dork.repl.repl, input_side_effect=["name", "take",
-                                                 "drop", ".rq"])
-    assert "Oops, you can't hold all these items" in out[0],\
-           "item are not found on entrance room"
+# def test_drop_item(run):
+#     """testing _drop_item the method takes all and specific item"""
+#     out = run(repl, input_side_effect=["name", "take",
+#                                                  "drop", ".rq"])
+#     assert "Oops, you can't hold all these items" in out[0],\
+#            "item are not found on entrance room"
 
 
 def test_sword_can_swing(run):
@@ -239,6 +227,7 @@ def test_only_stat(run):
                      "use method failed for gold items"
 
 
+<<<<<<< HEAD
 def test_runtime_items(run):
     """Tests the functionality of items in runtime"""
     out = run(dork.repl.repl, input_side_effect=["tester",
@@ -308,3 +297,28 @@ def test_forward_facing_calls_state_machine(player):
     test_player.attack()
     assert test_player.machine.get_state() == dork.types.Dead, "player failed to die by forward calls"
 
+=======
+# def test_runtime_items(run):
+#     """Tests the functionality of items in runtime"""
+#     out = run(repl, input_side_effect=["tester",
+#                                        "use sword", ".rq"])
+#     assert "You don't have that item...\n" in out[0],\
+#            "Failed to decline use on non-existant item"
+
+
+# def test_use_has_target_input(run):
+#     """Testing that use takes an input"""
+#     out = run(repl, input_side_effect=["tester",
+#                                        "use sword", ".rq"])
+#     assert "You don't have that item...\n" in out[0],\
+#            "Failed to decline use on non-existant item"
+#     test_item = types.Item()
+#     test_item.make({"name": "sword",
+#                     "description": "its made of foam",
+#                     "type": "weapon"})
+#     test_game = types.Gamebuilder().build("test")
+#     test_game.hero.inventory[test_item.name] = test_item
+#     out = run(test_game._use_item, "sword", input_side_effect=["player"])
+#     assert "You swing the sword at player" in out[0],\
+#            "failed to contain a target argument"
+>>>>>>> d558fbb675a08e5626d5d0b90936d50237d8cc69

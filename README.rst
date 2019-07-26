@@ -1,25 +1,97 @@
-Read Me
-=======
+# Dork
 
-zork but different
+Dork is a text based exploration game full of mystery, intrigue, but most importantly memes!  
+The player finds him/herself in an exciting randomly generated maze where they can interact with rooms, items, and non-player characters. 
+Using cardinal directions and simple commands, the player navigates throughout the maze to find him/herself at the end of the road. 
+Be careful not to stumble upon Trolly McTrollFace...
 
-* Free software: MIT license
-* Documentation:
+## Getting Started
+
+This game requires the user to have an IDE, python, requirements-dev.txt package installed, etc.
+ 
+### Prerequisites
+
+What things you need to install the software and how to install them
+
+```
+Give an example
+```
+
+### Installing
+
+A step by step series of examples that tell you how to get a development env running
+
+Say what the step will be
+
+```
+Give the example
+```
+
+And repeat
+
+```
+until finished
+```
+
+End with an example of getting some data out of the system or using it for a little demo
+
+## Running the tests
+
+Explain how to run the automated tests for this system
+
+### Break down into end to end tests
+
+Explain what these tests test and why
+
+```
+Give an example
+```
+
+### And coding style tests
+
+Explain what these tests test and why
+
+```
+Give an example
+```
+
+## Deployment
+
+Add additional notes about how to deploy this on a live system
+
+## Built With
+
+* [Dropwizard](http://www.dropwizard.io/1.0.2/docs/) - The web framework used
+* [Maven](https://maven.apache.org/) - Dependency Management
+* [ROME](https://rometools.github.io/rome/) - Used to generate RSS Feeds
+
+## Contributing
 
 
-Features
---------
 
-* TODO
+## Versioning
 
-Credits
--------
+We use [SemVer](http://semver.org/) for versioning. 
+For the versions available, see the [tags on this repository](https://github.com/GitNickProgramming/Dork/tags). 
 
-Please see the credits provided in the repo or Documentation.
+## Authors
+
+* **David Dews** -
+* **Larsen Close** -
+* **Fernando Bobonoyaba** -
+* **Devon DeJohn** -
+* **Zachory Anguiano** -
+* **Nick Gagliardi** -
+
+See also the list of [contributors](https://github.com/GitNickProgramming/Dork/contributors) who participated in this project.
+
+## License
 
 
-This package was created with Cookiecutter_ and the
-`lsmith-zenoscave/cookiecutter-simplemodule`_ project template.
 
-.. _Cookiecutter: https://github.com/audreyr/cookiecutter
-.. _`lsmith-zenoscave/cookiecutter-simplemodule`: https://github.com/lsmith-zenoscave/cookiecutter-simplemodule
+## Acknowledgments
+
+* 
+* 
+* 
+
