@@ -7,7 +7,9 @@ Be careful not to stumble upon Trolly McTrollFace...
 
 ## Getting Started
 
-This game requires the user to have an IDE, python, requirements-dev.txt package installed, etc.
+This game requires the user to have an IDE that can run Python programs. 
+
+First install  , python, requirements-dev.txt package installed, etc.
  
 ### Prerequisites
 
@@ -64,6 +66,9 @@ Add additional notes about how to deploy this on a live system
 * [Dropwizard](http://www.dropwizard.io/1.0.2/docs/) - The web framework used
 * [Maven](https://maven.apache.org/) - Dependency Management
 * [ROME](https://rometools.github.io/rome/) - Used to generate RSS Feeds
+* []() - 
+* []() - 
+* []() - 
 
 ## Contributing
 
@@ -71,7 +76,6 @@ Add additional notes about how to deploy this on a live system
 
 ## Versioning
 
-We use [SemVer](http://semver.org/) for versioning. 
 For the versions available, see the [tags on this repository](https://github.com/GitNickProgramming/Dork/tags). 
 
 ## Authors
