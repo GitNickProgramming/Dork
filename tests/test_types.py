@@ -125,6 +125,7 @@ def test_look(game, repl_data):
     """testing _look for room description"""
     assert "the beginning" in repl._evaluate("look", game, repl_data)[0]
 
+
 def test_points():
     """testing _points for: add, remove, and no points"""
     game = types.Game()
