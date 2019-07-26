@@ -68,7 +68,6 @@ def test_start_over_yes(capsys, mocker, game):
 
 def test_player_location(game):
     """testing the get and set of player location"""
-
     is_a(game.hero.location, types.Room)
 
 
@@ -136,6 +135,25 @@ def test_look(game, repl_data):
     """testing _look for room description"""
     assert "the beginning" in repl._evaluate("look", game, repl_data)[0]
 
+
+def test_points():
+    """testing _points for: add, remove, and no points"""
+    game = types.Game()
+    result = game._points('_get_points')
+    assert result == 10, "points where not added"
+    result = game._points('_take')
+    assert result == 11, "points where not added"
+    result = game._points('_repl_error')
+    assert result == 0, "points where not added"
+
+
+def test_get_points(game, repl_data):
+    """prints points"""
+    assert "you have:" in repl._evaluate("points", game, repl_data)[0]
+    game = types.Game()
+    game.points = 0
+    result = game._get_points()
+    assert "Booooooo! you suck.\nYou have 0 points." in result
 
 # def test_take_single(run):
 #     """testing _take the method takes all and specific item"""

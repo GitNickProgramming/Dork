@@ -128,9 +128,9 @@ def test_repl_evaluate_safety(game, repl_data):
     assert repl._evaluate("points LARSEN", game, repl_data)
 
 
-# def test_repl_bad_keys(game, repl_data):
-#     """these are bad keys for take and drop commands"""
+def test_repl_bad_keys(game, repl_data):
+    """these are bad keys for take and drop commands"""
 
-    # assert repl._evaluate("drop LARSEN", game, repl_data)
-    # assert repl._evaluate("take LARSEN", game, repl_data)
-    # assert repl._evaluate("loot LARSEN", game, repl_data)
+    assert repl._evaluate("drop LARSEN", game, repl_data)
+    assert repl._evaluate("take LARSEN", game, repl_data)
+    assert repl._evaluate("loot LARSEN", game, repl_data)
