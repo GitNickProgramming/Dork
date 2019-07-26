@@ -139,6 +139,10 @@ def test_points():
 def test_get_points(game, repl_data):
     """prints points"""
     assert "you have:" in repl._evaluate("points", game, repl_data)[0]
+    game = types.Game()
+    game.points = 0
+    result = game._get_points()
+    assert "Booooooo! you suck.\nYou have 0 points." in result
 
 # def test_take_single(run):
 #     """testing _take the method takes all and specific item"""

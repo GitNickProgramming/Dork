@@ -491,7 +491,7 @@ class Game:
 
     def _move(self, cardinal):
         return self.hero.move(cardinal, self.maze), False
-    
+
     def _points(self, user_input):
         if '_repl_error' in user_input:
             self.points = 0
