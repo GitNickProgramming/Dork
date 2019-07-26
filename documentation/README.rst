@@ -1,7 +1,7 @@
 # Dork
 
 Dork is a text based exploration game full of mystery, intrigue, but most importantly memes!  
-The player finds him/herself in an exciting randomly generated maze where they can interact with rooms, items, and non-player characters. 
+The player finds him/herself in an exciting randomly generated maze where they can interact with rooms, items, *** Wait maybe not*** and non-player characters. 
 Using cardinal directions and simple commands, the player navigates throughout the maze to find him/herself at the end of the road. 
 Be careful not to stumble upon Trolly McTrollFace...
 
@@ -9,14 +9,22 @@ Be careful not to stumble upon Trolly McTrollFace...
 
 This game requires the user to have an IDE that can run Python programs. 
 
-First install  , python, requirements-dev.txt package installed, etc.
- 
+First install Python 3 for your OS:
+https://www.python.org/downloads/
+
+You can clone the Dork repository onto your local machine using this link:
+https://github.com/GitNickProgramming/Dork.git
+
+
+
 ### Prerequisites
 
-What things you need to install the software and how to install them
+You will also need to install the requirements-dev.txt using pip install in your terminal. 
+If using a version of python installed from python.org that is version 3.0 or newer, pip is already installed on your computer. 
+The command below will install any needed extensions for running and testing the program. 
 
 ```
-Give an example
+pip install -r requirements-dev.txt
 ```
 
 ### Installing
