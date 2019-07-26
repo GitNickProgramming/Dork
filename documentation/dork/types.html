@@ -1,0 +1,439 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.6.3" />
+<title>dork.types API documentation</title>
+<meta name="description" content="Basic entity classes and methods for Dork." />
+<link href='https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css' rel='stylesheet'>
+<link href='https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/8.0.0/sanitize.min.css' rel='stylesheet'>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css" rel="stylesheet">
+<style>.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{font-weight:bold}#index h4 + ul{margin-bottom:.6em}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase;cursor:pointer}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>dork.types</code></h1>
+</header>
+<section id="section-intro">
+<p>Basic entity classes and methods for Dork.</p>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python"># -*- coding: utf-8 -*-
+&#34;&#34;&#34;Basic entity classes and methods for Dork.
+&#34;&#34;&#34;
+# from pprint import pprint
+import dork.game_utils.world_loader as world_loader
+
+
+__all__ = [&#34;Game&#34;]
+
+
+class Holder:
+    &#34;&#34;&#34;A holder/container of items
+    &#34;&#34;&#34;
+
+    def __init__(self):
+        self.items = dict()
+
+
+class Item:
+    &#34;&#34;&#34;A obtainable/holdable item
+    &#34;&#34;&#34;
+
+    def __init__(self):
+        self.name = None
+        self.description = None
+        self.stats = dict()
+
+    def make(self, item):
+        &#34;&#34;&#34;Make an item
+        &#34;&#34;&#34;
+        self.name = item[&#34;name&#34;]
+        self.description = item[&#34;description&#34;]
+        self.stats = item[&#34;stats&#34;]
+
+
+class Player(Holder):
+    &#34;&#34;&#34;A player or NPC in the game
+    &#34;&#34;&#34;
+
+    def __init__(self):
+        super().__init__()
+        self.name = None
+        self.location = Room()
+        self.equipped = None
+
+    def make(self, player):
+        &#34;&#34;&#34;Make a player
+        &#34;&#34;&#34;
+        self.name = player[&#34;name&#34;]
+        self.equipped = player[&#34;equipped&#34;]
+        inventory = player[&#34;inventory&#34;]
+        for item in inventory:
+            if item is not None:
+                new_item = Item()
+                new_item.make(inventory[item])
+                self.items[new_item.name] = new_item
+
+    def set_location(self, location):
+        &#34;&#34;&#34;Set player&#39;s location
+        &#34;&#34;&#34;
+        self.location = location
+
+    def get_location(self):
+        &#34;&#34;&#34;Get Player&#39;s location
+        &#34;&#34;&#34;
+        return self.location
+
+
+class Room(Holder):
+    &#34;&#34;&#34;A room on the map
+    &#34;&#34;&#34;
+
+    def __init__(self):
+        super().__init__()
+        self.name = None
+        self.description = None
+        self.adjacent = dict()
+        self.players = list()
+        self.clues = dict()
+
+    def make(self, room, players):
+        &#34;&#34;&#34;Make a room
+        &#34;&#34;&#34;
+        self.name = room[&#34;name&#34;]
+        self.description = room[&#34;description&#34;]
+        self.adjacent = room[&#34;adjacent&#34;]
+        self.clues = room[&#34;clues&#34;]
+        items = room[&#34;items&#34;]
+        for item in items:
+            new_item = Item()
+            new_item.make(items[item])
+            self.items[new_item.name] = new_item
+        for player in players:
+            if players[player].name in room[&#34;players&#34;]:
+                self.players.append(players[player])
+                players[player].location = self
+
+
+class Worldmap:
+    &#34;&#34;&#34;A map relating the rooms connectivity
+        as well as the players/items within
+    &#34;&#34;&#34;
+
+    def __init__(self):
+        self.rooms = dict()
+        self.players = dict()
+
+
+class Game:
+    &#34;&#34;&#34;A container for holding a game state
+    &#34;&#34;&#34;
+
+    def __init__(self):
+        self.worldmap = Worldmap()
+        self.players = dict()
+        self.hero = Player()
+
+    def __call__(self, cmd, arg):
+        return getattr(self, cmd)(arg) if arg else getattr(self, cmd)()
+
+    def build(self):
+        &#34;&#34;&#34;Make a new game
+        &#34;&#34;&#34;
+        player_name = input(&#34;What&#39;s your name, stranger? &#34;)
+        data = world_loader.main(player_name)
+        self._build_players(players=data[&#34;players&#34;])
+        self._build_world(rooms=data[&#34;rooms&#34;])
+        self._build_hero(hero=player_name)
+
+    def _build_players(self, players):
+        for player in players:
+            new_player = Player()
+            new_player.make(players[player])
+            self.players[new_player.name] = new_player
+
+    def _build_world(self, rooms):
+        self.worldmap.players = self.players
+        for room in rooms:
+            new_room = Room()
+            new_room.make(rooms[room], self.players)
+            self.worldmap.rooms[new_room.name] = new_room
+
+    def _build_hero(self, hero):
+        self.hero = self.players.get(
+            hero, self.players.get(&#34;new_player&#34;)
+        )
+        self.hero.name = hero
+
+    def _gtfo(self):
+        return f&#34;Thanks for playing DORK, {self.hero.name}!&#34;, True
+
+    def _move(self, cardinal):
+        location = self.hero.get_location()
+        adjacent_room = location.adjacent.get(cardinal, None)
+        if not adjacent_room:
+            out = f&#34;You cannot go {cardinal} from here.&#34;
+        else:
+            self.hero.set_location(self.worldmap.rooms[adjacent_room])
+            print(f&#34;You have entered {self.hero.location.name}&#34;)
+            out = self.hero.location.description
+        return out, False
+
+    def _inventory(self):
+        items = self.hero.items
+        item_count = 0
+        out = &#34;Inventory:\n&#34;
+        for item in items:
+            if item is not None:
+                out += &#34;\n&#34; + &#34; &#34;*4 + items[item].name
+                item_count += 1
+        if item_count == 0:
+            out = &#34; &#34;*4 + &#34;You ain&#39;t got shit, son!&#34;
+        return out, False
+
+    def _look(self):
+        return self.hero.location.description, False
+
+    # def _save_game(self):
+    #     world_writer.main(self)
+    #     return &#34;Save successful!&#34;, False
+
+    # def _take(self, item=&#34;all&#34;):
+    #     # Item defaults to &#34;all&#34;, and adds all items in room to inventory
+    #     return &#34;You took the thing. You took it well.&#34;, False
+
+    # def _drop_item(self, item):
+    #     return &#34;Oops, you dropped something!&#34;, False
+
+    # def _use_item(self, item):
+    #     return &#34;You used the thing! It&#39;s super effective!&#34;, False
+
+    def _start_over(self, load_or_save):
+        if self._confirm():
+            self.build()
+            out = load_or_save
+        else:
+            out = &#34;Guess you changed your mind!&#34;
+        return out, False
+
+    @staticmethod
+    def _confirm():
+        print(&#34;\n!!!WARNING!!! You will lose unsaved data!\n&#34;)
+        conf = False
+        while True:
+            conf = str.casefold(
+                input(&#34;Would you like to proceed? Y/N: &#34;)
+            )
+            conf = {
+                &#34;y&#34;: True,
+                &#34;n&#34;: False
+            }.get(conf, None)
+            if conf is None:
+                print(&#34;That is not a valid response!&#34;)
+            else:
+                break
+        return conf
+
+    @staticmethod
+    def _zork():
+        return &#34;Oh shit, you found an easter egg!&#34;, False
+
+    @staticmethod
+    def _repl_error(arg):
+        return f&#34;{arg}&#34;, False</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="dork.types.Game"><code class="flex name class">
+<span>class <span class="ident">Game</span></span>
+</code></dt>
+<dd>
+<section class="desc"><p>A container for holding a game state</p></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">class Game:
+    &#34;&#34;&#34;A container for holding a game state
+    &#34;&#34;&#34;
+
+    def __init__(self):
+        self.worldmap = Worldmap()
+        self.players = dict()
+        self.hero = Player()
+
+    def __call__(self, cmd, arg):
+        return getattr(self, cmd)(arg) if arg else getattr(self, cmd)()
+
+    def build(self):
+        &#34;&#34;&#34;Make a new game
+        &#34;&#34;&#34;
+        player_name = input(&#34;What&#39;s your name, stranger? &#34;)
+        data = world_loader.main(player_name)
+        self._build_players(players=data[&#34;players&#34;])
+        self._build_world(rooms=data[&#34;rooms&#34;])
+        self._build_hero(hero=player_name)
+
+    def _build_players(self, players):
+        for player in players:
+            new_player = Player()
+            new_player.make(players[player])
+            self.players[new_player.name] = new_player
+
+    def _build_world(self, rooms):
+        self.worldmap.players = self.players
+        for room in rooms:
+            new_room = Room()
+            new_room.make(rooms[room], self.players)
+            self.worldmap.rooms[new_room.name] = new_room
+
+    def _build_hero(self, hero):
+        self.hero = self.players.get(
+            hero, self.players.get(&#34;new_player&#34;)
+        )
+        self.hero.name = hero
+
+    def _gtfo(self):
+        return f&#34;Thanks for playing DORK, {self.hero.name}!&#34;, True
+
+    def _move(self, cardinal):
+        location = self.hero.get_location()
+        adjacent_room = location.adjacent.get(cardinal, None)
+        if not adjacent_room:
+            out = f&#34;You cannot go {cardinal} from here.&#34;
+        else:
+            self.hero.set_location(self.worldmap.rooms[adjacent_room])
+            print(f&#34;You have entered {self.hero.location.name}&#34;)
+            out = self.hero.location.description
+        return out, False
+
+    def _inventory(self):
+        items = self.hero.items
+        item_count = 0
+        out = &#34;Inventory:\n&#34;
+        for item in items:
+            if item is not None:
+                out += &#34;\n&#34; + &#34; &#34;*4 + items[item].name
+                item_count += 1
+        if item_count == 0:
+            out = &#34; &#34;*4 + &#34;You ain&#39;t got shit, son!&#34;
+        return out, False
+
+    def _look(self):
+        return self.hero.location.description, False
+
+    # def _save_game(self):
+    #     world_writer.main(self)
+    #     return &#34;Save successful!&#34;, False
+
+    # def _take(self, item=&#34;all&#34;):
+    #     # Item defaults to &#34;all&#34;, and adds all items in room to inventory
+    #     return &#34;You took the thing. You took it well.&#34;, False
+
+    # def _drop_item(self, item):
+    #     return &#34;Oops, you dropped something!&#34;, False
+
+    # def _use_item(self, item):
+    #     return &#34;You used the thing! It&#39;s super effective!&#34;, False
+
+    def _start_over(self, load_or_save):
+        if self._confirm():
+            self.build()
+            out = load_or_save
+        else:
+            out = &#34;Guess you changed your mind!&#34;
+        return out, False
+
+    @staticmethod
+    def _confirm():
+        print(&#34;\n!!!WARNING!!! You will lose unsaved data!\n&#34;)
+        conf = False
+        while True:
+            conf = str.casefold(
+                input(&#34;Would you like to proceed? Y/N: &#34;)
+            )
+            conf = {
+                &#34;y&#34;: True,
+                &#34;n&#34;: False
+            }.get(conf, None)
+            if conf is None:
+                print(&#34;That is not a valid response!&#34;)
+            else:
+                break
+        return conf
+
+    @staticmethod
+    def _zork():
+        return &#34;Oh shit, you found an easter egg!&#34;, False
+
+    @staticmethod
+    def _repl_error(arg):
+        return f&#34;{arg}&#34;, False</code></pre>
+</details>
+<h3>Methods</h3>
+<dl>
+<dt id="dork.types.Game.build"><code class="name flex">
+<span>def <span class="ident">build</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Make a new game</p></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def build(self):
+    &#34;&#34;&#34;Make a new game
+    &#34;&#34;&#34;
+    player_name = input(&#34;What&#39;s your name, stranger? &#34;)
+    data = world_loader.main(player_name)
+    self._build_players(players=data[&#34;players&#34;])
+    self._build_world(rooms=data[&#34;rooms&#34;])
+    self._build_hero(hero=player_name)</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="dork" href="index.html">dork</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="dork.types.Game" href="#dork.types.Game">Game</a></code></h4>
+<ul class="">
+<li><code><a title="dork.types.Game.build" href="#dork.types.Game.build">build</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.6.3</a>.</p>
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad()</script>
+</body>
+</html>
