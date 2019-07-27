@@ -177,7 +177,8 @@ class Player(Holder):
               "Hostile": {"talk": "I guess you are ok...I'll calm down",
                           "damage": "UGH\nYou dealt a death blow"},
               "Dead": {"talk": "That person is dead...blab away",
-                       "damage": "You monster, stop hitting that dead person!"}}
+                       "damage": """You monster,
+                        stop hitting that dead person!"""}}
     instances = []
 
     def __init__(self):
@@ -210,6 +211,7 @@ class Player(Holder):
             out = "You have entered " + self.location.description
             MazeFactory.update(maze)
         return out
+
     def next_state(self, action):
         """simpler state change method"""
         self.state = self.states[action][self.state]
@@ -223,7 +225,6 @@ class Player(Holder):
         """attack method called by items"""
         print(self.blurbs[self.state]["damage"])
         self.next_state("damage")
-
 
 
 class Room(Adjacent, Coord, Holder):

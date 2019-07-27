@@ -292,7 +292,7 @@ def test_npc_can_talk(player, run):
     """Tests that players have a talk method"""
     test_player = types.Player()
     assert hasattr(player, "talk") and callable(player.talk),\
-                    "failed to have talk method"
+        "failed to have talk method"
     out = run(test_player.talk)
     assert out[0] == "Hello\n", "Failed to talk to calm pc"
     run(test_player.damage)
@@ -304,7 +304,7 @@ def test_npc_can_be_damaged(player, run):
     """Tests that npc's can be called by damage()"""
     test_player = types.Player()
     assert hasattr(player, "damage") and callable(player.damage),\
-                    "failed to have damage method"
+        "failed to have damage method"
     out = run(test_player.damage)
     assert out[0] == "Ouch..Your gonna get it!\n",\
         "calm state failed to get hurt"
