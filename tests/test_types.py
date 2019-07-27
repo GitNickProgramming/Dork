@@ -145,20 +145,18 @@ def test_get_points(game, repl_data):
     result = game._get_points()
     assert "Booooooo! you suck.\nYou have 0 points." in result
 
-# def test_take_single(run):
-#     """testing _take the method takes all and specific item"""
-#     out = run(repl, input_side_effect=["name", "examine",
-#                                                  "take", ".rq"])
-#     assert "You took all item. You took them well" in out[0], \
-#         "item are not found on entrance room"
+def test_take_all(run):
+    """testing _take the method takes all items"""
+    out = run(repl.repl, input_side_effect=["name", "take", ".rq"])
+    assert "You took" in out[0], "No item was taken"
 
 
-# def test_drop_item(run):
-#     """testing _drop_item the method takes all and specific item"""
-#     out = run(repl, input_side_effect=["name", "take",
-#                                                  "drop", ".rq"])
-#     assert "Oops, you can't hold all these items" in out[0],\
-#            "item are not found on entrance room"
+def test_drop_all(run):
+    """testing _drop_item the method takes all items"""
+    out = run(repl.repl, input_side_effect=["name", "take",
+                                            "drop", ".rq"])
+    assert "You dropped" in out[0],\
+           "item are not found on entrance room"
 
 
 def test_sword_can_swing(run):
@@ -233,29 +231,29 @@ def test_only_stat(run):
                      "use method failed for gold items"
 
 
-# def test_runtime_items(run):
-#     """Tests the functionality of items in runtime"""
-#     out = run(repl, input_side_effect=["tester",
-#                                        "use sword", ".rq"])
-#     assert "You don't have that item...\n" in out[0],\
-#            "Failed to decline use on non-existant item"
+def test_runtime_items(run):
+    """Tests the functionality of items in runtime"""
+    out = run(repl.repl, input_side_effect=["tester",
+                                            "use sword", ".rq"])
+    assert "You don't have that item...\n" in out[0],\
+           "Failed to decline use on non-existant item"
 
 
-# def test_use_has_target_input(run):
-#     """Testing that use takes an input"""
-#     out = run(repl, input_side_effect=["tester",
-#                                        "use sword", ".rq"])
-#     assert "You don't have that item...\n" in out[0],\
-#            "Failed to decline use on non-existant item"
-#     test_item = types.Item()
-#     test_item.make({"name": "sword",
-#                     "description": "its made of foam",
-#                     "type": "weapon"})
-#     test_game = types.Gamebuilder().build("test")
-#     test_game.hero.inventory[test_item.name] = test_item
-#     out = run(test_game._use_item, "sword", input_side_effect=["player"])
-#     assert "You swing the sword at player" in out[0],\
-#            "failed to contain a target argument"
+def test_use_has_target_input(run):
+    """Testing that use takes an input"""
+    out = run(repl.repl, input_side_effect=["tester",
+                                            "use sword", ".rq"])
+    assert "You don't have that item...\n" in out[0],\
+           "Failed to decline use on non-existant item"
+    test_item = types.Item()
+    test_item.make({"name": "sword",
+                    "description": "its made of foam",
+                    "type": "weapon"})
+    test_game = types.Gamebuilder().build("test")
+    test_game.hero.inventory[test_item.name] = test_item
+    out = run(test_game._use_item, "sword", input_side_effect=["player"])
+    assert "You swing the sword at player" in out[0],\
+           "failed to contain a target argument"
 
 def test_type_not_str_item_make():
     """Tests that empty dict creates unusable filler item"""
@@ -286,3 +284,24 @@ def test_use_item(mocker):
                                                 "It's super effective!",
                                                 False),\
             "Failed to call _use_item"
+
+def test_npc_can_talk(player, run):
+    """Tests that players have a talk method"""
+    test_player = types.Player()
+    assert hasattr(player, "talk") and callable(player.talk),\
+                    "failed to have talk method"
+    out = run(test_player.talk)
+    assert out[0] == "Hello\n", "Failed to talk to calm pc"
+    run(test_player.damage)
+    out = run(test_player.talk)
+    assert "I guess you are" in out[0], "Failed to talk to hostile pc"
+
+def test_npc_can_be_damaged(player, run):
+    """Tests that npc's can be called by damage()"""
+    test_player = types.Player()
+    assert hasattr(player, "damage") and callable(player.damage),\
+                    "failed to have damage method"
+    out = run(test_player.damage)
+    assert out[0] == "Ouch..Your gonna get it!\n", "calm state failed to get hurt"
+    out = run(test_player.damage)
+    assert "UGH" in out[0], "hostile state failed to die"

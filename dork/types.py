@@ -148,7 +148,6 @@ class Statable(Usable):
         """Stat change use method"""
         print("The " + name + " takes effect on " + target)
 
-
 class Adjacent(Grandparent):
     """adjacency object for rooms"""
 
@@ -171,7 +170,8 @@ class Coord(Grandparent):
 
 class Player(Holder):
     """A player or npc in the game"""
-
+    states = {"damage": {"Calm": "Hostile", "Hostile": "Dead", "Dead": "Dead"}, "talk": {"Calm": "Calm", "Hostile": "Calm", "Dead": "Dead"}}
+    blurbs = {"Calm":{"talk": "Hello", "damage": "Ouch..Your gonna get it!"}, "Hostile":{"talk": "I guess you are ok...I'll calm down", "damage": "UGH\nYou dealt a death blow"}, "Dead":{"talk": "That person is dead...blab away", "damage": "You monster, stop hitting that dead person!"}}
     instances = []
 
     def __init__(self):
@@ -181,6 +181,7 @@ class Player(Holder):
         self.description = str
         self.location = Room
         self.equipped = list
+        self.state = "Calm"
 
     def _new_instance(self):
         self.instances.append(self)
@@ -203,8 +204,19 @@ class Player(Holder):
             out = "You have entered " + self.location.description
             MazeFactory.update(maze)
         return out
+    def next_state(self, action):
+        """simpler state change method"""
+        self.state = self.states[action][self.state]
 
+    def talk(self):
+        """Talk method called by players"""
+        print(self.blurbs[self.state]["talk"])
+        self.next_state("talk")
 
+    def damage(self):
+        """attack method called by items"""
+        print(self.blurbs[self.state]["damage"])
+        self.next_state("damage")
 class Room(Adjacent, Coord, Holder):
     """A room on the worldmap"""
     # pylint: disable=too-many-instance-attributes
@@ -385,6 +397,8 @@ class Gamebuilder:
         for field, data in item.items():
             if field == "stats":
                 cls._make_stats(new_item, data)
+            if field == "type":
+                new_item.set_usable(data)
             else:
                 setattr(new_item, field, data)
         return new_item
