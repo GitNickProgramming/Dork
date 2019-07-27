@@ -460,6 +460,7 @@ class Game:
         self.maze = []
         self.rooms = {}
         self.hero = Player()
+        self.points = 10
 
     def __call__(self, cmd, arg):
         do_func = getattr(self, cmd)
@@ -490,6 +491,21 @@ class Game:
 
     def _move(self, cardinal):
         return self.hero.move(cardinal, self.maze), False
+
+    def _points(self, user_input):
+        if '_repl_error' in user_input:
+            self.points = 0
+        elif '_get_points' in user_input:
+            pass
+        else:
+            self.points += 1
+        return self.points
+
+    def _get_points(self):
+        point = self.points
+        if point == 0:
+            return f"Booooooo! you suck.\nYou have {point} points.", False
+        return f"you have: {point}", False
 
     def _examine(self):
         out = ""
@@ -595,7 +611,11 @@ class Game:
         inv_list = location.inventory
         num = len(inv_list)
         description = location.description.splitlines()
-        des = str()
+        des = location.description
+        if num > 1:
+            rand_ind = randrange(4)
+            des = description[0] + "\n" + description[1] + "\n" \
+                + factory_data.ROOM_INV_DESCRIPTIONS["1"][rand_ind]
         if num == 1:
             des = description[0] + "\n" + description[1] \
                 + "\n" + factory_data.ROOM_INV_DESCRIPTIONS["2"]
