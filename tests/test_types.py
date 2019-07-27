@@ -145,6 +145,7 @@ def test_get_points(game, repl_data):
     result = game._get_points()
     assert "Booooooo! you suck.\nYou have 0 points." in result
 
+
 def test_take_all(run):
     """testing _take the method takes all items"""
     out = run(repl.repl, input_side_effect=["name", "take", ".rq"])
@@ -255,6 +256,7 @@ def test_use_has_target_input(run):
     assert "You swing the sword at player" in out[0],\
            "failed to contain a target argument"
 
+
 def test_type_not_str_item_make():
     """Tests that empty dict creates unusable filler item"""
     test_item = types.Item()
@@ -285,6 +287,7 @@ def test_use_item(mocker):
                                                 False),\
             "Failed to call _use_item"
 
+
 def test_npc_can_talk(player, run):
     """Tests that players have a talk method"""
     test_player = types.Player()
@@ -296,12 +299,14 @@ def test_npc_can_talk(player, run):
     out = run(test_player.talk)
     assert "I guess you are" in out[0], "Failed to talk to hostile pc"
 
+
 def test_npc_can_be_damaged(player, run):
     """Tests that npc's can be called by damage()"""
     test_player = types.Player()
     assert hasattr(player, "damage") and callable(player.damage),\
                     "failed to have damage method"
     out = run(test_player.damage)
-    assert out[0] == "Ouch..Your gonna get it!\n", "calm state failed to get hurt"
+    assert out[0] == "Ouch..Your gonna get it!\n",\
+        "calm state failed to get hurt"
     out = run(test_player.damage)
     assert "UGH" in out[0], "hostile state failed to die"

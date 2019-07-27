@@ -148,6 +148,7 @@ class Statable(Usable):
         """Stat change use method"""
         print("The " + name + " takes effect on " + target)
 
+
 class Adjacent(Grandparent):
     """adjacency object for rooms"""
 
@@ -170,8 +171,13 @@ class Coord(Grandparent):
 
 class Player(Holder):
     """A player or npc in the game"""
-    states = {"damage": {"Calm": "Hostile", "Hostile": "Dead", "Dead": "Dead"}, "talk": {"Calm": "Calm", "Hostile": "Calm", "Dead": "Dead"}}
-    blurbs = {"Calm":{"talk": "Hello", "damage": "Ouch..Your gonna get it!"}, "Hostile":{"talk": "I guess you are ok...I'll calm down", "damage": "UGH\nYou dealt a death blow"}, "Dead":{"talk": "That person is dead...blab away", "damage": "You monster, stop hitting that dead person!"}}
+    states = {"damage": {"Calm": "Hostile", "Hostile": "Dead", "Dead": "Dead"},
+              "talk": {"Calm": "Calm", "Hostile": "Calm", "Dead": "Dead"}}
+    blurbs = {"Calm": {"talk": "Hello", "damage": "Ouch..Your gonna get it!"},
+              "Hostile": {"talk": "I guess you are ok...I'll calm down",
+                          "damage": "UGH\nYou dealt a death blow"},
+              "Dead": {"talk": "That person is dead...blab away",
+                       "damage": "You monster, stop hitting that dead person!"}}
     instances = []
 
     def __init__(self):
@@ -217,6 +223,9 @@ class Player(Holder):
         """attack method called by items"""
         print(self.blurbs[self.state]["damage"])
         self.next_state("damage")
+
+
+
 class Room(Adjacent, Coord, Holder):
     """A room on the worldmap"""
     # pylint: disable=too-many-instance-attributes
