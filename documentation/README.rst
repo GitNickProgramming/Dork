@@ -1,7 +1,7 @@
 # Dork
 
 Dork is a text based exploration game full of mystery, intrigue, but most importantly memes!  
-The player finds him/herself in an exciting randomly generated maze where they can interact with rooms, items, *** Wait maybe not*** and non-player characters. 
+The player finds him/herself in an exciting randomly generated maze where they can interact with rooms and various unique items. 
 Using cardinal directions and simple commands, the player navigates throughout the maze to find him/herself at the end of the road. 
 Be careful not to stumble upon Trolly McTrollFace...
 
