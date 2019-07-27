@@ -132,6 +132,12 @@ The command line should recognize the virtual environment as well.
 ```
 python -m dork 
 ```
+
+Some useful commands:
+To navigate through maze use cardinal directions (north, east, south, and west)
+"Look" displays room descriptions and helpful hints. 
+"Examine" displays items in your current room. 
+
 ## Deployment
 
 There will be no further support for this project by the original development team, the project can be branched to create more content.
