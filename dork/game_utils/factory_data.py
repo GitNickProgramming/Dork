@@ -1,4 +1,4 @@
-"""data for factories"""
+"""Dict data for factories used to create random room names and descriptions."""
 
 from random import randint
 

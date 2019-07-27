@@ -1,4 +1,4 @@
-"""Base types for the Dork game"""
+"""Base types for the Dork game."""
 # -*- coding: utf-8 -*-
 from abc import ABC, abstractmethod
 import os
@@ -699,15 +699,10 @@ class Game:
     def _brief_print(data, calls=2):
         out = ""
         spc = "    "
-<<<<<<< HEAD
-        for key in data.keys():
-            out += spc+ key
-=======
         for key, val in data.items():
             if isinstance(val, dict) and calls < 3:
                 out += "\n" + spc*calls + \
                     f"{key}{Game._brief_print(val, calls+1)}"
->>>>>>> d558fbb675a08e5626d5d0b90936d50237d8cc69
         return out
 
     @staticmethod

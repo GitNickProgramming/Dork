@@ -23,13 +23,13 @@ def _new_game(player_name=None):
 
 
 def _read():
-    """Get input from CLI"""
+    """Get input from CLI."""
 
     return str.casefold(input("> "))
 
 
 def _evaluate(cmd, dork, repl_data):
-    """Parse a cmd and run it"""
+    """Parse a cmd and run it."""
 
     cmds, moves, meta, errs = repl_data
     cmd = cmd.strip().split(" ", 1) if (cmd and not cmd.isspace()) else None
@@ -58,7 +58,7 @@ def _evaluate(cmd, dork, repl_data):
 
 
 def repl():
-    """read evaluate print loop"""
+    """read evaluate print loop."""
 
     dork, repl_data = _new_game()
 

@@ -1,4 +1,4 @@
-"""Data and commands for REPL"""
+"""Dicts containing commands for REPL."""
 
 __all__ = ["CMDS", "MOVES", "ERRS", "META", "TITLE"]
 

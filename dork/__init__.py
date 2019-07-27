@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""Dork game main module"""
+"""Dork Game main module."""
 
 __version__ = '0.6.6'
 __author__ = ", ".join([
