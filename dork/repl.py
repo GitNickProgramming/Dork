@@ -6,6 +6,20 @@ from dork import types as dork_types
 
 
 def _new_game(player_name=None):
+    """Starts a new game, based on player name
+
+    Creates a new game based upon the name the user enters.
+
+    Args:
+        player_name (str): variable that holds user's player name
+        dork (str): builds game based upon player's name
+        repl_data (str): dictonary of game commands
+
+    Returns:
+        dork (str): returns a unique game based on player's name
+        repl_data (str): returns an action based on user's input
+
+    """
     if not player_name:
         player_name = input("What's your name, stranger? ")
 
