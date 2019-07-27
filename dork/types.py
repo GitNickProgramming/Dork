@@ -612,6 +612,10 @@ class Game:
         num = len(inv_list)
         description = location.description.splitlines()
         des = location.description
+        if num >1:
+            rand_ind = randrange(4)
+            des = description[0] + "\n" + description[1] + "\n" \
+                + factory_data.ROOM_INV_DESCRIPTIONS["1"][rand_ind]
         if num == 1:
             des = description[0] + "\n" + description[1] \
                 + "\n" + factory_data.ROOM_INV_DESCRIPTIONS["2"]
