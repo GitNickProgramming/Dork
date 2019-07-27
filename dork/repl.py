@@ -53,7 +53,7 @@ def _evaluate(cmd, dork, repl_data):
     else:
         call = errs["?"]
         method, arg = call
-
+    dork._points(call)
     return dork(method, arg)
 
 

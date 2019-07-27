@@ -271,7 +271,7 @@ class Gamebuilder:
             if iterator != worldmap_length - 1:
                 inv_list = worldmap[rooms].inventory
                 num = len(inv_list)
-                if num > 2:
+                if num >= 2:
                     rand_ind = randrange(4)
                     first_desc = worldmap[rooms].description + "\n"
                     desc = factory_data.ROOM_INV_DESCRIPTIONS["1"][rand_ind]
@@ -460,6 +460,7 @@ class Game:
         self.maze = []
         self.rooms = {}
         self.hero = Player()
+        self.points = 10
 
     def __call__(self, cmd, arg):
         do_func = getattr(self, cmd)
@@ -490,6 +491,21 @@ class Game:
 
     def _move(self, cardinal):
         return self.hero.move(cardinal, self.maze), False
+
+    def _points(self, user_input):
+        if '_repl_error' in user_input:
+            self.points = 0
+        elif '_get_points' in user_input:
+            pass
+        else:
+            self.points += 1
+        return self.points
+
+    def _get_points(self):
+        point = self.points
+        if point == 0:
+            return f"Booooooo! you suck.\nYou have {point} points.", False
+        return f"you have: {point}", False
 
     def _examine(self):
         out = ""
@@ -547,33 +563,30 @@ class Game:
 
         return out, False
 
-    @classmethod
-    def _update_room_inv_description(cls, location):
-        inv_list = location.inventory
-        num = len(inv_list)
-        description = location.description.splitlines()
-        # desc_length = len(description)
-        des = str()
-        if num == 1:
-            des = description[0] + "\n" + description[1] \
-                + "\n" + factory_data.ROOM_INV_DESCRIPTIONS["2"]
-        elif num == 0:
-            des = description[0] + "\n" + description[1] \
-                + "\n" + factory_data.ROOM_INV_DESCRIPTIONS["3"]
-        location.description = des
-        return 0
+    def _drop(self, item_name=None):
+        out = ""
+        hero = self.hero
+        room = hero.location
+        if not item_name:
+            player_copy = deepcopy(hero.inventory)
+            for item in player_copy:
+                this_item = hero.inventory.pop(item)
+                this_data = hero.data["inventory"].pop(item)
+                room.inventory[item] = this_item
+                room.data["inventory"][item] = this_data
+                out += f"You dropped {item}\n"
+        elif item_name in hero.inventory:
+            this_item = hero.inventory.pop(item_name)
+            this_data = hero.data["inventory"].pop(item_name)
+            room.inventory[item_name] = this_item
+            room.data["inventory"][item_name] = this_data
+            out += f"You dropped {item_name}. How clumsy."
+        else:
+            out = f"There is no {item_name} in your inventory."
 
-    # def _drop_item(self, item="all"):
-    #     player = self.hero.inventory
-    #     player2 = player.copy()
-    #     room_items = self.hero.location.inventory
-    #     if item == "all":
-    #         for item_n in player2:
-    #             room_items[item_n] = player.pop(item_n)
-    #         return "Oops, you can't hold all these items", False
-    #     room_items = self.hero.location.inventory
-    #     room_items[item] = player.pop(item)
-    #     return "Oops, you dropped something!", False
+        self._update_room_inv_description(room)
+
+        return out, False
 
     def _use_item(self, item="Nothing"):
         if item in self.hero.inventory.keys():
@@ -592,6 +605,25 @@ class Game:
     def _get_state(self):
         for name, room in self.rooms.items():
             self.data["rooms"][name] = room.data
+
+    @staticmethod
+    def _update_room_inv_description(location):
+        inv_list = location.inventory
+        num = len(inv_list)
+        description = location.description.splitlines()
+        des = location.description
+        if num > 1:
+            rand_ind = randrange(4)
+            des = description[0] + "\n" + description[1] + "\n" \
+                + factory_data.ROOM_INV_DESCRIPTIONS["1"][rand_ind]
+        if num == 1:
+            des = description[0] + "\n" + description[1] \
+                + "\n" + factory_data.ROOM_INV_DESCRIPTIONS["2"]
+        elif num == 0:
+            des = description[0] + "\n" + description[1] \
+                + "\n" + factory_data.ROOM_INV_DESCRIPTIONS["3"]
+        location.description = des
+        return 0
 
     @staticmethod
     def _verbose_print(data, calls=2):
@@ -873,7 +905,8 @@ class MazeFactory:
     def draw(maze):
         """display the maze"""
 
-        plt.figure(figsize=(len(maze[0])//2, len(maze)//2))
+        x_dim, y_dim = len(maze[0])//2, len(maze)//2
+        plt.figure(figsize=(x_dim, y_dim))
         plt.pcolormesh(maze, cmap=plt.cm.get_cmap("tab20b"))
         plt.axis("equal")
         plt.axis("off")
@@ -888,7 +921,6 @@ class MazeFactory:
         plt.axis("equal")
         plt.axis("off")
         plt.draw()
-        plt.show()
 
     # pylint: disable=R0914
     @staticmethod
