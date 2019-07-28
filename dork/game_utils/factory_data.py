@@ -690,7 +690,10 @@ MOVES = [
 
 
 def rules(wall, path):
-    """rules for neighbor checking during maze generation"""
+    """
+        A rules list that describes the values of a given room's neighbors
+        The rules cover corners, intersections, and dead-ends.
+    """
 
     return [
         [wall, wall, wall, path],
@@ -710,7 +713,7 @@ def rules(wall, path):
 
 
 def stats(item_type):
-    """item type-specific stats"""
+    """type-specific stats used during item generation"""
 
     item_type = item_type.split()[0]
 

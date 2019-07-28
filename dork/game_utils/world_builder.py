@@ -1,6 +1,5 @@
 """Load an existing gameworld or begin anew"""
 
-
 from copy import deepcopy
 from random import choices, choice, randint, shuffle, randrange
 from operator import add
