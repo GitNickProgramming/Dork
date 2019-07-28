@@ -43,8 +43,19 @@ def _read():
 
 
 def _evaluate(cmd, dork, repl_data):
-    """Parse a cmd and run it"""
+    """Parse a cmd and run it
 
+    Evaluates the input of the user into an action and runs it
+
+    Args:
+        method (str): the method depending on user's input that executes an action
+        arg (str): the argument depending on user's input
+
+    Returns:
+        method (str): returns the action based on the user's input
+        arg (str): returns the argument based on the user's input
+
+    """
     cmds, moves, meta, errs = repl_data
     cmd = cmd.strip().split(" ", 1) if (cmd and not cmd.isspace()) else None
     if cmd:
