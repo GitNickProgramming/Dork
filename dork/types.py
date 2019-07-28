@@ -283,7 +283,7 @@ class Game:
 
     def _draw_maze(self):
         MazeFactory.draw(self.maze)
-        return "", False
+        return "\b", False
 
     def _move(self, cardinal):
         return self.hero.move(cardinal, self.maze), False
