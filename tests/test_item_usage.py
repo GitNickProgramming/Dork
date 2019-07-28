@@ -18,15 +18,15 @@ def test_take_drop_all(game):
 
     hero = game.hero
     room_0 = game.rooms["room 0"]
-    room_inventory = room_0.get_items("", False)
+    room_inventory = room_0.get_items("", room_0.data, False)
 
     repl._evaluate("take", game)
-    assert hero.get_items("", False) == room_inventory
-    assert room_0.get_items("", False) == "There's nothing here."
+    assert hero.get_items("", hero.data, False) == room_inventory
+    assert room_0.get_items("", room_0.data, False) == "There's nothing here."
 
     repl._evaluate("drop", game)
-    assert hero.get_items("", False) == "There's nothing here."
-    assert room_0.get_items("", False) == room_inventory
+    assert hero.get_items("", hero.data, False) == "There's nothing here."
+    assert room_0.get_items("", room_0.data, False) == room_inventory
 
 
 def test_take_drop_single(game):

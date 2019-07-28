@@ -23,7 +23,7 @@ def test_start_over_no(capsys, mocker, game):
 
     mocked_input = mocker.patch('builtins.input')
     mocked_input.side_effect = ["bumblebee", "n"]
-    assert game._start_over() == ("guess you changed your mind!", False)
+    assert game._start_over() == ("Guess you changed your mind!", False)
     captured = capsys.readouterr()
     assert "\n!!!WARNING!!! You will lose unsaved data!\n" in captured.out
     assert mocked_input.call_count == 2
@@ -46,7 +46,7 @@ def test_move_method(game, cardinals):
 
     for direction in cardinals:
         assert game._move(direction) in [
-            (game.hero.location.description, False),
+            ("You have entered " + game.hero.location.description, False),
             (f"You cannot go {direction} from here.", False)
         ]
 
@@ -106,20 +106,6 @@ def test_get_points(game):
     game.points = 0
     result = game._get_points()
     assert "Booooooo! you suck.\nYou have 0 points." in result
-
-
-def test_take_all(run):
-    """testing _take the method takes all items"""
-    out = run(repl.repl, input_side_effect=["name", "take", ".rq"])
-    assert "You took" in out[0], "No item was taken"
-
-
-def test_drop_all(run):
-    """testing _drop_item the method takes all items"""
-    out = run(repl.repl, input_side_effect=["name", "take",
-                                            "drop", ".rq"])
-    assert "You dropped" in out[0],\
-           "item are not found on entrance room"
 
 
 def test_sword_can_swing():

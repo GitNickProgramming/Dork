@@ -22,17 +22,19 @@ class Holder(Grandparent):
         super().__init__()
         self.inventory = dict
 
-    def get_items(self, caller, verbose):
+    def get_items(self, caller, data, verbose):
         """Print all inventory items"""
 
         if self.inventory:
-            out = f"\n    inventory:"
+            out = f"\n{caller} inventory:"
         else:
             out = f"There's nothing here."
 
-        if verbose:
-            return out + Game._verbose_print(caller.data["inventory"])
-        return out + Game._brief_print(caller.data["inventory"])
+        for name, item in data["inventory"].items():
+            out += "\n    " + name
+            if verbose:
+                out += Game._verbose_print(item)
+        return out
 
 
 class Stats:
@@ -307,26 +309,17 @@ class Game:
         return f"you have: {point}", False
 
     def _examine(self):
-        out = ""
-        location = self.hero.location
-        if self.verbose:
-            out += f"    players:" + Game._verbose_print(
-                location.data["players"]
-            )
-            out += f"\n\n    inventory:" + Game._verbose_print(
-                location.data["inventory"]
-            )
-        else:
-            out += f"    players:" + Game._brief_print(
-                location.data["players"]
-            )
-            out += f"\n\n    inventory:" + Game._brief_print(
-                location.data["inventory"]
-            )
-        return out, False
+        return self.hero.location.get_items(
+            caller=self.hero.location.name, 
+            data=self.hero.location.data,
+            verbose=self.verbose
+        ), False
 
     def _inventory(self):
-        return self.hero.get_items(self.hero, self.verbose), False
+        return self.hero.get_items(
+            caller=self.hero,
+            data=self.hero.data,
+            verbose=self.verbose), False
 
     def _look(self):
         return self.hero.location.description, False
@@ -431,26 +424,13 @@ class Game:
         return 0
 
     @staticmethod
-    def _verbose_print(data, calls=2):
+    def _verbose_print(data):
         out = ""
         spc = "    "
         for key, val in data.items():
-            if isinstance(val, dict):
-                out += "\n" + spc*calls + \
-                    f"{key}:{Game._verbose_print(val, calls+1)}"
-            elif val not in (0, ''):
-                out += "\n" + spc*calls + f"{key}: {val}"
+            out += "\n" + spc*2 + f"{key}: {val}"
         return out
 
-    @staticmethod
-    def _brief_print(data, calls=2):
-        out = ""
-        spc = "    "
-        for key, val in data.items():
-            if isinstance(val, dict) and calls < 3:
-                out += "\n" + spc*calls + \
-                    f"{key}{Game._brief_print(val, calls+1)}"
-        return out
 
     @staticmethod
     def _confirm():
