@@ -75,13 +75,19 @@ class Item(Stats):
     def make(self, item):
         """Make an item
 
-        Extended Description
+        Creates the name, description, and type of item in game world
 
         Args:
-            arg1 (str): description
+            name (str): Generates a random item name
+            description (str): Generates a random item description
+            type (str): Generates a definition what type of item is generated
+            usable(str): Is the item usable or not
 
         returns:
-            arg1 (str): description
+            name (str): returns the item name
+            description (str): returns item description
+            type (str): returns the type of item
+            usable (str): returns the usability of item
 
         """
         self.name = item["name"]
