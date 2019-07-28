@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
-"""Basic tests for state and entity relationships in dork
-"""
+"""Basic tests for state and entity relationships in dork"""
+
 from unittest import mock as mocker
 from tests.utils import is_a
 from dork import repl, types
@@ -121,9 +121,9 @@ def test_player_has_none(mocker):
         "Failed to store items in inventory"
 
 
-def test_look(game, repl_data):
+def test_look(game):
     """testing _look for room description"""
-    assert "the beginning" in repl._evaluate("look", game, repl_data)[0]
+    assert "the beginning" in repl._evaluate("look", game)[0]
 
 
 def test_points():
@@ -137,9 +137,9 @@ def test_points():
     assert result == 0, "points where not added"
 
 
-def test_get_points(game, repl_data):
+def test_get_points(game):
     """prints points"""
-    assert "you have:" in repl._evaluate("points", game, repl_data)[0]
+    assert "you have:" in repl._evaluate("points", game)[0]
     game = types.Game()
     game.points = 0
     result = game._get_points()
@@ -169,7 +169,7 @@ def test_sword_can_swing():
     test_sword.type = "weapon "
     test_sword.usable = types.Attackable
     assert "You swing the sword at player" in test_sword.use(test_player, "sword"),\
-                     "use method failed for sword items"
+        "use method failed for sword items"
 
 
 def test_key_can_open():
@@ -183,10 +183,10 @@ def test_key_can_open():
     test_key.set_usable(test_key.type)
     out = test_key.use(test_door, test_key.name)
     assert "You insert the test key into rock" in out,\
-                     "use method failed for key items"
+        "use method failed for key items"
 
 
-def test_potion_can_speed_up(run):
+def test_potion_can_speed_up():
     """Tests that a stat changing object calls statable"""
     test_potion = types.Item()
     test_player = types.Player()
@@ -197,7 +197,7 @@ def test_potion_can_speed_up(run):
     test_potion.set_usable(test_potion.type)
     out = test_potion.use(test_player, test_potion.name)
     assert "The test potion takes effect on player" in out,\
-                     "use method failed for stat changing items"
+        "use method failed for stat changing items"
 
 
 def test_gold_can_pay():
@@ -211,7 +211,7 @@ def test_gold_can_pay():
     test_key.set_usable(test_key.type)
     out = test_key.use(test_player, test_key.name)
     assert "You use the bag 'o MOLTEN GOOOLD to pay player" in out,\
-                     "use method failed for gold items"
+        "use method failed for gold items"
 
 
 def test_none_item():
@@ -222,7 +222,7 @@ def test_none_item():
                    "type": None})
     out = test_key.use("player", "player")
     assert "You find no use of this item" in out,\
-                     "use method failed for gold items"
+        "use method failed for gold items"
 
 
 def test_only_stat():
@@ -237,7 +237,7 @@ def test_only_stat():
                        "type": 1})
         out = test_key.use(test_player, "empty thing")
         assert out == ("You find no use of this item"),\
-                        "use method failed for gold items"
+            "use method failed for gold items"
 
 
 def test_runtime_items(run):
@@ -283,7 +283,7 @@ def test_set_use_not_str():
         "Failed to set unknown object use to notusable"
 
 
-def test_use_item(run):
+def test_use_item():
     """Testing the _use_item private method"""
     with mocker.patch('builtins.input') as inpt:
         test_game = types.Gamebuilder.build("angryDave")
@@ -323,5 +323,7 @@ def test_npc_can_be_damaged(player):
 
 def test_talk_can_target_npc(run):
     """Tracks ability of talk() to target npc's in-game"""
-    out = run(repl.repl, input_side_effect=["mahboi", "w", "n", "e", "s", "talk mahboi"])
+    out = run(repl.repl, input_side_effect=[
+        "mahboi", "w", "n", "e", "s", "talk mahboi"
+    ])
     assert "Hello" in out[0], "Failed to track player over move"
