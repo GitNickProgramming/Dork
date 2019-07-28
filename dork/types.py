@@ -503,14 +503,15 @@ class Gamebuilder:
     def save_game(player, data):
         """Save a game instance to a yaml file if it exists, else create one
 
-        Extended Description
+        Gets data on game state from saved yaml file
 
         Args:
-            arg1 (str): description
+            data (dict): dictionary of game state
+            player (str): string of the player's name  
 
         returns:
-            arg1 (str): description
-
+            data (dict): returns the dictionary state of the game from yaml
+            player (str): returns the yaml file depending on the player's name
         """
         data = {
             "rooms": data["rooms"],
