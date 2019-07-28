@@ -27,13 +27,15 @@ class Holder(Grandparent):
     def get_items(self, caller, verbose):
         """Print all inventory items
 
-        Extended Description
+        Displays all items held by self<player instance> or not. Verbose
+        print displays more information about inventory.
 
         Args:
-            arg1 (str): description
+            out (str): Inventory
+            verbose (str): Displays detailed inventory
 
         returns:
-            arg1 (str): description
+            verbose (str): Returns a formated/detailed inventory of player.
 
         """
 
