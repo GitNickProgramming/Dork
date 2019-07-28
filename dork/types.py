@@ -25,7 +25,17 @@ class Holder(Grandparent):
         self.inventory = dict
 
     def get_items(self, caller, verbose):
-        """Print all inventory items"""
+        """Print all inventory items
+
+        Extended Description
+
+        Args:
+            arg1 (str): description
+
+        returns:
+            arg1 (str): description
+
+        """
 
         if self.inventory:
             out = f"\n    inventory:"
@@ -62,6 +72,15 @@ class Item(Stats):
 
     def make(self, item):
         """Make an item
+
+        Extended Description
+
+        Args:
+            arg1 (str): description
+
+        returns:
+            arg1 (str): description
+
         """
         self.name = item["name"]
         self.description = item["description"]
@@ -75,7 +94,17 @@ class Item(Stats):
 
     def set_usable(self, new_use):
         """This method changes the use behavior,
-        provide usable class as argument"""
+        provide usable class as argument
+
+        Extended Description
+
+        Args:
+            arg1 (str): description
+
+        returns:
+            arg1 (str): description
+
+        """
         uses = {"filler": NotUsable,
                 "weapon": Attackable,
                 "key": Openable,
@@ -90,7 +119,17 @@ class Item(Stats):
             self.usable = uses[new_use]
 
     def use(self, target, name):
-        """Strategy pattern call"""
+        """Strategy pattern call
+
+        Extended Description
+
+        Args:
+            arg1 (str): description
+
+        returns:
+            arg1 (str): description
+
+        """
         self.usable.use(target, name)
 
 
@@ -186,8 +225,17 @@ class Player(Holder):
         self.instances.append(self)
 
     def move(self, cardinal, maze):
-        """walk this way"""
+        """walk this way
 
+        Extended Description
+
+        Args:
+            arg1 (str): description
+
+        returns:
+            arg1 (str): description
+
+        """
         adjacent_room = getattr(self.location, cardinal)
 
         if not adjacent_room:
@@ -227,8 +275,17 @@ class Gamebuilder:
 
     @classmethod
     def build(cls, player_name):
-        """Instantiate a game of Dork from dictionary"""
+        """Instantiate a game of Dork from dictionary
 
+        Extended Description
+
+        Args:
+            arg1 (str): description
+
+        returns:
+            arg1 (str): description
+
+        """
         data = cls.load_game(player_name)
 
         if not data:
@@ -416,8 +473,17 @@ class Gamebuilder:
 
     @staticmethod
     def load_game(player):
-        """Load the save file associated with player"""
+        """Load the save file associated with player
 
+        Extended Description
+
+        Args:
+            arg1 (str): description
+
+        returns:
+            arg1 (str): description
+
+        """
         save_files = []
         with os.scandir("./dork/saves") as saves:
             for entry in saves:
@@ -432,8 +498,17 @@ class Gamebuilder:
 
     @staticmethod
     def save_game(player, data):
-        """Save a game instance to a yaml file if it exists, else create one"""
+        """Save a game instance to a yaml file if it exists, else create one
 
+        Extended Description
+
+        Args:
+            arg1 (str): description
+
+        returns:
+            arg1 (str): description
+
+        """
         data = {
             "rooms": data["rooms"],
             "maze": data["maze"],
@@ -693,8 +768,17 @@ class ItemFactory:
 
     @classmethod
     def build(cls, weights=None):
-        """generate a random item"""
+        """generate a random item
 
+        Extended Description
+
+        Args:
+            arg1 (str): description
+
+        returns:
+            arg1 (str): description
+
+        """
         weights = {
             "player": [8, 0, 0, 7, 5, 10]
         }.get(weights, [8, 35, 3, 7, 5, 10])
@@ -769,7 +853,17 @@ class PlayerFactory:
 
     @staticmethod
     def build(i, room):
-        """Make a player, give them items"""
+        """Make a player, give them items
+
+        Extended Description
+
+        Args:
+            arg1 (str): description
+
+        returns:
+            arg1 (str): description
+
+        """
         firsts = factory_data.FIRST_NAMES
         rand_first = choice(firsts)
         lasts = factory_data.LAST_NAMES
@@ -801,8 +895,17 @@ class RoomFactory:
 
     @classmethod
     def build(cls, maze, rooms):
-        """build a room"""
+        """build a room
 
+        Extended Description
+
+        Args:
+            arg1 (str): description
+
+        returns:
+            arg1 (str): description
+
+        """
         cls.maze = maze
         cls.rooms = rooms
         cls.worldmap = {}
@@ -903,7 +1006,17 @@ class MazeFactory:
 
     @staticmethod
     def draw(maze):
-        """display the maze"""
+        """display the maze
+
+        Extended Description
+
+        Args:
+            arg1 (str): description
+
+        returns:
+            arg1 (str): description
+
+        """
 
         x_dim, y_dim = len(maze[0])//2, len(maze)//2
         plt.figure(figsize=(x_dim, y_dim))
@@ -915,8 +1028,17 @@ class MazeFactory:
 
     @staticmethod
     def update(maze):
-        """update the maze display"""
+        """update the maze display
 
+        Extended Description
+
+        Args:
+            arg1 (str): description
+
+        returns:
+            arg1 (str): description
+
+        """
         plt.pcolormesh(maze, cmap=plt.cm.get_cmap("tab20b"))
         plt.axis("equal")
         plt.axis("off")
@@ -925,8 +1047,17 @@ class MazeFactory:
     # pylint: disable=R0914
     @staticmethod
     def build():
-        """generate a maze"""
+        """generate a maze
 
+        Extended Description
+
+        Args:
+            arg1 (str): description
+
+        returns:
+            arg1 (str): description
+
+        """
         x = choice([10, 12, 14, 18])
         y = 148//x
 
