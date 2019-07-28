@@ -774,13 +774,15 @@ class ItemFactory:
     def build(cls, weights=None):
         """generate a random item
 
-        Extended Description
+        Creates an item name, type, and location into game world
 
         Args:
-            arg1 (str): description
+            item_name (str): name of randomly generated item
+            item_type (str): tpye of randomly generated item
 
         returns:
-            arg1 (str): description
+            item_name (str): returns the name of the randomly generated item
+            item_type (str): returns the type of the randomly generated item
 
         """
         weights = {
