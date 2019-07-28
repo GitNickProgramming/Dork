@@ -478,13 +478,13 @@ class Gamebuilder:
     def load_game(player):
         """Load the save file associated with player
 
-        Extended Description
+        Loads a saved yaml file based on what the user named their player
 
         Args:
-            arg1 (str): description
+            data (dict): dictionary of the game state from yaml file
 
         returns:
-            arg1 (str): description
+            data (dict): returns the game state based upon the player's name
 
         """
         save_files = []
