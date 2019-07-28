@@ -12,6 +12,7 @@ from numpy import full as npf
 import dork.game_utils.factory_data as factory_data
 # pylint: disable=protected-access
 
+
 class Grandparent:
     """common parent of holder, adjacent, and coord"""
 
