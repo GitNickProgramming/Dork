@@ -225,13 +225,13 @@ class Player(Holder):
     def move(self, cardinal, maze):
         """walk this way
 
-        Extended Description
+        Moves the player from one location to another in the game/maze
 
         Args:
-            arg1 (str): description
+            Out (str): describes where the player is located
 
         returns:
-            arg1 (str): description
+            out (str): returns if the player can move to next location
 
         """
         adjacent_room = getattr(self.location, cardinal)
@@ -281,10 +281,12 @@ class Gamebuilder:
         Extended Description
 
         Args:
-            arg1 (str): description
+            data (dict): Saves the state of the game, player, and items
+            game (): Class instance of the game
 
         returns:
-            arg1 (str): description
+            data (dict): returns the state of the current game
+            game (): returns the updated location, player, and items
 
         """
         data = cls.load_game(player_name)
