@@ -127,17 +127,7 @@ class Item(Stats):
             self.usable = uses[new_use]
 
     def use(self, target, name):
-        """Strategy pattern call
-
-        Extended Description
-
-        Args:
-            arg1 (str): description
-
-        returns:
-            arg1 (str): description
-
-        """
+        """Strategy pattern call"""
         self.usable.use(target, name)
 
 
