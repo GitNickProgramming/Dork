@@ -424,11 +424,15 @@ class Game:
         return 0
 
     @staticmethod
-    def _verbose_print(data):
+    def _verbose_print(data, calls=2):
         out = ""
         spc = "    "
         for key, val in data.items():
-            out += "\n" + spc*2 + f"{key}: {val}"
+            if isinstance(val, dict):
+                out += "\n" + spc*calls + \
+                    f"{key}:{Game._verbose_print(val, calls+1)}"
+            elif val not in (0, ''):
+                out += "\n" + spc*calls + f"{key}: {val}"
         return out
 
     @staticmethod
