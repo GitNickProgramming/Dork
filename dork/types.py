@@ -11,7 +11,7 @@ import matplotlib.pyplot as plt
 from numpy import full as npf
 import dork.game_utils.factory_data as factory_data
 # pylint: disable=protected-access
-
+# pylint : disable=CO302 Because of DocString
 
 class Grandparent:
     """common parent of holder, adjacent, and coord"""
