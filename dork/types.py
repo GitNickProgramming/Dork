@@ -283,10 +283,6 @@ class Gamebuilder:
                     first_desc = worldmap[rooms].description + "\n"
                     desc = factory_data.ROOM_INV_DESCRIPTIONS["2"]
                     worldmap[rooms].description = first_desc+desc
-                elif num == 0:
-                    first_desc = worldmap[rooms].description + "\n"
-                    desc = factory_data.ROOM_INV_DESCRIPTIONS["3"]
-                    worldmap[rooms].description = first_desc+desc
             iterator += 1
         return 0
 
