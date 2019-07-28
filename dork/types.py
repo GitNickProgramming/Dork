@@ -623,7 +623,7 @@ class Game:
             target = input("What do you want to use it on? ")
             if target in self.hero.location.players:
                 target_obj = self.hero.location.players[target]
-                return self.hero.inventory[item].use(target_obj, item), False      
+                return self.hero.inventory[item].use(target_obj, item), False   
             return "Invalid target", False
         return "You don't have that item...", False
 
