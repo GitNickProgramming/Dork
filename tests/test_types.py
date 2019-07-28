@@ -249,25 +249,6 @@ def test_runtime_items(run):
            "Failed to decline use on non-existant item"
 
 
-def test_use_has_target_input(run, mocker):
-    """Testing that use takes an input"""
-    out = run(repl.repl, input_side_effect=["tester",
-                                            "use sword", "tester", ".rq"])
-    assert "You don't have that item...\n" in out[0],\
-           "Failed to decline use on non-existant item"
-    test_item = types.Item()
-    test_item.name = "sword"
-    test_item.type = "weapon "
-    test_item.usable = types.Attackable
-    test_game = types.Gamebuilder().build("player")
-    test_game.hero.inventory[test_item.name] = test_item
-    with mocker.patch('builtins.input') as inpt:
-        inpt.side_effect = ["player", ".rq"]
-        assert test_game._use_item("sword") == \
-            ("You swing the sword at player", False),\
-            "failed to contain a target argument"
-
-
 def test_type_not_str_item_make():
     """Tests that empty dict creates unusable filler item"""
     test_item = types.Item()
@@ -282,20 +263,6 @@ def test_set_use_not_str():
     test_item.set_usable(object)
     assert test_item.usable == types.NotUsable,\
         "Failed to set unknown object use to notusable"
-
-
-def test_use_item(mocker):
-    """Testing the _use_item private method"""
-    test_game = types.Gamebuilder.build("angryDave")
-    test_sword = types.Item()
-    test_sword.name = "test sword"
-    test_sword.set_usable("weapon ")
-    test_game.hero.inventory['test sword'] = test_sword
-    with mocker.patch('builtins.input') as inpt:
-        inpt.side_effect = ["angryDave"]
-        out = test_game._use_item("test sword")
-        assert "You swing the test sword at angryDave" in out,\
-               "Failed to swing sword in private method"
 
 
 def test_npc_can_talk(player):
