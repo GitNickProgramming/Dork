@@ -95,8 +95,9 @@ def repl():
 
     """
     dork, repl_data = _new_game()
+    should_exit = False
 
-    while True:
+    while not should_exit:
         output, should_exit = _evaluate(
             cmd=_read(), dork=dork, repl_data=repl_data
         )
@@ -104,8 +105,3 @@ def repl():
             dork, repl_data = _new_game()
         else:
             print(output + "\n")
-
-        if should_exit:
-            break
-
-    print("shutting down...")
