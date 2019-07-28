@@ -104,13 +104,13 @@ class Item(Stats):
         """This method changes the use behavior,
         provide usable class as argument
 
-        Extended Description
+        Defines whether an item's type is usable or not
 
         Args:
-            arg1 (str): description
+            uses (dict): checks if item's type is usable or not
 
         returns:
-            arg1 (str): description
+            uses (str): returns if item is usable or not
 
         """
         uses = {"filler": NotUsable,
