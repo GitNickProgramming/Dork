@@ -48,7 +48,7 @@ def _evaluate(cmd, dork, repl_data):
     Evaluates the input of the user into an action and runs it
 
     Args:
-        method (str): the method depending on user's input that executes an action
+        method (str): the method depending on user's input executes an action
         arg (str): the argument depending on user's input
 
     Returns:
