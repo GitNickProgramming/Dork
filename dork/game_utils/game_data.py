@@ -1,5 +1,6 @@
 """Data and commands for REPL"""
 
+
 __all__ = ["CMDS", "MOVES", "ERRS", "META", "TITLE"]
 
 
@@ -50,6 +51,7 @@ CMDS = {
     "use": ["_use_item"],
     "activate": ["_use_item"],
     "points": ["_get_points"],
+    "talk": ["_talk"],
 }
 
 
