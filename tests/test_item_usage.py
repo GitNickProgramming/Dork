@@ -1,43 +1,12 @@
 """Test the various usable items"""
 
+
 from random import choice
 from dork import repl
 # pylint: disable=protected-access
 
 
-def test_take_all(game):
-    """take all items, confirm they are now in player inventory,
-    confirm room inventory is empty"""
-
-    room_0 = game.rooms["room 0"]
-    room_inventory = room_0.get_items(room_0, False)
-
-    repl._evaluate("take", game)
-    assert repl._evaluate("i", game)[0] == room_inventory
-    assert room_0.get_items(room_0, False) == "There's nothing here."
-
-
-def test_take_item_here(game):
-    """take an item that is present, confirm it is now in player inventory,
-    confirm item is not in room inventory"""
-
-    room_0 = game.rooms["room 0"]
-    room_inventory = room_0.data["inventory"]
-    random_item = choice(list(room_inventory.keys()))
-
-    repl._evaluate(f"take {random_item}", game)
-    assert random_item in game.hero.inventory
-    assert random_item not in room_0.inventory
-
-
-def test_take_item_not_here(game):
-    """try to take an item that is not here"""
-
-    no_take = repl._evaluate(f"take larsen", game)
-    assert no_take == ("There is no larsen here.", False)
-
-
-def test_drop_all(game):
+def test_take_drop_all(game):
     """
         1. take all items
         2. confirm they are now in player inventory
@@ -47,19 +16,20 @@ def test_drop_all(game):
         6. confirm all items now in room inventory
     """
 
+    hero = game.hero
     room_0 = game.rooms["room 0"]
-    room_inventory = room_0.get_items(room_0, False)
+    room_inventory = room_0.get_items("", False)
 
     repl._evaluate("take", game)
-    assert repl._evaluate("i", game)[0] == room_inventory
-    assert room_0.get_items(room_0, False) == "There's nothing here."
+    assert hero.get_items("", False) == room_inventory
+    assert room_0.get_items("", False) == "There's nothing here."
 
     repl._evaluate("drop", game)
-    assert game.hero.get_items(game.hero, False) == "There's nothing here."
-    assert room_0.get_items(room_0, False) == room_inventory
+    assert hero.get_items("", False) == "There's nothing here."
+    assert room_0.get_items("", False) == room_inventory
 
 
-def test_drop_item_from_inv(game):
+def test_take_drop_single(game):
     """
         1. take a random item from the room
         2. confirm it is in player inventory
@@ -69,24 +39,31 @@ def test_drop_item_from_inv(game):
         6. confirm item in room inventory
     """
 
+    hero = game.hero
     room_0 = game.rooms["room 0"]
-    room_inventory = room_0.data["inventory"]
-    random_item = choice(list(room_inventory.keys()))
+    random_item = choice(list(room_0.inventory.keys()))
 
     repl._evaluate(f"take {random_item}", game)
-    assert random_item in game.hero.inventory
+    assert random_item in hero.inventory
     assert random_item not in room_0.inventory
 
     repl._evaluate(f"drop {random_item}", game)
-    assert random_item not in game.hero.inventory
+    assert random_item not in hero.inventory
     assert random_item in room_0.inventory
 
 
-def test_take_item_not_in_inv(game):
-    """try to drop an item you do not have"""
+def test_drop_item_not_in_inv(game):
+    """try to drop an item that is not in your inventory"""
 
-    no_drop = repl._evaluate(f"drop larsen", game)
+    no_drop = repl._evaluate("drop larsen", game)
     assert no_drop == ("There is no larsen in your inventory.", False)
+
+
+def test_take_item_not_in_room(game):
+    """try to take an item that is not in the room"""
+
+    no_take = repl._evaluate(f"take larsen", game)
+    assert no_take == ("There is no larsen here.", False)
 
 
 # def test_player_has_none(player):

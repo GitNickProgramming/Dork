@@ -15,13 +15,13 @@ def test_repl_evaluate(game):
     assert repl._evaluate("Go", game) == (
         "Sorry, I don't know that one.", False)
     assert repl._evaluate("walk map", game) == (
-        "You can't go that way", False)
+        "Uh. Which way are you trying to go?", False)
 
 
 def test_all_moves_and_others(game):
     """tests that movement is successful and meta methods"""
 
-    assert repl._evaluate(".m", game) == ("", False)
+    assert repl._evaluate(".m", game) == ("\x08", False)
 
     for _ in range(4):
         if "description" in repl._evaluate("n", game):
@@ -50,7 +50,6 @@ def test_all_moves_and_others(game):
     )
 
     assert "t" in repl._evaluate("look", game)[0]
-    assert repl._evaluate(".m", game) == ("", False)
 
     assert repl._evaluate(".v", game) == (
         "verbose inventory: ON", False

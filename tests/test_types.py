@@ -1,56 +1,33 @@
 # -*- coding: utf-8 -*-
 """Basic tests for state and entity relationships in dork"""
 
-from unittest import mock as mocker
-from tests.utils import is_a
+
 from dork import repl, types
 import dork.game_utils.factory_data as factory_data
 # pylint: disable=protected-access
 
 
-def test_confirm_method_yes(capsys, mocker):
+def test_confirm_method_blank(capsys, mocker, game):
     """confirm should do things"""
 
     mocked_input = mocker.patch('builtins.input')
-    mocked_input.side_effect = ["y", "tester"]
-    assert types.Game._confirm()
-    captured = capsys.readouterr()
-    assert "\n!!!WARNING!!! You will lose unsaved data!\n" in captured.out
-    assert mocked_input.call_count == 1
-
-
-def test_confirm_method_no(capsys, mocker):
-    """confirm should do things"""
-
-    mocked_input = mocker.patch('builtins.input')
-    mocked_input.side_effect = ["n"]
-    assert types.Game._confirm() is False
-    captured = capsys.readouterr()
-    assert "\n!!!WARNING!!! You will lose unsaved data!\n" in captured.out
-    assert mocked_input.call_count == 1
-
-
-def test_confirm_method_blank(capsys, mocker):
-    """confirm should do things"""
-
-    mocked_input = mocker.patch('builtins.input')
-    mocked_input.side_effect = ["afk", "    ", "y", "tester"]
-    types.Game._confirm()
+    mocked_input.side_effect = ["bumblebee", "y", "tester"]
+    game._confirm()
     captured = capsys.readouterr()
     assert "\n!!!WARNING!!! You will lose unsaved data!\n" in captured.out
     assert "That is not a valid response!" in captured.out
-    assert mocked_input.call_count == 3
+    assert mocked_input.call_count == 2
 
 
 def test_start_over_no(capsys, mocker, game):
     """confirm should do things"""
 
     mocked_input = mocker.patch('builtins.input')
-    mocked_input.side_effect = ["n", ".rq"]
-    assert game._start_over() == ("Guess you changed your mind!", False)
+    mocked_input.side_effect = ["bumblebee", "n"]
+    assert game._start_over() == ("guess you changed your mind!", False)
     captured = capsys.readouterr()
     assert "\n!!!WARNING!!! You will lose unsaved data!\n" in captured.out
-    assert mocked_input.call_count == 1
+    assert mocked_input.call_count == 2
 
 
 def test_start_over_yes(capsys, mocker, game):
@@ -65,35 +42,21 @@ def test_start_over_yes(capsys, mocker, game):
     assert mocked_input.call_count == 1
 
 
-def test_player_location(game):
-    """testing the get and set of player location"""
-    is_a(game.hero.location, types.Room)
-
-
 def test_move_method(game, cardinals):
     """testing the move function for any map"""
 
     for direction in cardinals:
-        if getattr(game.hero.location, direction) is not None:
-            move_return = game._move(direction)
-            assert ("You have entered " +
-                    game.hero.location.description, False) == move_return
-        if not getattr(game.hero.location, direction):
-            move_return = game._move(direction)
-            assert (
-                f"You cannot go {direction} from here.", False) == move_return
-
-
-def test_factory_data():
-    """test factory data methods"""
-
-    assert isinstance(factory_data.rules(0, 0), list)
-    assert isinstance(factory_data.stats("magic"), dict)
+        assert game._move(direction) in [
+            (game.hero.location.description, False),
+            (f"You cannot go {direction} from here.", False)
+        ]
 
 
 def test_mazefactory():
     """builds all game types"""
 
+    assert isinstance(factory_data.rules(0, 0), list)
+    assert isinstance(factory_data.stats("magic"), dict)
     assert isinstance(types.MazeFactory.build(), dict)
 
 
@@ -225,7 +188,7 @@ def test_none_item():
         "use method failed for gold items"
 
 
-def test_only_stat():
+def test_only_stat(mocker):
     """Checks that an object with only a stat is unusable"""
     with mocker.patch('builtins.input') as inpt:
         inpt.side_effect = ["player"]
@@ -248,7 +211,7 @@ def test_runtime_items(run):
            "Failed to decline use on non-existant item"
 
 
-def test_use_has_target_input(run):
+def test_use_has_target_input(run, mocker):
     """Testing that use takes an input"""
     out = run(repl.repl, input_side_effect=["tester",
                                             "use sword", "tester", ".rq"])
@@ -283,7 +246,7 @@ def test_set_use_not_str():
         "Failed to set unknown object use to notusable"
 
 
-def test_use_item():
+def test_use_item(mocker):
     """Testing the _use_item private method"""
     with mocker.patch('builtins.input') as inpt:
         test_game = types.Gamebuilder.build("angryDave")
