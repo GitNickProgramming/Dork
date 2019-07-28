@@ -61,9 +61,9 @@ class Item(Stats):
     def make(self, item):
         """Make an item
         """
-        self.name = item["name"]
-        self.description = item["description"]
-        self.type = item["type"]
+        self.name = item.get("name", "")
+        self.description = item.get("description", "")
+        self.type = item.get("type", "filler")
         if not isinstance(self.type, str) or self.type is None:
             self.usable = NotUsable
         elif len(self.type) > 1:
@@ -74,14 +74,14 @@ class Item(Stats):
     def set_usable(self, new_use):
         """This method changes the use behavior,
         provide usable class as argument"""
-        uses = {"filler": NotUsable,
-                "weapon": Attackable,
-                "key": Openable,
-                "gold": Payable,
-                "magic items": Statable,
-                "jewelry": Statable,
-                "armor": Statable,
-                "magic consumables": Statable}
+        uses = {"filler ": NotUsable,
+                "weapon ": Attackable,
+                "key ": Openable,
+                "gold ": Payable,
+                "magic items ": Statable,
+                "jewelry ": Statable,
+                "armor ": Statable,
+                "magic consumables ": Statable}
         if new_use is None or new_use not in uses:
             self.usable = NotUsable
         else:
@@ -89,7 +89,7 @@ class Item(Stats):
 
     def use(self, target, name):
         """Strategy pattern call"""
-        self.usable.use(target, name)
+        return self.usable.use(target, name)
 
 
 class Usable(ABC):
@@ -108,7 +108,8 @@ class Attackable(Usable):
     @staticmethod
     def use(target, name):
         """Swing use method"""
-        print("You swing the " + name + " at " + target)
+        target.damage()
+        return "You swing the " + name + " at " + target.name
 
 
 class NotUsable(Usable):
@@ -117,7 +118,7 @@ class NotUsable(Usable):
     @staticmethod
     def use(target, name):
         """Useless use method"""
-        print("You find no use of this item")
+        return "You find no use of this item"
 
 
 class Openable(Usable):
@@ -126,7 +127,7 @@ class Openable(Usable):
     @staticmethod
     def use(target, name):
         """Opens object targeted if possible"""
-        print("You insert the " + name + " into " + target)
+        return "You insert the " + name + " into " + target.name
 
 
 class Payable(Usable):
@@ -135,7 +136,7 @@ class Payable(Usable):
     @staticmethod
     def use(target, name):
         """Gold use method"""
-        print("You use the " + name + " to pay " + target)
+        return "You use the " + name + " to pay " + target.name
 
 
 class Statable(Usable):
@@ -144,7 +145,7 @@ class Statable(Usable):
     @staticmethod
     def use(target, name):
         """Stat change use method"""
-        print("The " + name + " takes effect on " + target)
+        return "The " + name + " takes effect on " + target.name
 
 
 class Adjacent(Grandparent):
@@ -169,7 +170,14 @@ class Coord(Grandparent):
 
 class Player(Holder):
     """A player or npc in the game"""
-
+    states = {"damage": {"Calm": "Hostile", "Hostile": "Dead", "Dead": "Dead"},
+              "talk": {"Calm": "Calm", "Hostile": "Calm", "Dead": "Dead"}}
+    blurbs = {"Calm": {"talk": "Hello", "damage": "Ouch..Your gonna get it!"},
+              "Hostile": {"talk": "I guess you are ok...I'll calm down",
+                          "damage": "UGH\nYou dealt a death blow"},
+              "Dead": {"talk": "That person is dead...blab away",
+                       "damage": """You monster,
+                        stop hitting that dead person!"""}}
     instances = []
 
     def __init__(self):
@@ -179,6 +187,7 @@ class Player(Holder):
         self.description = str
         self.location = Room
         self.equipped = list
+        self.state = "Calm"
 
     def _new_instance(self):
         self.instances.append(self)
@@ -200,6 +209,22 @@ class Player(Holder):
 
             out = "You have entered " + self.location.description
             MazeFactory.update(maze)
+        return out
+
+    def next_state(self, action):
+        """simpler state change method"""
+        self.state = self.states[action][self.state]
+
+    def talk(self):
+        """Talk method called by players"""
+        out = (self.blurbs[self.state]["talk"])
+        self.next_state("talk")
+        return out
+
+    def damage(self):
+        """attack method called by items"""
+        out = (self.blurbs[self.state]["damage"])
+        self.next_state("damage")
         return out
 
 
@@ -331,7 +356,6 @@ class Game:
             out = f"There is no {item_name} here."
 
         self._update_room_inv_description(room)
-
         return out, False
 
     def _drop_item(self, item_name=None):
@@ -356,14 +380,15 @@ class Game:
             out = f"There is no {item_name} in your inventory."
 
         self._update_room_inv_description(room)
-
         return out, False
 
     def _use_item(self, item="Nothing"):
         if item in self.hero.inventory.keys():
             target = input("What do you want to use it on? ")
-            self.hero.inventory[item].use(target, item)
-            return "You used the thing! It's super effective!", False
+            if target in self.hero.location.players:
+                target_obj = self.hero.location.players[target]
+                return self.hero.inventory[item].use(target_obj, item), False
+            return "Invalid target", False
         return "You don't have that item...", False
 
     def _start_over(self):
@@ -376,6 +401,12 @@ class Game:
     def _get_state(self):
         for name, room in self.rooms.items():
             self.data["rooms"][name] = room.data
+
+    def _talk(self, target="nobody"):
+        if target in self.hero.location.players:
+            npc = self.hero.location.players.get(target, "")
+            return npc.talk(), False
+        return "Who are you talking to?", False
 
     @staticmethod
     def _update_room_inv_description(location):
@@ -575,6 +606,68 @@ class Gamebuilder:
         for key, val in deepcopy(data).items():
             setattr(new_obj, key, val)
         return new_obj
+
+    @staticmethod
+    def _get_room_inv_description(worldmapp):
+        worldmap = worldmapp.rooms
+        worldmap_length = len(worldmap)
+        iterator = 0
+        for rooms in worldmap:
+            if iterator != worldmap_length - 1:
+                inv_list = worldmap[rooms].inventory
+                num = len(inv_list)
+                if num >= 2:
+                    rand_ind = randrange(4)
+                    first_desc = worldmap[rooms].description + "\n"
+                    desc = factory_data.ROOM_INV_DESCRIPTIONS["1"][rand_ind]
+                    worldmap[rooms].description = first_desc+desc
+                elif num == 1:
+                    first_desc = worldmap[rooms].description + "\n"
+                    desc = factory_data.ROOM_INV_DESCRIPTIONS["2"]
+                    worldmap[rooms].description = first_desc+desc
+                elif num == 0:
+                    first_desc = worldmap[rooms].description + "\n"
+                    desc = factory_data.ROOM_INV_DESCRIPTIONS["3"]
+                    worldmap[rooms].description = first_desc+desc
+            iterator += 1
+        return 0
+
+    @staticmethod
+    def _get_adj_description(worldmapp):
+
+        worldmap = worldmapp.rooms
+
+        for rooms in worldmap:
+            desc = ""
+            adj_list = list()
+            adj_possibilities = {"north", "east", "south", "west"}
+            for pos in adj_possibilities:
+                if worldmap[rooms].data["adjacent"][pos] is not None:
+                    adj_list.append(pos)
+
+            adj_string = ""
+            for adj in adj_list:
+                if adj_list[0] == adj:
+                    adj_string += " "+adj
+                else:
+                    adj_string += ", "+adj
+            adj_string += "..."
+
+            if((len(adj_list) == 1)
+               and rooms != "room 0" and rooms != "room "+str(len(worldmap))):
+                desc = factory_data.ADJ_ROOM_DESCRIPTIONS["1"]
+            elif len(adj_list) == 2:
+                rand_ind = randrange(8)
+                desc = factory_data.ADJ_ROOM_DESCRIPTIONS["2"][rand_ind] \
+                    + adj_string
+            elif len(adj_list) == 3:
+                rand_ind = randrange(5)
+                desc = factory_data.ADJ_ROOM_DESCRIPTIONS["3"][rand_ind] \
+                    + adj_string
+            first_desc = worldmap[rooms].description + "\n"
+            worldmap[rooms].description = first_desc+desc
+
+        return 0
 
     @staticmethod
     def load_game(player):

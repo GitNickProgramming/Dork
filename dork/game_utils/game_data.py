@@ -30,6 +30,7 @@ MOVES = {
     "west": ["_move", "west"]
 }
 
+
 CMDS = {
     "go": MOVES,
     "move": MOVES,
@@ -50,6 +51,7 @@ CMDS = {
     "use": ["_use_item"],
     "activate": ["_use_item"],
     "points": ["_get_points"],
+    "talk": ["_talk"],
 }
 
 
