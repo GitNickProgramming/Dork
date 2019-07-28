@@ -91,7 +91,7 @@ class Item(Stats):
 
     def use(self, target, name):
         """Strategy pattern call"""
-        self.usable.use(target, name)
+        return self.usable.use(target, name)
 
 
 class Usable(ABC):
@@ -110,7 +110,8 @@ class Attackable(Usable):
     @staticmethod
     def use(target, name):
         """Swing use method"""
-        print("You swing the " + name + " at " + target)
+        target.damage()
+        return ("You swing the " + name + " at " + target.name)
 
 
 class NotUsable(Usable):
@@ -119,7 +120,7 @@ class NotUsable(Usable):
     @staticmethod
     def use(target, name):
         """Useless use method"""
-        print("You find no use of this item")
+        return "You find no use of this item"
 
 
 class Openable(Usable):
@@ -128,7 +129,7 @@ class Openable(Usable):
     @staticmethod
     def use(target, name):
         """Opens object targeted if possible"""
-        print("You insert the " + name + " into " + target)
+        return "You insert the " + name + " into " + target.name
 
 
 class Payable(Usable):
@@ -137,7 +138,7 @@ class Payable(Usable):
     @staticmethod
     def use(target, name):
         """Gold use method"""
-        print("You use the " + name + " to pay " + target)
+        return "You use the " + name + " to pay " + target.name
 
 
 class Statable(Usable):
@@ -146,7 +147,7 @@ class Statable(Usable):
     @staticmethod
     def use(target, name):
         """Stat change use method"""
-        print("The " + name + " takes effect on " + target)
+        return "The " + name + " takes effect on " + target.name
 
 
 class Adjacent(Grandparent):
@@ -218,13 +219,15 @@ class Player(Holder):
 
     def talk(self):
         """Talk method called by players"""
-        print(self.blurbs[self.state]["talk"])
+        out = (self.blurbs[self.state]["talk"])
         self.next_state("talk")
+        return out
 
     def damage(self):
         """attack method called by items"""
-        print(self.blurbs[self.state]["damage"])
+        out = (self.blurbs[self.state]["damage"])
         self.next_state("damage")
+        return out
 
 
 class Room(Adjacent, Coord, Holder):
@@ -615,8 +618,11 @@ class Game:
     def _use_item(self, item="Nothing"):
         if item in self.hero.inventory.keys():
             target = input("What do you want to use it on? ")
-            self.hero.inventory[item].use(target, item)
-            return "You used the thing! It's super effective!", False
+            if target in self.hero.location.players:
+                target_obj = self.hero.location.players[target]
+                return self.hero.inventory[item].use(target_obj, item), False
+            else:
+                return "Invalid target", False
         return "You don't have that item...", False
 
     def _start_over(self):
@@ -629,6 +635,13 @@ class Game:
     def _get_state(self):
         for name, room in self.rooms.items():
             self.data["rooms"][name] = room.data
+
+    def _talk(self, target="nobody"):
+        if target in self.hero.location.players:
+            npc = self.hero.location.players.get(target, "")
+            return npc.talk(), False
+        else:
+            return "Who are you talking to?", False
 
     @staticmethod
     def _update_room_inv_description(location):
@@ -960,7 +973,6 @@ class MazeFactory:
         rooms = []
         position = path[0]
         grid.remove(position)
-
         while grid:
             n = len(path)
             nsew = []
@@ -981,7 +993,6 @@ class MazeFactory:
                 position = path[max(path.index(position)-1, 1)]
             else:
                 position = path[-1]
-
         for coord in path:
             i, j = coord
             neighbors = [
@@ -994,7 +1005,6 @@ class MazeFactory:
                 rooms.append(coord)
                 maze[coord] = MazeFactory.room_color
             maze[rooms[0]] = MazeFactory.player_color
-
         return {
             "maze": maze.tolist(),
             "rooms": RoomFactory.build(maze, rooms)
