@@ -491,6 +491,9 @@ class Gamebuilder:
         Gamebuilder._place_players(game)
         Gamebuilder._make_paths(game)
 
+        Gamebuilder._get_adj_description(game)
+        Gamebuilder._get_room_inv_description(game)
+
         for player in Player.instances:
             if player.name == player_name:
                 hero = player
@@ -580,16 +583,6 @@ class Gamebuilder:
                     setattr(room, direction, game.rooms[room_name])
 
     @staticmethod
-    def _instantiate(clz, **data):
-        """return an object of type clz with attributes given by data"""
-
-        new_obj = clz()
-        setattr(new_obj, "data", data)
-        for key, val in deepcopy(data).items():
-            setattr(new_obj, key, val)
-        return new_obj
-
-    @staticmethod
     def _get_room_inv_description(worldmapp):
         worldmap = worldmapp.rooms
         worldmap_length = len(worldmap)
@@ -650,6 +643,16 @@ class Gamebuilder:
             worldmap[rooms].description = first_desc+desc
 
         return 0
+
+    @staticmethod
+    def _instantiate(clz, **data):
+        """return an object of type clz with attributes given by data"""
+
+        new_obj = clz()
+        setattr(new_obj, "data", data)
+        for key, val in deepcopy(data).items():
+            setattr(new_obj, key, val)
+        return new_obj
 
     @staticmethod
     def load_game(player):

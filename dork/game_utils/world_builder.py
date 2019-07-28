@@ -227,60 +227,7 @@ class RoomFactory:
             new_room = RoomFactory.worldmap.pop(coord)
             RoomFactory.worldmap[new_room.pop("number")] = new_room
 
-        RoomFactory._get_adj_description(RoomFactory.worldmap)
-        RoomFactory._get_room_inv_description(RoomFactory.worldmap)
-
         return RoomFactory.worldmap
-
-    @staticmethod
-    def _get_room_inv_description(worldmap):
-        for rooms in worldmap:
-            inv_list = worldmap[rooms]["inventory"]
-            num = len(inv_list)
-            if num > 2:
-                rand_ind = randrange(4)
-                first_desc = worldmap[rooms]["description"] + "\n"
-                desc = factory_data.ROOM_INV_DESCRIPTIONS["1"][rand_ind]
-                worldmap[rooms]["description"] = first_desc+desc
-            elif num == 1:
-                first_desc = worldmap[rooms]["description"] + "\n"
-                desc = factory_data.ROOM_INV_DESCRIPTIONS["2"]
-                worldmap[rooms]["description"] = first_desc+desc
-        return 0
-
-    @staticmethod
-    def _get_adj_description(worldmap):
-        for rooms in worldmap:
-            desc = ""
-            adj_list = list()
-            adj_possibilities = {"north", "east", "south", "west"}
-            for pos in adj_possibilities:
-                if worldmap[rooms]["adjacent"][pos] is not None:
-                    adj_list.append(pos)
-
-            adj_string = ""
-            for adj in adj_list:
-                if adj_list[0] == adj:
-                    adj_string += " "+adj
-                else:
-                    adj_string += ", "+adj
-            adj_string += "..."
-
-            if((len(adj_list) == 1)
-               and rooms != "room 0" and rooms != "room "+str(len(RoomFactory.rooms))):
-                desc = factory_data.ADJ_ROOM_DESCRIPTIONS["1"]
-            elif len(adj_list) == 2:
-                rand_ind = randrange(8)
-                desc = factory_data.ADJ_ROOM_DESCRIPTIONS["2"][rand_ind] \
-                    + adj_string
-            elif len(adj_list) == 3:
-                rand_ind = randrange(5)
-                desc = factory_data.ADJ_ROOM_DESCRIPTIONS["3"][rand_ind] \
-                    + adj_string
-            first_desc = worldmap[rooms]["description"] + "\n"
-            worldmap[rooms]["description"] = first_desc+desc
-
-        return 0
 
 
 class MazeFactory:
