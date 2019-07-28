@@ -507,11 +507,12 @@ class Gamebuilder:
 
         Args:
             data (dict): dictionary of game state
-            player (str): string of the player's name  
+            player (str): string of the player's name
 
         returns:
             data (dict): returns the dictionary state of the game from yaml
             player (str): returns the yaml file depending on the player's name
+
         """
         data = {
             "rooms": data["rooms"],
@@ -903,13 +904,13 @@ class RoomFactory:
     def build(cls, maze, rooms):
         """build a room
 
-        Extended Description
+        Creates an instance of a room
 
         Args:
-            arg1 (str): description
+            _make_rooms (): creates an instance of a room
 
         returns:
-            arg1 (str): description
+            _make_rooms (): returns an instance of a room
 
         """
         cls.maze = maze
@@ -1012,17 +1013,7 @@ class MazeFactory:
 
     @staticmethod
     def draw(maze):
-        """display the maze
-
-        Extended Description
-
-        Args:
-            arg1 (str): description
-
-        returns:
-            arg1 (str): description
-
-        """
+        """display the maze"""
 
         x_dim, y_dim = len(maze[0])//2, len(maze)//2
         plt.figure(figsize=(x_dim, y_dim))
@@ -1034,17 +1025,8 @@ class MazeFactory:
 
     @staticmethod
     def update(maze):
-        """update the maze display
+        """update the maze display"""
 
-        Extended Description
-
-        Args:
-            arg1 (str): description
-
-        returns:
-            arg1 (str): description
-
-        """
         plt.pcolormesh(maze, cmap=plt.cm.get_cmap("tab20b"))
         plt.axis("equal")
         plt.axis("off")
@@ -1053,17 +1035,8 @@ class MazeFactory:
     # pylint: disable=R0914
     @staticmethod
     def build():
-        """generate a maze
+        """generate a maze"""
 
-        Extended Description
-
-        Args:
-            arg1 (str): description
-
-        returns:
-            arg1 (str): description
-
-        """
         x = choice([10, 12, 14, 18])
         y = 148//x
 
