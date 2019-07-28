@@ -40,7 +40,20 @@ def test_all_moves_and_others(game, repl_data):
             break
 
     assert repl._evaluate(".z", game, repl_data) == (
-        "holy *%&#@!!! a wild zork appeared!", False)
+        "holy *%&#@!!! a wild zork appeared!", False
+    )
+
+    assert repl._evaluate("look david", game, repl_data) == (
+        "This command takes no arguments", False
+    )
+
+    assert repl._evaluate(".z david", game, repl_data) == (
+        "This command takes no arguments", False
+    )
+
+    assert repl._evaluate("north north", game, repl_data) == (
+        "Uh. Which way are you trying to go?", False
+    )
 
     assert repl._evaluate(".m", game, repl_data) == ("", False)
 
@@ -78,7 +91,7 @@ def test_new_game_command(run):
 
     _, _, mocked_input = run(
         cli.main, '-?', input_side_effect=[
-            'tester', '.n', 'y', 'tester', '.rq'
+            'tester', '.new', 'y', 'tester', '.rq'
         ]
     )
     assert mocked_input.call_count == 5
@@ -96,4 +109,28 @@ def test_repl_save_game():
     """test save function"""
 
     game, repl_data = repl._new_game("devon")
-    repl._evaluate(".s", game, repl_data)
+    repl._evaluate(".save", game, repl_data)
+
+
+def test_repl_evaluate_safety(game, repl_data):
+    """testing ways to break the repl"""
+
+    assert repl._evaluate("n LARSEN", game, repl_data)
+    assert repl._evaluate("north LARSEN", game, repl_data)
+    assert repl._evaluate("i LARSEN", game, repl_data)
+    assert repl._evaluate("examine LARSEN", game, repl_data)
+    assert repl._evaluate(".new LARSEN", game, repl_data)
+    assert repl._evaluate(".load LARSEN", game, repl_data)
+    assert repl._evaluate(".save LARSEN", game, repl_data)
+    assert repl._evaluate(".m LARSEN", game, repl_data)
+    assert repl._evaluate(".v LARSEN", game, repl_data)
+    assert repl._evaluate(".rq LARSEN", game, repl_data)
+    assert repl._evaluate("points LARSEN", game, repl_data)
+
+
+def test_repl_bad_keys(game, repl_data):
+    """these are bad keys for take and drop commands"""
+
+    assert repl._evaluate("drop LARSEN", game, repl_data)
+    assert repl._evaluate("take LARSEN", game, repl_data)
+    assert repl._evaluate("loot LARSEN", game, repl_data)

@@ -6,6 +6,20 @@ from dork import types as dork_types
 
 
 def _new_game(player_name=None):
+    """Starts a new game, based on player name
+
+    Creates a new game based upon the name the user enters.
+
+    Args:
+        player_name (str): variable that holds user's player name
+        dork (str): builds game based upon player's name
+        repl_data (str): dictonary of game commands
+
+    Returns:
+        dork (str): returns a unique game based on player's name
+        repl_data (str): returns an action based on user's input
+
+    """
     if not player_name:
         player_name = input("What's your name, stranger? ")
 
@@ -29,8 +43,19 @@ def _read():
 
 
 def _evaluate(cmd, dork, repl_data):
-    """Parse a cmd and run it"""
+    """Parse a cmd and run it
 
+    Evaluates the input of the user into an action and runs it
+
+    Args:
+        method (str): the method depending on user's input executes an action
+        arg (str): the argument depending on user's input
+
+    Returns:
+        method (str): returns the action based on the user's input
+        arg (str): returns the argument based on the user's input
+
+    """
     cmds, moves, meta, errs = repl_data
     cmd = cmd.strip().split(" ", 1) if (cmd and not cmd.isspace()) else None
     if cmd:
@@ -40,28 +65,45 @@ def _evaluate(cmd, dork, repl_data):
         if isinstance(call, dict):
             method, arg = call.get(noun, errs["no go"])
         elif call not in errs.values():
-            method, arg = call[0], noun if noun else (
-                call[1] if len(call) > 1 else None
-            )
+            if noun and len(call) > 1:
+                method, arg = errs["which way"]
+            elif noun and len(call) == 1:
+                method, arg = call[0], noun
+            elif not noun and len(call) > 1:
+                method, arg = call
+            else:
+                method, arg = call[0], None
         else:
             method, arg = call
     else:
         call = errs["?"]
         method, arg = call
-
+    dork._points(call)
     return dork(method, arg)
 
 
 def repl():
-    """read evaluate print loop"""
+    """read evaluate print loop
 
+    Depending on the user's input prints an action, if input = .rq, quits game
+
+    Args:
+        output (str): If output is equal to new game, a new game is created
+
+    Returns:
+        output (str): returns a new game if equal to a new game, quit when .rq
+
+    """
     dork, repl_data = _new_game()
 
     while True:
         output, should_exit = _evaluate(
             cmd=_read(), dork=dork, repl_data=repl_data
         )
-        print(output + "\n")
+        if output == "new game":
+            dork, repl_data = _new_game()
+        else:
+            print(output + "\n")
 
         if should_exit:
             break

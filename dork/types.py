@@ -1,9 +1,12 @@
 """Base types for the Dork game"""
 # -*- coding: utf-8 -*-
-import os
-from copy import deepcopy
 from abc import ABC, abstractmethod
+import os
+from random import randrange
+from copy import deepcopy
+from inspect import getfullargspec as argspec
 import yaml
+import dork.game_utils.factory_data as factory_data
 from dork.game_utils.world_builder import MazeFactory
 # pylint: disable=protected-access
 
@@ -195,9 +198,7 @@ class Player(Holder):
             self.location = adjacent_room
             maze[self.location.x][self.location.y] = MazeFactory.player_color
 
-            outt = self.location.description
-            # outtt = self.location.name
-            out = "You have entered "+outt
+            out = "You have entered " + self.location.description
             MazeFactory.update(maze)
         return out
 
@@ -210,7 +211,7 @@ class Room(Adjacent, Coord, Holder):
 
     def __init__(self):
         super().__init__()
-        self.name = "yeah"
+        self.name = str
         self.data = dict
         self.description = str
         self.players = dict
@@ -230,9 +231,19 @@ class Game:
         self.maze = []
         self.rooms = {}
         self.hero = Player()
+        self.points = 10
 
     def __call__(self, cmd, arg):
-        return getattr(self, cmd)(arg) if arg else getattr(self, cmd)()
+        do_func = getattr(self, cmd)
+        func_args = argspec(do_func).args
+        if arg:
+            if not func_args or ("self" in func_args and len(func_args) == 1):
+                out = self._repl_error("This command takes no arguments")
+            else:
+                out = do_func(arg)
+        else:
+            out = do_func()
+        return out
 
     def _toggle_verbose(self) -> (str, bool):
         self.verbose = not self.verbose
@@ -241,10 +252,6 @@ class Game:
             False: "verbose inventory: OFF"
         }[self.verbose]
         return out, False
-
-    def _set_location(self):
-        """Set location based on
-        """
 
     def _gtfo(self):
         return f"Thanks for playing DORK, {self.hero.name}!", True
@@ -256,21 +263,44 @@ class Game:
     def _move(self, cardinal):
         return self.hero.move(cardinal, self.maze), False
 
+    def _points(self, user_input):
+        if '_repl_error' in user_input:
+            self.points = 0
+        elif '_get_points' in user_input:
+            pass
+        else:
+            self.points += 1
+        return self.points
+
+    def _get_points(self):
+        point = self.points
+        if point == 0:
+            return f"Booooooo! you suck.\nYou have {point} points.", False
+        return f"you have: {point}", False
+
     def _examine(self):
-        return self.hero.location.get_items(
-            self.hero.location, self.verbose
-        ), False
+        out = ""
+        location = self.hero.location
+        if self.verbose:
+            out += f"    players:" + Game._verbose_print(
+                location.data["players"]
+            )
+            out += f"\n\n    inventory:" + Game._verbose_print(
+                location.data["inventory"]
+            )
+        else:
+            out += f"    players:" + Game._brief_print(
+                location.data["players"]
+            )
+            out += f"\n\n    inventory:" + Game._brief_print(
+                location.data["inventory"]
+            )
+        return out, False
 
     def _inventory(self):
         return self.hero.get_items(self.hero, self.verbose), False
 
-    def _look(self, x="n"):
-        if x == "around":
-            items = self.hero.location.inventory
-            print("\nItems:")
-            for item in items:
-                print(item)
-            print()
+    def _look(self):
         return self.hero.location.description, False
 
     def _save_game(self):
@@ -278,30 +308,56 @@ class Game:
         Gamebuilder.save_game(self.hero.name, self.data)
         return "game saved successfully!", False
 
-    def _take_item(self, item="all"):
-        # Item defaults to "all", and adds all items in room to inventory
-        room_items = self.hero.location.inventory
-        room_items2 = room_items.copy()
-        player = self.hero.inventory
-        if item == "all":
-            for item_n in room_items2:
-                player[item_n] = room_items.pop(item_n)
-            return f"You took {item} item. You took them well.", False
-        player[item] = room_items.pop(item)
-        return f"You took the {item}. You took it well.", False
+    # item_name defaults to None, so we take all items in room
+    def _take_item(self, item_name=None):
+        out = ""
+        hero = self.hero
+        room = hero.location
+        if not item_name:
+            room_copy = deepcopy(room.inventory)
+            for item in room_copy:
+                this_item = room.inventory.pop(item)
+                this_data = room.data["inventory"].pop(item)
+                hero.inventory[item] = this_item
+                hero.data["inventory"][item] = this_data
+                out += f"You took {item}\n"
+        elif item_name in room.inventory:
+            this_item = room.inventory.pop(item_name)
+            this_data = room.data["inventory"].pop(item_name)
+            hero.inventory[item_name] = this_item
+            hero.data["inventory"][item_name] = this_data
+            out += f"You took {item_name}. You took it well."
+        else:
+            out = f"There is no {item_name} here."
 
-    def _drop_item(self, item="all"):
-        """drops specific item from player to room"""
-        player = self.hero.inventory
-        player2 = player.copy()
-        room_items = self.hero.location.inventory
-        if item == "all":
-            for item_n in player2:
-                room_items[item_n] = player.pop(item_n)
-            return "Oops, you can't hold all these items", False
-        room_items = self.hero.location.inventory
-        room_items[item] = player.pop(item)
-        return "Oops, you dropped something!", False
+        self._update_room_inv_description(room)
+
+        return out, False
+
+    def _drop_item(self, item_name=None):
+        out = ""
+        hero = self.hero
+        room = hero.location
+        if not item_name:
+            player_copy = deepcopy(hero.inventory)
+            for item in player_copy:
+                this_item = hero.inventory.pop(item)
+                this_data = hero.data["inventory"].pop(item)
+                room.inventory[item] = this_item
+                room.data["inventory"][item] = this_data
+                out += f"You dropped {item}\n"
+        elif item_name in hero.inventory:
+            this_item = hero.inventory.pop(item_name)
+            this_data = hero.data["inventory"].pop(item_name)
+            room.inventory[item_name] = this_item
+            room.data["inventory"][item_name] = this_data
+            out += f"You dropped {item_name}. How clumsy."
+        else:
+            out = f"There is no {item_name} in your inventory."
+
+        self._update_room_inv_description(room)
+
+        return out, False
 
     def _use_item(self, item="Nothing"):
         if item in self.hero.inventory.keys():
@@ -312,7 +368,7 @@ class Game:
 
     def _start_over(self):
         if self._confirm():
-            out = ""
+            out = "new game"
         else:
             out = "Guess you changed your mind!"
         return out, False
@@ -320,6 +376,25 @@ class Game:
     def _get_state(self):
         for name, room in self.rooms.items():
             self.data["rooms"][name] = room.data
+
+    @staticmethod
+    def _update_room_inv_description(location):
+        inv_list = location.inventory
+        num = len(inv_list)
+        description = location.description.splitlines()
+        des = location.description
+        if num > 1:
+            rand_ind = randrange(4)
+            des = description[0] + "\n" + description[1] + "\n" \
+                + factory_data.ROOM_INV_DESCRIPTIONS["1"][rand_ind]
+        if num == 1:
+            des = description[0] + "\n" + description[1] \
+                + "\n" + factory_data.ROOM_INV_DESCRIPTIONS["2"]
+        elif num == 0:
+            des = description[0] + "\n" + description[1] \
+                + "\n" + factory_data.ROOM_INV_DESCRIPTIONS["3"]
+        location.description = des
+        return 0
 
     @staticmethod
     def _verbose_print(data, calls=2):
@@ -336,14 +411,11 @@ class Game:
     @staticmethod
     def _brief_print(data, calls=2):
         out = ""
-        col = ""
         spc = "    "
         for key, val in data.items():
             if isinstance(val, dict) and calls < 3:
-                if calls < 2:
-                    col = ":"
                 out += "\n" + spc*calls + \
-                    f"{key}{col}{Game._brief_print(val, calls+1)}"
+                    f"{key}{Game._brief_print(val, calls+1)}"
         return out
 
     @staticmethod

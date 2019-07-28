@@ -2,9 +2,8 @@
 """Basic tests for state and entity relationships in dork
 """
 from tests.utils import is_a
-import dork.types as types
+from dork import repl, types
 import dork.game_utils.factory_data as factory_data
-import dork.repl
 
 # pylint: disable=protected-access
 
@@ -68,7 +67,6 @@ def test_start_over_yes(capsys, mocker, game):
 
 def test_player_location(game):
     """testing the get and set of player location"""
-
     is_a(game.hero.location, types.Room)
 
 
@@ -105,7 +103,7 @@ def test_inventory_has_item(mocker):
     mocked_input = mocker.patch('builtins.input')
     mocked_input.side_effect = ["bobby b"]
     test_game = types.Gamebuilder.build('bobby b')
-    test_item = dork.types.Item()
+    test_item = types.Item()
     test_item.name = "wobblelobbledobdob"
     test_game.hero.inventory[test_item.name] = test_item
     assert test_item.name in test_game.hero.inventory,\
@@ -123,36 +121,44 @@ def test_player_has_none(mocker):
         "Failed to store items in inventory"
 
 
-def test_look(run):
-    """testing _look for display items and description"""
-    out = run(dork.repl.repl, input_side_effect=["devon",
-                                                 "look around",
-                                                 ".rq"])
-    assert "Items:\ndamaged note\nfragile leather greaves" in out[0],\
-           "item are not found on entrance room"
+def test_look(game, repl_data):
+    """testing _look for room description"""
+    assert "the beginning" in repl._evaluate("look", game, repl_data)[0]
 
 
-def test_take(run):
-    """testing _take the method takes all and specific item"""
-    out = run(dork.repl.repl, input_side_effect=["name", "take", ".rq"])
-    assert "You took all item. You took them well." in out[0],\
-           "item are not found on entrance room"
+def test_points():
+    """testing _points for: add, remove, and no points"""
+    game = types.Game()
+    result = game._points('_get_points')
+    assert result == 10, "points where not added"
+    result = game._points('_take')
+    assert result == 11, "points where not added"
+    result = game._points('_repl_error')
+    assert result == 0, "points where not added"
 
 
-def test_take_single(run):
-    """testing _take the method takes all and specific item"""
-    out = run(dork.repl.repl, input_side_effect=["name", "examine",
-                                                 "take", ".rq"])
-    assert "You took all item. You took them well" in out[0], \
-        "item are not found on entrance room"
+def test_get_points(game, repl_data):
+    """prints points"""
+    assert "you have:" in repl._evaluate("points", game, repl_data)[0]
+    game = types.Game()
+    game.points = 0
+    result = game._get_points()
+    assert "Booooooo! you suck.\nYou have 0 points." in result
+
+# def test_take_single(run):
+#     """testing _take the method takes all and specific item"""
+#     out = run(repl, input_side_effect=["name", "examine",
+#                                                  "take", ".rq"])
+#     assert "You took all item. You took them well" in out[0], \
+#         "item are not found on entrance room"
 
 
-def test_drop_item(run):
-    """testing _drop_item the method takes all and specific item"""
-    out = run(dork.repl.repl, input_side_effect=["name", "take",
-                                                 "drop", ".rq"])
-    assert "Oops, you can't hold all these items" in out[0],\
-           "item are not found on entrance room"
+# def test_drop_item(run):
+#     """testing _drop_item the method takes all and specific item"""
+#     out = run(repl, input_side_effect=["name", "take",
+#                                                  "drop", ".rq"])
+#     assert "Oops, you can't hold all these items" in out[0],\
+#            "item are not found on entrance room"
 
 
 def test_sword_can_swing(run):
@@ -227,26 +233,26 @@ def test_only_stat(run):
                      "use method failed for gold items"
 
 
-def test_runtime_items(run):
-    """Tests the functionality of items in runtime"""
-    out = run(dork.repl.repl, input_side_effect=["tester",
-                                                 "use sword", ".rq"])
-    assert "You don't have that item...\n" in out[0],\
-           "Failed to decline use on non-existant item"
+# def test_runtime_items(run):
+#     """Tests the functionality of items in runtime"""
+#     out = run(repl, input_side_effect=["tester",
+#                                        "use sword", ".rq"])
+#     assert "You don't have that item...\n" in out[0],\
+#            "Failed to decline use on non-existant item"
 
 
-def test_use_has_target_input(run):
-    """Testing that use takes an input"""
-    out = run(dork.repl.repl, input_side_effect=["tester",
-                                                 "use sword", ".rq"])
-    assert "You don't have that item...\n" in out[0],\
-           "Failed to decline use on non-existant item"
-    test_item = dork.types.Item()
-    test_item.make({"name": "sword",
-                    "description": "its made of foam",
-                    "type": "weapon"})
-    test_game = dork.types.Gamebuilder().build("test")
-    test_game.hero.inventory[test_item.name] = test_item
-    out = run(test_game._use_item, "sword", input_side_effect=["player"])
-    assert "You swing the sword at player" in out[0],\
-           "failed to contain a target argument"
+# def test_use_has_target_input(run):
+#     """Testing that use takes an input"""
+#     out = run(repl, input_side_effect=["tester",
+#                                        "use sword", ".rq"])
+#     assert "You don't have that item...\n" in out[0],\
+#            "Failed to decline use on non-existant item"
+#     test_item = types.Item()
+#     test_item.make({"name": "sword",
+#                     "description": "its made of foam",
+#                     "type": "weapon"})
+#     test_game = types.Gamebuilder().build("test")
+#     test_game.hero.inventory[test_item.name] = test_item
+#     out = run(test_game._use_item, "sword", input_side_effect=["player"])
+#     assert "You swing the sword at player" in out[0],\
+#            "failed to contain a target argument"

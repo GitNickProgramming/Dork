@@ -42,12 +42,14 @@ CMDS = {
     "inv": ["_inventory"],
     "inventory": ["_inventory"],
     "examine": ["_examine"],
+    "add": ["_take_item"],
     "grab": ["_take_item"],
     "take": ["_take_item"],
     "loot": ["_take_item"],
-    "use": ["_use_item"],
     "drop": ["_drop_item"],
+    "use": ["_use_item"],
     "activate": ["_use_item"],
+    "points": ["_get_points"],
 }
 
 
@@ -66,4 +68,5 @@ ERRS = {
     "u": ["_repl_error", "Sorry, I don't know that one."],
     "?": ["_repl_error", "Huh? Can you speak up?"],
     "no go": ["_repl_error", "You can't go that way"],
+    "which way": ["_repl_error", "Uh. Which way are you trying to go?"],
 }
