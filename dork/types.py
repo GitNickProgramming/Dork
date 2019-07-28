@@ -310,7 +310,7 @@ class Game:
 
     def _examine(self):
         return self.hero.location.get_items(
-            caller=self.hero.location.name, 
+            caller=self.hero.location.name,
             data=self.hero.location.data,
             verbose=self.verbose
         ), False
@@ -430,7 +430,6 @@ class Game:
         for key, val in data.items():
             out += "\n" + spc*2 + f"{key}: {val}"
         return out
-
 
     @staticmethod
     def _confirm():
