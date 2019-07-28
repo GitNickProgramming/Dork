@@ -278,7 +278,7 @@ class Gamebuilder:
     def build(cls, player_name):
         """Instantiate a game of Dork from dictionary
 
-        Extended Description
+        Creates an instance of a game from a dictionary of game data
 
         Args:
             data (dict): Saves the state of the game, player, and items
