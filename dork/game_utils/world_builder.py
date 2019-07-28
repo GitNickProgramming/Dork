@@ -1,7 +1,7 @@
 """Load an existing gameworld or begin anew"""
 
 from copy import deepcopy
-from random import choices, choice, randint, shuffle, randrange
+from random import choices, choice, randint, shuffle
 from operator import add
 import matplotlib.pyplot as plt
 from numpy import full as npf
