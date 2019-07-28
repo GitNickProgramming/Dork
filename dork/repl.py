@@ -83,8 +83,17 @@ def _evaluate(cmd, dork, repl_data):
 
 
 def repl():
-    """read evaluate print loop"""
+    """read evaluate print loop
 
+    Depending on the user's input prints an action, if input = .rq, quits game
+
+    Args:
+        output (str): If output is equal to new game, a new game is created
+
+    Returns:
+        output (str): returns a new game if equal to a new game, quit when .rq
+
+    """
     dork, repl_data = _new_game()
 
     while True:
