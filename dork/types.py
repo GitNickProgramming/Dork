@@ -624,8 +624,8 @@ class Game:
             if target in self.hero.location.players:
                 target_obj = self.hero.location.players[target]
                 return self.hero.inventory[item].use(target_obj, item), False
-            else:
-                return "Invalid target", False
+            
+            return "Invalid target", False
         return "You don't have that item...", False
 
     def _start_over(self):
@@ -643,8 +643,7 @@ class Game:
         if target in self.hero.location.players:
             npc = self.hero.location.players.get(target, "")
             return npc.talk(), False
-        else:
-            return "Who are you talking to?", False
+        return "Who are you talking to?", False
 
     @staticmethod
     def _update_room_inv_description(location):

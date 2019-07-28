@@ -238,7 +238,7 @@ def test_only_stat(mocker):
                        "type": 1})
         out = test_key.use(test_player, "empty thing")
         assert out == ("You find no use of this item"),\
-                    "use method failed for gold items"
+            "use method failed for gold items"
 
 
 def test_runtime_items(run):
@@ -287,10 +287,3 @@ def test_npc_can_be_damaged(player):
         "calm state failed to get hurt"
     out = test_player.damage()
     assert "UGH" in out, "hostile state failed to die"
-
-
-def test_talk_can_target_npc(run):
-    """Tracks ability of talk() to target npc's in-game"""
-    out = run(repl.repl, input_side_effect=\
-        ["mahboi", "w", "n", "e", "s", "talk mahboi", ".rq"])
-    assert "Hello" in out[0], "Failed to track player over move"
