@@ -76,14 +76,14 @@ class Item(Stats):
     def set_usable(self, new_use):
         """This method changes the use behavior,
         provide usable class as argument"""
-        uses = {"filler": NotUsable,
-                "weapon": Attackable,
-                "key": Openable,
-                "gold": Payable,
-                "magic items": Statable,
-                "jewelry": Statable,
-                "armor": Statable,
-                "magic consumables": Statable}
+        uses = {"filler ": NotUsable,
+                "weapon ": Attackable,
+                "key ": Openable,
+                "gold ": Payable,
+                "magic items ": Statable,
+                "jewelry ": Statable,
+                "armor ": Statable,
+                "magic consumables ": Statable}
         if new_use is None or new_use not in uses:
             self.usable = NotUsable
         else:
