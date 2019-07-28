@@ -623,8 +623,7 @@ class Game:
             target = input("What do you want to use it on? ")
             if target in self.hero.location.players:
                 target_obj = self.hero.location.players[target]
-                return self.hero.inventory[item].use(target_obj, item), False
-            
+                return self.hero.inventory[item].use(target_obj, item), False      
             return "Invalid target", False
         return "You don't have that item...", False
 
@@ -831,7 +830,6 @@ class PlayerFactory:
 
 class RoomFactory:
     """Generate rooms for a given maze"""
-
     #  N, S and E, W are backwards because numpy uses column-order
     moves = {
         "north": (1, 0), "south": (-1, 0),
@@ -841,7 +839,6 @@ class RoomFactory:
     @classmethod
     def build(cls, maze, rooms):
         """build a room"""
-
         cls.maze = maze
         cls.rooms = rooms
         cls.worldmap = {}
@@ -849,16 +846,13 @@ class RoomFactory:
 
     @classmethod
     def _make_rooms(cls):
-
         list_of_keys = factory_data.ROOMS
         shuffle(list_of_keys)
         list_of_adjtvs = factory_data.NAMES["adjectives"]
         shuffle(list_of_adjtvs)
         list_of_abstract = factory_data.NAMES["abstract"]
         shuffle(list_of_abstract)
-
         i = 0
-
         for room in cls.rooms:
             if i == 0:
                 x, y = room
@@ -895,18 +889,14 @@ class RoomFactory:
                     "players": {},
                     "inventory": {},
                 }
-
             for _ in range(randint(1, 7)):
                 new_item = ItemFactory.build()
                 new_room["inventory"][new_item.pop("name")] = new_item
-
             for _ in range(randint(0, 2)):
                 new_player = PlayerFactory.build(i, new_room)
                 new_room["players"][new_player.pop("name")] = new_player
-
             cls.worldmap[room] = new_room
             i += 1
-
         return cls._get_adj()
 
     @classmethod
@@ -925,17 +915,14 @@ class RoomFactory:
                         room["adjacent"][direction] = \
                             cls.worldmap[position]["number"]
                         searching = False
-
         for coord, room in deepcopy(cls.worldmap).items():
             new_room = cls.worldmap.pop(coord)
             cls.worldmap[new_room.pop("number")] = new_room
-
         return cls.worldmap
 
 
 class MazeFactory:
     """Generate a maze with rooms on intersections, corners, and dead-ends"""
-
     wall_color, path_color, room_color, player_color = (-2, 2, 1, 0)
     moves = factory_data.MOVES
     rules = factory_data.rules(wall_color, path_color)
@@ -943,7 +930,6 @@ class MazeFactory:
     @staticmethod
     def draw(maze):
         """display the maze"""
-
         x_dim, y_dim = len(maze[0])//2, len(maze)//2
         plt.figure(figsize=(x_dim, y_dim))
         plt.pcolormesh(maze, cmap=plt.cm.get_cmap("tab20b"))
