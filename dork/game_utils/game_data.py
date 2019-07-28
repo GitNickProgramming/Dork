@@ -29,6 +29,7 @@ MOVES = {
     "west": ["_move", "west"]
 }
 
+
 CMDS = {
     "go": MOVES,
     "move": MOVES,
@@ -41,11 +42,11 @@ CMDS = {
     "inv": ["_inventory"],
     "inventory": ["_inventory"],
     "examine": ["_examine"],
-    "add": ["_take"],
-    "grab": ["_take"],
-    "take": ["_take"],
-    "loot": ["_take"],
-    "drop": ["_drop"],
+    "add": ["_take_item"],
+    "grab": ["_take_item"],
+    "take": ["_take_item"],
+    "loot": ["_take_item"],
+    "drop": ["_drop_item"],
     "use": ["_use_item"],
     "activate": ["_use_item"],
     "points": ["_get_points"],

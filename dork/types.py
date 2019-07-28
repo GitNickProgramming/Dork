@@ -541,7 +541,7 @@ class Game:
         return "game saved successfully!", False
 
     # item_name defaults to None, so we take all items in room
-    def _take(self, item_name=None):
+    def _take_item(self, item_name=None):
         out = ""
         hero = self.hero
         room = hero.location
@@ -566,7 +566,7 @@ class Game:
 
         return out, False
 
-    def _drop(self, item_name=None):
+    def _drop_item(self, item_name=None):
         out = ""
         hero = self.hero
         room = hero.location
