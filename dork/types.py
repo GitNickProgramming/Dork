@@ -165,10 +165,10 @@ class Attackable(Usable):
 
     @staticmethod
     def use(target, name):
-        """Swing use method
-
-        Concrete use call for weapons"""
-        """This method is called by weapons to be attack.
+        """
+        Concrete use call for weapons
+        
+        This method is called by weapons to be attack.
         Changes state of target player by calling
         the target's damage method.
 
@@ -189,7 +189,6 @@ class NotUsable(Usable):
 
     @staticmethod
     def use(target, name):
-
         """Useless use method
 
         This method is called by filler items to be used
@@ -204,7 +203,6 @@ class NotUsable(Usable):
             blurb (str): returns "You find no use of this item"
 
         """
-
         return "You find no use of this item"
 
 
@@ -347,8 +345,8 @@ class Player(Holder):
         return out
 
     def next_state(self, action):
-        """simpler state change method"""
-        """This method updates players state based on name of method called
+        """Method that changes state of Player
+        This method updates players state based on name of method called
 
         Args:
             uses (str): passed as name action or method used on player
@@ -371,9 +369,9 @@ class Player(Holder):
 
     def damage(self):
         """damage method called by items to inflict
-        damage on players"""
-
-        """This method is by items and changes the
+        damage on players
+        
+        This method is by items and changes the
         state of the callee player and returns blurb associated.
 
         returns:
