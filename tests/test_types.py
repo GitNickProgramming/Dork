@@ -1,56 +1,32 @@
 # -*- coding: utf-8 -*-
-"""Basic tests for state and entity relationships in dork
-"""
-from tests.utils import is_a
+"""Basic tests for state and entity relationships in dork"""
+
 from dork import repl, types
 import dork.game_utils.factory_data as factory_data
-
 # pylint: disable=protected-access
 
 
-def test_confirm_method_yes(capsys, mocker):
+def test_confirm_method_blank(capsys, mocker, game):
     """confirm should do things"""
 
     mocked_input = mocker.patch('builtins.input')
-    mocked_input.side_effect = ["y", "tester"]
-    assert types.Game._confirm()
-    captured = capsys.readouterr()
-    assert "\n!!!WARNING!!! You will lose unsaved data!\n" in captured.out
-    assert mocked_input.call_count == 1
-
-
-def test_confirm_method_no(capsys, mocker):
-    """confirm should do things"""
-
-    mocked_input = mocker.patch('builtins.input')
-    mocked_input.side_effect = ["n"]
-    assert types.Game._confirm() is False
-    captured = capsys.readouterr()
-    assert "\n!!!WARNING!!! You will lose unsaved data!\n" in captured.out
-    assert mocked_input.call_count == 1
-
-
-def test_confirm_method_blank(capsys, mocker):
-    """confirm should do things"""
-
-    mocked_input = mocker.patch('builtins.input')
-    mocked_input.side_effect = ["afk", "    ", "y", "tester"]
-    types.Game._confirm()
+    mocked_input.side_effect = ["bumblebee", "y", "tester"]
+    game._confirm()
     captured = capsys.readouterr()
     assert "\n!!!WARNING!!! You will lose unsaved data!\n" in captured.out
     assert "That is not a valid response!" in captured.out
-    assert mocked_input.call_count == 3
+    assert mocked_input.call_count == 2
 
 
 def test_start_over_no(capsys, mocker, game):
     """confirm should do things"""
 
     mocked_input = mocker.patch('builtins.input')
-    mocked_input.side_effect = ["n", ".rq"]
+    mocked_input.side_effect = ["bumblebee", "n"]
     assert game._start_over() == ("Guess you changed your mind!", False)
     captured = capsys.readouterr()
     assert "\n!!!WARNING!!! You will lose unsaved data!\n" in captured.out
-    assert mocked_input.call_count == 1
+    assert mocked_input.call_count == 2
 
 
 def test_start_over_yes(capsys, mocker, game):
@@ -65,35 +41,21 @@ def test_start_over_yes(capsys, mocker, game):
     assert mocked_input.call_count == 1
 
 
-def test_player_location(game):
-    """testing the get and set of player location"""
-    is_a(game.hero.location, types.Room)
-
-
 def test_move_method(game, cardinals):
     """testing the move function for any map"""
 
     for direction in cardinals:
-        if getattr(game.hero.location, direction) is not None:
-            move_return = game._move(direction)
-            assert ("You have entered " +
-                    game.hero.location.description, False) == move_return
-        if not getattr(game.hero.location, direction):
-            move_return = game._move(direction)
-            assert (
-                f"You cannot go {direction} from here.", False) == move_return
-
-
-def test_factory_data():
-    """test factory data methods"""
-
-    assert isinstance(factory_data.rules(0, 0), list)
-    assert isinstance(factory_data.stats("magic"), dict)
+        assert game._move(direction) in [
+            ("You have entered " + game.hero.location.description, False),
+            (f"You cannot go {direction} from here.", False)
+        ]
 
 
 def test_mazefactory():
     """builds all game types"""
 
+    assert isinstance(factory_data.rules(0, 0), list)
+    assert isinstance(factory_data.stats("magic"), dict)
     assert isinstance(types.MazeFactory.build(), dict)
 
 
@@ -121,9 +83,9 @@ def test_player_has_none(mocker):
         "Failed to store items in inventory"
 
 
-def test_look(game, repl_data):
+def test_look(game):
     """testing _look for room description"""
-    assert "the beginning" in repl._evaluate("look", game, repl_data)[0]
+    assert "the beginning" in repl._evaluate("look", game)[0]
 
 
 def test_points():
@@ -137,27 +99,13 @@ def test_points():
     assert result == 0, "points where not added"
 
 
-def test_get_points(game, repl_data):
+def test_get_points(game):
     """prints points"""
-    assert "you have:" in repl._evaluate("points", game, repl_data)[0]
+    assert "you have:" in repl._evaluate("points", game)[0]
     game = types.Game()
     game.points = 0
     result = game._get_points()
     assert "Booooooo! you suck.\nYou have 0 points." in result
-
-
-def test_take_all(run):
-    """testing _take the method takes all items"""
-    out = run(repl.repl, input_side_effect=["name", "take", ".rq"])
-    assert "You took" in out[0], "No item was taken"
-
-
-def test_drop_all(run):
-    """testing _drop_item the method takes all items"""
-    out = run(repl.repl, input_side_effect=["name", "take",
-                                            "drop", ".rq"])
-    assert "You dropped" in out[0],\
-           "item are not found on entrance room"
 
 
 def test_sword_can_swing():
