@@ -10,7 +10,7 @@ zork but different
 Features
 --------
 
-* TODO
+* DANK MEMES
 
 Credits
 -------
