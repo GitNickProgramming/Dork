@@ -128,7 +128,7 @@ def test_key_can_open():
     test_door.name = "rock"
     test_key.make({"name": "test key",
                    "description": "jingly keys",
-                   "type": "key "})
+                   "type": "key"})
     test_key.set_usable(test_key.type)
     out = test_key.use(test_door, test_key.name)
     assert "You insert the test key into rock" in out,\
@@ -142,7 +142,7 @@ def test_potion_can_speed_up():
     test_player.name = "player"
     test_potion.make({"name": "test potion",
                       "description": "Looks like booze to me",
-                      "type": "magic items "})
+                      "type": "magic items"})
     test_potion.set_usable(test_potion.type)
     out = test_potion.use(test_player, test_potion.name)
     assert "The test potion takes effect on player" in out,\
@@ -156,7 +156,7 @@ def test_gold_can_pay():
     test_player.name = "player"
     test_key.make({"name": "bag 'o MOLTEN GOOOLD",
                    "description": "der bee gould een dem der bag",
-                   "type": "gold "})
+                   "type": "gold"})
     test_key.set_usable(test_key.type)
     out = test_key.use(test_player, test_key.name)
     assert "You use the bag 'o MOLTEN GOOOLD to pay player" in out,\
