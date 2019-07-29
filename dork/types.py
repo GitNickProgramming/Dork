@@ -113,14 +113,14 @@ class Item(Stats):
             uses (str): returns if item is usable or not
 
         """
-        uses = {"filler ": NotUsable,
-                "weapon ": Attackable,
-                "key ": Openable,
-                "gold ": Payable,
-                "magic items ": Statable,
-                "jewelry ": Statable,
-                "armor ": Statable,
-                "magic consumables ": Statable}
+        uses = {"filler": NotUsable,
+                "weapon": Attackable,
+                "key": Openable,
+                "gold": Payable,
+                "magic items": Statable,
+                "jewelry": Statable,
+                "armor": Statable,
+                "magic consumables": Statable}
         if new_use is None or new_use not in uses:
             self.usable = NotUsable
         else:
@@ -612,6 +612,8 @@ class Gamebuilder:
         for field, data in item.items():
             if field == "stats":
                 Gamebuilder._make_stats(new_item, data)
+            if field == "type":
+                new_item.set_usable(item["type"])
             else:
                 setattr(new_item, field, data)
         return new_item
