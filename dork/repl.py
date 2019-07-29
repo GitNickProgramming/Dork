@@ -1,8 +1,14 @@
 """This is the REPL which parses commands and passes them to a Game object."""
 
 from dork.game_utils import game_data
-from dork import types as dork_types
+from dork.types import Gamebuilder
 # pylint: disable=protected-access
+
+
+_CMDS = game_data.CMDS
+_MOVES = game_data.MOVES
+_META = game_data.META
+_ERRS = game_data.ERRS
 
 
 def _new_game(player_name=None):
@@ -23,17 +29,10 @@ def _new_game(player_name=None):
     if not player_name:
         player_name = input("What's your name, stranger? ")
 
-    dork = dork_types.Gamebuilder.build(player_name)
+    dork = Gamebuilder.build(player_name)
     print(f"\nGreetings, {dork.hero.name}! " + game_data.TITLE + "\n")
 
-    repl_data = (
-        game_data.CMDS,
-        game_data.MOVES,
-        game_data.META,
-        game_data.ERRS
-    )
-
-    return dork, repl_data
+    return dork
 
 
 def _read():
@@ -42,7 +41,7 @@ def _read():
     return str.casefold(input("> "))
 
 
-def _evaluate(cmd, dork, repl_data):
+def _evaluate(cmd, dork):
     """Parse a cmd and run it
 
     Evaluates the input of the user into an action and runs it
@@ -56,17 +55,16 @@ def _evaluate(cmd, dork, repl_data):
         arg (str): returns the argument based on the user's input
 
     """
-    cmds, moves, meta, errs = repl_data
     cmd = cmd.strip().split(" ", 1) if (cmd and not cmd.isspace()) else None
     if cmd:
         verb, *noun = cmd
         noun = noun[0] if noun else None
-        call = cmds.get(verb, moves.get(verb, meta.get(verb, errs["u"])))
+        call = _CMDS.get(verb, _MOVES.get(verb, _META.get(verb, _ERRS["u"])))
         if isinstance(call, dict):
-            method, arg = call.get(noun, errs["no go"])
-        elif call not in errs.values():
+            method, arg = call.get(noun, _ERRS["which way"])
+        elif call not in _ERRS.values():
             if noun and len(call) > 1:
-                method, arg = errs["which way"]
+                method, arg = _ERRS["which way"]
             elif noun and len(call) == 1:
                 method, arg = call[0], noun
             elif not noun and len(call) > 1:
@@ -76,7 +74,7 @@ def _evaluate(cmd, dork, repl_data):
         else:
             method, arg = call
     else:
-        call = errs["?"]
+        call = _ERRS["?"]
         method, arg = call
     dork._points(call)
     return dork(method, arg)
@@ -94,18 +92,12 @@ def repl():
         output (str): returns a new game if equal to a new game, quit when .rq
 
     """
-    dork, repl_data = _new_game()
+    dork = _new_game()
+    should_exit = False
 
-    while True:
-        output, should_exit = _evaluate(
-            cmd=_read(), dork=dork, repl_data=repl_data
-        )
+    while not should_exit:
+        output, should_exit = _evaluate(cmd=_read(), dork=dork)
         if output == "new game":
-            dork, repl_data = _new_game()
+            dork = _new_game()
         else:
             print(output + "\n")
-
-        if should_exit:
-            break
-
-    print("shutting down...")
