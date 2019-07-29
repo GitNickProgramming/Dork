@@ -23,7 +23,19 @@ class Holder(Grandparent):
         self.inventory = dict
 
     def get_items(self, caller, data, verbose):
-        """Print all inventory items"""
+        """Print all inventory items
+
+        Displays all items held by self<player instance> or not. Verbose
+        print displays more information about inventory.
+
+        Args:
+            out (str): Inventory
+            verbose (str): Displays detailed inventory
+
+        returns:
+            verbose (str): Returns a formated/detailed inventory of player.
+
+        """
 
         if self.inventory:
             out = f"\n{caller} inventory:"
@@ -62,6 +74,21 @@ class Item(Stats):
 
     def make(self, item):
         """Make an item
+
+        Creates the name, description, and type of item in game world
+
+        Args:
+            name (str): Generates a random item name
+            description (str): Generates a random item description
+            type (str): Generates a definition what type of item is generated
+            usable(str): Is the item usable or not
+
+        returns:
+            name (str): returns the item name
+            description (str): returns item description
+            type (str): returns the type of item
+            usable (str): returns the usability of item
+
         """
         self.name = item.get("name", "")
         self.description = item.get("description", "")
@@ -75,7 +102,17 @@ class Item(Stats):
 
     def set_usable(self, new_use):
         """This method changes the use behavior,
-        provide usable class as argument"""
+        provide usable class as argument
+
+        Defines whether an item's type is usable or not
+
+        Args:
+            uses (dict): checks if item's type is usable or not
+
+        returns:
+            uses (str): returns if item is usable or not
+
+        """
         uses = {"filler ": NotUsable,
                 "weapon ": Attackable,
                 "key ": Openable,
@@ -195,7 +232,17 @@ class Player(Holder):
         self.instances.append(self)
 
     def move(self, cardinal, maze):
-        """walk this way"""
+        """walk this way
+
+        Moves the player from one location to another in the game/maze
+
+        Args:
+            Out (str): describes where the player is located
+
+        returns:
+            out (str): returns if the player can move to next location
+
+        """
 
         adjacent_room = getattr(self.location, cardinal)
 
@@ -467,7 +514,19 @@ class Gamebuilder:
 
     @staticmethod
     def build(player_name):
-        """Instantiate a game of Dork from dictionary"""
+        """Instantiate a game of Dork from dictionary
+
+        Creates an instance of a game from a dictionary of game data
+
+        Args:
+            data (dict): Saves the state of the game, player, and items
+            game (): Class instance of the game
+
+        returns:
+            data (dict): returns the state of the current game
+            game (): returns the updated location, player, and items
+
+        """
 
         data = Gamebuilder.load_game(player_name)
 
@@ -660,7 +719,17 @@ class Gamebuilder:
 
     @staticmethod
     def load_game(player):
-        """Load the save file associated with player"""
+        """Load the save file associated with player
+
+        Loads a saved yaml file based on what the user named their player
+
+        Args:
+            data (dict): dictionary of the game state from yaml file
+
+        returns:
+            data (dict): returns the game state based upon the player's name
+
+        """
 
         save_files = []
         with os.scandir("./dork/saves") as saves:
@@ -676,7 +745,19 @@ class Gamebuilder:
 
     @staticmethod
     def save_game(player, data):
-        """Save a game instance to a yaml file if it exists, else create one"""
+        """Save a game instance to a yaml file if it exists, else create one
+
+        Gets data on game state from saved yaml file
+
+        Args:
+            data (dict): dictionary of game state
+            player (str): string of the player's name
+
+        returns:
+            data (dict): returns the dictionary state of the game from yaml
+            player (str): returns the yaml file depending on the player's name
+
+        """
 
         data = {
             "rooms": data["rooms"],

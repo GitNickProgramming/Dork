@@ -28,7 +28,19 @@ class ItemFactory:
 
     @staticmethod
     def build(weights=None):
-        """generate a random item"""
+        """generate a random item
+
+        Creates an item name, type, and location into game world
+
+        Args:
+            item_name (str): name of randomly generated item
+            item_type (str): tpye of randomly generated item
+
+        returns:
+            item_name (str): returns the name of the randomly generated item
+            item_type (str): returns the type of the randomly generated item
+
+        """
 
         weights = {
             "player": [8, 0, 0, 7, 5, 10]
@@ -104,8 +116,17 @@ class PlayerFactory:
 
     @staticmethod
     def build(i, room):
-        """Make a player, give them items"""
+        """Make a player, give them items
 
+        Extended Description
+
+        Args:
+            arg1 (str): description
+
+        returns:
+            arg1 (str): description
+
+        """
         new_player = {
             "name": f"player {i}",
             "description": f"player {i} description",
@@ -136,7 +157,17 @@ class RoomFactory:
 
     @staticmethod
     def build(maze, rooms):
-        """build a room"""
+        """build a room
+
+        Creates an instance of a room
+
+        Args:
+            _make_rooms (): creates an instance of a room
+
+        returns:
+            _make_rooms (): returns an instance of a room
+
+        """
 
         RoomFactory.maze = maze
         RoomFactory.rooms = rooms
