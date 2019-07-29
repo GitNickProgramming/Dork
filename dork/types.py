@@ -110,10 +110,6 @@ class Item(Stats):
 
         Args:
             new_use (dict): checks if item's type is usable or not
-
-        returns:
-            nothing
-
         """
         uses = {"filler": NotUsable,
                 "weapon": Attackable,
@@ -141,18 +137,16 @@ class Item(Stats):
 
         returns:
             blurb (str): returns output for repl from specific usage
-
         """
         return self.usable.use(target, name)
 
 
 class Usable(ABC):
     """Abstract class of use behavior in items use method"""
-
+    """Strategy pattern inspired by refactoring.guru"""
     @staticmethod
     @abstractmethod
     def use(target, name):
-        """Strategy pattern inspired by refactoring.guru"""
 
         """use method defaults to doing nothing
 
@@ -163,9 +157,7 @@ class Usable(ABC):
             target (Player): passes Player as target to
             be used on children
             name (str): passed as name of item used in children
-
-        returns:
-            nothing"""
+            """
 
 
 class Attackable(Usable):
@@ -360,10 +352,6 @@ class Player(Holder):
 
         Args:
             uses (str): passed as name action or method used on player
-
-        returns:
-            nothing
-
         """
         self.state = self.states[action][self.state]
 
@@ -372,9 +360,6 @@ class Player(Holder):
 
         """This method is called by user to produce
         a text blurb based on player's state
-
-        Args:
-            None
 
         returns:
             uses (str): returns applicable blurb
@@ -390,9 +375,6 @@ class Player(Holder):
 
         """This method is by items and changes the
         state of the callee player and returns blurb associated.
-
-        Args:
-            None
 
         returns:
             uses (str): returns blurb from hitting player
