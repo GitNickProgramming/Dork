@@ -203,7 +203,7 @@ class RoomFactory:
                 x, y = room
                 new_room = {
                     "number": f"room {i}",
-                    "name": rand,
+                    "name": list_of_adjtvs[i]+ rand + list_of_abstract[i],
                     "description": "The " + list_of_adjtvs[i] + rand +
                                    list_of_abstract[i],
                     "coordinates": [x, y],
