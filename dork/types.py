@@ -610,7 +610,6 @@ class Gamebuilder:
 
     @staticmethod
     def _make_player(player):
-        print(Game._verbose_print(player))
         new_player = Gamebuilder._instantiate(Player, **player)
         for field, data in player.items():
             if isinstance(data, dict):
