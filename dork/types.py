@@ -296,6 +296,20 @@ class Room(Adjacent, Coord, Holder):
     def _new_instance(self):
         self.instances.append(self)
 
+    def get_players(self, data, verbose):
+        """display a printout of the players present in this room"""
+
+        if self.players:
+            out = f"\nplayers:"
+        else:
+            out = f"There's nobody here."
+
+        for name, player in data["players"].items():
+            out += "\n    " + name
+            if verbose:
+                out += Game._verbose_print(player)
+        return out
+
 
 class Game:
     """An instance of Dork"""
@@ -360,6 +374,9 @@ class Game:
             caller=self.hero.location.name,
             data=self.hero.location.data,
             verbose=self.verbose
+        ) + self.hero.location.get_players(
+            verbose=self.verbose,
+            data=self.hero.location.data
         ), False
 
     def _inventory(self):
@@ -569,10 +586,8 @@ class Gamebuilder:
     def _make_rooms(rooms):
 
         factories = {
-            "adjacent": Gamebuilder._make_adjacent,
             "inventory": Gamebuilder._make_item,
             "players": Gamebuilder._make_player,
-            "stats": Gamebuilder._make_stats,
         }
 
         for name, room in rooms.items():

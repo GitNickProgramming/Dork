@@ -233,7 +233,7 @@ class RoomFactory:
 
             for _ in range(randint(0, 2)):
                 new_player = PlayerFactory.build(i, new_room)
-                new_room["players"][new_player.pop("name")] = new_player
+                new_room["players"][new_player["name"]] = new_player
 
             RoomFactory.worldmap[room] = new_room
             i += 1
