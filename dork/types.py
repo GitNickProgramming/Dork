@@ -569,10 +569,8 @@ class Gamebuilder:
     def _make_rooms(rooms):
 
         factories = {
-            "adjacent": Gamebuilder._make_adjacent,
             "inventory": Gamebuilder._make_item,
             "players": Gamebuilder._make_player,
-            "stats": Gamebuilder._make_stats,
         }
 
         for name, room in rooms.items():
@@ -595,6 +593,7 @@ class Gamebuilder:
 
     @staticmethod
     def _make_player(player):
+        print(Game._verbose_print(player))
         new_player = Gamebuilder._instantiate(Player, **player)
         for field, data in player.items():
             if isinstance(data, dict):
