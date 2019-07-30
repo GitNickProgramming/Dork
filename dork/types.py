@@ -481,7 +481,7 @@ class Game:
 
     def _inventory(self):
         return self.hero.get_items(
-            caller=self.hero,
+            caller=self.hero.name,
             data=self.hero.data,
             verbose=self.verbose), False
 
