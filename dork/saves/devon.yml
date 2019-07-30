@@ -75,33 +75,33 @@ maze:
     - -2
     - 1
     - 2
-    - 1
-    - -2
--   - -2
-    - -2
-    - -2
-    - -2
-    - -2
-    - 2
-    - -2
-    - 2
-    - -2
-    - -2
-    - -2
-    - 2
-    - -2
--   - -2
-    - 1
-    - 2
-    - 2
-    - 2
-    - 1
-    - -2
-    - 1
-    - 2
-    - 1
-    - -2
     - 0
+    - -2
+-   - -2
+    - -2
+    - -2
+    - -2
+    - -2
+    - 2
+    - -2
+    - 2
+    - -2
+    - -2
+    - -2
+    - 2
+    - -2
+-   - -2
+    - 1
+    - 2
+    - 2
+    - 2
+    - 1
+    - -2
+    - 1
+    - 2
+    - 1
+    - -2
+    - 1
     - -2
 -   - -2
     - 2
@@ -249,22 +249,6 @@ rooms:
                         type: magic items
                 location: Entrance
                 name: Bender Osborn
-            devon:
-                description: the hero of dork!
-                equipped: []
-                inventory:
-                    putrid mace of lightning:
-                        description: ''
-                        stats:
-                            amount: 1
-                            attack: 11
-                            equipable: true
-                            luck: 6
-                            strength: null
-                            weight: 10
-                        type: weapon
-                location: Entrance
-                name: devon
     room 1:
         adjacent:
             east: null
@@ -296,16 +280,6 @@ rooms:
                     strength: null
                     weight: 5
                 type: filler
-            trollbringer:
-                description: ''
-                stats:
-                    amount: 1
-                    attack: 90
-                    equipable: true
-                    luck: 70
-                    strength: null
-                    weight: 15
-                type: legendary longbow
             worn bronze longbow:
                 description: ''
                 stats:
@@ -346,6 +320,32 @@ rooms:
                         type: legendary crossbow
                 location: repulsive Building of contempt
                 name: Bumble Bee Edmund
+            devon:
+                description: the hero of dork!
+                equipped: []
+                inventory:
+                    putrid mace of lightning:
+                        description: ''
+                        stats:
+                            amount: 1
+                            attack: 11
+                            equipable: true
+                            luck: 6
+                            strength: null
+                            weight: 10
+                        type: weapon
+                    trollbringer:
+                        description: ''
+                        stats:
+                            amount: 1
+                            attack: 90
+                            equipable: true
+                            luck: 70
+                            strength: null
+                            weight: 15
+                        type: legendary longbow
+                location: Entrance
+                name: devon
     room 10:
         adjacent:
             east: null
