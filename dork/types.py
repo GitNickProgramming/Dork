@@ -167,7 +167,7 @@ class Attackable(Usable):
     def use(target, name):
         """
         Concrete use call for weapons
-    
+
         This method is called by weapons to be attack.
         Changes state of target player by calling
         the target's damage method.
