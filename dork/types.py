@@ -396,18 +396,19 @@ class Room(Adjacent, Coord, Holder):
     def _new_instance(self):
         self.instances.append(self)
 
-    def get_players(self, data, verbose):
+    def get_players(self, hero, data, verbose):
         """display a printout of the players present in this room"""
 
-        if self.players:
-            out = f"\nplayers:"
+        if len(self.players) > 1:
+            out = f"\n\nplayers:"
+            for name, player in data["players"].items():
+                if name != hero:
+                    out += "\n    " + name
+                    if verbose:
+                        out += Game._verbose_print(player)
         else:
-            out = f"There's nobody here."
+            out = f"\n\nThere's nobody else here."
 
-        for name, player in data["players"].items():
-            out += "\n    " + name
-            if verbose:
-                out += Game._verbose_print(player)
         return out
 
 
@@ -475,6 +476,7 @@ class Game:
             data=self.hero.location.data,
             verbose=self.verbose
         ) + self.hero.location.get_players(
+            hero=self.hero.name,
             verbose=self.verbose,
             data=self.hero.location.data
         ), False
@@ -855,8 +857,9 @@ class Gamebuilder:
         save_files = []
         with os.scandir("./dork/saves") as saves:
             for entry in saves:
-                save_files.append(entry.name.strip(".yml"))
-        if player in save_files:
+                save_files.append(entry.name)
+        if player + ".yml" in save_files:
+            print(f"loading {player}'s save file...")
             file_path = f"./dork/saves/{player}.yml"
             with open(file_path) as file:
                 data = yaml.safe_load(file.read())

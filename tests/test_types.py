@@ -235,3 +235,25 @@ def test_npc_can_be_damaged(player):
         "calm state failed to get hurt"
     out = test_player.damage()
     assert "UGH" in out, "hostile state failed to die"
+
+
+def test_use_item_targeting(run):
+    """testing the use function for all inputs"""
+
+    out = run(repl.repl, input_side_effect=["test",
+                                            "use sword", "aligator",
+                                            "use sword", "test",
+                                            "use sword", "TEST",
+                                            ".rq"])
+    assert "\nInvalid target\n" in out[0]
+    assert "You find no use of this item" in out[0]
+
+
+def test_talk_load(run):
+    """testing the use function for all inputs"""
+
+    out = run(repl.repl, input_side_effect=["test",
+                                            "talk test", "talk wawawa",
+                                            ".rq"])
+    assert "Hello" in out[0]
+    assert "Who are you talking to?" in out[0]
