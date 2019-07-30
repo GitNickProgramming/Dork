@@ -253,3 +253,31 @@ def test_use_not_in_uses():
     test_item.set_usable(test_item.type)
     assert test_item.usable == types.NotUsable,\
         "Failed to set NotUsable on unknown type item"
+
+
+def test_use_item_targeting(run):
+    """testing the use function for all inputs"""
+
+    out = run(repl.repl, input_side_effect=["test",
+                                            "use sword", "npc",
+                                            "use sword", "NPC",
+                                            "use sword", "",
+                                            ".rq"])
+    assert "Ouch..Your gonna get it!" in out[0]
+    assert "You swing the sword at npc" in out[0]
+    assert "UGH" in out[0]
+    assert "You dealt a death blow" in out[0]
+    assert "Invalid target" in out[0]
+
+
+def test_talk_load(run):
+    """testing the use function for all inputs"""
+
+    out = run(repl.repl, input_side_effect=["test",
+                                            "talk test", "talk",
+                                            "use sword", "test",
+                                            "talk test",
+                                            ".rq"])
+    assert "Hello" in out[0]
+    assert "Who are you talking to?" in out[0]
+    assert "I guess you are ok...I'll calm down" in out[0]
