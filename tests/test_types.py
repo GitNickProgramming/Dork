@@ -240,7 +240,7 @@ def test_npc_can_be_damaged(player):
 def test_use_item_usages(run):
     """testing the use function for all inputs"""
 
-    out = run(repl.repl, input_side_effect=["TESTER PRIME",
+    out = run(repl.repl, input_side_effect=["test",
                                             "use sword", "aligator",
                                         #     "use sword", "TESTER PRIME",
                                         #     "use sword", "tester prime",
