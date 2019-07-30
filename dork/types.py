@@ -857,9 +857,10 @@ class Gamebuilder:
         save_files = []
         with os.scandir("./dork/saves") as saves:
             for entry in saves:
-                save_files.append(entry.name.strip(".yml"))
-        if player in save_files:
+                save_files.append(entry.name)
+        if player + ".yml" in save_files:
             file_path = f"./dork/saves/{player}.yml"
+            print(f"loading {player}'s save file...")
             with open(file_path) as file:
                 data = yaml.safe_load(file.read())
         else:
