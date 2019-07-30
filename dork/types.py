@@ -545,13 +545,13 @@ class Game:
 
     def _use_item(self, item="Nothing"):
         if item in self.hero.inventory.keys():
-            target = input("What do you want to use it on? ")
-            if target in self.hero.location.players:
-                target_obj = self.hero.location.players[target]
-                return self.hero.inventory[item].use(target_obj, item), False
+            target = str.casefold(input("What do you want to use it on? "))
+            for player in self.hero.location.players:
+                if str.casefold(player) == target:
+                    target_obj = player
+                    return self.hero.inventory[item].use(target_obj, item), False
             return "Invalid target", False
         return "You don't have that item...", False
-
     def _start_over(self):
         if self._confirm():
             out = "new game"
