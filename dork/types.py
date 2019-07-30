@@ -294,8 +294,7 @@ class Player(Holder):
               "Hostile": {"talk": "I guess you are ok...I'll calm down",
                           "damage": "UGH\nYou dealt a death blow"},
               "Dead": {"talk": "That person is dead...blab away",
-                       "damage": """You monster,
-                        stop hitting that dead person!"""}}
+                       "damage": "You monster, stop hitting the dead!"}}
     instances = []
 
     def __init__(self):
