@@ -235,3 +235,8 @@ def test_npc_can_be_damaged(player):
         "calm state failed to get hurt"
     out = test_player.damage()
     assert "UGH" in out, "hostile state failed to die"
+
+def test_talking_random_players(run):
+    """To figure out what da hell this is"""
+    out = run(repl.repl, input_side_effect=["dave", "n", "w", "e", "s", "examine", "talk dave", ".rq"])
+    assert "Hello" in out[0], "failed to talk in other room"

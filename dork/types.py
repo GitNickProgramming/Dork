@@ -564,9 +564,11 @@ class Game:
             self.data["rooms"][name] = room.data
 
     def _talk(self, target="nobody"):
-        if target in self.hero.location.players:
-            npc = self.hero.location.players.get(target, "")
-            return npc.talk(), False
+        if target.casefold() == self.hero.name.casefold():
+            return self.hero.talk(), False
+        if target.title() in self.hero.location.players:
+            target_player = self.hero.location.players[target.title()]
+            return target_player.talk(), False
         return "Who are you talking to?", False
 
     @staticmethod
