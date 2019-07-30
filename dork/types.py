@@ -179,8 +179,8 @@ class Attackable(Usable):
             blurb (str): returns that player swings weapon at target
 
         """
-        target.damage()
-        return "You swing the " + name + " at " + target.name
+        out = target.damage() + "\n"
+        return out + "You swing the " + name + " at " + target.name
 
 
 class NotUsable(Usable):
