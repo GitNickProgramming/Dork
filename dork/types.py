@@ -101,17 +101,15 @@ class Item(Stats):
             self.usable = NotUsable
 
     def set_usable(self, new_use):
-        """This method changes the use behavior,
+        """method that sets usable on runtime
+
+        This method changes the use behavior,
         provide usable class as argument
 
         Defines whether an item's type is usable or not
 
         Args:
-            uses (dict): checks if item's type is usable or not
-
-        returns:
-            uses (str): returns if item is usable or not
-
+            new_use (dict): checks if item's type is usable or not
         """
         uses = {"filler": NotUsable,
                 "weapon": Attackable,
@@ -127,18 +125,38 @@ class Item(Stats):
             self.usable = uses[new_use]
 
     def use(self, target, name):
-        """Strategy pattern call"""
+        """Strategy pattern call
+
+        This method is called by items to be used
+
+        Calls its own behavior class called a Usable
+
+        Args:
+            target (Player): passes Player as target to be used on
+            name (str): passed as name of item used
+
+        returns:
+            blurb (str): returns output for repl from specific usage
+        """
         return self.usable.use(target, name)
 
 
 class Usable(ABC):
-    """Abstract class of use behavior in items use method"""
-
+    """Strategy pattern inspired by refactoring.guru"""
     @staticmethod
     @abstractmethod
     def use(target, name):
-        """Strategy pattern inspired by refactoring.guru
-        use method defaults to doing nothing"""
+
+        """use method defaults to doing nothing
+
+        This method is the parent method inherited by
+         all behavior classes' uses
+
+        Args:
+            target (Player): passes Player as target to
+            be used on children
+            name (str): passed as name of item used in children
+            """
 
 
 class Attackable(Usable):
@@ -146,9 +164,23 @@ class Attackable(Usable):
 
     @staticmethod
     def use(target, name):
-        """Swing use method"""
-        target.damage()
-        return "You swing the " + name + " at " + target.name
+        """
+        Concrete use call for weapons
+
+        This method is called by weapons to be attack.
+        Changes state of target player by calling
+        the target's damage method.
+
+        Args:
+            target (Player): passes Player as target to attack
+            name (str): passed as name of item used
+
+        returns:
+            blurb (str): returns that player swings weapon at target
+
+        """
+        out = target.damage() + "\n"
+        return out + "You swing the " + name + " at " + target.name
 
 
 class NotUsable(Usable):
@@ -156,7 +188,20 @@ class NotUsable(Usable):
 
     @staticmethod
     def use(target, name):
-        """Useless use method"""
+        """Useless use method
+
+        This method is called by filler items to be used
+
+        Concrete unusable item class use method
+
+        Args:
+            target (Player): passes Player as target to be used on
+            name (str): passed as name of item used
+
+        returns:
+            blurb (str): returns "You find no use of this item"
+
+        """
         return "You find no use of this item"
 
 
@@ -165,7 +210,19 @@ class Openable(Usable):
 
     @staticmethod
     def use(target, name):
-        """Opens object targeted if possible"""
+        """Opens object targeted if possible
+
+        This method is called by key items to be used
+
+
+        Args:
+            target (Player): passes Player as target to be used on
+            name (str): passed as name of item used
+
+        returns:
+            blurbs (str): returns item has been inserted
+
+        """
         return "You insert the " + name + " into " + target.name
 
 
@@ -174,7 +231,18 @@ class Payable(Usable):
 
     @staticmethod
     def use(target, name):
-        """Gold use method"""
+        """Gold use method
+        This method is called by gold items to be used
+
+
+        Args:
+            target (Player): passes Player as target to be used on
+            name (str): passed as name of item used
+
+        returns:
+            blurb (str): returns that you pay with item
+
+        """
         return "You use the " + name + " to pay " + target.name
 
 
@@ -183,7 +251,18 @@ class Statable(Usable):
 
     @staticmethod
     def use(target, name):
-        """Stat change use method"""
+        """Stat change use method
+
+        This method is called by items to be used
+
+        Args:
+            target (Player): passes Player as target to be used on
+            name (str): passed as name of item used
+
+        returns:
+            blurb (str): states that item took effect
+
+        """
         return "The " + name + " takes effect on " + target.name
 
 
@@ -215,8 +294,7 @@ class Player(Holder):
               "Hostile": {"talk": "I guess you are ok...I'll calm down",
                           "damage": "UGH\nYou dealt a death blow"},
               "Dead": {"talk": "That person is dead...blab away",
-                       "damage": """You monster,
-                        stop hitting that dead person!"""}}
+                       "damage": "You monster, stop hitting the dead!"}}
     instances = []
 
     def __init__(self):
@@ -264,17 +342,39 @@ class Player(Holder):
         return out
 
     def next_state(self, action):
-        """simpler state change method"""
+        """Method that changes state of Player
+        This method updates players state based on name of method called
+
+        Args:
+            uses (str): passed as name action or method used on player
+        """
         self.state = self.states[action][self.state]
 
     def talk(self):
-        """Talk method called by players"""
+        """Talk method called by players
+
+        This method is called by user to produce
+        a text blurb based on player's state
+
+        returns:
+            uses (str): returns applicable blurb
+
+        """
         out = (self.blurbs[self.state]["talk"])
         self.next_state("talk")
         return out
 
     def damage(self):
-        """attack method called by items"""
+        """damage method called by items to inflict
+        damage on players
+
+        This method is by items and changes the
+        state of the callee player and returns blurb associated.
+
+        returns:
+            uses (str): returns blurb from hitting player
+
+        """
         out = (self.blurbs[self.state]["damage"])
         self.next_state("damage")
         return out
@@ -383,7 +483,7 @@ class Game:
 
     def _inventory(self):
         return self.hero.get_items(
-            caller=self.hero,
+            caller=self.hero.name,
             data=self.hero.data,
             verbose=self.verbose), False
 
@@ -446,10 +546,16 @@ class Game:
 
     def _use_item(self, item="Nothing"):
         if item in self.hero.inventory.keys():
-            target = input("What do you want to use it on? ")
-            if target in self.hero.location.players:
-                target_obj = self.hero.location.players[target]
-                return self.hero.inventory[item].use(target_obj, item), False
+            target = str.casefold(input("What do you want to use it on? "))
+            for player in self.hero.location.players:
+                if player == target.title():
+                    target_obj = self.hero.location.players[target.title()]
+                    return self.hero.inventory[item].use(target_obj,
+                                                         item), False
+                if player == target:
+                    target_obj = self.hero.location.players[target]
+                    return self.hero.inventory[item].use(target_obj,
+                                                         item), False
             return "Invalid target", False
         return "You don't have that item...", False
 
@@ -465,9 +571,11 @@ class Game:
             self.data["rooms"][name] = room.data
 
     def _talk(self, target="nobody"):
-        if target in self.hero.location.players:
-            npc = self.hero.location.players.get(target, "")
-            return npc.talk(), False
+        if target.casefold() == self.hero.name.casefold():
+            return self.hero.talk(), False
+        if target.title() in self.hero.location.players:
+            target_player = self.hero.location.players[target.title()]
+            return target_player.talk(), False
         return "Who are you talking to?", False
 
     @staticmethod
