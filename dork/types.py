@@ -119,7 +119,11 @@ class Item(Stats):
                 "jewelry": Statable,
                 "armor": Statable,
                 "magic consumables": Statable}
-        if new_use is None or new_use not in uses:
+        if not isinstance(new_use, str):
+            self.usable = NotUsable
+        elif "legendary" in new_use:
+            self.usable = Attackable
+        elif new_use not in uses:
             self.usable = NotUsable
         else:
             self.usable = uses[new_use]
