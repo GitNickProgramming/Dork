@@ -235,3 +235,21 @@ def test_npc_can_be_damaged(player):
         "calm state failed to get hurt"
     out = test_player.damage()
     assert "UGH" in out, "hostile state failed to die"
+
+
+def test_legendary_items():
+    """Makes sure legendary items are attackable"""
+    test_item = types.Item()
+    test_item.type = "legendary bacon"
+    test_item.set_usable(test_item.type)
+    assert test_item.usable == types.Attackable,\
+        "legendary item failed to be attackable"
+
+
+def test_use_not_in_uses():
+    """Checks if types unrecognized are unusable"""
+    test_item = types.Item()
+    test_item.type = "yargle has come to bargle"
+    test_item.set_usable(test_item.type)
+    assert test_item.usable == types.NotUsable,\
+        "Failed to set NotUsable on unknown type item"
