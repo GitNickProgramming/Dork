@@ -142,7 +142,6 @@ class Item(Stats):
 
 
 class Usable(ABC):
-    """Abstract class of use behavior in items use method"""
     """Strategy pattern inspired by refactoring.guru"""
     @staticmethod
     @abstractmethod
@@ -353,9 +352,9 @@ class Player(Holder):
         self.state = self.states[action][self.state]
 
     def talk(self):
-        """Talk method called by players"""
+        """Talk method called by players
 
-        """This method is called by user to produce
+        This method is called by user to produce
         a text blurb based on player's state
 
         returns:
