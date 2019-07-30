@@ -237,23 +237,19 @@ def test_npc_can_be_damaged(player):
     assert "UGH" in out, "hostile state failed to die"
 
 
-def test_use_item_targeting(run):
-    """testing the use function for all inputs"""
-
-    out = run(repl.repl, input_side_effect=["test",
-                                            "use sword", "aligator",
-                                            "use sword", "test",
-                                            "use sword", "TEST",
-                                            ".rq"])
-    assert "\nInvalid target\n" in out[0]
-    assert "You find no use of this item" in out[0]
+def test_legendary_items():
+    """Makes sure legendary items are attackable"""
+    test_item = types.Item()
+    test_item.type = "legendary bacon"
+    test_item.set_usable(test_item.type)
+    assert test_item.usable == types.Attackable,\
+        "legendary item failed to be attackable"
 
 
-def test_talk_load(run):
-    """testing the use function for all inputs"""
-
-    out = run(repl.repl, input_side_effect=["test",
-                                            "talk test", "talk wawawa",
-                                            ".rq"])
-    assert "Hello" in out[0]
-    assert "Who are you talking to?" in out[0]
+def test_use_not_in_uses():
+    """Checks if types unrecognized are unusable"""
+    test_item = types.Item()
+    test_item.type = "yargle has come to bargle"
+    test_item.set_usable(test_item.type)
+    assert test_item.usable == types.NotUsable,\
+        "Failed to set NotUsable on unknown type item"

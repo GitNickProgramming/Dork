@@ -119,7 +119,11 @@ class Item(Stats):
                 "jewelry": Statable,
                 "armor": Statable,
                 "magic consumables": Statable}
-        if new_use is None or new_use not in uses:
+        if not isinstance(new_use, str):
+            self.usable = NotUsable
+        elif "legendary" in new_use:
+            self.usable = Attackable
+        elif new_use not in uses:
             self.usable = NotUsable
         else:
             self.usable = uses[new_use]
@@ -146,7 +150,6 @@ class Usable(ABC):
     @staticmethod
     @abstractmethod
     def use(target, name):
-
         """use method defaults to doing nothing
 
         This method is the parent method inherited by
@@ -725,7 +728,7 @@ class Gamebuilder:
             if isinstance(data, dict):
                 inventory = getattr(new_player, field)
                 for sub in data:
-                    inventory[sub] = Gamebuilder._make_item(data)
+                    inventory[sub] = Gamebuilder._make_item(data[sub])
             else:
                 setattr(new_player, field, data)
         new_player._new_instance()
@@ -738,7 +741,7 @@ class Gamebuilder:
             if field == "stats":
                 Gamebuilder._make_stats(new_item, data)
             if field == "type":
-                new_item.set_usable(item["type"])
+                new_item.set_usable(data)
             else:
                 setattr(new_item, field, data)
         return new_item

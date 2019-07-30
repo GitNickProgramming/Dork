@@ -141,7 +141,7 @@ class PlayerFactory:
 
         for _ in range(randint(1, 3)):
             new_item = ItemFactory.build("player")
-            new_player["inventory"][new_item.pop("name")] = new_item
+            new_player["inventory"][new_item["name"]] = new_item
 
         for key, val in new_player["inventory"].items():
             if val["stats"]["equipable"]:
@@ -229,7 +229,7 @@ class RoomFactory:
 
             for _ in range(randint(1, 7)):
                 new_item = ItemFactory.build()
-                new_room["inventory"][new_item.pop("name")] = new_item
+                new_room["inventory"][new_item["name"]] = new_item
 
             for _ in range(randint(0, 2)):
                 new_player = PlayerFactory.build(i, new_room)
