@@ -551,7 +551,7 @@ class Game:
                     target_obj = self.hero.location.players[target.title()]
                     return self.hero.inventory[item].use(target_obj,
                                                          item), False
-                elif player == target:
+                if player == target:
                     target_obj = self.hero.location.players[target]
                     return self.hero.inventory[item].use(target_obj,
                                                          item), False
