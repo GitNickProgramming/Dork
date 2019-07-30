@@ -547,7 +547,11 @@ class Game:
         if item in self.hero.inventory.keys():
             target = str.casefold(input("What do you want to use it on? "))
             for player in self.hero.location.players:
-                if str.casefold(player) == target:
+                if player == target.title():
+                    target_obj = self.hero.location.players[target.title()]
+                    return self.hero.inventory[item].use(target_obj,
+                                                         item), False
+                elif player == target:
                     target_obj = self.hero.location.players[target]
                     return self.hero.inventory[item].use(target_obj,
                                                          item), False
