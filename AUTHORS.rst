@@ -4,6 +4,7 @@ Credits
 Development Lead
 ----------------
 * Peter Nielson <peter@boxoforanmore.com>
+* James Morgan <jmorga68@msudenver.edu>
 
 Contributors
 ------------
