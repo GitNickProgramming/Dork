@@ -210,16 +210,6 @@ rooms:
                     strength: null
                     weight: 21
                 type: filler
-            putrid mace of lightning:
-                description: ''
-                stats:
-                    amount: 1
-                    attack: 11
-                    equipable: true
-                    luck: 6
-                    strength: null
-                    weight: 10
-                type: weapon
             somnolent pauldrons:
                 description: ''
                 stats:
@@ -262,7 +252,17 @@ rooms:
             devon:
                 description: the hero of dork!
                 equipped: []
-                inventory: {}
+                inventory:
+                    putrid mace of lightning:
+                        description: ''
+                        stats:
+                            amount: 1
+                            attack: 11
+                            equipable: true
+                            luck: 6
+                            strength: null
+                            weight: 10
+                        type: weapon
                 location: Entrance
                 name: devon
     room 1:
