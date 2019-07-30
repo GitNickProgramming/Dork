@@ -296,18 +296,19 @@ class Room(Adjacent, Coord, Holder):
     def _new_instance(self):
         self.instances.append(self)
 
-    def get_players(self, data, verbose):
+    def get_players(self, hero, data, verbose):
         """display a printout of the players present in this room"""
 
-        if self.players:
+        if len(self.players) > 1:
             out = f"\nplayers:"
         else:
             out = f"There's nobody here."
 
         for name, player in data["players"].items():
-            out += "\n    " + name
-            if verbose:
-                out += Game._verbose_print(player)
+            if name != hero:
+                out += "\n    " + name
+                if verbose:
+                    out += Game._verbose_print(player)
         return out
 
 
@@ -375,6 +376,7 @@ class Game:
             data=self.hero.location.data,
             verbose=self.verbose
         ) + self.hero.location.get_players(
+            hero=self.hero.name,
             verbose=self.verbose,
             data=self.hero.location.data
         ), False
