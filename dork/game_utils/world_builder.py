@@ -127,8 +127,12 @@ class PlayerFactory:
             arg1 (str): description
 
         """
+        firsts = factory_data.FIRST_NAMES
+        rand_first = choice(firsts)
+        lasts = factory_data.LAST_NAMES
+        rand_last = choice(lasts)
         new_player = {
-            "name": f"player {i}",
+            "name": rand_first + " " + rand_last,
             "description": f"player {i} description",
             "location": room["name"],
             "inventory": {},
@@ -203,7 +207,7 @@ class RoomFactory:
                 x, y = room
                 new_room = {
                     "number": f"room {i}",
-                    "name": rand,
+                    "name": list_of_adjtvs[i] + rand + list_of_abstract[i],
                     "description": "The " + list_of_adjtvs[i] + rand +
                                    list_of_abstract[i],
                     "coordinates": [x, y],
@@ -229,7 +233,7 @@ class RoomFactory:
 
             for _ in range(randint(0, 2)):
                 new_player = PlayerFactory.build(i, new_room)
-                new_room["players"][new_player.pop("name")] = new_player
+                new_room["players"][new_player["name"]] = new_player
 
             RoomFactory.worldmap[room] = new_room
             i += 1
