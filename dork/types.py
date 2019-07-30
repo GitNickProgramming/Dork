@@ -167,7 +167,7 @@ class Attackable(Usable):
     def use(target, name):
         """
         Concrete use call for weapons
-        
+    
         This method is called by weapons to be attack.
         Changes state of target player by calling
         the target's damage method.
@@ -208,7 +208,6 @@ class NotUsable(Usable):
 
 class Openable(Usable):
     """Object opening behavior class"""
-
 
     @staticmethod
     def use(target, name):
@@ -370,7 +369,7 @@ class Player(Holder):
     def damage(self):
         """damage method called by items to inflict
         damage on players
-        
+
         This method is by items and changes the
         state of the callee player and returns blurb associated.
 
