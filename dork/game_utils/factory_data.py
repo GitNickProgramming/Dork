@@ -2,9 +2,11 @@
 
 from random import randint
 
+
 DEFAULT_ROOMS = {"Entrance": "the beginning. Go explore!!!",
                  "End": "the end of the maze. Congrats on \
 completing DORK!!!"}
+
 
 ROOMS = [" Cave ",
          " Forest ",
@@ -30,20 +32,22 @@ ROOMS = [" Cave ",
          " Farm ",
          " Amusement Park ",
          " Movie Theater ",
-         " Mountain",
-         " Blank ",
-         " Blankk ",
-         " Blankkk ",
-         " Blankkkk ",
-         " BBlank ",
-         " BBlankk ",
-         " BBlankkk ",
-         " BBlankkkk "]
+         " Mountain ",
+         " MSU Denver ",
+         " House ",
+         " Place ",
+         " Area ",
+         " Land ",
+         " Field ",
+         " Building ",
+         " Tower "]
+
 
 DIRS = {"north": "south",
         "south": "north",
         "east": "west",
         "west": "east"}
+
 
 ADJ_ROOM_DESCRIPTIONS = {"1": "Also, this appears to be a dead end!",
                          "2": {0: "From here, all directions seem to be \
@@ -67,6 +71,7 @@ of direction are"},
                          "4": "Looking around, you notice all directions \
                              are possible, this could get confusing..."}
 
+
 ROOM_INV_DESCRIPTIONS = {"1": {0: "but first, it looks like there are several\
  items around here that you might be able to take.",
                                1: "but first, take a look around and see \
@@ -76,7 +81,95 @@ wanna take a look around and see what you can find.",
                                3: "It might be a good idea to loot this \
 area before you leave"},
                          "2": "It doesn't look like there are many items \
-around here, might as well get going."}
+around here, might as well get going.",
+                         "3": "This room has no items!"}
+
+
+FIRST_NAMES = ["Stubby",
+               "Borkl",
+               "Trolly",
+               "Bumble Bee",
+               "Hurr Durr",
+               "Spidey",
+               "Doctor",
+               "Mr.",
+               "Mrs.",
+               "Sir",
+               "The Great",
+               "Billy",
+               "Bobby",
+               "Smelly",
+               "Yolanda",
+               "Pepper de",
+               "Squaty",
+               "Giant",
+               "Speedy",
+               "Buzz",
+               "Thicc",
+               "Squeedly",
+               "Lavender",
+               "Willy",
+               "Miles",
+               "Slowpoke",
+               "Oompa",
+               "Boneless",
+               "Mooshy",
+               "Yertle",
+               "Stinky",
+               "Charlie",
+               "Bender",
+               "Droopy",
+               "Piggish",
+               "Lonely",
+               "Norman",
+               "Captain",
+               "King",
+               "Weird"
+               ]
+
+
+LAST_NAMES = ["Osborn",
+              "Benjamin",
+              "Sebastian",
+              "Jacquelyn",
+              "Brunhild",
+              "Hildegard",
+              "Gloriana",
+              "Arthur",
+              "Xalvador",
+              "Borin",
+              "Geoffrey",
+              "William",
+              "Charles",
+              "Gregory",
+              "Donald",
+              "Amy",
+              "Benedict",
+              "Henry",
+              "James",
+              "Peter",
+              "Griffin",
+              "Zuckerberg",
+              "Frederick",
+              "Ronald",
+              "Edmund",
+              "Simon",
+              "Oliver",
+              "Walter",
+              "Earl",
+              "J.R.",
+              "Brom",
+              "Isabel",
+              "Zach",
+              "David",
+              "Nick",
+              "Devon",
+              "Nicole",
+              "Fernando",
+              "Larsen",
+              "Jimmy"
+              ]
+
 
 ITEMS = {
     "condition": {
@@ -300,6 +393,7 @@ ITEMS = {
         ]
     }
 }
+
 
 NAMES = {
     "abstract": [
@@ -546,6 +640,7 @@ NAMES = {
     ]
 }
 
+
 SEQUENCE = {
     "jewelry": {
         "seq": [
@@ -598,6 +693,7 @@ SEQUENCE = {
     }
 }
 
+
 MOVES = [
     [(0, 2), (0, 1)], [(0, -2), (0, -1)],
     [(2, 0), (1, 0)], [(-2, 0), (-1, 0)]
@@ -605,7 +701,10 @@ MOVES = [
 
 
 def rules(wall, path):
-    """rules for neighbor checking during maze generation"""
+    """
+        A rules list that describes the values of a given room's neighbors
+        The rules cover corners, intersections, and dead-ends.
+    """
 
     return [
         [wall, wall, wall, path],
@@ -625,7 +724,7 @@ def rules(wall, path):
 
 
 def stats(item_type):
-    """item type-specific stats"""
+    """type-specific stats used during item generation"""
 
     item_type = item_type.split()[0]
 

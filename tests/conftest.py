@@ -44,18 +44,6 @@ def holder():
 
 
 @pytest.fixture
-def repl_data():
-    """A repl data fixture"""
-    repl_data_fixture = (
-        dork.game_utils.game_data.CMDS,
-        dork.game_utils.game_data.MOVES,
-        dork.game_utils.game_data.META,
-        dork.game_utils.game_data.ERRS
-    )
-    return repl_data_fixture
-
-
-@pytest.fixture
 def run(capsys, mocker):
     """CLI run method fixture
 

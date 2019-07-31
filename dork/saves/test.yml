@@ -1,0 +1,2363 @@
+maze:
+-   - -2
+    - -2
+    - -2
+    - -2
+    - -2
+    - -2
+    - -2
+    - -2
+    - -2
+    - -2
+    - -2
+    - -2
+    - -2
+-   - -2
+    - 1
+    - 2
+    - 1
+    - 2
+    - 2
+    - 2
+    - 1
+    - -2
+    - 1
+    - 2
+    - 0
+    - -2
+-   - -2
+    - 2
+    - -2
+    - 2
+    - -2
+    - -2
+    - -2
+    - -2
+    - -2
+    - 2
+    - -2
+    - 2
+    - -2
+-   - -2
+    - 2
+    - -2
+    - 1
+    - 2
+    - 2
+    - 2
+    - 2
+    - 2
+    - 1
+    - -2
+    - 2
+    - -2
+-   - -2
+    - 2
+    - -2
+    - -2
+    - -2
+    - -2
+    - -2
+    - -2
+    - -2
+    - -2
+    - -2
+    - 2
+    - -2
+-   - -2
+    - 2
+    - -2
+    - 1
+    - 2
+    - 2
+    - 2
+    - 1
+    - 2
+    - 1
+    - -2
+    - 2
+    - -2
+-   - -2
+    - 2
+    - -2
+    - -2
+    - -2
+    - -2
+    - -2
+    - 2
+    - -2
+    - 2
+    - -2
+    - 2
+    - -2
+-   - -2
+    - 1
+    - 2
+    - 1
+    - -2
+    - 1
+    - 2
+    - 1
+    - -2
+    - 1
+    - -2
+    - 1
+    - -2
+-   - -2
+    - -2
+    - -2
+    - 2
+    - -2
+    - 2
+    - -2
+    - -2
+    - -2
+    - -2
+    - -2
+    - -2
+    - -2
+-   - -2
+    - 1
+    - 2
+    - 1
+    - -2
+    - 1
+    - 2
+    - 2
+    - 2
+    - 1
+    - 2
+    - 1
+    - -2
+-   - -2
+    - 2
+    - -2
+    - -2
+    - -2
+    - -2
+    - -2
+    - -2
+    - -2
+    - 2
+    - -2
+    - 2
+    - -2
+-   - -2
+    - 1
+    - 2
+    - 2
+    - 2
+    - 2
+    - 2
+    - 2
+    - 2
+    - 1
+    - -2
+    - 1
+    - -2
+-   - -2
+    - -2
+    - -2
+    - -2
+    - -2
+    - -2
+    - -2
+    - -2
+    - -2
+    - -2
+    - -2
+    - -2
+    - -2
+rooms:
+    room 0:
+        adjacent:
+            east: null
+            north: null
+            south: room 1
+            west: null
+        coordinates:
+        - 7
+        - 11
+        description: the beginning. Go explore!!!
+        inventory: {}
+        name: Entrance
+        players:
+            Willy Simon:
+                description: player 0 description
+                equipped:
+                - filthy bronze recurve bow
+                inventory:
+                    filthy bronze recurve bow:
+                        description: ''
+                        name: filthy bronze recurve bow
+                        stats:
+                            amount: 1
+                            attack: 14
+                            equipable: true
+                            luck: 7
+                            strength: null
+                            weight: 20
+                        type: weapon
+                location: Entrance
+                name: Willy Simon
+    room 1:
+        adjacent:
+            east: null
+            north: room 0
+            south: null
+            west: room 2
+        coordinates:
+        - 1
+        - 11
+        description: The splendiferous Chicken Coup of ecstasy
+        inventory: {}
+        name: splendiferous Chicken Coup of ecstasy
+        players:
+            King Oliver:
+                description: player 1 description
+                equipped:
+                - spectral battle axe
+                - vengeful blade
+                inventory:
+                    spectral battle axe:
+                        description: ''
+                        name: spectral battle axe
+                        stats:
+                            amount: 1
+                            attack: 26
+                            equipable: true
+                            luck: 6
+                            strength: null
+                            weight: 18
+                        type: weapon
+                    vengeful blade:
+                        description: ''
+                        name: vengeful blade
+                        stats:
+                            amount: 1
+                            attack: 25
+                            equipable: true
+                            luck: -10
+                            strength: null
+                            weight: 5
+                        type: weapon
+                location: splendiferous Chicken Coup of ecstasy
+                name: King Oliver
+            npc:
+                description: player 1 description
+                equipped:
+                - grand amethyst magestone
+                - blunderous gauntlets of the hunt
+                inventory:
+                    blunderous gauntlets of the hunt:
+                        description: ''
+                        name: blunderous gauntlets of the hunt
+                        stats:
+                            amount: 1
+                            attack: null
+                            equipable: true
+                            luck: -1
+                            strength: 19
+                            weight: 23
+                        type: armor
+                    grand amethyst magestone:
+                        description: ''
+                        name: grand amethyst magestone
+                        stats:
+                            amount: 10
+                            attack: 26
+                            equipable: true
+                            luck: 6
+                            strength: 11
+                            weight: 5
+                        type: magic items
+                location: splendiferous Chicken Coup of ecstasy
+                name: npc
+            test:
+                description: the hero of dork!
+                equipped: []
+                inventory:
+                    chewed candle:
+                        description: ''
+                        name: chewed candle
+                        stats:
+                            amount: 1
+                            attack: null
+                            equipable: false
+                            luck: -3
+                            strength: null
+                            weight: 22
+                        type: filler
+                    cobwebbed pot:
+                        description: ''
+                        name: cobwebbed pot
+                        stats:
+                            amount: 1
+                            attack: null
+                            equipable: false
+                            luck: -2
+                            strength: null
+                            weight: 16
+                        type: filler
+                    common onyx magestone:
+                        description: ''
+                        name: common onyx magestone
+                        stats:
+                            amount: 7
+                            attack: 31
+                            equipable: true
+                            luck: -7
+                            strength: 13
+                            weight: 4
+                        type: magic items
+                    dirty chains:
+                        description: ''
+                        name: dirty chains
+                        stats:
+                            amount: 1
+                            attack: null
+                            equipable: false
+                            luck: -34
+                            strength: null
+                            weight: 19
+                        type: filler
+                    sword:
+                        description: ''
+                        name: sword
+                        stats:
+                            amount: 1
+                            attack: 21
+                            equipable: true
+                            luck: -8
+                            strength: null
+                            weight: 11
+                        type: weapon
+                    horrible morning star:
+                        description: ''
+                        name: horrible morning star
+                        stats:
+                            amount: 1
+                            attack: 29
+                            equipable: true
+                            luck: 7
+                            strength: null
+                            weight: 19
+                        type: weapon
+                    lesser scroll of putrification:
+                        description: ''
+                        name: lesser scroll of putrification
+                        stats:
+                            amount: 10
+                            attack: 50
+                            equipable: true
+                            luck: -9
+                            strength: 15
+                            weight: 2
+                        type: magic consumables
+                    lesser turquoise horn:
+                        description: ''
+                        name: lesser turquoise horn
+                        stats:
+                            amount: 11
+                            attack: 34
+                            equipable: true
+                            luck: 4
+                            strength: 5
+                            weight: 7
+                        type: magic items
+                    mended bedroll:
+                        description: ''
+                        name: mended bedroll
+                        stats:
+                            amount: 1
+                            attack: null
+                            equipable: false
+                            luck: -29
+                            strength: null
+                            weight: 5
+                        type: filler
+                    mended rope:
+                        description: ''
+                        name: mended rope
+                        stats:
+                            amount: 1
+                            attack: null
+                            equipable: false
+                            luck: -47
+                            strength: null
+                            weight: 23
+                        type: filler
+                    old hide hood:
+                        description: ''
+                        name: old hide hood
+                        stats:
+                            amount: 1
+                            attack: null
+                            equipable: true
+                            luck: 9
+                            strength: 28
+                            weight: 25
+                        type: armor
+                    piteous club:
+                        description: ''
+                        name: piteous club
+                        stats:
+                            amount: 1
+                            attack: 26
+                            equipable: true
+                            luck: -1
+                            strength: null
+                            weight: 15
+                        type: weapon
+                    ruined stool:
+                        description: ''
+                        name: ruined stool
+                        stats:
+                            amount: 1
+                            attack: null
+                            equipable: false
+                            luck: -14
+                            strength: null
+                            weight: 20
+                        type: filler
+                location: Entrance
+                name: test
+    room 10:
+        adjacent:
+            east: null
+            north: null
+            south: room 9
+            west: room 11
+        coordinates:
+        - 9
+        - 3
+        description: The uncanny Asylum of firestorms
+        inventory:
+            dirty bone gorget:
+                description: ''
+                name: dirty bone gorget
+                stats:
+                    amount: 1
+                    attack: null
+                    equipable: true
+                    luck: 8
+                    strength: 21
+                    weight: 25
+                type: armor
+            filthy hide greaves:
+                description: ''
+                name: filthy hide greaves
+                stats:
+                    amount: 1
+                    attack: null
+                    equipable: true
+                    luck: 7
+                    strength: 13
+                    weight: 26
+                type: armor
+            rusty lantern:
+                description: ''
+                name: rusty lantern
+                stats:
+                    amount: 1
+                    attack: null
+                    equipable: false
+                    luck: -8
+                    strength: null
+                    weight: 18
+                type: filler
+        name: uncanny Asylum of firestorms
+        players:
+            Yolanda Nicole:
+                description: player 10 description
+                equipped:
+                - petty ruby gem
+                - piteous war hammer
+                inventory:
+                    petty ruby gem:
+                        description: ''
+                        name: petty ruby gem
+                        stats:
+                            amount: 5
+                            attack: 35
+                            equipable: true
+                            luck: -8
+                            strength: 14
+                            weight: 5
+                        type: magic items
+                    piteous war hammer:
+                        description: ''
+                        name: piteous war hammer
+                        stats:
+                            amount: 1
+                            attack: 30
+                            equipable: true
+                            luck: 9
+                            strength: null
+                            weight: 10
+                        type: weapon
+                location: uncanny Asylum of firestorms
+                name: Yolanda Nicole
+    room 11:
+        adjacent:
+            east: room 10
+            north: room 12
+            south: null
+            west: null
+        coordinates:
+        - 9
+        - 1
+        description: The putrid Ghost Town of hatred
+        inventory:
+            chipped chains:
+                description: ''
+                name: chipped chains
+                stats:
+                    amount: 1
+                    attack: null
+                    equipable: false
+                    luck: -12
+                    strength: null
+                    weight: 9
+                type: filler
+            dreaded scroll of somnolence:
+                description: ''
+                name: dreaded scroll of somnolence
+                stats:
+                    amount: 9
+                    attack: 48
+                    equipable: true
+                    luck: -3
+                    strength: 14
+                    weight: 7
+                type: magic consumables
+            dusty chair:
+                description: ''
+                name: dusty chair
+                stats:
+                    amount: 1
+                    attack: null
+                    equipable: false
+                    luck: -18
+                    strength: null
+                    weight: 13
+                type: filler
+            greater tome of envy:
+                description: ''
+                name: greater tome of envy
+                stats:
+                    amount: 12
+                    attack: 41
+                    equipable: true
+                    luck: 1
+                    strength: 8
+                    weight: 6
+                type: magic consumables
+            moldy cauldron:
+                description: ''
+                name: moldy cauldron
+                stats:
+                    amount: 1
+                    attack: null
+                    equipable: false
+                    luck: -1
+                    strength: null
+                    weight: 19
+                type: filler
+            waterlogged book:
+                description: ''
+                name: waterlogged book
+                stats:
+                    amount: 1
+                    attack: null
+                    equipable: false
+                    luck: -40
+                    strength: null
+                    weight: 5
+                type: filler
+        name: putrid Ghost Town of hatred
+        players: {}
+    room 12:
+        adjacent:
+            east: room 13
+            north: null
+            south: room 11
+            west: null
+        coordinates:
+        - 11
+        - 1
+        description: The ancient Desert of life
+        inventory:
+            common jade gem:
+                description: ''
+                name: common jade gem
+                stats:
+                    amount: 8
+                    attack: 46
+                    equipable: true
+                    luck: -7
+                    strength: 7
+                    weight: 3
+                type: magic items
+            derelict chains:
+                description: ''
+                name: derelict chains
+                stats:
+                    amount: 1
+                    attack: null
+                    equipable: false
+                    luck: -37
+                    strength: null
+                    weight: 21
+                type: filler
+            etched dragonscale gorget:
+                description: ''
+                name: etched dragonscale gorget
+                stats:
+                    amount: 1
+                    attack: null
+                    equipable: true
+                    luck: -3
+                    strength: 21
+                    weight: 18
+                type: armor
+            petty tome of fear:
+                description: ''
+                name: petty tome of fear
+                stats:
+                    amount: 9
+                    attack: 37
+                    equipable: true
+                    luck: -4
+                    strength: 8
+                    weight: 2
+                type: magic consumables
+            ruined candle:
+                description: ''
+                name: ruined candle
+                stats:
+                    amount: 1
+                    attack: null
+                    equipable: false
+                    luck: -24
+                    strength: null
+                    weight: 13
+                type: filler
+        name: ancient Desert of life
+        players:
+            Mr. Henry:
+                description: player 12 description
+                equipped:
+                - common philter of exsanguination
+                - carved plate spaulders
+                inventory:
+                    carved plate spaulders:
+                        description: ''
+                        name: carved plate spaulders
+                        stats:
+                            amount: 1
+                            attack: null
+                            equipable: true
+                            luck: -6
+                            strength: 27
+                            weight: 23
+                        type: armor
+                    common philter of exsanguination:
+                        description: ''
+                        name: common philter of exsanguination
+                        stats:
+                            amount: 3
+                            attack: 42
+                            equipable: true
+                            luck: 7
+                            strength: 8
+                            weight: 2
+                        type: magic consumables
+                location: ancient Desert of life
+                name: Mr. Henry
+            Speedy Fernando:
+                description: player 12 description
+                equipped:
+                - etched iron blade
+                - common turquoise shard
+                - stormy halberd
+                inventory:
+                    common turquoise shard:
+                        description: ''
+                        name: common turquoise shard
+                        stats:
+                            amount: 12
+                            attack: 22
+                            equipable: true
+                            luck: 10
+                            strength: 5
+                            weight: 2
+                        type: magic items
+                    etched iron blade:
+                        description: ''
+                        name: etched iron blade
+                        stats:
+                            amount: 1
+                            attack: 13
+                            equipable: true
+                            luck: 5
+                            strength: null
+                            weight: 16
+                        type: weapon
+                    stormy halberd:
+                        description: ''
+                        name: stormy halberd
+                        stats:
+                            amount: 1
+                            attack: 23
+                            equipable: true
+                            luck: -8
+                            strength: null
+                            weight: 11
+                        type: weapon
+                location: ancient Desert of life
+                name: Speedy Fernando
+    room 13:
+        adjacent:
+            east: null
+            north: null
+            south: room 14
+            west: room 12
+        coordinates:
+        - 11
+        - 9
+        description: The repugnant Farm of twilight
+        inventory:
+            adequate bone morning star of reckoning:
+                description: ''
+                name: adequate bone morning star of reckoning
+                stats:
+                    amount: 1
+                    attack: 24
+                    equipable: true
+                    luck: -7
+                    strength: null
+                    weight: 7
+                type: weapon
+            chipped urn:
+                description: ''
+                name: chipped urn
+                stats:
+                    amount: 1
+                    attack: null
+                    equipable: false
+                    luck: -3
+                    strength: null
+                    weight: 9
+                type: filler
+            friendly gauntlets of firestorms:
+                description: ''
+                name: friendly gauntlets of firestorms
+                stats:
+                    amount: 1
+                    attack: null
+                    equipable: true
+                    luck: 6
+                    strength: 30
+                    weight: 29
+                type: armor
+            grotesque cuirass:
+                description: ''
+                name: grotesque cuirass
+                stats:
+                    amount: 1
+                    attack: null
+                    equipable: true
+                    luck: -10
+                    strength: 29
+                    weight: 40
+                type: armor
+            rusty urn:
+                description: ''
+                name: rusty urn
+                stats:
+                    amount: 1
+                    attack: null
+                    equipable: false
+                    luck: -11
+                    strength: null
+                    weight: 11
+                type: filler
+            spiteful crossbow:
+                description: ''
+                name: spiteful crossbow
+                stats:
+                    amount: 1
+                    attack: 30
+                    equipable: true
+                    luck: 9
+                    strength: null
+                    weight: 6
+                type: weapon
+        name: repugnant Farm of twilight
+        players:
+            Bobby James:
+                description: player 13 description
+                equipped:
+                - filthy steel greaves
+                - etched silver scimitar of exsanguination
+                - eerie bronze gem
+                inventory:
+                    eerie bronze gem:
+                        description: ''
+                        name: eerie bronze gem
+                        stats:
+                            amount: 10
+                            attack: 32
+                            equipable: true
+                            luck: 1
+                            strength: 8
+                            weight: 7
+                        type: magic items
+                    etched silver scimitar of exsanguination:
+                        description: ''
+                        name: etched silver scimitar of exsanguination
+                        stats:
+                            amount: 1
+                            attack: 28
+                            equipable: true
+                            luck: -6
+                            strength: null
+                            weight: 18
+                        type: weapon
+                    filthy steel greaves:
+                        description: ''
+                        name: filthy steel greaves
+                        stats:
+                            amount: 1
+                            attack: null
+                            equipable: true
+                            luck: -4
+                            strength: 11
+                            weight: 24
+                        type: armor
+                location: repugnant Farm of twilight
+                name: Bobby James
+            Boneless Hildegard:
+                description: player 13 description
+                equipped:
+                - old leather vambrace
+                - petty potion of malice
+                - elegant shortsword of twilight
+                inventory:
+                    elegant shortsword of twilight:
+                        description: ''
+                        name: elegant shortsword of twilight
+                        stats:
+                            amount: 1
+                            attack: 12
+                            equipable: true
+                            luck: -3
+                            strength: null
+                            weight: 20
+                        type: weapon
+                    old leather vambrace:
+                        description: ''
+                        name: old leather vambrace
+                        stats:
+                            amount: 1
+                            attack: null
+                            equipable: true
+                            luck: 6
+                            strength: 16
+                            weight: 22
+                        type: armor
+                    petty potion of malice:
+                        description: ''
+                        name: petty potion of malice
+                        stats:
+                            amount: 8
+                            attack: 32
+                            equipable: true
+                            luck: 1
+                            strength: 8
+                            weight: 3
+                        type: magic consumables
+                location: repugnant Farm of twilight
+                name: Boneless Hildegard
+    room 14:
+        adjacent:
+            east: room 22
+            north: room 13
+            south: null
+            west: room 15
+        coordinates:
+        - 9
+        - 9
+        description: The thorny Land of confusion
+        inventory:
+            common scroll of the heretic:
+                description: ''
+                name: common scroll of the heretic
+                stats:
+                    amount: 4
+                    attack: 43
+                    equipable: true
+                    luck: -5
+                    strength: 10
+                    weight: 5
+                type: magic consumables
+            dusty incense:
+                description: ''
+                name: dusty incense
+                stats:
+                    amount: 1
+                    attack: null
+                    equipable: false
+                    luck: -16
+                    strength: null
+                    weight: 16
+                type: filler
+            grand potion of torpor:
+                description: ''
+                name: grand potion of torpor
+                stats:
+                    amount: 4
+                    attack: 24
+                    equipable: true
+                    luck: -5
+                    strength: 10
+                    weight: 6
+                type: magic consumables
+            old leather gambeson:
+                description: ''
+                name: old leather gambeson
+                stats:
+                    amount: 1
+                    attack: null
+                    equipable: true
+                    luck: 0
+                    strength: 15
+                    weight: 36
+                type: armor
+            ruined plate gauntlets:
+                description: ''
+                name: ruined plate gauntlets
+                stats:
+                    amount: 1
+                    attack: null
+                    equipable: true
+                    luck: -5
+                    strength: 29
+                    weight: 31
+                type: armor
+            rusty plate helm of diffusion:
+                description: ''
+                name: rusty plate helm of diffusion
+                stats:
+                    amount: 1
+                    attack: null
+                    equipable: true
+                    luck: 6
+                    strength: 11
+                    weight: 33
+                type: armor
+            rusty rags:
+                description: ''
+                name: rusty rags
+                stats:
+                    amount: 1
+                    attack: null
+                    equipable: false
+                    luck: -16
+                    strength: null
+                    weight: 12
+                type: filler
+        name: thorny Land of confusion
+        players: {}
+    room 15:
+        adjacent:
+            east: room 14
+            north: null
+            south: room 16
+            west: null
+        coordinates:
+        - 9
+        - 5
+        description: The insideous MSU Denver Campus of joy
+        inventory:
+            grotesque gloves:
+                description: ''
+                name: grotesque gloves
+                stats:
+                    amount: 1
+                    attack: null
+                    equipable: true
+                    luck: 6
+                    strength: 15
+                    weight: 28
+                type: armor
+        name: insideous MSU Denver Campus of joy
+        players:
+            Giant Zuckerberg:
+                description: player 15 description
+                equipped:
+                - worn glass club of fear
+                inventory:
+                    worn glass club of fear:
+                        description: ''
+                        name: worn glass club of fear
+                        stats:
+                            amount: 1
+                            attack: 14
+                            equipable: true
+                            luck: -9
+                            strength: null
+                            weight: 8
+                        type: weapon
+                location: insideous MSU Denver Campus of joy
+                name: Giant Zuckerberg
+            Thicc Zuckerberg:
+                description: player 15 description
+                equipped:
+                - rusty iron morion of destruction
+                - pristine glass blade of ruining
+                - common potion of dread
+                inventory:
+                    common potion of dread:
+                        description: ''
+                        name: common potion of dread
+                        stats:
+                            amount: 6
+                            attack: 30
+                            equipable: true
+                            luck: 8
+                            strength: 5
+                            weight: 3
+                        type: magic consumables
+                    pristine glass blade of ruining:
+                        description: ''
+                        name: pristine glass blade of ruining
+                        stats:
+                            amount: 1
+                            attack: 11
+                            equipable: true
+                            luck: 2
+                            strength: null
+                            weight: 10
+                        type: weapon
+                    rusty iron morion of destruction:
+                        description: ''
+                        name: rusty iron morion of destruction
+                        stats:
+                            amount: 1
+                            attack: null
+                            equipable: true
+                            luck: -8
+                            strength: 27
+                            weight: 15
+                        type: armor
+                location: insideous MSU Denver Campus of joy
+                name: Thicc Zuckerberg
+    room 16:
+        adjacent:
+            east: room 17
+            north: room 15
+            south: null
+            west: null
+        coordinates:
+        - 7
+        - 5
+        description: The magnetic Troll Territory of maleficence
+        inventory:
+            chewed funnel:
+                description: ''
+                name: chewed funnel
+                stats:
+                    amount: 1
+                    attack: null
+                    equipable: false
+                    luck: -14
+                    strength: null
+                    weight: 13
+                type: filler
+        name: magnetic Troll Territory of maleficence
+        players:
+            Hurr Durr Benedict:
+                description: player 16 description
+                equipped:
+                - common tome of mourning
+                - bewildering vambrace
+                - grand obsidian orb
+                inventory:
+                    bewildering vambrace:
+                        description: ''
+                        name: bewildering vambrace
+                        stats:
+                            amount: 1
+                            attack: null
+                            equipable: true
+                            luck: -3
+                            strength: 21
+                            weight: 16
+                        type: armor
+                    common tome of mourning:
+                        description: ''
+                        name: common tome of mourning
+                        stats:
+                            amount: 6
+                            attack: 19
+                            equipable: true
+                            luck: -4
+                            strength: 6
+                            weight: 5
+                        type: magic consumables
+                    grand obsidian orb:
+                        description: ''
+                        name: grand obsidian orb
+                        stats:
+                            amount: 3
+                            attack: 31
+                            equipable: true
+                            luck: 7
+                            strength: 10
+                            weight: 4
+                        type: magic items
+                location: magnetic Troll Territory of maleficence
+                name: Hurr Durr Benedict
+            Lavender Zuckerberg:
+                description: player 16 description
+                equipped:
+                - common scroll of disintegration
+                inventory:
+                    common scroll of disintegration:
+                        description: ''
+                        name: common scroll of disintegration
+                        stats:
+                            amount: 11
+                            attack: 41
+                            equipable: true
+                            luck: 10
+                            strength: 9
+                            weight: 4
+                        type: magic consumables
+                location: magnetic Troll Territory of maleficence
+                name: Lavender Zuckerberg
+    room 17:
+        adjacent:
+            east: null
+            north: null
+            south: room 18
+            west: room 16
+        coordinates:
+        - 7
+        - 7
+        description: The horrible Building of merit
+        inventory:
+            burnt pot:
+                description: ''
+                name: burnt pot
+                stats:
+                    amount: 1
+                    attack: null
+                    equipable: false
+                    luck: -10
+                    strength: null
+                    weight: 10
+                type: filler
+            carved iron greaves:
+                description: ''
+                name: carved iron greaves
+                stats:
+                    amount: 1
+                    attack: null
+                    equipable: true
+                    luck: -7
+                    strength: 19
+                    weight: 36
+                type: armor
+            greater scroll of lightning:
+                description: ''
+                name: greater scroll of lightning
+                stats:
+                    amount: 4
+                    attack: 15
+                    equipable: true
+                    luck: -1
+                    strength: 12
+                    weight: 4
+                type: magic consumables
+            lesser jade dust:
+                description: ''
+                name: lesser jade dust
+                stats:
+                    amount: 10
+                    attack: 17
+                    equipable: true
+                    luck: -6
+                    strength: 11
+                    weight: 2
+                type: magic items
+        name: horrible Building of merit
+        players:
+            Doctor Brunhild:
+                description: player 17 description
+                equipped:
+                - decrepit meteorite dagger
+                inventory:
+                    decrepit meteorite dagger:
+                        description: ''
+                        name: decrepit meteorite dagger
+                        stats:
+                            amount: 1
+                            attack: 14
+                            equipable: true
+                            luck: 1
+                            strength: null
+                            weight: 13
+                        type: weapon
+                location: horrible Building of merit
+                name: Doctor Brunhild
+    room 18:
+        adjacent:
+            east: room 19
+            north: room 17
+            south: null
+            west: room 21
+        coordinates:
+        - 5
+        - 7
+        description: The burdensome Mountain of misery
+        inventory:
+            chipped bones:
+                description: ''
+                name: chipped bones
+                stats:
+                    amount: 1
+                    attack: null
+                    equipable: false
+                    luck: -10
+                    strength: null
+                    weight: 15
+                type: filler
+            moldy urn:
+                description: ''
+                name: moldy urn
+                stats:
+                    amount: 1
+                    attack: null
+                    equipable: false
+                    luck: -32
+                    strength: null
+                    weight: 24
+                type: filler
+        name: burdensome Mountain of misery
+        players:
+            Charlie Griffin:
+                description: player 18 description
+                equipped:
+                - burning longsword of waning
+                - bizarre scythe of death
+                inventory:
+                    bizarre scythe of death:
+                        description: ''
+                        name: bizarre scythe of death
+                        stats:
+                            amount: 1
+                            attack: 23
+                            equipable: true
+                            luck: -4
+                            strength: null
+                            weight: 16
+                        type: weapon
+                    burning longsword of waning:
+                        description: ''
+                        name: burning longsword of waning
+                        stats:
+                            amount: 1
+                            attack: 21
+                            equipable: true
+                            luck: 5
+                            strength: null
+                            weight: 11
+                        type: weapon
+                location: burdensome Mountain of misery
+                name: Charlie Griffin
+            Giant Sebastian:
+                description: player 18 description
+                equipped:
+                - grand potion of disintegrating
+                inventory:
+                    grand potion of disintegrating:
+                        description: ''
+                        name: grand potion of disintegrating
+                        stats:
+                            amount: 7
+                            attack: 42
+                            equipable: true
+                            luck: -4
+                            strength: 11
+                            weight: 5
+                        type: magic consumables
+                location: burdensome Mountain of misery
+                name: Giant Sebastian
+    room 19:
+        adjacent:
+            east: null
+            north: room 20
+            south: null
+            west: room 18
+        coordinates:
+        - 5
+        - 9
+        description: The magnificent Place of surprise
+        inventory:
+            burnt teeth:
+                description: ''
+                name: burnt teeth
+                stats:
+                    amount: 1
+                    attack: null
+                    equipable: false
+                    luck: -31
+                    strength: null
+                    weight: 23
+                type: filler
+            chipped cauldron:
+                description: ''
+                name: chipped cauldron
+                stats:
+                    amount: 1
+                    attack: null
+                    equipable: false
+                    luck: -40
+                    strength: null
+                    weight: 5
+                type: filler
+            rusty rags:
+                description: ''
+                name: rusty rags
+                stats:
+                    amount: 1
+                    attack: null
+                    equipable: false
+                    luck: -35
+                    strength: null
+                    weight: 6
+                type: filler
+        name: magnificent Place of surprise
+        players: {}
+    room 2:
+        adjacent:
+            east: room 1
+            north: room 3
+            south: null
+            west: null
+        coordinates:
+        - 1
+        - 9
+        description: The bewildering House of ruin
+        inventory:
+            chipped mortar:
+                description: ''
+                name: chipped mortar
+                stats:
+                    amount: 1
+                    attack: null
+                    equipable: false
+                    luck: -37
+                    strength: null
+                    weight: 21
+                type: filler
+            petty tome of hubris:
+                description: ''
+                name: petty tome of hubris
+                stats:
+                    amount: 10
+                    attack: 36
+                    equipable: true
+                    luck: 0
+                    strength: 13
+                    weight: 3
+                type: magic consumables
+            rusty lamp:
+                description: ''
+                name: rusty lamp
+                stats:
+                    amount: 1
+                    attack: null
+                    equipable: false
+                    luck: -50
+                    strength: null
+                    weight: 7
+                type: filler
+        name: bewildering House of ruin
+        players: {}
+    room 20:
+        adjacent:
+            east: null
+            north: null
+            south: room 19
+            west: null
+        coordinates:
+        - 7
+        - 9
+        description: The spectral Basketball Court of grieving
+        inventory:
+            lustrous tome of merit:
+                description: ''
+                name: lustrous tome of merit
+                stats:
+                    amount: 5
+                    attack: 43
+                    equipable: true
+                    luck: -9
+                    strength: 15
+                    weight: 7
+                type: magic consumables
+            petty scroll of the prophet:
+                description: ''
+                name: petty scroll of the prophet
+                stats:
+                    amount: 7
+                    attack: 31
+                    equipable: true
+                    luck: 3
+                    strength: 7
+                    weight: 6
+                type: magic consumables
+        name: spectral Basketball Court of grieving
+        players:
+            Lavender Brom:
+                description: player 20 description
+                equipped:
+                - common potion of souls
+                - exotic gold horn
+                inventory:
+                    common potion of souls:
+                        description: ''
+                        name: common potion of souls
+                        stats:
+                            amount: 4
+                            attack: 39
+                            equipable: true
+                            luck: -7
+                            strength: 10
+                            weight: 6
+                        type: magic consumables
+                    exotic gold horn:
+                        description: ''
+                        name: exotic gold horn
+                        stats:
+                            amount: 7
+                            attack: 41
+                            equipable: true
+                            luck: 10
+                            strength: 8
+                            weight: 3
+                        type: magic items
+                location: spectral Basketball Court of grieving
+                name: Lavender Brom
+    room 21:
+        adjacent:
+            east: room 18
+            north: null
+            south: null
+            west: null
+        coordinates:
+        - 5
+        - 3
+        description: The loathsome Haunted House of light
+        inventory:
+            cobwebbed note:
+                description: ''
+                name: cobwebbed note
+                stats:
+                    amount: 1
+                    attack: null
+                    equipable: false
+                    luck: -44
+                    strength: null
+                    weight: 5
+                type: filler
+            dirty note:
+                description: ''
+                name: dirty note
+                stats:
+                    amount: 1
+                    attack: null
+                    equipable: false
+                    luck: -10
+                    strength: null
+                    weight: 13
+                type: filler
+            lesser tome of hatred:
+                description: ''
+                name: lesser tome of hatred
+                stats:
+                    amount: 4
+                    attack: 49
+                    equipable: true
+                    luck: 1
+                    strength: 9
+                    weight: 3
+                type: magic consumables
+            ornate scroll of extraction:
+                description: ''
+                name: ornate scroll of extraction
+                stats:
+                    amount: 6
+                    attack: 24
+                    equipable: true
+                    luck: 4
+                    strength: 14
+                    weight: 2
+                type: magic consumables
+        name: loathsome Haunted House of light
+        players: {}
+    room 22:
+        adjacent:
+            east: null
+            north: room 24
+            south: null
+            west: room 14
+        coordinates:
+        - 9
+        - 11
+        description: The stormy Cave of governing
+        inventory:
+            beautiful club:
+                description: ''
+                name: beautiful club
+                stats:
+                    amount: 1
+                    attack: 17
+                    equipable: true
+                    luck: 3
+                    strength: null
+                    weight: 5
+                type: weapon
+            burnt rags:
+                description: ''
+                name: burnt rags
+                stats:
+                    amount: 1
+                    attack: null
+                    equipable: false
+                    luck: -8
+                    strength: null
+                    weight: 7
+                type: filler
+        name: stormy Cave of governing
+        players:
+            Pepper de Gregory:
+                description: player 22 description
+                equipped:
+                - lesser amethyst shard
+                - petty bone shard of disintegration
+                - goliathstealer
+                inventory:
+                    goliathstealer:
+                        description: ''
+                        name: goliathstealer
+                        stats:
+                            amount: 1
+                            attack: 71
+                            equipable: true
+                            luck: 31
+                            strength: null
+                            weight: 6
+                        type: legendary longbow
+                    lesser amethyst shard:
+                        description: ''
+                        name: lesser amethyst shard
+                        stats:
+                            amount: 4
+                            attack: 46
+                            equipable: true
+                            luck: -3
+                            strength: 8
+                            weight: 2
+                        type: magic items
+                    petty bone shard of disintegration:
+                        description: ''
+                        name: petty bone shard of disintegration
+                        stats:
+                            amount: 11
+                            attack: 34
+                            equipable: true
+                            luck: 7
+                            strength: 12
+                            weight: 2
+                        type: magic items
+                location: stormy Cave of governing
+                name: Pepper de Gregory
+            Slowpoke Donald:
+                description: player 22 description
+                equipped:
+                - rusty steel recurve bow of grace
+                inventory:
+                    rusty steel recurve bow of grace:
+                        description: ''
+                        name: rusty steel recurve bow of grace
+                        stats:
+                            amount: 1
+                            attack: 27
+                            equipable: true
+                            luck: 5
+                            strength: null
+                            weight: 15
+                        type: weapon
+                location: stormy Cave of governing
+                name: Slowpoke Donald
+    room 24:
+        adjacent:
+            east: null
+            north: null
+            south: room 22
+            west: null
+        coordinates:
+        - 11
+        - 11
+        description: the end of the maze. Congrats on completing DORK!!!
+        inventory:
+            burnt torch:
+                description: ''
+                name: burnt torch
+                stats:
+                    amount: 1
+                    attack: null
+                    equipable: false
+                    luck: -37
+                    strength: null
+                    weight: 6
+                type: filler
+            chewed bones:
+                description: ''
+                name: chewed bones
+                stats:
+                    amount: 1
+                    attack: null
+                    equipable: false
+                    luck: -31
+                    strength: null
+                    weight: 11
+                type: filler
+            mended mortar:
+                description: ''
+                name: mended mortar
+                stats:
+                    amount: 1
+                    attack: null
+                    equipable: false
+                    luck: -38
+                    strength: null
+                    weight: 22
+                type: filler
+            petty copper horn:
+                description: ''
+                name: petty copper horn
+                stats:
+                    amount: 8
+                    attack: 18
+                    equipable: true
+                    luck: -8
+                    strength: 13
+                    weight: 6
+                type: magic items
+            rusty beaker:
+                description: ''
+                name: rusty beaker
+                stats:
+                    amount: 1
+                    attack: null
+                    equipable: false
+                    luck: 0
+                    strength: null
+                    weight: 21
+                type: filler
+            thorny battle axe:
+                description: ''
+                name: thorny battle axe
+                stats:
+                    amount: 1
+                    attack: 25
+                    equipable: true
+                    luck: 0
+                    strength: null
+                    weight: 17
+                type: weapon
+        name: End
+        players:
+            Sir Ronald:
+                description: player 23 description
+                equipped:
+                - lesser tome of hatred
+                - noxious morning star
+                - fragile glass scimitar of ecstasy
+                inventory:
+                    fragile glass scimitar of ecstasy:
+                        description: ''
+                        name: fragile glass scimitar of ecstasy
+                        stats:
+                            amount: 1
+                            attack: 26
+                            equipable: true
+                            luck: 6
+                            strength: null
+                            weight: 12
+                        type: weapon
+                    lesser tome of hatred:
+                        description: ''
+                        name: lesser tome of hatred
+                        stats:
+                            amount: 5
+                            attack: 18
+                            equipable: true
+                            luck: 1
+                            strength: 14
+                            weight: 4
+                        type: magic consumables
+                    noxious morning star:
+                        description: ''
+                        name: noxious morning star
+                        stats:
+                            amount: 1
+                            attack: 15
+                            equipable: true
+                            luck: -3
+                            strength: null
+                            weight: 16
+                        type: weapon
+                location: End
+                name: Sir Ronald
+    room 3:
+        adjacent:
+            east: null
+            north: null
+            south: room 2
+            west: room 4
+        coordinates:
+        - 3
+        - 9
+        description: The corrupted Area 51 of dark
+        inventory:
+            damaged torch:
+                description: ''
+                name: damaged torch
+                stats:
+                    amount: 1
+                    attack: null
+                    equipable: false
+                    luck: -44
+                    strength: null
+                    weight: 22
+                type: filler
+            grand adamantine dust of ice:
+                description: ''
+                name: grand adamantine dust of ice
+                stats:
+                    amount: 7
+                    attack: 19
+                    equipable: true
+                    luck: -4
+                    strength: 8
+                    weight: 6
+                type: magic items
+            grand philter of confusion:
+                description: ''
+                name: grand philter of confusion
+                stats:
+                    amount: 7
+                    attack: 26
+                    equipable: true
+                    luck: -2
+                    strength: 9
+                    weight: 5
+                type: magic consumables
+            pristine turquoise talisman:
+                description: ''
+                name: pristine turquoise talisman
+                stats:
+                    amount: 1
+                    attack: null
+                    equipable: true
+                    luck: -4
+                    strength: 5
+                    weight: 0
+                type: jewelry
+        name: corrupted Area 51 of dark
+        players: {}
+    room 4:
+        adjacent:
+            east: room 3
+            north: null
+            south: room 5
+            west: null
+        coordinates:
+        - 3
+        - 3
+        description: The ugly Water Park of mediocrity
+        inventory:
+            burnt crate:
+                description: ''
+                name: burnt crate
+                stats:
+                    amount: 1
+                    attack: null
+                    equipable: false
+                    luck: -9
+                    strength: null
+                    weight: 20
+                type: filler
+            chewed decanter:
+                description: ''
+                name: chewed decanter
+                stats:
+                    amount: 1
+                    attack: null
+                    equipable: false
+                    luck: -50
+                    strength: null
+                    weight: 10
+                type: filler
+            chipped alembic:
+                description: ''
+                name: chipped alembic
+                stats:
+                    amount: 1
+                    attack: null
+                    equipable: false
+                    luck: -16
+                    strength: null
+                    weight: 16
+                type: filler
+            common turquoise orb:
+                description: ''
+                name: common turquoise orb
+                stats:
+                    amount: 4
+                    attack: 46
+                    equipable: true
+                    luck: 9
+                    strength: 10
+                    weight: 5
+                type: magic items
+            dusty dust:
+                description: ''
+                name: dusty dust
+                stats:
+                    amount: 1
+                    attack: null
+                    equipable: false
+                    luck: -14
+                    strength: null
+                    weight: 16
+                type: filler
+            petty bone gem:
+                description: ''
+                name: petty bone gem
+                stats:
+                    amount: 10
+                    attack: 19
+                    equipable: true
+                    luck: -7
+                    strength: 13
+                    weight: 3
+                type: magic items
+        name: ugly Water Park of mediocrity
+        players: {}
+    room 5:
+        adjacent:
+            east: room 6
+            north: room 4
+            south: null
+            west: room 7
+        coordinates:
+        - 1
+        - 3
+        description: The hideous Forest of dusk
+        inventory:
+            mended candle:
+                description: ''
+                name: mended candle
+                stats:
+                    amount: 1
+                    attack: null
+                    equipable: false
+                    luck: -22
+                    strength: null
+                    weight: 7
+                type: filler
+            mended teeth:
+                description: ''
+                name: mended teeth
+                stats:
+                    amount: 1
+                    attack: null
+                    equipable: false
+                    luck: -48
+                    strength: null
+                    weight: 15
+                type: filler
+            old dragonscale bascinet:
+                description: ''
+                name: old dragonscale bascinet
+                stats:
+                    amount: 1
+                    attack: null
+                    equipable: true
+                    luck: 8
+                    strength: 29
+                    weight: 30
+                type: armor
+        name: hideous Forest of dusk
+        players:
+            Hurr Durr Nicole:
+                description: player 5 description
+                equipped:
+                - freakish glaive
+                - greater philter of grieving
+                - lustrous glaive of souls
+                inventory:
+                    freakish glaive:
+                        description: ''
+                        name: freakish glaive
+                        stats:
+                            amount: 1
+                            attack: 27
+                            equipable: true
+                            luck: 7
+                            strength: null
+                            weight: 16
+                        type: weapon
+                    greater philter of grieving:
+                        description: ''
+                        name: greater philter of grieving
+                        stats:
+                            amount: 10
+                            attack: 28
+                            equipable: true
+                            luck: 4
+                            strength: 8
+                            weight: 5
+                        type: magic consumables
+                    lustrous glaive of souls:
+                        description: ''
+                        name: lustrous glaive of souls
+                        stats:
+                            amount: 1
+                            attack: 11
+                            equipable: true
+                            luck: -10
+                            strength: null
+                            weight: 20
+                        type: weapon
+                location: hideous Forest of dusk
+                name: Hurr Durr Nicole
+            The Great Gloriana:
+                description: player 5 description
+                equipped:
+                - filthy glass blade
+                - lesser philter of quickening
+                inventory:
+                    filthy glass blade:
+                        description: ''
+                        name: filthy glass blade
+                        stats:
+                            amount: 1
+                            attack: 16
+                            equipable: true
+                            luck: -10
+                            strength: null
+                            weight: 14
+                        type: weapon
+                    lesser philter of quickening:
+                        description: ''
+                        name: lesser philter of quickening
+                        stats:
+                            amount: 5
+                            attack: 16
+                            equipable: true
+                            luck: 8
+                            strength: 8
+                            weight: 7
+                        type: magic consumables
+                location: hideous Forest of dusk
+                name: The Great Gloriana
+    room 6:
+        adjacent:
+            east: null
+            north: null
+            south: null
+            west: room 5
+        coordinates:
+        - 1
+        - 7
+        description: The furious Area of mummification
+        inventory:
+            burnt alembic:
+                description: ''
+                name: burnt alembic
+                stats:
+                    amount: 1
+                    attack: null
+                    equipable: false
+                    luck: -46
+                    strength: null
+                    weight: 25
+                type: filler
+            burnt crate:
+                description: ''
+                name: burnt crate
+                stats:
+                    amount: 1
+                    attack: null
+                    equipable: false
+                    luck: -22
+                    strength: null
+                    weight: 11
+                type: filler
+            damaged leather cloak:
+                description: ''
+                name: damaged leather cloak
+                stats:
+                    amount: 1
+                    attack: null
+                    equipable: true
+                    luck: -6
+                    strength: 17
+                    weight: 31
+                type: armor
+            dirty dust:
+                description: ''
+                name: dirty dust
+                stats:
+                    amount: 1
+                    attack: null
+                    equipable: false
+                    luck: -44
+                    strength: null
+                    weight: 5
+                type: filler
+            mended pestle:
+                description: ''
+                name: mended pestle
+                stats:
+                    amount: 1
+                    attack: null
+                    equipable: false
+                    luck: -23
+                    strength: null
+                    weight: 19
+                type: filler
+        name: furious Area of mummification
+        players:
+            Squeedly Zuckerberg:
+                description: player 6 description
+                equipped:
+                - common adamantine horn
+                - carved bronze halberd
+                inventory:
+                    carved bronze halberd:
+                        description: ''
+                        name: carved bronze halberd
+                        stats:
+                            amount: 1
+                            attack: 20
+                            equipable: true
+                            luck: 3
+                            strength: null
+                            weight: 13
+                        type: weapon
+                    common adamantine horn:
+                        description: ''
+                        name: common adamantine horn
+                        stats:
+                            amount: 6
+                            attack: 16
+                            equipable: true
+                            luck: 2
+                            strength: 5
+                            weight: 6
+                        type: magic items
+                location: furious Area of mummification
+                name: Squeedly Zuckerberg
+    room 7:
+        adjacent:
+            east: room 5
+            north: room 8
+            south: null
+            west: null
+        coordinates:
+        - 1
+        - 1
+        description: The strange Tower of pity
+        inventory:
+            common emerald horn of jubilance:
+                description: ''
+                name: common emerald horn of jubilance
+                stats:
+                    amount: 12
+                    attack: 44
+                    equipable: true
+                    luck: -2
+                    strength: 15
+                    weight: 6
+                type: magic items
+        name: strange Tower of pity
+        players: {}
+    room 8:
+        adjacent:
+            east: room 9
+            north: null
+            south: room 7
+            west: null
+        coordinates:
+        - 7
+        - 1
+        description: The beautiful Mordor of the dusk
+        inventory:
+            chosen jade magestone:
+                description: ''
+                name: chosen jade magestone
+                stats:
+                    amount: 10
+                    attack: 48
+                    equipable: true
+                    luck: 10
+                    strength: 6
+                    weight: 2
+                type: magic items
+            filthy bone helm:
+                description: ''
+                name: filthy bone helm
+                stats:
+                    amount: 1
+                    attack: null
+                    equipable: true
+                    luck: 7
+                    strength: 16
+                    weight: 16
+                type: armor
+            grand tome of ruining:
+                description: ''
+                name: grand tome of ruining
+                stats:
+                    amount: 12
+                    attack: 44
+                    equipable: true
+                    luck: -8
+                    strength: 10
+                    weight: 7
+                type: magic consumables
+        name: beautiful Mordor of the dusk
+        players:
+            Buzz Edmund:
+                description: player 8 description
+                equipped:
+                - common scroll of valor
+                - lesser bone shard
+                - crude adamantine shortsword
+                inventory:
+                    common scroll of valor:
+                        description: ''
+                        name: common scroll of valor
+                        stats:
+                            amount: 12
+                            attack: 38
+                            equipable: true
+                            luck: 0
+                            strength: 13
+                            weight: 2
+                        type: magic consumables
+                    crude adamantine shortsword:
+                        description: ''
+                        name: crude adamantine shortsword
+                        stats:
+                            amount: 1
+                            attack: 24
+                            equipable: true
+                            luck: -7
+                            strength: null
+                            weight: 6
+                        type: weapon
+                    lesser bone shard:
+                        description: ''
+                        name: lesser bone shard
+                        stats:
+                            amount: 3
+                            attack: 23
+                            equipable: true
+                            luck: -10
+                            strength: 13
+                            weight: 2
+                        type: magic items
+                location: beautiful Mordor of the dusk
+                name: Buzz Edmund
+            Oompa Oliver:
+                description: player 8 description
+                equipped:
+                - grand philter of reckoning
+                - worn meteorite scythe of the night
+                - lesser adamantine horn
+                inventory:
+                    grand philter of reckoning:
+                        description: ''
+                        name: grand philter of reckoning
+                        stats:
+                            amount: 5
+                            attack: 16
+                            equipable: true
+                            luck: 1
+                            strength: 8
+                            weight: 2
+                        type: magic consumables
+                    lesser adamantine horn:
+                        description: ''
+                        name: lesser adamantine horn
+                        stats:
+                            amount: 8
+                            attack: 30
+                            equipable: true
+                            luck: -7
+                            strength: 12
+                            weight: 6
+                        type: magic items
+                    worn meteorite scythe of the night:
+                        description: ''
+                        name: worn meteorite scythe of the night
+                        stats:
+                            amount: 1
+                            attack: 20
+                            equipable: true
+                            luck: 10
+                            strength: null
+                            weight: 20
+                        type: weapon
+                location: beautiful Mordor of the dusk
+                name: Oompa Oliver
+    room 9:
+        adjacent:
+            east: null
+            north: room 10
+            south: null
+            west: room 8
+        coordinates:
+        - 7
+        - 3
+        description: The ornate Restaurant of poisons
+        inventory:
+            damaged stool:
+                description: ''
+                name: damaged stool
+                stats:
+                    amount: 1
+                    attack: null
+                    equipable: false
+                    luck: -26
+                    strength: null
+                    weight: 14
+                type: filler
+            dusty candle:
+                description: ''
+                name: dusty candle
+                stats:
+                    amount: 1
+                    attack: null
+                    equipable: false
+                    luck: -41
+                    strength: null
+                    weight: 10
+                type: filler
+            dusty lamp:
+                description: ''
+                name: dusty lamp
+                stats:
+                    amount: 1
+                    attack: null
+                    equipable: false
+                    luck: -17
+                    strength: null
+                    weight: 23
+                type: filler
+            moldy incense:
+                description: ''
+                name: moldy incense
+                stats:
+                    amount: 1
+                    attack: null
+                    equipable: false
+                    luck: -17
+                    strength: null
+                    weight: 5
+                type: filler
+        name: ornate Restaurant of poisons
+        players:
+            Stubby Fernando:
+                description: player 9 description
+                equipped:
+                - luminous spear
+                - damaged adamantine shortsword of terror
+                inventory:
+                    damaged adamantine shortsword of terror:
+                        description: ''
+                        name: damaged adamantine shortsword of terror
+                        stats:
+                            amount: 1
+                            attack: 16
+                            equipable: true
+                            luck: -4
+                            strength: null
+                            weight: 9
+                        type: weapon
+                    luminous spear:
+                        description: ''
+                        name: luminous spear
+                        stats:
+                            amount: 1
+                            attack: 19
+                            equipable: true
+                            luck: 2
+                            strength: null
+                            weight: 11
+                        type: weapon
+                location: ornate Restaurant of poisons
+                name: Stubby Fernando
+            Willy Hildegard:
+                description: player 9 description
+                equipped:
+                - petty ruby dust
+                - petty scroll of ruining
+                - grand scroll of ambition
+                inventory:
+                    grand scroll of ambition:
+                        description: ''
+                        name: grand scroll of ambition
+                        stats:
+                            amount: 3
+                            attack: 47
+                            equipable: true
+                            luck: -4
+                            strength: 6
+                            weight: 3
+                        type: magic consumables
+                    petty ruby dust:
+                        description: ''
+                        name: petty ruby dust
+                        stats:
+                            amount: 6
+                            attack: 28
+                            equipable: true
+                            luck: -1
+                            strength: 14
+                            weight: 7
+                        type: magic items
+                    petty scroll of ruining:
+                        description: ''
+                        name: petty scroll of ruining
+                        stats:
+                            amount: 4
+                            attack: 37
+                            equipable: true
+                            luck: 0
+                            strength: 13
+                            weight: 4
+                        type: magic consumables
+                location: ornate Restaurant of poisons
+                name: Willy Hildegard
